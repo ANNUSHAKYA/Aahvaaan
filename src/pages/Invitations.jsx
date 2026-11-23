@@ -1,123 +1,96 @@
-import { useState, useMemo } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Search, Sparkles } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import templates, { collections } from '../data/templates';
-import TemplateCard from '../components/TemplateCard';
-import SectionHeading from '../components/SectionHeading';
+import { Link } from 'react-router-dom';
+import { ArrowLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import templates from '../data/templates';
 
 export default function Invitations() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const initialCollection = searchParams.get('collection') || 'All Collections';
-
-  const [search, setSearch] = useState('');
-  const [selectedCollection, setSelectedCollection] = useState(initialCollection);
-
-  const filteredTemplates = useMemo(() => {
-    return templates.filter((t) => {
-      const matchesSearch =
-        t.name.toLowerCase().includes(search.toLowerCase()) ||
-        t.collection.toLowerCase().includes(search.toLowerCase()) ||
-        t.shortDescription.toLowerCase().includes(search.toLowerCase());
-      const matchesCollection =
-        selectedCollection === 'All Collections' || t.collection === selectedCollection;
-      return matchesSearch && matchesCollection;
-    });
-  }, [search, selectedCollection]);
-
-  const handleCollectionChange = (col) => {
-    setSelectedCollection(col);
-    if (col === 'All Collections') {
-      searchParams.delete('collection');
-    } else {
-      searchParams.set('collection', col);
-    }
-    setSearchParams(searchParams);
-  };
-
   return (
-    <div className="pt-20">
-      {/* Header */}
-      <section className="section-padding bg-champagne/30 pb-10">
-        <div className="container-custom mx-auto">
-          <SectionHeading
-            subtitle="Signature Collections"
-            title="Explore 4 Signature Wedding Invitations"
-            description="Every celebration deserves a beautiful beginning. Discover our four distinct, meticulously crafted digital wedding invitation collections — each with its own signature colour palette, bespoke typography, and interactive aesthetic."
-          />
-
-          {/* Search & Collection Filter Bar */}
-          <div className="max-w-3xl mx-auto space-y-4">
-            {/* Search */}
-            <div className="relative">
-              <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-charcoal/40" />
-              <input
-                type="text"
-                placeholder="Search signature designs or collections..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-white border border-champagne rounded-lg font-body text-sm text-charcoal placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold transition-all shadow-xs"
-                aria-label="Search invitation designs"
-              />
-            </div>
-
-            {/* Collection Filter Buttons */}
-            <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-              {collections.map((col) => (
-                <button
-                  key={col}
-                  onClick={() => handleCollectionChange(col)}
-                  className={`font-body text-xs px-4 py-2 rounded-full transition-all duration-200 border ${
-                    selectedCollection === col
-                      ? 'bg-wine text-white border-wine shadow-xs font-semibold'
-                      : 'bg-white text-charcoal border-champagne hover:border-wine hover:text-wine'
-                  }`}
-                >
-                  {col}
-                </button>
-              ))}
-            </div>
-          </div>
+    <div className="pt-24 pb-24 min-h-screen bg-ivory/30">
+      <div className="container-custom mx-auto px-4 sm:px-8 max-w-6xl">
+        {/* Back Link */}
+        <div className="mb-6">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-xs font-body font-medium text-charcoal/60 hover:text-wine transition-colors group"
+          >
+            <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
+            <span>Back to home</span>
+          </Link>
         </div>
-      </section>
 
-      {/* Gallery Grid */}
-      <section className="section-padding pt-10">
-        <div className="container-custom mx-auto">
-          {/* Results count & Info */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-4 border-b border-champagne/50">
-            <p className="font-body text-sm text-charcoal/70">
-              Showing <strong>{filteredTemplates.length}</strong> signature invitation {filteredTemplates.length === 1 ? 'template' : 'templates'}
-            </p>
-            <span className="font-body text-xs text-gold flex items-center gap-1.5">
-              <Sparkles size={14} /> Each design features a bespoke colour palette & full interactive preview
-            </span>
-          </div>
+        {/* Page Heading */}
+        <div className="mb-10">
+          <h1 className="font-heading text-3xl sm:text-4xl font-bold text-charcoal tracking-tight mb-2">
+            All templates
+          </h1>
+          <p className="font-body text-xs sm:text-sm text-charcoal/60">
+            Every invitation experience we offer.
+          </p>
+        </div>
 
-          {filteredTemplates.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-6xl mx-auto">
-              <AnimatePresence>
-                {filteredTemplates.map((template, index) => (
-                  <TemplateCard key={template.id} template={template} index={index} />
-                ))}
-              </AnimatePresence>
-            </div>
-          ) : (
-            <div className="text-center py-20 bg-white rounded-xl card-shadow border border-champagne/40 max-w-md mx-auto">
-              <p className="font-heading text-2xl text-wine mb-2">No designs match your search</p>
-              <p className="font-body text-sm text-charcoal/60 mb-6">
-                Try searching for "Romance", "Botanical", "Maharaja", or "Dream".
-              </p>
-              <button
-                onClick={() => { setSearch(''); setSelectedCollection('All Collections'); }}
-                className="btn-secondary text-xs py-2 px-5"
+        {/* 3-Column Template Cards Grid (Exact Balcony Reference Layout) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {templates.map((template, index) => (
+            <motion.div
+              key={template.id}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, delay: index * 0.06 }}
+            >
+              <Link
+                to={`/invitations/${template.id}`}
+                className="bg-white rounded-3xl border border-gray-100/90 shadow-xs hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col justify-between group h-full cursor-pointer"
               >
-                Reset Filters
-              </button>
-            </div>
-          )}
+                <div>
+                  {/* Card Image Preview */}
+                  <div className="relative aspect-[16/11] bg-champagne/20 overflow-hidden">
+                    <img
+                      src={template.image}
+                      alt={template.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = `data:image/svg+xml,${encodeURIComponent(
+                          `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" fill="#FAF6F0"><rect width="800" height="500"/><text x="400" y="250" text-anchor="middle" font-family="Georgia" font-size="32" fill="#704B50">${template.name}</text></svg>`
+                        )}`;
+                      }}
+                    />
+                  </div>
+
+                  {/* Card Header & Description */}
+                  <div className="p-6 pb-2">
+                    <h3 className="font-heading text-lg font-bold text-charcoal group-hover:text-wine transition-colors mb-2">
+                      {template.name}
+                    </h3>
+                    <p className="font-body text-xs text-charcoal/65 leading-relaxed line-clamp-3">
+                      {template.shortDescription}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Card Footer: Badge, Price & Chevron */}
+                <div className="p-6 pt-3 flex items-center justify-between border-t border-gray-50 mt-2">
+                  <div className="flex items-center gap-2">
+                    {template.isNew && (
+                      <span className="px-2.5 py-0.5 rounded-full bg-wine text-white text-[10px] font-bold tracking-wide uppercase">
+                        New
+                      </span>
+                    )}
+                    <span className="font-body font-bold text-wine text-sm">
+                      ₹{template.startingPrice.toLocaleString('en-IN')}
+                    </span>
+                  </div>
+
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-charcoal/40 group-hover:text-wine group-hover:translate-x-1 transition-all">
+                    <ChevronRight size={18} />
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
-      </section>
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
@@ -8,40 +8,109 @@ export default function Navbar() {
   const { user, profile } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsOpen(false);
   }, [location]);
 
-  // Profile Page Dedicated Header (Matches screenshot exact layout)
-  if (location.pathname === '/profile') {
-    const displayName = profile?.name || user?.user_metadata?.full_name || 'Annu Shakya';
+  const displayName = profile?.name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Annu Shakya';
+
+  // Smooth scroll handler for anchor links
+  const handleScrollTo = (id) => (e) => {
+    e.preventDefault();
+    setIsOpen(false);
+    if (location.pathname === '/') {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      navigate(`/#${id}`);
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 120);
+    }
+  };
+
+  // Dedicated App Top Header (for Dashboard, Templates/Gallery, Profile, and Host pages)
+  const isAppPage = [
+    '/dashboard',
+    '/host',
+    '/invitations',
+    '/gallery',
+    '/profile',
+  ].some((p) => location.pathname === p || location.pathname.startsWith(p + '/'));
+
+  if (isAppPage) {
+    const isDashboard = location.pathname === '/dashboard' || location.pathname === '/host';
+    const isTemplates = location.pathname === '/invitations' || location.pathname === '/gallery';
+
     return (
       <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
         <div className="container-custom mx-auto px-4 sm:px-8 h-16 flex items-center justify-between max-w-6xl">
-          <div className="flex items-center gap-8">
+          {/* Left: Brand & Navigation Tabs */}
+          <div className="flex items-center gap-8 h-16">
             <Link to="/" className="font-heading text-2xl font-bold text-wine tracking-tight">
               Aahvaaan
             </Link>
-            <div className="hidden sm:flex items-center gap-6 text-sm font-body text-charcoal/80">
-              <Link to="/dashboard" className="hover:text-wine transition-colors">
+
+            <nav className="flex items-center gap-6 sm:gap-8 h-16 text-sm font-body">
+              <Link
+                to="/dashboard"
+                className={`h-full flex items-center transition-colors relative font-medium ${
+                  isDashboard
+                    ? 'text-charcoal font-semibold border-b-2 border-wine'
+                    : 'text-charcoal/70 hover:text-wine'
+                }`}
+              >
                 My invitations
               </Link>
-              <Link to="/invitations" className="hover:text-wine transition-colors">
+
+              <Link
+                to="/invitations"
+                className={`h-full flex items-center transition-colors relative font-medium ${
+                  isTemplates
+                    ? 'text-charcoal font-semibold border-b-2 border-wine'
+                    : 'text-charcoal/70 hover:text-wine'
+                }`}
+              >
                 Templates
               </Link>
-            </div>
+            </nav>
           </div>
 
-          <div className="flex items-center gap-2 font-body text-sm text-charcoal/80">
-            <span>{displayName}</span>
-            <User size={18} className="text-charcoal/70" />
+          {/* Right: User Profile or Sign In */}
+          <div className="flex items-center gap-3">
+            {user ? (
+              <Link
+                to="/profile"
+                className="flex items-center gap-2 font-body text-sm text-charcoal/80 hover:text-wine transition-colors group"
+                title="Account Settings"
+              >
+                <span className="hidden sm:inline font-medium">{displayName}</span>
+                <div className="w-8 h-8 rounded-full bg-ivory border border-champagne flex items-center justify-center text-charcoal/70 group-hover:border-wine group-hover:text-wine transition-colors">
+                  <User size={16} />
+                </div>
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="px-5 py-2 rounded-full bg-wine hover:bg-wine/90 text-white font-body text-xs font-semibold shadow-xs transition-colors"
+              >
+                Sign in
+              </Link>
+            )}
           </div>
         </div>
       </header>
     );
   }
 
+  // Marketing / Home Page Floating Pill Navigation
   return (
     <header className="fixed top-3 sm:top-5 left-0 right-0 z-50 flex justify-center px-3 sm:px-6 pointer-events-none">
       <div className="w-full max-w-5xl flex flex-col items-center">
@@ -59,18 +128,34 @@ export default function Navbar() {
             <Link to="/invitations" className="hover:text-wine transition-colors">
               Templates
             </Link>
-            <a href="/#features" className="hover:text-wine transition-colors">
+            <a
+              href="#features"
+              onClick={handleScrollTo('features')}
+              className="hover:text-wine transition-colors cursor-pointer"
+            >
               Features
             </a>
-            <a href="/#sharing" className="hover:text-wine transition-colors">
+            <a
+              href="#sharing"
+              onClick={handleScrollTo('sharing')}
+              className="hover:text-wine transition-colors cursor-pointer"
+            >
               Sharing
             </a>
-            <a href="/#faqs" className="hover:text-wine transition-colors">
+            <a
+              href="#faqs"
+              onClick={handleScrollTo('faqs')}
+              className="hover:text-wine transition-colors cursor-pointer"
+            >
               FAQs
             </a>
-            <Link to="/about" className="hover:text-wine transition-colors">
+            <a
+              href="#about"
+              onClick={handleScrollTo('about')}
+              className="hover:text-wine transition-colors cursor-pointer"
+            >
               About us
-            </Link>
+            </a>
           </div>
 
           {/* Right Action Button */}
@@ -81,7 +166,7 @@ export default function Navbar() {
                   to="/dashboard"
                   className="px-4 sm:px-5 py-2 rounded-full bg-wine hover:bg-gold text-white font-body text-xs font-semibold shadow-xs transition-colors shrink-0"
                 >
-                  My Invitations
+                  My invitations
                 </Link>
                 <Link
                   to="/profile"
@@ -124,43 +209,39 @@ export default function Navbar() {
               <div className="space-y-1 font-body text-sm font-semibold text-charcoal">
                 <Link
                   to="/invitations"
+                  onClick={() => setIsOpen(false)}
                   className="block py-2 px-3 rounded-xl hover:bg-ivory hover:text-wine transition-colors"
                 >
                   Templates
                 </Link>
                 <a
-                  href="/#features"
-                  onClick={() => setIsOpen(false)}
+                  href="#features"
+                  onClick={handleScrollTo('features')}
                   className="block py-2 px-3 rounded-xl hover:bg-ivory hover:text-wine transition-colors"
                 >
                   Features
                 </a>
                 <a
-                  href="/#sharing"
-                  onClick={() => setIsOpen(false)}
+                  href="#sharing"
+                  onClick={handleScrollTo('sharing')}
                   className="block py-2 px-3 rounded-xl hover:bg-ivory hover:text-wine transition-colors"
                 >
                   Sharing
                 </a>
                 <a
-                  href="/#faqs"
-                  onClick={() => setIsOpen(false)}
+                  href="#faqs"
+                  onClick={handleScrollTo('faqs')}
                   className="block py-2 px-3 rounded-xl hover:bg-ivory hover:text-wine transition-colors"
                 >
                   FAQs
                 </a>
-                <Link
-                  to="/about"
+                <a
+                  href="#about"
+                  onClick={handleScrollTo('about')}
                   className="block py-2 px-3 rounded-xl hover:bg-ivory hover:text-wine transition-colors"
                 >
                   About us
-                </Link>
-                <Link
-                  to="/contact"
-                  className="block py-2 px-3 rounded-xl hover:bg-ivory hover:text-wine transition-colors"
-                >
-                  Get in touch
-                </Link>
+                </a>
               </div>
 
               <div className="pt-2 border-t border-champagne/60 flex flex-col gap-2">
@@ -168,12 +249,14 @@ export default function Navbar() {
                   <>
                     <Link
                       to="/dashboard"
+                      onClick={() => setIsOpen(false)}
                       className="w-full py-2.5 text-center rounded-full bg-wine text-white font-body text-xs font-semibold shadow-xs"
                     >
-                      My Invitations
+                      My invitations
                     </Link>
                     <Link
                       to="/profile"
+                      onClick={() => setIsOpen(false)}
                       className="w-full py-2.5 text-center rounded-full border border-champagne text-charcoal font-body text-xs font-semibold"
                     >
                       My Profile & Settings
@@ -182,6 +265,7 @@ export default function Navbar() {
                 ) : (
                   <Link
                     to="/login"
+                    onClick={() => setIsOpen(false)}
                     className="w-full py-2.5 text-center rounded-full bg-wine text-white font-body text-xs font-semibold shadow-xs"
                   >
                     Sign in / Register
