@@ -71,6 +71,57 @@
   clip-path: polygon(0 0, 50% 60%, 100% 0);
 }
 
+/* 3D and perspective utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+
+@keyframes floatReverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(12px) rotate(-1.5deg);
+  }
+}
+
+@keyframes shimmerEffect {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatReverse 7s ease-in-out infinite;
+}
+
+.shadow-3d-phone {
+  box-shadow: 0 35px 65px -15px rgba(0, 0, 0, 0.65), 0 10px 20px -5px rgba(107, 29, 47, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+.shadow-3d-card {
+  box-shadow: 0 30px 60px -12px rgba(36, 5, 14, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(182, 154, 112, 0.2);
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
