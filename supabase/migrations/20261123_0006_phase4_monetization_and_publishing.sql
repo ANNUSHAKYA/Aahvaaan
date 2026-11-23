@@ -99,33 +99,152 @@ CREATE TABLE IF NOT EXISTS public.orders (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
   invitation_id UUID REFERENCES public.invitations(id) ON DELETE CASCADE,
-  amount_inr INTEGER NOT NULL,
-  type TEXT NOT NULL CHECK (type IN ('package', 'extra_guests')),
+  amount_inr INTEGER NOT NULL DEFAULT 1499,
+  type TEXT NOT NULL DEFAULT 'package',
   package_id TEXT,
   razorpay_order_id TEXT UNIQUE,
   razorpay_payment_id TEXT,
   razorpay_signature TEXT,
-  status TEXT NOT NULL DEFAULT 'created' CHECK (status IN ('created', 'paid', 'failed')),
+  status TEXT NOT NULL DEFAULT 'created',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Ensure package_id & razorpay_signature in orders if table pre-existed
+-- Reconcile orders schema for existing databases (host_id -> user_id, drop legacy constraints)
 DO $$
 BEGIN
+  -- 1. Rename host_id to user_id if host_id exists and user_id does not
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'host_id')
+     AND NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'user_id') THEN
+    ALTER TABLE public.orders RENAME COLUMN host_id TO user_id;
+  END IF;
+
+  -- 2. Add user_id if still not present
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'user_id') THEN
+    ALTER TABLE public.orders ADD COLUMN user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL;
+  END IF;
+
+  -- 3. Sync values if both exist
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'host_id')
+     AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'user_id') THEN
+    UPDATE public.orders SET user_id = host_id WHERE user_id IS NULL AND host_id IS NOT NULL;
+  END IF;
+
+  -- 4. Ensure invitation_id exists
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'invitation_id') THEN
+    ALTER TABLE public.orders ADD COLUMN invitation_id UUID REFERENCES public.invitations(id) ON DELETE CASCADE;
+  END IF;
+
+  -- 5. Ensure amount_inr exists
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'amount_inr') THEN
+    ALTER TABLE public.orders ADD COLUMN amount_inr INTEGER NOT NULL DEFAULT 1499;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'amount') THEN
+      UPDATE public.orders SET amount_inr = ROUND(amount)::INTEGER WHERE amount IS NOT NULL;
+    END IF;
+  END IF;
+
+  -- 6. Ensure type exists
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'type') THEN
+    ALTER TABLE public.orders ADD COLUMN type TEXT NOT NULL DEFAULT 'package';
+  END IF;
+
+  -- 7. Ensure package_id exists
   IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'package_id') THEN
     ALTER TABLE public.orders ADD COLUMN package_id TEXT;
   END IF;
+
+  -- 8. Ensure Razorpay columns exist
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'razorpay_order_id') THEN
+    ALTER TABLE public.orders ADD COLUMN razorpay_order_id TEXT UNIQUE;
+  END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'razorpay_payment_id') THEN
+    ALTER TABLE public.orders ADD COLUMN razorpay_payment_id TEXT;
+  END IF;
+
   IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'razorpay_signature') THEN
     ALTER TABLE public.orders ADD COLUMN razorpay_signature TEXT;
   END IF;
+
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'status') THEN
+    ALTER TABLE public.orders ADD COLUMN status TEXT NOT NULL DEFAULT 'created';
+  END IF;
+
   IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'updated_at') THEN
     ALTER TABLE public.orders ADD COLUMN updated_at TIMESTAMPTZ DEFAULT NOW();
   END IF;
+
+  -- 9. Relax all legacy NOT-NULL constraints on orders
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'customer_name') THEN
+    ALTER TABLE public.orders ALTER COLUMN customer_name DROP NOT NULL;
+  END IF;
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'whatsapp') THEN
+    ALTER TABLE public.orders ALTER COLUMN whatsapp DROP NOT NULL;
+  END IF;
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'email') THEN
+    ALTER TABLE public.orders ALTER COLUMN email DROP NOT NULL;
+  END IF;
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'bride_name') THEN
+    ALTER TABLE public.orders ALTER COLUMN bride_name DROP NOT NULL;
+  END IF;
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'groom_name') THEN
+    ALTER TABLE public.orders ALTER COLUMN groom_name DROP NOT NULL;
+  END IF;
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'wedding_date') THEN
+    ALTER TABLE public.orders ALTER COLUMN wedding_date DROP NOT NULL;
+  END IF;
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'amount') THEN
+    ALTER TABLE public.orders ALTER COLUMN amount DROP NOT NULL;
+  END IF;
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'template_id') THEN
+    ALTER TABLE public.orders ALTER COLUMN template_id DROP NOT NULL;
+  END IF;
+  IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'orders' AND column_name = 'payment_method') THEN
+    ALTER TABLE public.orders ALTER COLUMN payment_method DROP NOT NULL;
+  END IF;
+
+  -- 10. Drop legacy constraints that might restrict status or package_id
+  ALTER TABLE public.orders DROP CONSTRAINT IF EXISTS orders_status_check;
+  ALTER TABLE public.orders DROP CONSTRAINT IF EXISTS orders_package_id_check;
+  ALTER TABLE public.orders DROP CONSTRAINT IF EXISTS orders_type_check;
+
+  -- 11. Ensure rsvps has dietary column
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'rsvps' AND column_name = 'dietary') THEN
+    ALTER TABLE public.rsvps ADD COLUMN dietary TEXT DEFAULT 'Standard';
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'rsvps' AND column_name = 'dietary_requirements') THEN
+      UPDATE public.rsvps SET dietary = dietary_requirements WHERE dietary_requirements IS NOT NULL;
+    END IF;
+  END IF;
+
+  -- 12. Ensure guests columns exist
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'guests') THEN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'guests' AND column_name = 'delivery_status') THEN
+      ALTER TABLE public.guests ADD COLUMN delivery_status TEXT NOT NULL DEFAULT 'draft';
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'guests' AND column_name = 'first_viewed_at') THEN
+      ALTER TABLE public.guests ADD COLUMN first_viewed_at TIMESTAMPTZ;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'guests' AND column_name = 'last_viewed_at') THEN
+      ALTER TABLE public.guests ADD COLUMN last_viewed_at TIMESTAMPTZ;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'guests' AND column_name = 'view_count') THEN
+      ALTER TABLE public.guests ADD COLUMN view_count INTEGER NOT NULL DEFAULT 0;
+    END IF;
+  END IF;
+
+  -- 13. Ensure views columns exist
+  IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'views') THEN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = 'public' AND table_name = 'views' AND column_name = 'device_type') THEN
+      ALTER TABLE public.views ADD COLUMN device_type TEXT;
+    END IF;
+  END IF;
 END $$;
 
+-- Enable RLS and set user policy on orders
 ALTER TABLE public.orders ENABLE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS "orders_user_select" ON public.orders;
+DROP POLICY IF EXISTS "Hosts can view own orders" ON public.orders;
+
 CREATE POLICY "orders_user_select" ON public.orders
   FOR SELECT
   USING (auth.uid() = user_id);
