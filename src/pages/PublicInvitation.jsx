@@ -56,7 +56,10 @@ function LiveRSVPForm({
 
     setSubmitting(true);
     try {
-      if (isSupabaseConfigured && invitationId) {
+      const isInvUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(invitationId);
+      const isGuestUuid = guest?.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(guest.id);
+
+      if (isSupabaseConfigured && invitationId && isInvUuid && invitationId !== '00000000-0000-0000-0000-000000000000') {
         const { data, error } = await supabase.rpc('submit_guest_rsvp', {
           p_invitation_id: invitationId,
           p_name: formData.name.trim(),
@@ -65,12 +68,21 @@ function LiveRSVPForm({
           p_guest_count: parseInt(formData.guestCount, 10) || 1,
           p_dietary: formData.dietary,
           p_message: formData.message.trim() || null,
-          p_guest_id: guest?.id || null,
+          p_guest_id: isGuestUuid ? guest.id : null,
         });
 
         if (error) throw error;
         if (data && data.success === false) {
           throw new Error(data.error || 'Failed to submit RSVP');
+        }
+      } else {
+        // Fallback for sample demo / non-UUID testing
+        try {
+          const stored = JSON.parse(localStorage.getItem('aahvaaan_demo_rsvps') || '[]');
+          stored.push({ ...formData, phone: cleanPhone, submittedAt: new Date().toISOString() });
+          localStorage.setItem('aahvaaan_demo_rsvps', JSON.stringify(stored));
+        } catch {
+          // ignore
         }
       }
 
@@ -313,19 +325,24 @@ export default function PublicInvitation({ isPersonalized = false }) {
             const g = fetchedData.content?.groomName || 'Groom';
             document.title = `${b} & ${g}'s Wedding Invitation | Aahvaaan`;
 
-            // Record guest view asynchronously
-            const deviceType = window.innerWidth < 768 ? 'mobile' : 'desktop';
-            supabase.rpc('record_guest_view', {
-              p_invitation_id: fetchedData.id,
-              p_guest_id: fetchedData.guest?.id || null,
-              p_device_type: deviceType,
-            }).catch(() => {});
+            // Record guest view asynchronously if valid UUID
+            const isInvUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(fetchedData.id);
+            const isGuestUuid = fetchedData.guest?.id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(fetchedData.guest.id);
+
+            if (isInvUuid) {
+              const deviceType = window.innerWidth < 768 ? 'mobile' : 'desktop';
+              supabase.rpc('record_guest_view', {
+                p_invitation_id: fetchedData.id,
+                p_guest_id: isGuestUuid ? fetchedData.guest.id : null,
+                p_device_type: deviceType,
+              }).catch(() => {});
+            }
           } else {
             // Fallback sample invitation
             const fallbackTmpl = templates[0];
             setTemplate(fallbackTmpl);
             setInvitationData({
-              id: 'demo-sample-id',
+              id: '00000000-0000-0000-0000-000000000000',
               slug: commonCode || 'ananya-kabir-2027',
               content: fallbackTmpl.sampleData,
               is_personalized: Boolean(personalSlug),
