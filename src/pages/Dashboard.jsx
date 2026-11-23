@@ -140,6 +140,13 @@ export default function Dashboard() {
         draft_content: draftPayload,
         published_content: draftPayload,
         personalized_limit: createForm.packageId === 'luxury' ? 50 : createForm.packageId === 'signature' ? 20 : 5,
+        // Legacy column compatibility for existing database tables
+        bride_name: createForm.brideName.trim(),
+        groom_name: createForm.groomName.trim(),
+        wedding_date: '2027-02-22',
+        location: 'Jaipur, Rajasthan',
+        venue: 'The Oberoi Rajvilas, Jaipur',
+        package_id: createForm.packageId,
       };
 
       let { data, error: insertError } = await supabase
