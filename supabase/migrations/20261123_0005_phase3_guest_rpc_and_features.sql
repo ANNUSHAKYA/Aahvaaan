@@ -279,3 +279,33 @@ BEGIN
   );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+
+-- 7. Hard Server-Side Trigger: Enforce personalized_limit on direct table inserts
+CREATE OR REPLACE FUNCTION public.check_guest_limit_trigger()
+RETURNS TRIGGER AS $$
+DECLARE
+  v_limit INT;
+  v_count INT;
+BEGIN
+  SELECT personalized_limit INTO v_limit
+  FROM public.invitations
+  WHERE id = NEW.invitation_id;
+
+  SELECT count(*) INTO v_count
+  FROM public.guests
+  WHERE invitation_id = NEW.invitation_id;
+
+  IF v_count >= COALESCE(v_limit, 5) THEN
+    RAISE EXCEPTION 'Personalized guest link limit reached for this invitation (limit: %). Please upgrade your package.', v_limit;
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trigger_enforce_guest_limit ON public.guests;
+CREATE TRIGGER trigger_enforce_guest_limit
+  BEFORE INSERT ON public.guests
+  FOR EACH ROW
+  EXECUTE FUNCTION public.check_guest_limit_trigger();

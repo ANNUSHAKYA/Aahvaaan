@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import {
   Users, Plus, Upload, Download, Copy, Check, MessageCircle,
   ExternalLink, Trash2, AlertCircle, Sparkles, Filter,
-  Phone, Eye, Utensils, Heart, ChevronDown, X, ShieldAlert
+  Phone, Eye, Utensils, Heart, ChevronDown, X, ShieldAlert,
+  Send, RefreshCw
 } from 'lucide-react';
 import supabase, { isSupabaseConfigured } from '../../lib/supabase';
 
@@ -25,9 +26,14 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
   // Copy indicator state
   const [copiedId, setCopiedId] = useState(null);
 
-  // RSVP filter
+  // RSVP filter & Search
   const [rsvpFilter, setRsvpFilter] = useState('all'); // 'all' | 'attending' | 'maybe' | 'not_attending'
+  const [guestFilter, setGuestFilter] = useState('all'); // 'all' | 'pending' | 'responded'
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Upsell Modal State
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgrading, setUpgrading] = useState(false);
 
   const packageLimit = invitation.personalized_limit || (
     invitation.package === 'luxury' ? 50 : invitation.package === 'signature' ? 20 : 5
@@ -84,6 +90,14 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
             view_count: 1,
             last_viewed_at: new Date().toISOString(),
           },
+          {
+            id: 'g-3',
+            name: 'Kapoor Family (Chacha-Chachi)',
+            phone: '+91 98765 11223',
+            personal_slug: 'kapoor-fam-c3d4',
+            view_count: 0,
+            last_viewed_at: null,
+          },
         ]);
         setRsvps([
           {
@@ -116,7 +130,7 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
     if (!newGuest.name.trim()) return;
 
     if (guests.length >= packageLimit) {
-      setError(`Personalized link limit reached (${packageLimit}). Please upgrade your package.`);
+      setShowUpgradeModal(true);
       return;
     }
 
@@ -133,7 +147,11 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
 
         if (rpcErr) throw rpcErr;
         if (data && data.success === false) {
-          setError(data.message || 'Unable to add guest.');
+          if (data.error === 'limit_reached') {
+            setShowUpgradeModal(true);
+          } else {
+            setError(data.message || 'Unable to add guest.');
+          }
           setAdding(false);
           return;
         }
@@ -163,7 +181,7 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
 
   // 3. Delete Guest
   const handleDeleteGuest = async (guestId) => {
-    if (!window.confirm('Delete this guest personal link? The guest link will no longer be valid.')) return;
+    if (!window.confirm('Delete this guest personal link? The personalized link will no longer be valid.')) return;
 
     try {
       if (isSupabaseConfigured) {
@@ -199,13 +217,13 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
         return;
       }
 
-      // Check header
       const rows = lines.slice(1);
       let addedCount = 0;
 
       for (const row of rows) {
         if (guests.length + addedCount >= packageLimit) {
-          setError(`Limit reached! Imported ${addedCount} guests before reaching your ${packageLimit} link limit.`);
+          setError(`Package limit reached! Imported ${addedCount} guests before hitting your limit (${packageLimit}). Upgrade for more.`);
+          setShowUpgradeModal(true);
           break;
         }
 
@@ -274,13 +292,52 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  // Helper: WhatsApp Share URL with pre-filled greeting message
+  // Helper: wa.me Initial Invitation Link
   const getWhatsAppShareUrl = (guest) => {
     const inviteUrl = `${window.location.origin}/invite/r/${guest.personal_slug}`;
     const message = `Namaste ${guest.name} Ji! 🌸\n\n${brideName} & ${groomName} joyfully invite you and your family to celebrate their sacred wedding.\n\nKindly open your personalized invitation below:\n${inviteUrl}\n\nWe look forward to receiving your warm blessings!`;
     const cleanPhone = (guest.phone || '').replace(/[^0-9]/g, '');
-    const phoneParam = cleanPhone ? `phone=${cleanPhone}&` : '';
-    return `https://api.whatsapp.com/send?${phoneParam}text=${encodeURIComponent(message)}`;
+    return cleanPhone
+      ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`
+      : `https://wa.me/?text=${encodeURIComponent(message)}`;
+  };
+
+  // Helper: wa.me One-Tap RSVP Reminder Link
+  const getWhatsAppReminderUrl = (guest) => {
+    const inviteUrl = `${window.location.origin}/invite/r/${guest.personal_slug}`;
+    const message = `Namaste ${guest.name} Ji! 🌸\n\nA gentle reminder from ${brideName} & ${groomName} regarding our wedding celebrations.\n\nWe would love to know if you and your family will be gracing the occasion. Kindly confirm your RSVP reply here:\n${inviteUrl}\n\nWith warm regards,\n${brideName} & ${groomName}`;
+    const cleanPhone = (guest.phone || '').replace(/[^0-9]/g, '');
+    return cleanPhone
+      ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`
+      : `https://wa.me/?text=${encodeURIComponent(reminderMsg)}`;
+  };
+
+  // Upgrade Limit Handler (e.g. Starter -> Signature -> Luxury -> Unlimited)
+  const handleUpgradeLimit = async (newLimit, newPkg) => {
+    setUpgrading(true);
+    try {
+      if (isSupabaseConfigured) {
+        const { error: upErr } = await supabase
+          .from('invitations')
+          .update({
+            package: newPkg,
+            personalized_limit: newLimit,
+          })
+          .eq('id', invitation.id);
+
+        if (upErr) throw upErr;
+        invitation.personalized_limit = newLimit;
+        invitation.package = newPkg;
+      }
+      setShowUpgradeModal(false);
+      await fetchData();
+      if (onRefreshMetrics) onRefreshMetrics();
+    } catch (err) {
+      console.error('Upgrade limit error:', err);
+      setError(err.message || 'Failed to update package limit.');
+    } finally {
+      setUpgrading(false);
+    }
   };
 
   // Metrics for RSVPs
@@ -290,8 +347,23 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
   const jainCount = attendingRsvps.filter((r) => r.dietary === 'Jain (No Onion/Garlic)').length;
   const multiCount = attendingRsvps.filter((r) => r.dietary === 'Multi-Cuisine').length;
 
+  // Correlation helper: find RSVP for a guest
+  const getRsvpForGuest = (guest) => {
+    const cleanGuestPhone = (guest.phone || '').replace(/[^0-9]/g, '');
+    return rsvps.find((r) => {
+      if (r.guest_id && r.guest_id === guest.id) return true;
+      if (cleanGuestPhone && r.phone) {
+        return cleanGuestPhone === r.phone.replace(/[^0-9]/g, '');
+      }
+      return false;
+    });
+  };
+
   // Filtered lists
   const filteredGuests = guests.filter((g) => {
+    const guestRsvp = getRsvpForGuest(g);
+    if (guestFilter === 'pending' && guestRsvp) return false;
+    if (guestFilter === 'responded' && !guestRsvp) return false;
     if (!searchQuery) return true;
     const q = searchQuery.toLowerCase();
     return (g.name || '').toLowerCase().includes(q) || (g.phone || '').includes(q);
@@ -303,6 +375,9 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
     const q = searchQuery.toLowerCase();
     return (r.name || '').toLowerCase().includes(q) || (r.phone || '').includes(q);
   });
+
+  // Pending count
+  const pendingCount = guests.filter((g) => !getRsvpForGuest(g)).length;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/60 backdrop-blur-sm overflow-y-auto">
@@ -322,12 +397,21 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Package Limit Badge */}
-            <div className="bg-white px-3.5 py-1.5 rounded-xl border border-champagne text-xs flex items-center gap-2 shadow-2xs">
-              <span className="text-charcoal/60 font-medium">Personalized Links:</span>
+            {/* Package Limit Badge with Upgrade Trigger */}
+            <div className="bg-white px-3 py-1.5 rounded-xl border border-champagne text-xs flex items-center gap-2 shadow-2xs">
+              <span className="text-charcoal/60 font-medium">Personal Links:</span>
               <span className={`font-bold ${guests.length >= packageLimit ? 'text-amber-600' : 'text-wine'}`}>
                 {guests.length} / {packageLimit}
               </span>
+              {guests.length >= packageLimit && (
+                <button
+                  type="button"
+                  onClick={() => setShowUpgradeModal(true)}
+                  className="ml-1 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-amber-500 hover:bg-amber-600 text-white transition-colors"
+                >
+                  Upgrade
+                </button>
+              )}
             </div>
 
             <button
@@ -370,7 +454,7 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
             </button>
           </div>
 
-          {/* Action buttons depending on tab */}
+          {/* Action buttons */}
           <div className="flex items-center gap-2">
             {activeTab === 'guests' && (
               <>
@@ -384,7 +468,7 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  disabled={uploadingCsv || guests.length >= packageLimit}
+                  disabled={uploadingCsv}
                   className="py-1.5 px-3 rounded-lg border border-champagne hover:border-wine text-charcoal hover:text-wine text-xs font-semibold flex items-center gap-1 transition-colors disabled:opacity-50"
                   title="Upload CSV with Name, Phone"
                 >
@@ -394,9 +478,14 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
 
                 <button
                   type="button"
-                  onClick={() => setShowAddForm(true)}
-                  disabled={guests.length >= packageLimit}
-                  className="py-1.5 px-3.5 rounded-lg bg-wine hover:bg-gold text-white text-xs font-semibold flex items-center gap-1 shadow-2xs transition-all disabled:opacity-50"
+                  onClick={() => {
+                    if (guests.length >= packageLimit) {
+                      setShowUpgradeModal(true);
+                    } else {
+                      setShowAddForm(true);
+                    }
+                  }}
+                  className="py-1.5 px-3.5 rounded-lg bg-wine hover:bg-gold text-white text-xs font-semibold flex items-center gap-1 shadow-2xs transition-all"
                 >
                   <Plus size={14} />
                   <span>Add Guest</span>
@@ -430,7 +519,7 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
           </div>
         )}
 
-        {/* ════════ QUICK ADD GUEST MODAL / ACCORDION ════════ */}
+        {/* ════════ QUICK ADD GUEST FORM ════════ */}
         {showAddForm && (
           <div className="mx-6 mt-4 p-4 rounded-2xl bg-ivory border border-champagne animate-in fade-in">
             <div className="flex items-center justify-between mb-3">
@@ -487,15 +576,40 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
           {/* ──────────────── TAB 1: GUESTS LIST ──────────────── */}
           {activeTab === 'guests' && (
             <div className="space-y-4">
-              {/* Search Bar */}
-              <div className="flex items-center justify-between gap-3">
-                <input
-                  type="text"
-                  placeholder="Search guests by name or phone..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="max-w-xs w-full px-3.5 py-2 bg-ivory/60 border border-champagne rounded-xl text-xs focus:outline-none focus:border-wine"
-                />
+              {/* Search & Filter Toolbar */}
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="Search guests by name or phone..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="max-w-xs w-full px-3.5 py-1.5 bg-ivory/60 border border-champagne rounded-xl text-xs focus:outline-none focus:border-wine"
+                  />
+
+                  {/* Filter by RSVP state */}
+                  <div className="flex items-center gap-1">
+                    {[
+                      { id: 'all', label: 'All' },
+                      { id: 'pending', label: `Pending (${pendingCount})` },
+                      { id: 'responded', label: `Responded (${guests.length - pendingCount})` },
+                    ].map((f) => (
+                      <button
+                        key={f.id}
+                        type="button"
+                        onClick={() => setGuestFilter(f.id)}
+                        className={`py-1 px-2.5 rounded-lg text-xs font-semibold transition-all ${
+                          guestFilter === f.id
+                            ? 'bg-wine text-white shadow-2xs'
+                            : 'bg-ivory border border-champagne text-charcoal/70 hover:bg-champagne/30'
+                        }`}
+                      >
+                        {f.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <span className="text-xs text-charcoal/50">
                   Showing {filteredGuests.length} of {guests.length} guests
                 </span>
@@ -532,13 +646,15 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
                           <th className="py-3 px-4">Guest Name</th>
                           <th className="py-3 px-4">Phone</th>
                           <th className="py-3 px-4">Views</th>
+                          <th className="py-3 px-4">RSVP Status</th>
                           <th className="py-3 px-4 text-right">Actions</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-champagne/40">
                         {filteredGuests.map((g) => {
-                          const personalUrl = `${window.location.origin}/invite/r/${g.personal_slug}`;
                           const isCopied = copiedId === g.id;
+                          const guestRsvp = getRsvpForGuest(g);
+                          const isPending = !guestRsvp;
 
                           return (
                             <tr key={g.id} className="hover:bg-champagne/10 transition-colors">
@@ -550,38 +666,80 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
                                 {g.phone || '—'}
                               </td>
 
+                              {/* View Tracking Status */}
                               <td className="py-3.5 px-4">
-                                <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                                <span className={`inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
                                   g.view_count > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-gray-100 text-charcoal/60'
                                 }`}>
-                                  <Eye size={12} />
+                                  <Eye size={11} />
                                   <span>{g.view_count > 0 ? `${g.view_count} views` : 'Unopened'}</span>
                                 </span>
                               </td>
 
+                              {/* Highlighted RSVP Status */}
+                              <td className="py-3.5 px-4">
+                                {isPending ? (
+                                  <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                                    <span>RSVP Pending</span>
+                                  </span>
+                                ) : (
+                                  <span className={`inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                    guestRsvp.status === 'attending'
+                                      ? 'bg-emerald-100 text-emerald-800'
+                                      : guestRsvp.status === 'maybe'
+                                      ? 'bg-amber-100 text-amber-800'
+                                      : 'bg-rose-100 text-rose-800'
+                                  }`}>
+                                    <span>
+                                      {guestRsvp.status === 'attending'
+                                        ? `Attending (${guestRsvp.guest_count || 1})`
+                                        : guestRsvp.status === 'maybe'
+                                        ? 'Tentative'
+                                        : 'Declined'}
+                                    </span>
+                                  </span>
+                                )}
+                              </td>
+
+                              {/* Actions: Copy, Send on WhatsApp (wa.me), One-Tap Resend */}
                               <td className="py-3.5 px-4 text-right">
                                 <div className="flex items-center justify-end gap-1.5">
-                                  {/* Copy Link */}
+                                  {/* 1-Click Copy Link */}
                                   <button
                                     type="button"
                                     onClick={() => copyLink(g.personal_slug, g.id)}
                                     className="p-1.5 rounded-lg border border-champagne hover:border-wine text-charcoal hover:text-wine transition-colors"
-                                    title="Copy Personalized Link"
+                                    title="Copy Personal Link"
                                   >
                                     {isCopied ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
                                   </button>
 
-                                  {/* Direct WhatsApp Invite */}
+                                  {/* Send on WhatsApp via wa.me */}
                                   <a
                                     href={getWhatsAppShareUrl(g)}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="py-1 px-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[11px] inline-flex items-center gap-1 shadow-2xs transition-colors"
-                                    title="Send WhatsApp Invitation"
+                                    title="Send on WhatsApp via wa.me"
                                   >
                                     <MessageCircle size={13} />
-                                    <span>Invite</span>
+                                    <span>Send</span>
                                   </a>
+
+                                  {/* One-Tap Resend Reminder if RSVP is Pending */}
+                                  {isPending && (
+                                    <a
+                                      href={getWhatsAppReminderUrl(g)}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="py-1 px-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-white font-semibold text-[11px] inline-flex items-center gap-1 shadow-2xs transition-colors"
+                                      title="One-Tap Resend WhatsApp RSVP Reminder"
+                                    >
+                                      <Send size={12} />
+                                      <span>Remind</span>
+                                    </a>
+                                  )}
 
                                   {/* Delete Link */}
                                   <button
@@ -753,6 +911,72 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
           )}
         </div>
       </div>
+
+      {/* ════════ UPSELL PACKAGE MODAL ════════ */}
+      {showUpgradeModal && (
+        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 border border-champagne shadow-2xl text-center">
+            <div className="w-14 h-14 rounded-full bg-amber-100 text-amber-800 flex items-center justify-center mx-auto mb-4">
+              <Sparkles size={26} className="text-gold" />
+            </div>
+
+            <h3 className="font-heading text-2xl font-bold text-wine mb-2">
+              Upgrade Personalized Guest Links
+            </h3>
+
+            <p className="font-body text-xs text-charcoal/70 mb-6 leading-relaxed">
+              You have reached your {invitation.package} limit of <strong>{packageLimit} personalized links</strong>. Upgrade your invitation to send personalized links to all your wedding guests.
+            </p>
+
+            <div className="space-y-3 mb-6 text-left">
+              {packageLimit < 20 && (
+                <div
+                  onClick={() => handleUpgradeLimit(20, 'signature')}
+                  className="p-4 rounded-2xl border border-champagne hover:border-wine hover:bg-ivory/50 cursor-pointer transition-all flex items-center justify-between"
+                >
+                  <div>
+                    <span className="font-heading text-sm font-bold text-wine block">Signature Tier (20 Links)</span>
+                    <span className="text-[11px] text-charcoal/60">Includes guest RSVP tracking + WhatsApp delivery</span>
+                  </div>
+                  <span className="font-heading text-sm font-bold text-wine">₹1,499</span>
+                </div>
+              )}
+
+              {packageLimit < 50 && (
+                <div
+                  onClick={() => handleUpgradeLimit(50, 'luxury')}
+                  className="p-4 rounded-2xl border border-wine bg-wine/5 cursor-pointer transition-all flex items-center justify-between"
+                >
+                  <div>
+                    <span className="font-heading text-sm font-bold text-wine block">Luxury Tier (50 Links)</span>
+                    <span className="text-[11px] text-charcoal/60">Includes custom domain + unlimited updates</span>
+                  </div>
+                  <span className="font-heading text-sm font-bold text-gold">₹1,999</span>
+                </div>
+              )}
+
+              <div
+                onClick={() => handleUpgradeLimit(999, 'luxury')}
+                className="p-4 rounded-2xl border border-champagne hover:border-gold hover:bg-ivory/50 cursor-pointer transition-all flex items-center justify-between"
+              >
+                <div>
+                  <span className="font-heading text-sm font-bold text-wine block">Unlimited VIP Links Add-on</span>
+                  <span className="text-[11px] text-charcoal/60">Invite up to 1,000+ guests individually</span>
+                </div>
+                <span className="font-heading text-sm font-bold text-wine">+₹499</span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setShowUpgradeModal(false)}
+              className="w-full py-2.5 rounded-xl border border-champagne text-xs font-semibold text-charcoal hover:bg-champagne/20 transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

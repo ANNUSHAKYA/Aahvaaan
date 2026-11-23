@@ -1,4 +1,4 @@
-// Supabase Edge Function: Dynamic Open Graph Metadata Generator for WhatsApp
+// Supabase Edge Function: Dynamic Open Graph Metadata Generator for WhatsApp & Social Crawlers
 // Deployed as: og-meta
 // Usage: https://<project-ref>.supabase.co/functions/v1/og-meta?slug=<invitation-slug>
 
@@ -50,7 +50,16 @@ serve(async (req) => {
     const description = `We cordially invite you to celebrate our wedding on ${weddingDate} at ${venue}. Open your interactive invitation here.`;
     const canonicalUrl = `https://aahvaaan.com/invite/${inv.slug}`;
 
-    // Return rich HTML with complete Open Graph & Twitter meta tags for WhatsApp crawler
+    // Inspect User-Agent to detect crawlers
+    const userAgent = req.headers.get("user-agent") || "";
+    const isCrawler = /whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|linkedinbot|slackbot|applebot|googlebot/i.test(userAgent);
+
+    // Normal human visitors: redirect directly to the live single-page app
+    if (!isCrawler) {
+      return Response.redirect(canonicalUrl, 302);
+    }
+
+    // Crawlers (WhatsApp, Facebook, Twitter): return rich HTML with complete Open Graph & Twitter meta tags
     const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -73,18 +82,11 @@ serve(async (req) => {
   <meta name="twitter:title" content="${title}">
   <meta name="twitter:description" content="${description}">
   <meta name="twitter:image" content="${previewImage}">
-
-  <!-- Auto-redirect human visitors to the live invitation SPA -->
-  <script>
-    window.location.href = "${canonicalUrl}";
-  </script>
 </head>
 <body style="font-family: system-ui, sans-serif; text-align: center; padding: 40px; background: #FAF7F2; color: #512D38;">
   <h2>${title}</h2>
   <p>${description}</p>
-  <a href="${canonicalUrl}" style="display: inline-block; margin-top: 20px; padding: 12px 24px; background: #512D38; color: #FAF7F2; text-decoration: none; border-radius: 8px;">
-    Open Wedding Invitation
-  </a>
+  <a href="${canonicalUrl}">Open Wedding Invitation</a>
 </body>
 </html>`;
 
