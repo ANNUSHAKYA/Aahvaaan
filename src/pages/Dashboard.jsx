@@ -48,11 +48,25 @@ export default function Dashboard() {
 
     try {
       // 1. Fetch invitations
-      const { data, error: invError } = await supabase
+      let { data, error: invError } = await supabase
         .from('invitations')
         .select('*')
         .eq('owner_id', user.id)
         .order('created_at', { ascending: false });
+
+      // Fallback if database table still uses host_id
+      if (invError && (invError.message?.includes('owner_id') || invError.code === '42703')) {
+        const fallback = await supabase
+          .from('invitations')
+          .select('*')
+          .eq('host_id', user.id)
+          .order('created_at', { ascending: false });
+
+        if (!fallback.error) {
+          data = fallback.data;
+          invError = null;
+        }
+      }
 
       if (invError) throw invError;
 
@@ -116,21 +130,39 @@ export default function Dashboard() {
         audio: { enabled: true },
       };
 
-      const { data, error: insertError } = await supabase
+      let insertPayload = {
+        owner_id: user.id,
+        template_id: createForm.templateSlug,
+        slug: generatedSlug,
+        common_code: commonCode,
+        status: 'draft',
+        package: createForm.packageId,
+        draft_content: draftPayload,
+        published_content: draftPayload,
+        personalized_limit: createForm.packageId === 'luxury' ? 50 : createForm.packageId === 'signature' ? 20 : 5,
+      };
+
+      let { data, error: insertError } = await supabase
         .from('invitations')
-        .insert({
-          owner_id: user.id,
-          template_id: createForm.templateSlug,
-          slug: generatedSlug,
-          common_code: commonCode,
-          status: 'draft',
-          package: createForm.packageId,
-          draft_content: draftPayload,
-          published_content: draftPayload,
-          personalized_limit: createForm.packageId === 'luxury' ? 50 : createForm.packageId === 'signature' ? 20 : 5,
-        })
+        .insert(insertPayload)
         .select()
         .single();
+
+      // Fallback if table uses host_id
+      if (insertError && (insertError.message?.includes('owner_id') || insertError.code === '42703')) {
+        delete insertPayload.owner_id;
+        insertPayload.host_id = user.id;
+        const fallback = await supabase
+          .from('invitations')
+          .insert(insertPayload)
+          .select()
+          .single();
+
+        if (!fallback.error) {
+          data = fallback.data;
+          insertError = null;
+        }
+      }
 
       if (insertError) throw insertError;
 

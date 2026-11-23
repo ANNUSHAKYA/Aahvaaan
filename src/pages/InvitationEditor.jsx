@@ -78,12 +78,25 @@ export default function InvitationEditor() {
       setLoading(true);
       try {
         if (isSupabaseConfigured) {
-          const { data, error } = await supabase
+          let { data, error } = await supabase
             .from('invitations')
             .select('*')
             .eq('id', id)
             .eq('owner_id', user.id)
             .single();
+
+          if (error && (error.message?.includes('owner_id') || error.code === '42703')) {
+            const fallback = await supabase
+              .from('invitations')
+              .select('*')
+              .eq('id', id)
+              .eq('host_id', user.id)
+              .single();
+            if (!fallback.error) {
+              data = fallback.data;
+              error = null;
+            }
+          }
 
           if (error) throw error;
 
@@ -141,13 +154,24 @@ export default function InvitationEditor() {
       setSaveError(null);
 
       try {
-        const { error } = await supabase
+        let { error } = await supabase
           .from('invitations')
           .update({
             draft_content: contentToSave,
           })
           .eq('id', invitation.id)
           .eq('owner_id', user.id);
+
+        if (error && (error.message?.includes('owner_id') || error.code === '42703')) {
+          const fallback = await supabase
+            .from('invitations')
+            .update({
+              draft_content: contentToSave,
+            })
+            .eq('id', invitation.id)
+            .eq('host_id', user.id);
+          if (!fallback.error) error = null;
+        }
 
         if (error) throw error;
 
@@ -317,7 +341,7 @@ export default function InvitationEditor() {
     try {
       if (isSupabaseConfigured && invitation) {
         // Save current draft_content as published_content and update status
-        const { error } = await supabase
+        let { error } = await supabase
           .from('invitations')
           .update({
             published_content: content,
@@ -326,6 +350,19 @@ export default function InvitationEditor() {
           })
           .eq('id', invitation.id)
           .eq('owner_id', user.id);
+
+        if (error && (error.message?.includes('owner_id') || error.code === '42703')) {
+          const fallback = await supabase
+            .from('invitations')
+            .update({
+              published_content: content,
+              status: 'published',
+              published_at: new Date().toISOString(),
+            })
+            .eq('id', invitation.id)
+            .eq('host_id', user.id);
+          if (!fallback.error) error = null;
+        }
 
         if (error) throw error;
 
