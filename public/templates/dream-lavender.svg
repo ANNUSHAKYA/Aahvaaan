@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bgDream" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF9F8"/>
+      <stop offset="40%" stop-color="#F6E7EE"/>
+      <stop offset="100%" stop-color="#E2D0E6"/>
+    </linearGradient>
+    <linearGradient id="goldPastel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F2DEC9"/>
+      <stop offset="50%" stop-color="#B99A84"/>
+      <stop offset="100%" stop-color="#9A718C"/>
+    </linearGradient>
+    <filter id="softMist" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#9A718C" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Dreamy Soft White to Lavender Gradient -->
+  <rect width="800" height="500" fill="url(#bgDream)"/>
+
+  <!-- Whispering Floral Vines & Pastel Wisteria Clusters -->
+  <g opacity="0.75">
+    <!-- Top Left Lavender Wisteria -->
+    <path d="M 0,0 Q 120,40 180,0" fill="none" stroke="#9A718C" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="40" cy="50" r="18" fill="#D9C5DC" opacity="0.8"/>
+    <circle cx="70" cy="70" r="22" fill="#E8D5EB" opacity="0.7"/>
+    <circle cx="50" cy="110" r="16" fill="#F0DDE2" opacity="0.9"/>
+    <circle cx="90" cy="100" r="14" fill="#D9C5DC" opacity="0.6"/>
+    <circle cx="110" cy="60" r="16" fill="#B99A84" opacity="0.5"/>
+
+    <!-- Top Right Lavender Wisteria -->
+    <path d="M 800,0 Q 680,40 620,0" fill="none" stroke="#9A718C" stroke-width="1.5" opacity="0.4"/>
+    <circle cx="760" cy="50" r="18" fill="#D9C5DC" opacity="0.8"/>
+    <circle cx="730" cy="70" r="22" fill="#E8D5EB" opacity="0.7"/>
+    <circle cx="750" cy="110" r="16" fill="#F0DDE2" opacity="0.9"/>
+    <circle cx="710" cy="100" r="14" fill="#D9C5DC" opacity="0.6"/>
+    <circle cx="690" cy="60" r="16" fill="#B99A84" opacity="0.5"/>
+
+    <!-- Subtle Golden Stardust Specks -->
+    <circle cx="210" cy="80" r="2" fill="#B99A84"/>
+    <circle cx="280" cy="50" r="3" fill="#D9C5DC"/>
+    <circle cx="590" cy="80" r="2" fill="#B99A84"/>
+    <circle cx="520" cy="50" r="3" fill="#D9C5DC"/>
+  </g>
+
+  <!-- Modern Elegant Framed Arch Card -->
+  <g filter="url(#softMist)">
+    <rect x="180" y="55" width="440" height="390" rx="28" fill="#FFFFFF" fill-opacity="0.92" stroke="#D9C5DC" stroke-width="1.5"/>
+    <rect x="194" y="69" width="412" height="362" rx="20" fill="none" stroke="#F0DDE2" stroke-width="1"/>
+    <rect x="200" y="75" width="400" height="350" rx="16" fill="none" stroke="#B99A84" stroke-width="0.75" stroke-dasharray="5 3"/>
+  </g>
+
+  <!-- Delicate Arched Header Ribbon -->
+  <path d="M 330,105 Q 400,85 470,105" fill="none" stroke="url(#goldPastel)" stroke-width="1.5"/>
+  <circle cx="400" cy="92" r="3.5" fill="#9A718C"/>
+  <circle cx="375" cy="97" r="2" fill="#B99A84"/>
+  <circle cx="425" cy="97" r="2" fill="#B99A84"/>
+
+  <!-- Badge -->
+  <text x="400" y="140" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="11" font-weight="600" letter-spacing="3" fill="#9A718C">
+    THE DREAM COLLECTION
+  </text>
+
+  <!-- Main Couple Names: Exactly as in Loom Video (Dulhan and Dulha) -->
+  <text x="400" y="210" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="44" font-weight="600" font-style="italic" fill="#5A3A52" letter-spacing="1">
+    Dulhan
+  </text>
+  
+  <text x="400" y="252" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="22" font-style="italic" fill="#B99A84">
+    and
+  </text>
+  
+  <text x="400" y="310" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="44" font-weight="600" font-style="italic" fill="#5A3A52" letter-spacing="1">
+    Dulha
+  </text>
+
+  <!-- Pastel Flourish -->
+  <g transform="translate(400, 345)">
+    <path d="M -60,0 Q -30,-6 0,0 Q 30,-6 60,0" fill="none" stroke="#B99A84" stroke-width="1"/>
+    <circle cx="0" cy="0" r="3.5" fill="#9A718C"/>
+    <circle cx="-18" cy="0" r="2" fill="#D9C5DC"/>
+    <circle cx="18" cy="0" r="2" fill="#D9C5DC"/>
+  </g>
+
+  <text x="400" y="380" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="11" letter-spacing="2" fill="#9A718C">
+    BLUSH &amp; LAVENDER · MODERN ROMANCE
+  </text>
+  <text x="400" y="405" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="10" letter-spacing="1" fill="#65575A" opacity="0.75">
+    Tap to Open Dreamy Floral Invitation
+  </text>
+
+  <!-- Bottom Petals -->
+  <g opacity="0.7">
+    <circle cx="220" cy="425" r="12" fill="#D9C5DC"/>
+    <circle cx="235" cy="435" r="9" fill="#F0DDE2"/>
+    <circle cx="580" cy="425" r="12" fill="#D9C5DC"/>
+    <circle cx="565" cy="435" r="9" fill="#F0DDE2"/>
+  </g>
+</svg>

@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bgMaroon" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4A0E1A"/>
+      <stop offset="50%" stop-color="#6E1528"/>
+      <stop offset="100%" stop-color="#380913"/>
+    </linearGradient>
+    <linearGradient id="goldRegal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FCE19B"/>
+      <stop offset="30%" stop-color="#DEB760"/>
+      <stop offset="70%" stop-color="#C5A15E"/>
+      <stop offset="100%" stop-color="#8C6B28"/>
+    </linearGradient>
+    <pattern id="shahiDamask" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 20,0 L 40,20 L 20,40 L 0,20 Z" fill="none" stroke="#C5A15E" stroke-width="0.5" opacity="0.12"/>
+      <circle cx="20" cy="20" r="2" fill="#C5A15E" opacity="0.15"/>
+    </pattern>
+    <filter id="royalShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Deep Royal Maroon Background with Damask Pattern -->
+  <rect width="800" height="500" fill="url(#bgMaroon)"/>
+  <rect width="800" height="500" fill="url(#shahiDamask)"/>
+
+  <!-- Ornate Royal Gold Filigree Corner Ornaments (from Loom Video frame 01 bottom) -->
+  <!-- Top-Left Corner Motif -->
+  <g stroke="url(#goldRegal)" fill="none" stroke-width="1.5">
+    <path d="M 40,40 L 140,40 C 140,40 140,90 90,90 C 40,90 40,140 40,140 Z" fill="#5E1222"/>
+    <circle cx="60" cy="60" r="10" fill="url(#goldRegal)"/>
+    <circle cx="100" cy="60" r="4" fill="url(#goldRegal)"/>
+    <circle cx="60" cy="100" r="4" fill="url(#goldRegal)"/>
+    <!-- Paisley teardrop flourish -->
+    <path d="M 75,75 C 90,60 115,70 100,90 C 85,110 70,85 75,75 Z" fill="#FCE19B"/>
+  </g>
+
+  <!-- Top-Right Corner Motif -->
+  <g stroke="url(#goldRegal)" fill="none" stroke-width="1.5">
+    <path d="M 760,40 L 660,40 C 660,40 660,90 710,90 C 760,90 760,140 760,140 Z" fill="#5E1222"/>
+    <circle cx="740" cy="60" r="10" fill="url(#goldRegal)"/>
+    <circle cx="700" cy="60" r="4" fill="url(#goldRegal)"/>
+    <circle cx="740" cy="100" r="4" fill="url(#goldRegal)"/>
+    <path d="M 725,75 C 710,60 685,70 700,90 C 715,110 730,85 725,75 Z" fill="#FCE19B"/>
+  </g>
+
+  <!-- Central Cream & Gold Royal Invitation Card -->
+  <g filter="url(#royalShadow)">
+    <!-- Palace Arch Profile (Traditional Shahi Patra Arch) -->
+    <path d="M 180,440 L 180,180
+             C 180,180 220,120 300,120
+             C 340,120 370,80 400,60
+             C 430,80 460,120 500,120
+             C 580,120 620,180 620,180
+             L 620,440 Z"
+          fill="#FAF1E5" stroke="url(#goldRegal)" stroke-width="2.5"/>
+
+    <!-- Inner Scalloped Gold Inset -->
+    <path d="M 195,430 L 195,190
+             C 195,190 230,135 305,135
+             C 342,135 372,95 400,78
+             C 428,95 458,135 495,135
+             C 570,135 605,190 605,190
+             L 605,430 Z"
+          fill="none" stroke="#C5A15E" stroke-width="1.2" stroke-dasharray="4 3"/>
+  </g>
+
+  <!-- Auspicious Ganesha Emblem at the Top Arch -->
+  <g transform="translate(400, 115) scale(0.85)">
+    <circle cx="0" cy="0" r="18" fill="url(#goldRegal)"/>
+    <!-- Traditional Stylized Ganesha Swastik/Trunk -->
+    <path d="M -6,-6 C -6,-10 6,-10 6,-4 C 6,4 -2,8 -2,12" fill="none" stroke="#4A0E1A" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="2" cy="-4" r="1.5" fill="#4A0E1A"/>
+    <circle cx="-2" cy="-8" r="1.5" fill="#4A0E1A"/>
+    <path d="M 6,-4 C 8,-2 10,2 6,4" fill="none" stroke="#4A0E1A" stroke-width="1.5"/>
+  </g>
+
+  <!-- Auspicious Shloka -->
+  <text x="400" y="155" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="12" font-style="italic" fill="#761F32" letter-spacing="1">
+    || श्री गणेशाय नमः ||
+  </text>
+
+  <!-- Collection Name -->
+  <text x="400" y="180" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="11" font-weight="700" letter-spacing="3" fill="#C5A15E">
+    THE MAHARAJA COLLECTION
+  </text>
+
+  <!-- Main Couple Names: Exactly as in Loom Video (Dulhan and Dulha) -->
+  <text x="400" y="240" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="44" font-weight="600" font-style="italic" fill="#431421" letter-spacing="1">
+    Dulhan
+  </text>
+  
+  <text x="400" y="278" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="22" font-style="italic" fill="#C5A15E">
+    and
+  </text>
+  
+  <text x="400" y="335" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="44" font-weight="600" font-style="italic" fill="#431421" letter-spacing="1">
+    Dulha
+  </text>
+
+  <!-- Regal Filigree Divider -->
+  <g transform="translate(400, 365)">
+    <path d="M -80,0 Q -40,-8 0,0 Q 40,-8 80,0" fill="none" stroke="url(#goldRegal)" stroke-width="1.5"/>
+    <circle cx="0" cy="0" r="4" fill="#C5A15E"/>
+    <circle cx="-25" cy="0" r="2.5" fill="#761F32"/>
+    <circle cx="25" cy="0" r="2.5" fill="#761F32"/>
+  </g>
+
+  <text x="400" y="395" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="10" font-weight="600" letter-spacing="2" fill="#761F32">
+    ROYAL MAROON · SHAHI PATRA · ANTIQUE GOLD
+  </text>
+  
+  <text x="400" y="415" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="9" letter-spacing="1" fill="#65575A">
+    Tap to Open Royal Interactive Palace Card
+  </text>
+</svg>

@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bgRose" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FAF6F0"/>
+      <stop offset="50%" stop-color="#FDF1EC"/>
+      <stop offset="100%" stop-color="#F5E4E0"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="#FFFDF9" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#FAF6F0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="goldArch" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#D4AF37"/>
+      <stop offset="50%" stop-color="#B69A70"/>
+      <stop offset="100%" stop-color="#8C734B"/>
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#704B50" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="url(#bgRose)"/>
+  <rect width="800" height="500" fill="url(#sunGlow)"/>
+
+  <!-- Subtle floral watercolor clusters in corners -->
+  <g opacity="0.85">
+    <!-- Top Left Roses & Leaves -->
+    <circle cx="60" cy="50" r="38" fill="#F0C4C0" opacity="0.6"/>
+    <circle cx="95" cy="40" r="28" fill="#E8B0AA" opacity="0.7"/>
+    <circle cx="50" cy="90" r="30" fill="#E29D98" opacity="0.5"/>
+    <path d="M 30,30 Q 80,10 130,40 Q 90,80 30,30 Z" fill="#C5D3B8" opacity="0.5"/>
+    <path d="M 80,70 Q 140,60 170,110 Q 110,120 80,70 Z" fill="#ADC0A0" opacity="0.4"/>
+    
+    <!-- Top Right Roses & Hanging Garlands -->
+    <circle cx="740" cy="50" r="38" fill="#F0C4C0" opacity="0.6"/>
+    <circle cx="705" cy="40" r="28" fill="#E8B0AA" opacity="0.7"/>
+    <circle cx="750" cy="90" r="30" fill="#E29D98" opacity="0.5"/>
+    <path d="M 770,30 Q 720,10 670,40 Q 710,80 770,30 Z" fill="#C5D3B8" opacity="0.5"/>
+    <path d="M 720,70 Q 660,60 630,110 Q 690,120 720,70 Z" fill="#ADC0A0" opacity="0.4"/>
+
+    <!-- Delicate hanging garland threads -->
+    <path d="M 120,40 Q 140,140 130,220" stroke="#B69A70" stroke-width="1" stroke-dasharray="2 3" opacity="0.6" fill="none"/>
+    <circle cx="130" cy="225" r="4" fill="#C99B91"/>
+    <path d="M 680,40 Q 660,140 670,220" stroke="#B69A70" stroke-width="1" stroke-dasharray="2 3" opacity="0.6" fill="none"/>
+    <circle cx="670" cy="225" r="4" fill="#C99B91"/>
+  </g>
+
+  <!-- Distant Palace Pavilion Silhouette -->
+  <g opacity="0.18" fill="#704B50">
+    <!-- Center dome -->
+    <path d="M 380,260 C 380,230 400,210 400,200 C 400,210 420,230 420,260 Z"/>
+    <rect x="375" y="260" width="50" height="40"/>
+    <!-- Left kiosk -->
+    <path d="M 270,270 C 270,250 285,235 285,225 C 285,235 300,250 300,270 Z"/>
+    <rect x="270" y="270" width="30" height="30"/>
+    <!-- Right kiosk -->
+    <path d="M 500,270 C 500,250 515,235 515,225 C 515,235 530,250 530,270 Z"/>
+    <rect x="500" y="270" width="30" height="30"/>
+    <!-- Base railing -->
+    <rect x="200" y="295" width="400" height="5"/>
+  </g>
+
+  <!-- Elegant Inner Scalloped Arched Frame -->
+  <g filter="url(#softShadow)">
+    <rect x="180" y="55" width="440" height="390" rx="20" fill="#FFFFFF" fill-opacity="0.88" stroke="#B69A70" stroke-width="1.5"/>
+    <rect x="192" y="67" width="416" height="366" rx="14" fill="none" stroke="#E9D7CC" stroke-width="1"/>
+    <rect x="198" y="73" width="404" height="354" rx="10" fill="none" stroke="#B69A70" stroke-width="0.75" stroke-dasharray="4 3"/>
+  </g>
+
+  <!-- Decorative Top Arch Flourish -->
+  <path d="M 340,105 Q 400,80 460,105" fill="none" stroke="url(#goldArch)" stroke-width="1.5"/>
+  <circle cx="400" cy="88" r="4" fill="#B69A70"/>
+  <circle cx="380" cy="94" r="2.5" fill="#C99B91"/>
+  <circle cx="420" cy="94" r="2.5" fill="#C99B91"/>
+
+  <!-- Category / Shubh Muhurat Badge -->
+  <text x="400" y="140" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="11" font-weight="600" letter-spacing="3" fill="#B69A70">
+    THE ROMANCE COLLECTION
+  </text>
+
+  <!-- Main Couple Names: Exactly as in Loom Video (Dulhan and Dulha) -->
+  <text x="400" y="210" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="44" font-weight="600" font-style="italic" fill="#704B50" letter-spacing="1">
+    Dulhan
+  </text>
+  
+  <text x="400" y="252" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="22" font-style="italic" fill="#B69A70">
+    and
+  </text>
+  
+  <text x="400" y="310" text-anchor="middle" font-family="'Cormorant Garamond', Georgia, serif" font-size="44" font-weight="600" font-style="italic" fill="#704B50" letter-spacing="1">
+    Dulha
+  </text>
+
+  <!-- Decorative Floral Motif Divider -->
+  <g transform="translate(400, 345)">
+    <path d="M -70,0 Q -35,-8 0,0 Q 35,-8 70,0" fill="none" stroke="#B69A70" stroke-width="1"/>
+    <circle cx="0" cy="0" r="4" fill="#C99B91"/>
+    <circle cx="-16" cy="0" r="2.5" fill="#B69A70"/>
+    <circle cx="16" cy="0" r="2.5" fill="#B69A70"/>
+  </g>
+
+  <!-- Subtitle -->
+  <text x="400" y="380" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="11" letter-spacing="2" fill="#704B50" opacity="0.85">
+    ROSE · WATERCOLOR · GOLD EMBOSS
+  </text>
+  <text x="400" y="405" text-anchor="middle" font-family="'DM Sans', system-ui, sans-serif" font-size="10" letter-spacing="1" fill="#65575A" opacity="0.7">
+    Tap to Open Interactive Invitation
+  </text>
+
+  <!-- Bottom Botanical Flowers -->
+  <g opacity="0.8">
+    <circle cx="215" cy="425" r="16" fill="#F0C4C0" opacity="0.7"/>
+    <circle cx="230" cy="435" r="12" fill="#E8B0AA" opacity="0.8"/>
+    <path d="M 195,445 Q 220,410 240,430 Z" fill="#C5D3B8" opacity="0.6"/>
+
+    <circle cx="585" cy="425" r="16" fill="#F0C4C0" opacity="0.7"/>
+    <circle cx="570" cy="435" r="12" fill="#E8B0AA" opacity="0.8"/>
+    <path d="M 605,445 Q 580,410 560,430 Z" fill="#C5D3B8" opacity="0.6"/>
+  </g>
+</svg>

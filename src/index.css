@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-body text-charcoal bg-ivory antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-wine text-white font-body font-medium text-sm tracking-wide rounded-md hover:bg-wine-light transition-all duration-300 ease-in-out;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-8 py-3 border-2 border-wine text-wine font-body font-medium text-sm tracking-wide rounded-md hover:bg-wine hover:text-white transition-all duration-300 ease-in-out;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center px-8 py-3 bg-gold text-white font-body font-medium text-sm tracking-wide rounded-md hover:bg-gold-light transition-all duration-300 ease-in-out;
+  }
+
+  .section-padding {
+    @apply px-4 sm:px-6 lg:px-8 py-16 md:py-24;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto;
+  }
+
+  .heading-xl {
+    @apply font-heading text-4xl md:text-5xl lg:text-6xl font-semibold text-wine leading-tight;
+  }
+
+  .heading-lg {
+    @apply font-heading text-3xl md:text-4xl font-semibold text-wine leading-tight;
+  }
+
+  .heading-md {
+    @apply font-heading text-2xl md:text-3xl font-semibold text-wine;
+  }
+
+  .text-body {
+    @apply font-body text-charcoal text-base leading-relaxed;
+  }
+
+  .gold-divider {
+    @apply w-16 h-0.5 bg-gold mx-auto;
+  }
+
+  .card-shadow {
+    box-shadow: 0 4px 20px rgba(81, 45, 56, 0.08);
+  }
+}
+
+/* Invitation preview specific styles */
+.invitation-bg {
+  background: linear-gradient(180deg, #FAF7F2 0%, #F5EDE3 100%);
+}
+
+.envelope-flap {
+  clip-path: polygon(0 0, 50% 60%, 100% 0);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C99191;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B69A70;
+}
+
+/* Selection color */
+::selection {
+  background: #C99191;
+  color: #512D38;
+}
