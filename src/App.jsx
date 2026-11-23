@@ -10,6 +10,7 @@ import Pricing from './pages/Pricing';
 import HowItWorks from './pages/HowItWorks';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import PublicInvitation from './pages/PublicInvitation';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -37,6 +38,8 @@ function App() {
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
         </Route>
+        {/* Dedicated Guest Invitation Route (Standalone Mobile-First Experience) */}
+        <Route path="invite/:slug" element={<PublicInvitation />} />
       </Routes>
     </>
   );
