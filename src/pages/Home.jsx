@@ -2,106 +2,41 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Palette, IndianRupee, Smartphone, MessageCircle,
-  Star, Users, ArrowRight, Sparkles, Heart, Check,
-  MapPin, Calendar, Clock, RotateCcw, Eye, ShoppingBag,
-  Share2, ShieldCheck, ChevronDown, Flame, CheckCircle2
+  ArrowRight, MapPin, Users, Calendar, Edit3, Sparkles,
+  ChevronRight, Plus, Minus, Send, CheckCircle2, ShieldCheck
 } from 'lucide-react';
 import templates from '../data/templates';
-import packages from '../data/pricing';
-import TemplateCard from '../components/TemplateCard';
-import SectionHeading from '../components/SectionHeading';
-import { FloralDivider, GoldOrnament } from '../components/Ornaments';
+import config from '../data/config';
 
-// ─── Interactive Diya Component (Hero Easter Egg) ───
-function InteractiveDiya({ id, label, isLit, onToggle, style }) {
+// ─── FAQ Accordion Item Component ───
+function FAQAccordionItem({ question, answer, isOpen, onToggle }) {
   return (
-    <button
-      type="button"
-      onClick={() => onToggle(id)}
-      style={style}
-      className="group relative flex flex-col items-center cursor-pointer focus:outline-none transition-transform hover:scale-110 active:scale-95"
-      title={isLit ? 'Tap to extinguish diya' : 'Tap to light the diya!'}
+    <div
+      className={`border border-champagne/80 transition-all duration-300 overflow-hidden bg-white shadow-2xs ${
+        isOpen ? 'rounded-3xl bg-[#FFFBF7]' : 'rounded-full hover:border-wine/40'
+      }`}
     >
-      {/* Animated Flame */}
-      <AnimatePresence>
-        {isLit && (
-          <motion.div
-            initial={{ scale: 0, opacity: 0, y: 5 }}
-            animate={{ scale: [1, 1.15, 0.95, 1], opacity: 1, y: 0 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="relative mb-0.5"
-          >
-            {/* Outer Glow */}
-            <div className="absolute -inset-2 bg-amber-400/40 rounded-full blur-md animate-pulse" />
-            {/* Core Flame SVG */}
-            <svg viewBox="0 0 24 32" className="w-5 h-7 relative z-10 drop-shadow-[0_0_8px_rgba(245,158,11,0.9)]">
-              <path
-                d="M12 2C12 2 4 14 4 21C4 26 7.5 30 12 30C16.5 30 20 26 20 21C20 14 12 2 12 2Z"
-                fill="url(#flameGrad)"
-              />
-              <path
-                d="M12 10C12 10 7 17 7 21C7 24 9.2 27 12 27C14.8 27 17 24 17 21C17 17 12 10 12 10Z"
-                fill="#FEF3C7"
-              />
-              <defs>
-                <linearGradient id="flameGrad" x1="12" y1="2" x2="12" y2="30" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#F59E0B" />
-                  <stop offset="0.6" stopColor="#EF4444" />
-                  <stop offset="1" stopColor="#B45309" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Clay Diya Base */}
-      <svg viewBox="0 0 48 24" className="w-10 h-5 drop-shadow-sm">
-        <path
-          d="M4 10 C 10 18, 38 18, 44 10 C 46 14, 38 22, 24 22 C 10 22, 2 14, 4 10 Z"
-          fill="#B69A70"
-          stroke="#704B50"
-          strokeWidth="0.8"
-        />
-        <ellipse cx="24" cy="10" rx="20" ry="4" fill="#C5A15E" />
-      </svg>
-      <span className="text-[10px] font-body text-charcoal/60 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
-        {label}
-      </span>
-    </button>
-  );
-}
-
-// ─── Interactive FAQ Accordion Item ───
-function FAQItem({ question, answer, isOpen, onToggle }) {
-  return (
-    <div className="border-b border-champagne/60 last:border-none">
       <button
+        type="button"
         onClick={onToggle}
-        className="w-full py-5 flex items-center justify-between text-left gap-4 font-heading text-lg sm:text-xl font-bold text-wine hover:text-gold transition-colors"
+        className="w-full py-4 px-6 sm:px-8 flex items-center justify-between text-left gap-4 font-body text-xs sm:text-sm font-semibold text-wine hover:text-gold transition-colors"
       >
         <span>{question}</span>
-        <ChevronDown
-          size={18}
-          className={`flex-shrink-0 text-gold transition-transform duration-300 ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-        />
+        <span className="w-6 h-6 rounded-full bg-champagne/30 text-wine flex items-center justify-center shrink-0">
+          {isOpen ? <Minus size={14} /> : <Plus size={14} />}
+        </span>
       </button>
+
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="overflow-hidden"
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden px-6 sm:px-8 pb-5 text-xs text-charcoal/80 leading-relaxed border-t border-champagne/30 pt-3"
           >
-            <p className="font-body text-xs sm:text-sm text-charcoal/75 leading-relaxed pb-5 pr-6">
-              {answer}
-            </p>
+            {answer}
           </motion.div>
         )}
       </AnimatePresence>
@@ -110,795 +45,506 @@ function FAQItem({ question, answer, isOpen, onToggle }) {
 }
 
 export default function Home() {
-  // Diya lighting interactive state
-  const [litDiyas, setLitDiyas] = useState({ 1: true, 2: false, 3: true });
-  const toggleDiya = (id) => {
-    setLitDiyas((prev) => ({ ...prev, [id]: !prev[id] }));
+  const [openFaqIndex, setOpenFaqIndex] = useState(0);
+
+  // Contact form state
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+  const [contactSubmitted, setContactSubmitted] = useState(false);
+
+  const handleContactSubmit = (e) => {
+    e.preventDefault();
+    if (!contactForm.name || !contactForm.email || !contactForm.message) return;
+    setContactSubmitted(true);
+    setTimeout(() => {
+      setContactSubmitted(false);
+      setContactForm({ name: '', email: '', subject: '', message: '' });
+    }, 4000);
   };
-
-  // Active showcase template index (for Balcony-style interactive live switcher)
-  const [activeTemplateIdx, setActiveTemplateIdx] = useState(0);
-  const activeTemplate = templates[activeTemplateIdx] || templates[0];
-  const [envelopeOpened, setEnvelopeOpened] = useState(false);
-
-  // FAQ accordion state
-  const [openFAQ, setOpenFAQ] = useState(0);
-
-  // Features inspired by Balcony + tailored for Indian weddings
-  const features = [
-    {
-      icon: MapPin,
-      title: 'Instant Venue Directions',
-      desc: 'Guests can open exact palace, resort, or banquet locations and get GPS driving directions in a single tap on Google Maps.',
-      tag: 'Zero Guest Confusion',
-    },
-    {
-      icon: Users,
-      title: 'Real-Time RSVP Tracking',
-      desc: 'Collect guest responses effortlessly with headcounts, ceremony attendance, and warm wishes stored seamlessly.',
-      tag: 'Save Catering Costs',
-    },
-    {
-      icon: Calendar,
-      title: '1-Tap Add to Calendar',
-      desc: 'Guests easily sync Haldi, Mehendi, Sangeet, Pheras, and Reception directly into their Google, Apple, or Outlook calendars.',
-      tag: 'Never Miss An Event',
-    },
-    {
-      icon: RotateCcw,
-      title: 'Instant Live Updates',
-      desc: 'Changed a ceremony time or caught a typo? Update your invitation link instantly without costly reprint delays or re-couriering.',
-      tag: 'Eco-Friendly & Smart',
-    },
-    {
-      icon: Sparkles,
-      title: 'Interactive Envelope Opening',
-      desc: 'Replicate the magic of opening a royal shahi card with animated wax seals, fluttering flaps, and musical ambiance.',
-      tag: 'Unforgettable First Impression',
-    },
-    {
-      icon: Heart,
-      title: 'Love Story & Photo Gallery',
-      desc: 'Introduce your families and showcase your pre-wedding shoot with responsive, high-resolution photo galleries.',
-      tag: 'Cinematic Storytelling',
-    },
-  ];
 
   const faqs = [
     {
-      q: 'How do our guests open and view the wedding invitation?',
-      a: 'Guests simply tap your link on WhatsApp, SMS, or email. The invitation opens instantly in their mobile browser—no downloads, passwords, or app installations required. It works flawlessly across iPhone, Android, tablets, and laptops.',
+      q: 'Can I edit my invitation after it is published?',
+      a: 'Yes. You can save Draft changes as often as you like, and push those changes live up to 3 times within your 6-month active window.',
     },
     {
-      q: 'Can we update details after sending the invitation link?',
-      a: 'Yes, absolutely! Unlike printed paper cards where a timing shift or venue change means expensive reprinting, digital invitations update live. Any change you make reflects immediately for everyone opening the link.',
+      q: 'What do I get when I buy an invitation?',
+      a: 'You get your chosen invitation template, a common shareable link, 5 free personalized guest links, instant RSVP tracking, Google Maps directions, countdown timer, and 3 live updates valid for 6 months.',
     },
     {
-      q: 'Can we personalize guest names (e.g. "Dear Sharma Family")?',
-      a: 'Yes! With our Signature and Luxury packages, we can provide personalized guest links where each recipient sees their family name and custom greeting upon opening their invitation.',
+      q: 'Can guests RSVP from the common link?',
+      a: 'Yes! Guests viewing the common link simply enter their name and phone number to RSVP. Guests opening a personalized link have their greeting and details already pre-filled.',
     },
     {
-      q: 'What wedding ceremonies can we include?',
-      a: 'You can include all traditional Indian wedding ceremonies: Ganesh Sthapana, Mehendi, Haldi, Sangeet, Tilak, Baraat, Pheras/Wedding, Reception, and Vidai. Each ceremony has its own date, time, venue, map pin, and calendar link.',
+      q: 'What if I want to personalize more than 5 guests?',
+      a: 'You can easily upgrade your guest limit anytime directly from your dashboard with add-on packages for 25, 50, 100, or unlimited guests.',
     },
     {
-      q: 'How long does it take to receive our invitation?',
-      a: 'Once you submit your wedding details and choose your template, our design team delivers your live private preview link within 24 to 48 hours for your review and approval.',
+      q: 'Can I see who has viewed my invitation?',
+      a: 'Yes! Your host dashboard tracks total page views, unique visitors, device types (mobile vs desktop), and shows exactly which personalized guests have opened their invitation.',
     },
     {
-      q: 'How does the order and payment process work?',
-      a: 'You choose your signature template and package (Starter ₹999, Signature ₹1,499, or Luxury ₹1,999) on our website, which generates a pre-formatted order request on WhatsApp. You review your details directly with our design team before any payment is finalized.',
+      q: 'How long will my invitation remain active?',
+      a: 'Your invitation remains live and viewable for guests indefinitely. Live editing and updates are supported for 6 months from publishing.',
+    },
+    {
+      q: "What if some guests don't respond?",
+      a: 'Your dashboard automatically highlights pending RSVPs in amber and gives you a one-tap WhatsApp reminder button with a polite prefilled message.',
+    },
+    {
+      q: 'Why choose Aahvaaan instead of a typical digital invitation image or video?',
+      a: 'Unlike static PDFs or video files, Aahvaaan gives your guests an interactive website with music, live countdown, Google Maps navigation, calendar downloads, and instant RSVP tracking for you.',
     },
   ];
 
   return (
-    <>
-      {/* ════ SECTION 1: HERO (With Balcony-style interactive touches & Diya lighting) ════ */}
-      <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-ivory pt-24 pb-16">
-        {/* Subtle royal damask watermark */}
-        <div
-          className="absolute inset-0 opacity-[0.035] pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z' fill='%23B69A70'/%3E%3C/svg%3E")`,
-          }}
-        />
+    <div className="bg-ivory min-h-screen font-body overflow-x-hidden">
+      {/* ════════════════ 1. HERO SECTION ════════════════ */}
+      <section className="bg-gradient-to-r from-[#24050E] via-[#4A0E1C] to-[#6B1D2F] text-white pt-28 sm:pt-36 pb-16 sm:pb-24 relative overflow-hidden">
+        {/* Soft background glow */}
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-wine/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-gold/15 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-14 items-center">
-            {/* Left Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="lg:col-span-7"
-            >
-              <div className="inline-flex items-center gap-2 bg-champagne/60 border border-gold/40 px-3.5 py-1.5 rounded-full mb-6">
-                <Sparkles size={14} className="text-gold" />
-                <span className="font-body text-xs font-semibold uppercase tracking-wider text-wine">
-                  Next-Gen Digital Wedding Invites
-                </span>
-              </div>
-
-              <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-wine leading-[1.12] mb-6">
-                Make your first impression{' '}
-                <span className="text-gold italic font-serif">unforgettable.</span>
+        <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+            {/* Left Content (7 Cols) */}
+            <div className="lg:col-span-7 text-center lg:text-left space-y-4">
+              <h1 className="font-heading text-4xl sm:text-5xl lg:text-[3.8rem] font-bold text-white leading-[1.12] tracking-tight">
+                Make your first impression unforgettable.
               </h1>
 
-              <p className="font-body text-base sm:text-lg text-charcoal/80 leading-relaxed mb-8 max-w-xl">
-                Ditch static PDFs and paper cards. Create a stunning, interactive wedding website invitation with tap-to-open envelope animations, Google Maps directions, live RSVPs, and WhatsApp sharing.
+              <p className="font-heading text-2xl sm:text-3xl text-gold-light/90 pt-1">
+                Wedding Invitations
               </p>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <a
-                  href="#explore-templates"
-                  className="btn-primary text-xs uppercase tracking-widest font-semibold px-8 py-4 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
-                >
-                  <Eye size={16} />
-                  <span>Explore Templates</span>
-                </a>
+              <div className="pt-4">
                 <Link
-                  to="/buy"
-                  className="btn-secondary text-xs uppercase tracking-widest font-semibold px-8 py-4 flex items-center justify-center gap-2"
+                  to="/invitations"
+                  className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-wine to-[#9E2A47] hover:from-[#9E2A47] hover:to-wine text-white font-body font-semibold text-xs sm:text-sm shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
                 >
-                  <ShoppingBag size={16} />
-                  <span>Choose Package & Buy</span>
+                  <span>View templates</span>
+                  <ArrowRight size={16} />
                 </Link>
               </div>
-
-              {/* Interactive Diya row with playful prompt */}
-              <div className="p-4 rounded-xl bg-white/70 border border-champagne/60 backdrop-blur-xs max-w-md">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <span className="text-xs font-heading font-bold text-wine flex items-center gap-1.5">
-                      <Flame size={14} className="text-amber-500 fill-amber-500" />
-                      Light the Diyas for Auspicious Blessings
-                    </span>
-                    <span className="text-[11px] font-body text-charcoal/60 block">
-                      Tap the diyas below to ignite wedding warmth
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <InteractiveDiya id={1} label="Shubh" isLit={litDiyas[1]} onToggle={toggleDiya} />
-                    <InteractiveDiya id={2} label="Laabh" isLit={litDiyas[2]} onToggle={toggleDiya} />
-                    <InteractiveDiya id={3} label="Aanand" isLit={litDiyas[3]} onToggle={toggleDiya} />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right Hero Visual: Realistic Mobile Mockup with Floating Badges */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="lg:col-span-5 relative"
-            >
-              {/* Phone Frame Simulator Container */}
-              <div className="relative max-w-[320px] sm:max-w-[340px] mx-auto">
-                <div className="rounded-[40px] border-[8px] border-charcoal bg-white shadow-2xl overflow-hidden aspect-[9/18.5] relative">
-                  {/* Phone Speaker Notch */}
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-28 h-4 bg-charcoal rounded-full z-30" />
-
-                  {/* Simulated Mobile Invitation Screen */}
-                  <div className="w-full h-full overflow-y-auto bg-[#FAF6F0] p-4 pt-10 text-center font-body flex flex-col justify-between">
-                    <div>
-                      <span className="text-[9px] uppercase tracking-widest text-gold font-semibold py-0.5 px-2 bg-champagne rounded-full border border-gold/30">
-                        The Romance Collection
-                      </span>
-                      <h3 className="font-heading text-2xl font-bold text-wine mt-2">
-                        Ananya & Kabir
-                      </h3>
-                      <p className="text-[11px] text-charcoal/60 italic mb-3">
-                        22 February 2027 • Udaipur
-                      </p>
-
-                      {/* Mockup Card */}
-                      <div className="rounded-xl overflow-hidden shadow-sm border border-champagne aspect-[4/3] mb-3 relative">
-                        <img
-                          src="https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?w=500&fit=crop&q=80"
-                          alt="Wedding invite preview"
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-wine/70 to-transparent flex items-end p-2 text-white text-[10px] font-heading">
-                          The Oberoi Udaivilas, Lake Pichola
-                        </div>
-                      </div>
-
-                      {/* Mini Schedule Pills */}
-                      <div className="space-y-1.5 text-left text-[10px] mb-3">
-                        <div className="bg-white p-2 rounded-lg border border-champagne/60 flex items-center justify-between">
-                          <span className="font-semibold text-wine">🌿 Mehendi</span>
-                          <span className="text-gold">Feb 20 • 2 PM</span>
-                        </div>
-                        <div className="bg-white p-2 rounded-lg border border-champagne/60 flex items-center justify-between">
-                          <span className="font-semibold text-wine">🎶 Sangeet</span>
-                          <span className="text-gold">Feb 21 • 7:30 PM</span>
-                        </div>
-                        <div className="bg-white p-2 rounded-lg border border-champagne/60 flex items-center justify-between">
-                          <span className="font-semibold text-wine">💍 Pheras</span>
-                          <span className="text-gold">Feb 22 • 5:30 PM</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Bottom CTA in Mockup */}
-                    <div className="pt-2 border-t border-champagne/50">
-                      <Link
-                        to="/invitations/champagne-and-rose"
-                        className="block w-full py-2 bg-wine text-white rounded-lg text-[10px] uppercase tracking-wider font-semibold hover:bg-gold transition-colors"
-                      >
-                        Tap to Open Full Invite →
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating Social Proof 1 */}
-                <motion.div
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -bottom-4 -left-6 bg-white p-3 rounded-xl shadow-xl border border-champagne hidden sm:flex items-center gap-2.5 z-20"
-                >
-                  <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
-                    ✓
-                  </div>
-                  <div>
-                    <p className="font-heading text-xs font-bold text-wine">100% WhatsApp Ready</p>
-                    <p className="text-[10px] font-body text-charcoal/60">Rich Preview Cards</p>
-                  </div>
-                </motion.div>
-
-                {/* Floating Social Proof 2 */}
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
-                  className="absolute -top-3 -right-6 bg-white p-3 rounded-xl shadow-xl border border-champagne hidden sm:flex items-center gap-2 z-20"
-                >
-                  <Star size={16} className="text-gold fill-gold" />
-                  <div>
-                    <span className="font-heading text-xs font-bold text-wine">4.9/5 Rating</span>
-                    <span className="text-[10px] font-body text-charcoal/50 block">Over 1,200+ Couples</span>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* ════ SECTION 2: EXPLORE TEMPLATES GRID (Matching Loom Video UI & Balcony Reference) ════ */}
-      <section id="explore-templates" className="section-padding bg-ivory border-t border-champagne/50">
-        <div className="container-custom mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-            {/* Signature lavender pill badge as recorded in Loom video */}
-            <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#f3e8ff] text-[#7e22ce] border border-[#d8b4fe]/60 text-xs font-semibold uppercase tracking-wider mb-4 shadow-2xs">
-              <Sparkles size={13} className="text-[#9333ea]" />
-              <span>Explore Templates</span>
             </div>
-            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-wine mb-4">
-              Explore 4 Signature Collections
-            </h2>
-            <p className="font-body text-sm sm:text-base text-charcoal/75 leading-relaxed">
-              Every celebration deserves a beautiful beginning. Each template features a bespoke 5-shade colour palette, authentic ceremonial itinerary, and interactive mobile preview.
-            </p>
-          </div>
 
-          {/* 2x2 Responsive Grid of Template Cards (Matching Loom Video Layout) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-6xl mx-auto">
-            {templates.map((template, idx) => (
-              <TemplateCard key={template.id} template={template} index={idx} />
-            ))}
-          </div>
-
-          {/* Live Simulator Jump Pill */}
-          <div className="mt-12 text-center">
-            <a
-              href="#templates-showcase"
-              className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-wine bg-white px-5 py-2.5 rounded-full border border-champagne shadow-xs hover:border-gold hover:text-gold transition-colors"
-            >
-              <span>Test Live Phone Simulator Below</span>
-              <ChevronDown size={14} className="text-gold animate-bounce" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ════ SECTION 3: BALCONY-STYLE INTERACTIVE TEMPLATE SHOWCASE & PHONE SIMULATOR ════ */}
-      <section id="templates-showcase" className="section-padding bg-white border-t border-champagne/50">
-        <div className="container-custom mx-auto">
-          <SectionHeading
-            subtitle="Signature Collections"
-            title="Explore 4 Signature Wedding Invitations"
-            description="Unlike generic templates, each of our 4 signature collections features a bespoke color palette, custom typography, and tailored cultural aesthetics. Click through to test the live simulator."
-          />
-
-          {/* Interactive Collection Selector Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 mb-12">
-            {templates.map((tmpl, idx) => {
-              const isActive = activeTemplateIdx === idx;
-              return (
-                <button
-                  key={tmpl.id}
-                  onClick={() => {
-                    setActiveTemplateIdx(idx);
-                    setEnvelopeOpened(false);
+            {/* Right Graphic: Arched Palace Balcony Window (5 Cols) */}
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="w-full max-w-sm aspect-[4/5] rounded-t-full border-4 border-gold/40 shadow-2xl overflow-hidden relative bg-[#1A030A] flex items-center justify-center group">
+                <img
+                  src="/assets/hero-bg.jpg"
+                  alt="Royal Couple on Palace Balcony"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => {
+                    // Fallback royal backdrop if image path unavailable
+                    e.target.style.display = 'none';
                   }}
-                  className={`px-4 sm:px-6 py-2.5 rounded-full font-body text-xs sm:text-sm font-semibold transition-all duration-300 border flex items-center gap-2 ${
-                    isActive
-                      ? 'bg-wine text-white border-wine shadow-md scale-105'
-                      : 'bg-ivory text-charcoal border-champagne hover:border-wine hover:text-wine'
-                  }`}
-                >
-                  <span
-                    className="w-3 h-3 rounded-full border border-champagne/60"
-                    style={{ backgroundColor: tmpl.themeStyles.buttonBg }}
-                  />
-                  <span>{tmpl.name}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Side-by-Side Interactive Experience */}
-          <div className="grid lg:grid-cols-12 gap-10 items-center bg-ivory rounded-3xl p-6 sm:p-10 border border-champagne/60 card-shadow">
-            {/* Left: Template Details & Palette */}
-            <div className="lg:col-span-7 space-y-6">
-              <div>
-                <span className="font-body text-xs font-bold uppercase tracking-[0.2em] text-gold block mb-2">
-                  {activeTemplate.collection}
-                </span>
-                <h3 className="font-heading text-3xl sm:text-4xl font-bold text-wine mb-3">
-                  {activeTemplate.name}
-                </h3>
-                <p className="font-body text-sm sm:text-base text-charcoal/80 leading-relaxed">
-                  {activeTemplate.description}
-                </p>
-              </div>
-
-              {/* 5-Shade Palette Swatches */}
-              <div className="bg-white p-5 rounded-xl border border-champagne/60">
-                <span className="font-body text-xs uppercase tracking-wider font-semibold text-charcoal/70 block mb-3">
-                  Signature 5-Shade Colour Palette:
-                </span>
-                <div className="flex flex-wrap items-center gap-3">
-                  {activeTemplate.colors.map((c, i) => (
-                    <div key={i} className="flex items-center gap-2 bg-ivory px-3 py-1.5 rounded-lg border border-champagne/50">
-                      <span
-                        className="w-4 h-4 rounded-full border border-champagne shadow-xs"
-                        style={{ backgroundColor: c.hex }}
-                      />
-                      <span className="font-body text-xs text-charcoal/80 font-medium">
-                        {c.name}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Sample Ceremony Highlights */}
-              <div>
-                <span className="font-body text-xs uppercase tracking-wider font-semibold text-charcoal/70 block mb-2">
-                  Sample Wedding Events Included:
-                </span>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-body">
-                  {activeTemplate.sampleData.events.map((evt, idx) => (
-                    <div key={idx} className="bg-white p-2.5 rounded-lg border border-champagne/50 text-center">
-                      <span className="text-lg block mb-0.5">{evt.icon}</span>
-                      <span className="font-semibold text-wine block truncate">{evt.name}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Pricing & Direct Actions */}
-              <div className="pt-4 border-t border-champagne/50 flex flex-wrap items-center justify-between gap-4">
-                <div>
-                  <span className="text-xs text-charcoal/50 font-body block">Starting Price</span>
-                  <span className="font-heading text-3xl font-bold text-wine">
-                    {activeTemplate.priceDisplay}
+                />
+                {/* Visual Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#24050E]/80 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-4 left-4 right-4 text-center pointer-events-none">
+                  <span className="font-heading text-xs text-gold-light uppercase tracking-widest block drop-shadow-sm">
+                    Aahvaaan Signature Collection
                   </span>
                 </div>
-
-                <div className="flex gap-3">
-                  <Link
-                    to={`/invitations/${activeTemplate.id}`}
-                    className="btn-secondary py-3 px-5 text-xs font-semibold flex items-center gap-1.5"
-                  >
-                    <Eye size={15} />
-                    Full Preview
-                  </Link>
-                  <Link
-                    to={`/buy/${activeTemplate.id}`}
-                    className="btn-primary py-3 px-6 text-xs font-semibold flex items-center gap-1.5 shadow-md"
-                  >
-                    <ShoppingBag size={15} />
-                    Buy This Template
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Live Interactive Phone Simulator */}
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-[320px]">
-                <div
-                  className="rounded-[36px] border-[8px] border-charcoal shadow-2xl overflow-hidden aspect-[9/18.5] relative"
-                  style={{ backgroundColor: activeTemplate.themeStyles.bgPrimary }}
-                >
-                  {/* Notch */}
-                  <div className="absolute top-2 left-1/2 -translate-x-1/2 w-24 h-3.5 bg-charcoal rounded-full z-30" />
-
-                  {/* Simulator Screen */}
-                  <div className="w-full h-full overflow-y-auto p-4 pt-8 text-center flex flex-col justify-between">
-                    <div>
-                      <span
-                        className="text-[9px] uppercase tracking-widest font-semibold py-0.5 px-2 rounded-full inline-block mb-1"
-                        style={{
-                          backgroundColor: activeTemplate.themeStyles.badgeBg,
-                          color: activeTemplate.themeStyles.badgeText,
-                        }}
-                      >
-                        {activeTemplate.collection}
-                      </span>
-
-                      <h4
-                        className="font-heading text-2xl font-bold mt-1"
-                        style={{ color: activeTemplate.themeStyles.textPrimary }}
-                      >
-                        {activeTemplate.sampleData.bride.split(' ')[0]} & {activeTemplate.sampleData.groom.split(' ')[0]}
-                      </h4>
-
-                      <p
-                        className="text-[11px] font-body mb-3"
-                        style={{ color: activeTemplate.themeStyles.textSecondary }}
-                      >
-                        {new Date(activeTemplate.sampleData.weddingDate).toLocaleDateString('en-IN', {
-                          day: 'numeric',
-                          month: 'short',
-                          year: 'numeric',
-                        })} • {activeTemplate.sampleData.location}
-                      </p>
-
-                      {/* Interactive Tap-to-Open Envelope Mock */}
-                      <div
-                        onClick={() => setEnvelopeOpened(!envelopeOpened)}
-                        className="cursor-pointer p-4 rounded-xl border border-dashed transition-all hover:scale-102 mb-3"
-                        style={{
-                          backgroundColor: activeTemplate.themeStyles.bgSecondary,
-                          borderColor: activeTemplate.themeStyles.accentPrimary,
-                        }}
-                      >
-                        <div className="text-2xl mb-1">{envelopeOpened ? '💌' : '✉️'}</div>
-                        <span
-                          className="font-heading text-sm font-bold block"
-                          style={{ color: activeTemplate.themeStyles.textPrimary }}
-                        >
-                          {envelopeOpened ? 'Envelope Opened!' : 'Tap to Open Envelope'}
-                        </span>
-                        <span className="text-[10px] font-body text-charcoal/60 block">
-                          {envelopeOpened ? 'Tap again to close' : 'Interactive royal wax seal'}
-                        </span>
-                      </div>
-
-                      {/* Mini Events List */}
-                      <div className="space-y-1.5 text-left text-[10px]">
-                        {activeTemplate.sampleData.events.slice(0, 3).map((e, i) => (
-                          <div
-                            key={i}
-                            className="p-2 rounded-lg border flex items-center justify-between"
-                            style={{
-                              backgroundColor: activeTemplate.themeStyles.cardBg,
-                              borderColor: `${activeTemplate.themeStyles.accentPrimary}40`,
-                            }}
-                          >
-                            <span
-                              className="font-semibold"
-                              style={{ color: activeTemplate.themeStyles.textPrimary }}
-                            >
-                              {e.icon} {e.name}
-                            </span>
-                            <span style={{ color: activeTemplate.themeStyles.accentSecondary }}>
-                              {e.time}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="pt-3">
-                      <Link
-                        to={`/invitations/${activeTemplate.id}`}
-                        className="block w-full py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider text-white shadow-sm"
-                        style={{ backgroundColor: activeTemplate.themeStyles.buttonBg }}
-                      >
-                        Open Full Design Experience →
-                      </Link>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ════ SECTION 3: FEATURES GRID (Balcony-Style High-Impact Visual Cards) ════ */}
-      <section className="section-padding bg-ivory">
-        <div className="container-custom mx-auto">
-          <SectionHeading
-            subtitle="Thoughtfully Engineered"
-            title="Everything Your Guests Need, in One Link"
-            description="Traditional wedding cards get misplaced or forgotten. Vow & Vision invitations give your guests a smooth, interactive mobile experience that makes attending effortless."
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {features.map((item, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{ y: -5 }}
-                transition={{ duration: 0.3 }}
-                className="bg-white p-6 sm:p-8 rounded-2xl card-shadow border border-champagne/60 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 rounded-xl bg-champagne/40 flex items-center justify-center text-wine">
-                      <item.icon size={22} />
-                    </div>
-                    <span className="font-body text-[10px] uppercase tracking-wider font-bold text-gold bg-champagne/30 px-2.5 py-1 rounded-full">
-                      {item.tag}
-                    </span>
-                  </div>
-
-                  <h3 className="font-heading text-2xl font-bold text-wine mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="font-body text-xs sm:text-sm text-charcoal/70 leading-relaxed mb-6">
-                    {item.desc}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-champagne/40 flex items-center text-gold text-xs font-semibold gap-1">
-                  <span>Included in All Packages</span>
-                  <Check size={14} />
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ════ SECTION 4: SMART SHARING (Balcony-Style: Common Link vs Personalized Links) ════ */}
-      <section className="section-padding bg-white border-t border-champagne/50">
-        <div className="container-custom mx-auto">
-          <SectionHeading
-            subtitle="Effortless WhatsApp Sharing"
-            title="Want to Greet Guests by Name?"
-            description="Deliver your wedding invitation in whichever way suits your celebration. From broadcast family links to bespoke individual greetings."
-          />
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {/* Common Link Card */}
-            <div className="bg-ivory rounded-2xl p-6 sm:p-8 border border-champagne/70 flex flex-col justify-between">
-              <div>
-                <div className="w-12 h-12 rounded-full bg-wine/10 flex items-center justify-center text-wine mb-4">
-                  <Share2 size={22} />
-                </div>
-                <span className="text-[11px] font-body uppercase tracking-wider font-bold text-gold block mb-1">
-                  Option A
-                </span>
-                <h3 className="font-heading text-2xl font-bold text-wine mb-2">
-                  Common Invitation Link
-                </h3>
-                <p className="font-body text-xs sm:text-sm text-charcoal/70 leading-relaxed mb-6">
-                  A single universal web link you can share with everyone in family WhatsApp groups, broadcast lists, and social media. Perfect for rapid sharing without managing individual lists.
-                </p>
-
-                <ul className="space-y-2.5 text-xs font-body text-charcoal/80 mb-8">
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-gold" /> One link for your entire guest list
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-gold" /> Best for quick and bulk WhatsApp sharing
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-gold" /> Generates a beautiful WhatsApp rich preview card
-                  </li>
-                </ul>
-              </div>
-
-              <div className="p-3 bg-white rounded-lg border border-champagne text-xs font-mono text-wine">
-                aahvaaan.com/invite/ananya-kabir
-              </div>
-            </div>
-
-            {/* Personalized Link Card */}
-            <div className="bg-wine text-white rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col justify-between relative overflow-hidden">
-              <div className="absolute top-3 right-3 bg-gold text-white text-[10px] uppercase tracking-widest font-bold py-1 px-3 rounded-full">
-                Signature & Luxury
-              </div>
-
-              <div>
-                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-gold mb-4">
-                  <Users size={22} />
-                </div>
-                <span className="text-[11px] font-body uppercase tracking-wider font-bold text-gold-light block mb-1">
-                  Option B
-                </span>
-                <h3 className="font-heading text-2xl font-bold text-white mb-2">
-                  Personalized Guest Link
-                </h3>
-                <p className="font-body text-xs sm:text-sm text-white/80 leading-relaxed mb-6">
-                  Greet guests individually with their names! When uncle, aunt, or close college friends open their invitation link, it displays a warm personal greeting: <em>"Dear Sharma Family, you are warmly invited..."</em>
-                </p>
-
-                <ul className="space-y-2.5 text-xs font-body text-white/90 mb-8">
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-gold" /> Individualized greeting for VIP relatives & close friends
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-gold" /> Pre-fills guest names in their RSVP form
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check size={16} className="text-gold" /> Feels profoundly intimate and royal
-                  </li>
-                </ul>
-              </div>
-
-              <div className="p-3 bg-white/10 rounded-lg border border-white/20 text-xs font-mono text-gold-light">
-                aahvaaan.com/invite/ananya-kabir?guest=Sharma+Family
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ════ SECTION 5: LIVE UPDATES VS PAPER CARDS ════ */}
-      <section className="py-14 bg-champagne/30 border-y border-champagne">
-        <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8 text-center max-w-3xl">
-          <span className="font-body text-xs uppercase tracking-[0.25em] font-semibold text-gold block mb-2">
-            No Reprinting Headaches
+      {/* ════════════════ 2. EXPLORE TEMPLATES SECTION ════════════════ */}
+      <section id="templates" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        {/* Section Heading Badge */}
+        <div className="text-center mb-10 sm:mb-14">
+          <span className="inline-block px-8 py-2.5 rounded-full bg-wine/10 text-wine font-heading text-2xl sm:text-3xl font-bold">
+            Explore Templates
           </span>
-          <h2 className="font-heading text-3xl sm:text-4xl font-bold text-wine mb-4">
-            Your Guests Always See the Latest Details
-          </h2>
-          <p className="font-body text-sm sm:text-base text-charcoal/80 leading-relaxed mb-6">
-            Delayed flight? Baraat shifted by an hour? Found a typo? With traditional paper invites, you would be helpless. With Vow & Vision, you update your invitation in real-time, and every guest link instantly reflects the newest schedule.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-body text-wine font-semibold">
-            <span className="flex items-center gap-1.5"><CheckCircle2 size={16} className="text-gold" /> Free revision updates</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 size={16} className="text-gold" /> Zero re-printing costs</span>
-            <span className="flex items-center gap-1.5"><CheckCircle2 size={16} className="text-gold" /> Instant sync across all devices</span>
-          </div>
         </div>
-      </section>
 
-      {/* ════ SECTION 6: PACKAGES ════ */}
-      <section className="section-padding bg-white">
-        <div className="container-custom mx-auto">
-          <SectionHeading
-            subtitle="Transparent Pricing"
-            title="Choose Your Package"
-            description="Affordable starting prices across all 4 signature collections. No hidden surprises."
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
-            {packages.map((pkg) => (
-              <div
-                key={pkg.id}
-                className={`relative rounded-2xl overflow-hidden p-8 flex flex-col justify-between transition-all duration-300 ${
-                  pkg.popular
-                    ? 'bg-wine text-white ring-2 ring-gold shadow-2xl scale-[1.02]'
-                    : 'bg-white text-charcoal card-shadow border border-champagne/60'
-                }`}
-              >
-                {pkg.popular && (
-                  <div className="absolute top-0 left-0 right-0 bg-gold text-white text-center font-body text-xs font-semibold tracking-wider uppercase py-2">
-                    ★ Most Popular Package
-                  </div>
+        {/* 2x2 Template Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {templates.slice(0, 4).map((tmpl) => (
+            <Link
+              key={tmpl.id}
+              to={`/invitations/${tmpl.id}`}
+              className="bg-white rounded-3xl overflow-hidden border border-champagne/60 shadow-sm hover:shadow-2xl transition-all duration-300 flex flex-col group"
+            >
+              {/* Preview Graphic */}
+              <div className="aspect-[16/10] overflow-hidden bg-ivory relative border-b border-champagne/40">
+                <img
+                  src={tmpl.image}
+                  alt={tmpl.name}
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                />
+                {tmpl.featured && (
+                  <span className="absolute top-4 left-4 bg-wine text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-xs">
+                    Popular
+                  </span>
                 )}
+              </div>
 
-                <div className={pkg.popular ? 'pt-4' : ''}>
-                  <h3 className={`font-heading text-2xl font-bold mb-2 ${pkg.popular ? 'text-white' : 'text-wine'}`}>
-                    {pkg.name}
+              {/* Card Footer Info */}
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-heading text-xl font-bold text-wine group-hover:text-gold transition-colors mb-1.5">
+                    {tmpl.name}
                   </h3>
-                  <p className={`font-body text-xs mb-6 ${pkg.popular ? 'text-white/70' : 'text-charcoal/60'}`}>
-                    {pkg.tagline}
+                  <p className="font-body text-xs text-charcoal/65 leading-relaxed line-clamp-2">
+                    {tmpl.shortDescription}
                   </p>
-
-                  <div className="mb-6 pb-6 border-b border-champagne/40">
-                    <span className={`font-heading text-5xl font-bold ${pkg.popular ? 'text-gold' : 'text-wine'}`}>
-                      {pkg.priceDisplay}
-                    </span>
-                    <span className={`font-body text-xs ml-2 ${pkg.popular ? 'text-white/60' : 'text-charcoal/50'}`}>
-                      starting price
-                    </span>
-                  </div>
-
-                  <ul className="space-y-3 mb-8">
-                    {pkg.features.map((feat, i) => (
-                      <li key={i} className="flex items-start gap-2.5 font-body text-xs leading-relaxed">
-                        <Check size={16} className={`flex-shrink-0 mt-0.5 ${pkg.popular ? 'text-gold' : 'text-gold'}`} />
-                        <span className={pkg.popular ? 'text-white/90' : 'text-charcoal/80'}>{feat}</span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
 
-                <Link
-                  to={`/buy?package=${pkg.id}`}
-                  className={`block text-center py-3.5 px-6 rounded-lg font-body text-xs uppercase tracking-widest font-semibold transition-all duration-300 ${
-                    pkg.popular
-                      ? 'bg-gold text-white hover:bg-gold-light shadow-md'
-                      : 'bg-wine text-white hover:bg-wine-light'
-                  }`}
-                >
-                  {pkg.ctaText}
-                </Link>
+                <div className="mt-5 pt-4 border-t border-champagne/40 flex items-center justify-between">
+                  <span className="font-heading text-base font-bold text-wine">
+                    ₹{tmpl.startingPrice || 1499}
+                  </span>
+                  <span className="w-8 h-8 rounded-full bg-ivory text-wine group-hover:bg-wine group-hover:text-white flex items-center justify-center transition-colors shadow-2xs">
+                    <ChevronRight size={16} />
+                  </span>
+                </div>
               </div>
-            ))}
-          </div>
+            </Link>
+          ))}
         </div>
-      </section>
 
-      {/* ════ SECTION 7: FAQS ACCORDION ════ */}
-      <section className="section-padding bg-ivory border-t border-champagne/50">
-        <div className="container-custom mx-auto max-w-3xl">
-          <SectionHeading
-            subtitle="Got Questions?"
-            title="Frequently Asked Questions"
-            description="Everything you need to know about our digital wedding invitations, customization, and WhatsApp sharing."
-          />
-
-          <div className="bg-white rounded-2xl p-6 sm:p-8 card-shadow border border-champagne/60">
-            {faqs.map((faq, idx) => (
-              <FAQItem
-                key={idx}
-                question={faq.q}
-                answer={faq.a}
-                isOpen={openFAQ === idx}
-                onToggle={() => setOpenFAQ(openFAQ === idx ? -1 : idx)}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ════ SECTION 8: FINAL CTA BANNER ════ */}
-      <section className="relative section-padding bg-wine overflow-hidden text-white">
-        <div
-          className="absolute inset-0 opacity-5 pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B69A70' fill-opacity='1'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
-        <div className="relative container-custom mx-auto text-center">
-          <FloralDivider className="text-gold/50 mx-auto mb-8" />
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+        {/* Center CTA Button */}
+        <div className="text-center mt-12">
+          <Link
+            to="/invitations"
+            className="inline-block px-8 py-3.5 rounded-full bg-gradient-to-r from-wine to-[#9E2A47] hover:from-[#9E2A47] hover:to-wine text-white font-body text-xs font-semibold uppercase tracking-wider shadow-md hover:shadow-lg transition-all"
           >
-            <h2 className="font-heading text-3xl md:text-5xl font-bold text-white leading-tight mb-4">
-              Your Wedding Deserves an Unforgettable Beginning.
-            </h2>
-            <p className="font-body text-base text-white/70 max-w-xl mx-auto mb-8 leading-relaxed">
-              Join hundreds of happy couples across India. Browse our 4 signature collections, pick your favorite, and receive your live WhatsApp invitation in 24–48 hours.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/invitations" className="btn-gold text-xs uppercase tracking-widest px-8 py-4 font-semibold shadow-lg">
-                Explore Signature Designs
-                <ArrowRight size={16} className="ml-2" />
-              </Link>
-              <Link to="/contact" className="inline-flex items-center justify-center px-8 py-4 border-2 border-white/30 text-white font-body font-semibold text-xs uppercase tracking-widest rounded-md hover:bg-white/10 transition-all duration-300">
-                Contact For Bespoke Request
-              </Link>
-            </div>
-          </motion.div>
-          <FloralDivider className="text-gold/50 mx-auto mt-8" />
+            View all templates
+          </Link>
         </div>
       </section>
-    </>
+
+      {/* ════════════════ 3. SHARING COMPARISON SECTION ════════════════ */}
+      <section id="sharing" className="py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* Card 1: Common Link */}
+          <div className="bg-[#FAF4EE] rounded-[36px] p-6 sm:p-8 border border-champagne/60 text-center shadow-xs flex flex-col items-center">
+            <h3 className="font-heading text-2xl font-bold text-wine mb-1">
+              Common link
+            </h3>
+            <p className="font-body text-xs text-charcoal/70 mb-5">
+              A single invitation link shared with everyone.
+            </p>
+
+            {/* URL Box */}
+            <div className="w-full max-w-xs py-2 px-4 rounded-full bg-white border border-champagne text-[11px] font-mono text-charcoal/70 mb-6 truncate shadow-2xs">
+              aahvaaan.com/invite/patidar-family-2027
+            </div>
+
+            {/* Mockup Phone Frame */}
+            <div className="w-60 sm:w-64 aspect-[9/17] bg-slate-900 rounded-[38px] p-2.5 shadow-xl border-2 border-slate-700 relative flex flex-col overflow-hidden">
+              {/* Camera Notch */}
+              <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mb-1 z-20" />
+              {/* Screen Content */}
+              <div className="flex-1 bg-gradient-to-b from-[#FAF6F0] to-[#E9D7CC] rounded-[30px] p-4 flex flex-col items-center justify-center text-center relative border border-champagne/80">
+                <span className="font-heading text-[9px] text-wine uppercase tracking-widest mb-1">
+                  Wedding Invitation
+                </span>
+                <p className="font-heading text-xs font-bold text-wine leading-tight mb-2">
+                  We cordially invite you to grace the auspicious occasion of the marriage of...
+                </p>
+                <div className="w-8 h-0.5 bg-gold/50 rounded-full" />
+              </div>
+
+              {/* Realistic Sticky Note */}
+              <div className="absolute bottom-6 right-3 bg-[#FEF08A] text-charcoal/90 p-3 rounded-xl shadow-lg -rotate-3 text-[11px] font-semibold max-w-[130px] leading-tight border border-amber-300">
+                Best for quick and bulk sharing.
+              </div>
+            </div>
+          </div>
+
+          {/* Card 2: Personalized Link */}
+          <div className="bg-[#FAF4EE] rounded-[36px] p-6 sm:p-8 border border-champagne/60 text-center shadow-xs flex flex-col items-center">
+            <h3 className="font-heading text-2xl font-bold text-wine mb-1">
+              Personalized link
+            </h3>
+            <p className="font-body text-xs text-charcoal/70 mb-5">
+              Every guest receives a personal greeting.
+            </p>
+
+            {/* URL Box */}
+            <div className="w-full max-w-xs py-2 px-4 rounded-full bg-white border border-champagne text-[11px] font-mono text-charcoal/70 mb-6 truncate shadow-2xs">
+              aahvaaan.com/invite/r/mrsharma&family123
+            </div>
+
+            {/* Mockup Phone Frame */}
+            <div className="w-60 sm:w-64 aspect-[9/17] bg-slate-900 rounded-[38px] p-2.5 shadow-xl border-2 border-slate-700 relative flex flex-col overflow-hidden">
+              {/* Camera Notch */}
+              <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mb-1 z-20" />
+              {/* Screen Content */}
+              <div className="flex-1 bg-gradient-to-b from-[#FAF6F0] to-[#E9D7CC] rounded-[30px] p-4 flex flex-col items-center justify-center text-center relative border border-champagne/80">
+                <span className="font-heading text-xs sm:text-sm font-bold text-wine mb-1">
+                  Mr. Sharma and Family
+                </span>
+                <p className="font-body text-[10px] text-charcoal/70 leading-tight mb-2">
+                  We cordially invite you to grace the auspicious celebrations...
+                </p>
+                <div className="w-8 h-0.5 bg-gold/50 rounded-full" />
+              </div>
+
+              {/* Realistic Sticky Note */}
+              <div className="absolute bottom-6 right-3 bg-[#FEF08A] text-charcoal/90 p-3 rounded-xl shadow-lg rotate-2 text-[11px] font-semibold max-w-[140px] leading-tight border border-amber-300">
+                Best if you want to make guests feel personally invited.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ─── "With every invitation, you get" & Live Updates ─── */}
+        <div className="max-w-5xl mx-auto space-y-6 mt-12">
+          {/* Top Inclusions Card */}
+          <div className="bg-[#FFF9F3] rounded-3xl p-6 sm:p-8 border border-champagne/70 text-center shadow-xs">
+            <h4 className="font-heading text-xl sm:text-2xl font-bold text-wine mb-2">
+              With every invitation, you get
+            </h4>
+            <div className="flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-charcoal/80">
+              <span className="font-bold text-wine">Common link</span>
+              <span className="text-gold font-bold text-lg">+</span>
+              <span className="font-bold text-wine">5 personalized guest links free</span>
+            </div>
+            <p className="text-[11px] text-charcoal/50 mt-1">
+              (You can increase the number of guests anytime by purchasing.)
+            </p>
+          </div>
+
+          {/* Bottom Live Updates Banner */}
+          <div className="bg-gradient-to-r from-[#3D0C1A] via-[#521324] to-[#6B1D2F] text-white rounded-3xl p-8 sm:p-12 text-center shadow-xl relative overflow-hidden">
+            <h4 className="font-heading text-2xl sm:text-3xl font-bold mb-3">
+              Your guests always see the latest details.
+            </h4>
+            <p className="font-body text-xs sm:text-sm text-white/80 max-w-xl mx-auto leading-relaxed mb-4">
+              Change your mind about the venue? Caught a typo? Update your invitation and every guest link reflects it instantly. No resharing needed.
+            </p>
+            <p className="font-body text-xs sm:text-sm text-white/90">
+              Up to <strong className="text-gold font-bold text-lg sm:text-xl">3</strong> updates within <strong className="text-gold font-bold text-lg sm:text-xl">6</strong> months of going live
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════ 4. FEATURES GRID SECTION ════════════════ */}
+      <section id="features" className="bg-[#2D0A14] text-white py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          {/* Section Heading Badge */}
+          <div className="text-center mb-14">
+            <span className="inline-block px-8 py-2 rounded-full bg-white/10 text-white font-heading text-2xl sm:text-3xl font-bold">
+              Features
+            </span>
+          </div>
+
+          {/* 5 Clean White Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1: Instant Directions */}
+            <div className="bg-white rounded-3xl p-7 text-charcoal shadow-xl border border-champagne/40 text-center flex flex-col items-center">
+              <div className="w-12 h-12 rounded-2xl bg-wine/10 text-wine flex items-center justify-center mb-4">
+                <MapPin size={24} className="text-wine" />
+              </div>
+              <h4 className="font-heading text-base font-bold text-wine mb-2">
+                Instant Directions
+              </h4>
+              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
+                Guests can open the venue location and get directions in a single tap.
+              </p>
+            </div>
+
+            {/* Card 2: RSVP Tracking */}
+            <div className="bg-white rounded-3xl p-7 text-charcoal shadow-xl border border-champagne/40 text-center flex flex-col items-center">
+              <div className="w-12 h-12 rounded-2xl bg-wine/10 text-wine flex items-center justify-center mb-4">
+                <Users size={24} className="text-wine" />
+              </div>
+              <h4 className="font-heading text-base font-bold text-wine mb-2">
+                RSVP Tracking
+              </h4>
+              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
+                Collect guest responses effortlessly and know who's attending.
+              </p>
+            </div>
+
+            {/* Card 3: Add to Calendar */}
+            <div className="bg-white rounded-3xl p-7 text-charcoal shadow-xl border border-champagne/40 text-center flex flex-col items-center">
+              <div className="w-12 h-12 rounded-2xl bg-wine/10 text-wine flex items-center justify-center mb-4">
+                <Calendar size={24} className="text-wine" />
+              </div>
+              <h4 className="font-heading text-base font-bold text-wine mb-2">
+                Add to Calendar
+              </h4>
+              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
+                Add the event to guests' calendars instantly - Google, Apple or Outlook.
+              </p>
+            </div>
+          </div>
+
+          {/* Row 2 (2 cards centered) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mt-6">
+            {/* Card 4: Live Updates */}
+            <div className="bg-white rounded-3xl p-7 text-charcoal shadow-xl border border-champagne/40 text-center flex flex-col items-center">
+              <div className="w-12 h-12 rounded-2xl bg-wine/10 text-wine flex items-center justify-center mb-4">
+                <Edit3 size={24} className="text-wine" />
+              </div>
+              <h4 className="font-heading text-base font-bold text-wine mb-2">
+                Live Updates
+              </h4>
+              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
+                Update event details anytime, and changes reflect instantly for all guests.
+              </p>
+            </div>
+
+            {/* Card 5: Interactive Experience */}
+            <div className="bg-white rounded-3xl p-7 text-charcoal shadow-xl border border-champagne/40 text-center flex flex-col items-center">
+              <div className="w-12 h-12 rounded-2xl bg-wine/10 text-wine flex items-center justify-center mb-4">
+                <Sparkles size={24} className="text-wine" />
+              </div>
+              <h4 className="font-heading text-base font-bold text-wine mb-2">
+                Interactive Experience
+              </h4>
+              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
+                More than a static invitation - an engaging experience guests can interact with.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════ 5. ABOUT US SECTION ════════════════ */}
+      <section id="about" className="bg-[#3D0C1A] text-white py-20 px-4 sm:px-6 lg:px-8 border-t border-white/10 text-center">
+        <div className="max-w-3xl mx-auto space-y-4">
+          <div className="mb-8">
+            <span className="inline-block px-8 py-2 rounded-full bg-white/10 text-white font-heading text-2xl sm:text-3xl font-bold">
+              About us
+            </span>
+          </div>
+
+          <h3 className="font-heading text-xl sm:text-2xl font-bold text-gold-light mb-3">
+            Invitations made simple. Celebrations made special.
+          </h3>
+
+          <p className="font-body text-xs sm:text-sm text-white/80 leading-relaxed max-w-2xl mx-auto">
+            At Aahvaaan, we make beautiful digital invitations that are simple to edit, easy to share, and designed to make every guest feel special. Our invitations make things easier for hosts too, from creating and personalising invitations to keeping track of who's coming. Everything comes together in one simple, thoughtful experience, so you can spend less time managing invitations and more time enjoying your celebration.
+          </p>
+        </div>
+      </section>
+
+      {/* ════════════════ 6. FAQS SECTION ════════════════ */}
+      <section id="faqs" className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <span className="inline-block px-8 py-2.5 rounded-full bg-wine/10 text-wine font-heading text-2xl sm:text-3xl font-bold">
+            FAQs
+          </span>
+        </div>
+
+        <div className="space-y-3">
+          {faqs.map((faq, index) => (
+            <FAQAccordionItem
+              key={index}
+              question={faq.q}
+              answer={faq.a}
+              isOpen={openFaqIndex === index}
+              onToggle={() => setOpenFaqIndex(openFaqIndex === index ? -1 : index)}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* ════════════════ 7. GET IN TOUCH (CONTACT) SECTION ════════════════ */}
+      <section id="contact" className="py-16 pb-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+        <div className="text-center mb-10">
+          <span className="inline-block px-8 py-2 rounded-full bg-wine/10 text-wine font-heading text-2xl sm:text-3xl font-bold">
+            Get in touch
+          </span>
+          <p className="font-body text-xs text-charcoal/65 max-w-md mx-auto mt-3">
+            Questions about a template, an order, or an invitation you're working on? Send us a note and we'll get back to you by email.
+          </p>
+        </div>
+
+        <div className="bg-[#FAF4EE] rounded-[36px] p-6 sm:p-10 border border-champagne/70 shadow-xs max-w-2xl mx-auto">
+          {contactSubmitted ? (
+            <div className="py-8 text-center text-emerald-800">
+              <CheckCircle2 size={36} className="text-emerald-600 mx-auto mb-2" />
+              <h4 className="font-heading text-lg font-bold">Message Sent!</h4>
+              <p className="text-xs text-charcoal/70 mt-1">
+                Thank you for reaching out. We will get back to you shortly.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleContactSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[10px] uppercase font-bold tracking-wider text-wine mb-1.5">
+                    YOUR NAME
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Your name"
+                    value={contactForm.name}
+                    onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-champagne bg-white text-xs text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase font-bold tracking-wider text-wine mb-1.5">
+                    EMAIL
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="you@example.com"
+                    value={contactForm.email}
+                    onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                    className="w-full px-4 py-2.5 rounded-xl border border-champagne bg-white text-xs text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase font-bold tracking-wider text-wine mb-1.5">
+                  SUBJECT (OPTIONAL)
+                </label>
+                <input
+                  type="text"
+                  placeholder="What's this about?"
+                  value={contactForm.subject}
+                  onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-champagne bg-white text-xs text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                />
+              </div>
+
+              <div>
+                <label className="block text-[10px] uppercase font-bold tracking-wider text-wine mb-1.5">
+                  MESSAGE
+                </label>
+                <textarea
+                  rows={4}
+                  required
+                  placeholder="Tell us what you need help with..."
+                  value={contactForm.message}
+                  onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-xl border border-champagne bg-white text-xs text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  className="px-8 py-3 rounded-full bg-gradient-to-r from-wine to-[#9E2A47] hover:from-[#9E2A47] hover:to-wine text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all"
+                >
+                  Send message
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </section>
+    </div>
   );
 }
