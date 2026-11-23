@@ -138,8 +138,12 @@ export default function Dashboard() {
         groomName: '',
       });
 
-      // Refresh list
-      await fetchInvitations();
+      // Navigate directly into the invitation live editor
+      if (data?.id) {
+        navigate(`/dashboard/invitations/${data.id}/edit`);
+      } else {
+        await fetchInvitations();
+      }
     } catch (err) {
       console.error('Error creating invitation draft:', err);
       setError(err.message || 'Failed to create invitation draft.');

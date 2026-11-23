@@ -18,6 +18,7 @@ import Signup from './pages/Signup';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
+import InvitationEditor from './pages/InvitationEditor';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -58,6 +59,15 @@ function App() {
             }
           />
         </Route>
+        {/* Protected Live Studio Editor (Split-screen Workspace) */}
+        <Route
+          path="dashboard/invitations/:id/edit"
+          element={
+            <ProtectedRoute>
+              <InvitationEditor />
+            </ProtectedRoute>
+          }
+        />
         {/* Dedicated Guest Invitation Route (Standalone Mobile-First Experience) */}
         <Route path="invite/:slug" element={<PublicInvitation />} />
       </Routes>
