@@ -10,6 +10,7 @@ import { useAuth } from '../context/AuthContext';
 import supabase, { isSupabaseConfigured } from '../lib/supabase';
 import templates from '../data/templates';
 import packages from '../data/pricing';
+import GuestListManager from '../components/dashboard/GuestListManager';
 
 export default function Dashboard() {
   const { user, profile, signOut } = useAuth();
@@ -32,6 +33,9 @@ export default function Dashboard() {
   // Share Modal state
   const [activeShareInvite, setActiveShareInvite] = useState(null);
   const [copied, setCopied] = useState(false);
+
+  // Guest Management Modal state
+  const [activeGuestInvite, setActiveGuestInvite] = useState(null);
 
   // Fetch host's invitations
   const fetchInvitations = async () => {
@@ -327,35 +331,48 @@ export default function Dashboard() {
                     </div>
 
                     {/* Actions Toolbar */}
-                    <div className="p-5 pt-0 grid grid-cols-3 gap-2">
-                      <Link
-                        to={`/dashboard/invitations/${inv.id}/edit`}
-                        className="py-2 px-2.5 rounded-lg border border-wine/30 text-wine hover:bg-wine hover:text-white font-body text-[11px] font-semibold text-center flex items-center justify-center gap-1 transition-colors"
-                        title="Edit invitation content"
-                      >
-                        <Edit3 size={13} />
-                        <span>Edit</span>
-                      </Link>
+                    <div className="p-5 pt-0">
+                      <div className="grid grid-cols-3 gap-2">
+                        <Link
+                          to={`/dashboard/invitations/${inv.id}/edit`}
+                          className="py-2 px-2.5 rounded-lg border border-wine/30 text-wine hover:bg-wine hover:text-white font-body text-[11px] font-semibold text-center flex items-center justify-center gap-1 transition-colors"
+                          title="Edit invitation content"
+                        >
+                          <Edit3 size={13} />
+                          <span>Edit</span>
+                        </Link>
 
-                      <Link
-                        to={`/invite/${inv.slug}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="py-2 px-2.5 rounded-lg border border-champagne hover:border-wine text-charcoal font-body text-[11px] font-semibold text-center flex items-center justify-center gap-1 transition-colors"
-                        title="Open live invitation"
-                      >
-                        <ExternalLink size={13} />
-                        <span>Preview</span>
-                      </Link>
+                        <Link
+                          to={`/invite/${inv.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="py-2 px-2.5 rounded-lg border border-champagne hover:border-wine text-charcoal font-body text-[11px] font-semibold text-center flex items-center justify-center gap-1 transition-colors"
+                          title="Open live invitation"
+                        >
+                          <ExternalLink size={13} />
+                          <span>Preview</span>
+                        </Link>
 
+                        <button
+                          type="button"
+                          onClick={() => setActiveShareInvite(inv)}
+                          className="py-2 px-2.5 rounded-lg bg-wine text-white hover:bg-gold font-body text-[11px] font-semibold text-center flex items-center justify-center gap-1 shadow-2xs transition-colors"
+                          title="Share on WhatsApp"
+                        >
+                          <Share2 size={13} />
+                          <span>Share</span>
+                        </button>
+                      </div>
+
+                      {/* Prominent Manage Guests & RSVPs Button */}
                       <button
                         type="button"
-                        onClick={() => setActiveShareInvite(inv)}
-                        className="py-2 px-2.5 rounded-lg bg-wine text-white hover:bg-gold font-body text-[11px] font-semibold text-center flex items-center justify-center gap-1 shadow-2xs transition-colors"
-                        title="Share on WhatsApp"
+                        onClick={() => setActiveGuestInvite(inv)}
+                        className="w-full mt-2.5 py-2 px-3 rounded-xl bg-ivory hover:bg-wine hover:text-white border border-champagne text-wine font-body text-[11px] font-semibold text-center flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+                        title="Manage guest list, create personal links and review RSVPs"
                       >
-                        <Share2 size={13} />
-                        <span>Share</span>
+                        <Users size={13} />
+                        <span>Manage Guests & RSVPs</span>
                       </button>
                     </div>
                   </div>
@@ -574,6 +591,15 @@ export default function Dashboard() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Guest List & RSVP Manager Modal */}
+      {activeGuestInvite && (
+        <GuestListManager
+          invitation={activeGuestInvite}
+          onClose={() => setActiveGuestInvite(null)}
+          onRefreshMetrics={fetchInvitations}
+        />
+      )}
     </div>
   );
 }

@@ -68,7 +68,9 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* Dedicated Guest Invitation Route (Standalone Mobile-First Experience) */}
+        {/* Dedicated Guest Invitation Routes (Standalone Mobile-First Experience) */}
+        <Route path="invite/r/:personalSlug" element={<PublicInvitation isPersonalized={true} />} />
+        <Route path="invite/:code" element={<PublicInvitation />} />
         <Route path="invite/:slug" element={<PublicInvitation />} />
       </Routes>
     </AuthProvider>
