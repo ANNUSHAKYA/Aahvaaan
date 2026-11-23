@@ -5,13 +5,42 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     setIsOpen(false);
   }, [location]);
+
+  // Profile Page Dedicated Header (Matches screenshot exact layout)
+  if (location.pathname === '/profile') {
+    const displayName = profile?.name || user?.user_metadata?.full_name || 'Annu Shakya';
+    return (
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
+        <div className="container-custom mx-auto px-4 sm:px-8 h-16 flex items-center justify-between max-w-6xl">
+          <div className="flex items-center gap-8">
+            <Link to="/" className="font-heading text-2xl font-bold text-wine tracking-tight">
+              Aahvaaan
+            </Link>
+            <div className="hidden sm:flex items-center gap-6 text-sm font-body text-charcoal/80">
+              <Link to="/dashboard" className="hover:text-wine transition-colors">
+                My invitations
+              </Link>
+              <Link to="/invitations" className="hover:text-wine transition-colors">
+                Templates
+              </Link>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 font-body text-sm text-charcoal/80">
+            <span>{displayName}</span>
+            <User size={18} className="text-charcoal/70" />
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className="fixed top-3 sm:top-5 left-0 right-0 z-50 flex justify-center px-3 sm:px-6 pointer-events-none">
