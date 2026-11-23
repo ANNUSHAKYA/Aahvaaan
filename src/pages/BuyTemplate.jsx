@@ -3,13 +3,14 @@ import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Check, ArrowLeft, ArrowRight, Send, MessageCircle,
-  Sparkles, CheckCircle2, ShieldCheck, Heart, Eye
+  Sparkles, CheckCircle2, ShieldCheck, Heart, Eye, CreditCard
 } from 'lucide-react';
 import templates from '../data/templates';
 import packages from '../data/pricing';
 import config from '../data/config';
 import SectionHeading from '../components/SectionHeading';
 import { FloralDivider } from '../components/Ornaments';
+import { initiatePayment } from '../utils/razorpay';
 
 export default function BuyTemplate() {
   const { id } = useParams();
@@ -37,6 +38,36 @@ export default function BuyTemplate() {
 
   const [errors, setErrors] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [payingOnline, setPayingOnline] = useState(false);
+
+  const handleOnlinePayment = async (e) => {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs);
+      return;
+    }
+
+    setPayingOnline(true);
+    try {
+      await initiatePayment({
+        packageId: selectedPkg.id,
+        userEmail: form.email,
+        userName: form.customerName,
+        userPhone: form.whatsapp,
+        onSuccess: () => {
+          navigate('/dashboard?payment=success');
+        },
+        onError: (err) => {
+          alert(err.message || 'Payment could not be completed.');
+          setPayingOnline(false);
+        },
+      });
+    } catch (err) {
+      console.error(err);
+      setPayingOnline(false);
+    }
+  };
 
   // Scroll to form when package changes
   const handleSelectPackage = (pkg) => {
@@ -537,18 +568,33 @@ export default function BuyTemplate() {
                   </div>
                 </div>
 
-                {/* Submit Action */}
-                <div className="pt-4 border-t border-champagne/40">
+                {/* Submit Actions: Razorpay & WhatsApp */}
+                <div className="pt-4 border-t border-champagne/40 space-y-3">
+                  <button
+                    type="button"
+                    onClick={handleOnlinePayment}
+                    disabled={payingOnline}
+                    className="w-full py-4 text-sm font-semibold tracking-wider uppercase flex items-center justify-center gap-2 rounded-xl bg-wine hover:bg-gold text-white shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+                  >
+                    <CreditCard size={18} />
+                    <span>
+                      {payingOnline
+                        ? 'Opening Razorpay Checkout...'
+                        : `Pay Online via Razorpay (${selectedPkg.priceDisplay})`}
+                    </span>
+                  </button>
+
                   <button
                     type="submit"
-                    className="btn-primary w-full py-4 text-sm font-semibold tracking-wider uppercase flex items-center justify-center gap-2 shadow-lg hover:shadow-xl"
+                    className="w-full py-3.5 text-xs font-semibold tracking-wider uppercase flex items-center justify-center gap-2 rounded-xl border border-emerald-600/40 text-emerald-800 hover:bg-emerald-50 transition-colors"
                   >
-                    <MessageCircle size={18} />
-                    Send Order Enquiry via WhatsApp ({selectedPkg.priceDisplay})
+                    <MessageCircle size={17} className="text-emerald-600" />
+                    <span>Order / Enquire via WhatsApp</span>
                   </button>
-                  <p className="font-body text-[11px] text-charcoal/50 text-center mt-3 flex items-center justify-center gap-1.5">
+
+                  <p className="font-body text-[11px] text-charcoal/50 text-center mt-2 flex items-center justify-center gap-1.5">
                     <ShieldCheck size={14} className="text-gold" />
-                    No payment gateway needed now. Your request will open directly in WhatsApp to discuss customization.
+                    Secure INR payment powered by Razorpay. 100% money-back guarantee.
                   </p>
                 </div>
               </form>

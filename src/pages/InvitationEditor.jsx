@@ -6,13 +6,16 @@ import {
   ExternalLink, Image as ImageIcon, Trash2, Plus, Upload,
   Music, Calendar, MapPin, Users, Heart, Sparkles,
   Smartphone, Monitor, ChevronRight, Lock, CheckCircle2,
-  Share2, ShieldAlert
+  Share2, ShieldAlert, Clock, CreditCard, MessageCircle
 } from 'lucide-react';
 import supabase, { isSupabaseConfigured } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
 import templates from '../data/templates';
+import packages from '../data/pricing';
+import config from '../data/config';
 import TemplateRenderer from '../components/invitation/TemplateRenderer';
 import { compressImageToWebP } from '../utils/imageCompressor';
+import { initiatePayment } from '../utils/razorpay';
 
 // ─── Shloka Presets ───
 const SHLOKA_PRESETS = [
@@ -64,6 +67,8 @@ export default function InvitationEditor() {
   // Publishing Gate Modal
   const [showPublishModal, setShowPublishModal] = useState(false);
   const [publishing, setPublishing] = useState(false);
+  const [selectedPkgId, setSelectedPkgId] = useState('signature');
+  const [publishFeedback, setPublishFeedback] = useState(null);
 
   // References for debounce
   const debouncedTimeoutRef = useRef(null);
@@ -331,54 +336,216 @@ export default function InvitationEditor() {
     }));
   };
 
+  // Expiration & Updates Calculation
+  const expiresAt = invitation?.edit_expires_at ? new Date(invitation.edit_expires_at) : null;
+  const daysLeft = expiresAt
+    ? Math.max(0, Math.ceil((expiresAt.getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
+    : 180;
+  const isExpired = expiresAt ? Date.now() > expiresAt.getTime() : false;
+  const updatesUsed = invitation?.updates_used || 0;
+  const hasUpdatesRemaining = updatesUsed < 3;
+
   // 4. Publishing Gate
   const handlePublishClick = () => {
+    setPublishFeedback(null);
     setShowPublishModal(true);
   };
 
-  const handleConfirmPublish = async () => {
+  // Helper to execute publishing in DB
+  const executePublishInDb = async (pkgId) => {
+    if (!invitation) return;
+
+    // 1. Try RPC publish_invitation
+    const { data: rpcData, error: rpcErr } = await supabase.rpc('publish_invitation', {
+      p_invitation_id: invitation.id,
+    });
+
+    if (!rpcErr) {
+      setInvitation((prev) => ({
+        ...prev,
+        status: 'published',
+        published_content: content,
+        package: pkgId || prev.package,
+        updates_used: 0,
+        published_at: new Date().toISOString(),
+        edit_expires_at: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString(),
+      }));
+      return rpcData;
+    }
+
+    console.warn('publish_invitation RPC fallback to direct update:', rpcErr);
+
+    // 2. Direct update fallback
+    const updatePayload = {
+      published_content: content,
+      status: 'published',
+      package: pkgId || invitation.package || 'signature',
+      published_at: new Date().toISOString(),
+      edit_expires_at: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toISOString(),
+      updates_used: 0,
+    };
+
+    let { error } = await supabase
+      .from('invitations')
+      .update(updatePayload)
+      .eq('id', invitation.id)
+      .eq('owner_id', user.id);
+
+    if (error && (error.message?.includes('owner_id') || error.code === '42703')) {
+      const fallback = await supabase
+        .from('invitations')
+        .update(updatePayload)
+        .eq('id', invitation.id)
+        .eq('host_id', user.id);
+      if (!fallback.error) error = null;
+    }
+
+    if (error) throw error;
+
+    setInvitation((prev) => ({
+      ...prev,
+      ...updatePayload,
+    }));
+  };
+
+  // Razorpay Pay & Publish Flow
+  const handleRazorpayPublish = async () => {
     setPublishing(true);
+    setPublishFeedback(null);
+
     try {
-      if (isSupabaseConfigured && invitation) {
-        // Save current draft_content as published_content and update status
-        let { error } = await supabase
-          .from('invitations')
-          .update({
-            published_content: content,
-            status: 'published',
-            published_at: new Date().toISOString(),
-          })
-          .eq('id', invitation.id)
-          .eq('owner_id', user.id);
+      await initiatePayment({
+        invitationId: invitation.id,
+        packageId: selectedPkgId,
+        type: 'package',
+        userEmail: user?.email || '',
+        userName: content?.brideName ? `${content.brideName} & ${content.groomName}` : '',
+        onSuccess: async () => {
+          await executePublishInDb(selectedPkgId);
+          setPublishing(false);
+          setShowPublishModal(false);
+          setPublishFeedback({
+            type: 'success',
+            text: '🎉 Payment confirmed! Your wedding website is now live and ready to share.',
+          });
+        },
+        onError: (err) => {
+          setPublishing(false);
+          setPublishFeedback({
+            type: 'error',
+            text: err.message || 'Payment was not completed. You can try again or order via WhatsApp.',
+          });
+        },
+      });
+    } catch (err) {
+      console.error('Publish checkout error:', err);
+      setPublishing(false);
+      setPublishFeedback({ type: 'error', text: err.message || 'Could not launch payment.' });
+    }
+  };
 
-        if (error && (error.message?.includes('owner_id') || error.code === '42703')) {
-          const fallback = await supabase
-            .from('invitations')
-            .update({
-              published_content: content,
-              status: 'published',
-              published_at: new Date().toISOString(),
-            })
-            .eq('id', invitation.id)
-            .eq('host_id', user.id);
-          if (!fallback.error) error = null;
-        }
+  // Push Live Update (for already published invitations, enforces <= 3 updates and 6 months)
+  const handlePushLiveUpdate = async () => {
+    if (!hasUpdatesRemaining) {
+      alert('You have used all 3 allowed live updates for this invitation.');
+      return;
+    }
+    if (isExpired) {
+      alert('The 6-month editing window has ended. Your invitation remains viewable for guests.');
+      return;
+    }
 
-        if (error) throw error;
+    setPublishing(true);
+    setPublishFeedback(null);
 
+    try {
+      // 1. Try RPC update_published_invitation
+      const { data: rpcData, error: rpcErr } = await supabase.rpc('update_published_invitation', {
+        p_invitation_id: invitation.id,
+      });
+
+      if (!rpcErr) {
         setInvitation((prev) => ({
           ...prev,
-          status: 'published',
           published_content: content,
+          updates_used: rpcData?.updates_used ?? (prev.updates_used || 0) + 1,
         }));
+        setShowPublishModal(false);
+        setPublishFeedback({
+          type: 'success',
+          text: `✨ Live changes updated! Remaining live updates: ${rpcData?.updates_remaining ?? (2 - updatesUsed)}`,
+        });
+        return;
       }
+
+      console.warn('update_published_invitation RPC fallback to direct update:', rpcErr);
+
+      // 2. Direct fallback
+      const newUpdatesUsed = (invitation.updates_used || 0) + 1;
+      let { error } = await supabase
+        .from('invitations')
+        .update({
+          published_content: content,
+          updates_used: newUpdatesUsed,
+        })
+        .eq('id', invitation.id);
+
+      if (error) throw error;
+
+      setInvitation((prev) => ({
+        ...prev,
+        published_content: content,
+        updates_used: newUpdatesUsed,
+      }));
+
       setShowPublishModal(false);
+      setPublishFeedback({
+        type: 'success',
+        text: `✨ Live changes updated! Remaining live updates: ${3 - newUpdatesUsed}`,
+      });
     } catch (err) {
-      console.error('Publishing error:', err);
-      setSaveError(err.message || 'Failed to publish invitation.');
+      console.error('Push live update error:', err);
+      setPublishFeedback({ type: 'error', text: err.message || 'Failed to push live update.' });
     } finally {
       setPublishing(false);
     }
+  };
+
+  // Simulated Instant Publish (Free / Dev testing)
+  const handleSimulatedPublish = async () => {
+    setPublishing(true);
+    try {
+      await executePublishInDb(selectedPkgId);
+      setShowPublishModal(false);
+      setPublishFeedback({
+        type: 'success',
+        text: '✨ Invitation successfully published live in test mode!',
+      });
+    } catch (err) {
+      console.error('Simulated publish error:', err);
+      setPublishFeedback({ type: 'error', text: err.message || 'Publishing failed.' });
+    } finally {
+      setPublishing(false);
+    }
+  };
+
+  // WhatsApp Order fallback
+  const handleWhatsAppPublishOrder = () => {
+    const pkg = packages.find((p) => p.id === selectedPkgId) || packages[1];
+    const lines = [
+      `✨ *ORDER & PUBLISH INVITATION ENQUIRY* ✨`,
+      `*Brand:* ${config.brandName}`,
+      ``,
+      `🎨 *Template:* ${template.name}`,
+      `📦 *Package:* ${pkg.name} (${pkg.priceDisplay})`,
+      `💍 *Couple:* ${content?.brideName || 'Bride'} & ${content?.groomName || 'Groom'}`,
+      `📅 *Date:* ${content?.weddingDate || 'Upcoming'}`,
+      `🔗 *Invitation Link:* ${window.location.origin}/invite/${invitation?.slug}`,
+      ``,
+      `— Please assist me in completing payment and activating my invitation!`,
+    ];
+    const url = `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent(lines.join('\n'))}`;
+    window.open(url, '_blank');
   };
 
   if (loading) {
@@ -430,6 +597,14 @@ export default function InvitationEditor() {
                 <span>/{invitation?.slug}</span>
                 <span>•</span>
                 <span className="capitalize font-medium text-gold">{invitation?.package} Package</span>
+                {invitation?.status === 'published' && (
+                  <>
+                    <span>•</span>
+                    <span className="text-emerald-700 font-semibold">Live ({updatesUsed}/3 updates)</span>
+                    <span>•</span>
+                    <span className="text-charcoal/60">{daysLeft}d left</span>
+                  </>
+                )}
               </p>
             </div>
           </div>
@@ -1279,62 +1454,172 @@ export default function InvitationEditor() {
         </div>
       </div>
 
-      {/* ════════════════ PUBLISHING GATE MODAL ════════════════ */}
+      {/* ════════════════ PUBLISHING & MONETIZATION MODAL ════════════════ */}
       <AnimatePresence>
         {showPublishModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-champagne text-center"
+              className="bg-white rounded-3xl p-5 sm:p-8 max-w-lg w-full shadow-2xl border border-champagne text-center relative overflow-hidden my-8"
             >
-              <div className="w-14 h-14 rounded-full bg-gold/20 text-wine flex items-center justify-center mx-auto mb-4">
+              {/* Close Button */}
+              <button
+                onClick={() => setShowPublishModal(false)}
+                className="absolute top-4 right-4 p-1.5 rounded-full text-charcoal/40 hover:text-charcoal hover:bg-champagne/20 transition-colors"
+              >
+                <X size={18} />
+              </button>
+
+              <div className="w-14 h-14 rounded-full bg-gold/20 text-wine flex items-center justify-center mx-auto mb-3">
                 <Sparkles size={26} className="text-gold" />
               </div>
 
-              <h3 className="font-heading text-2xl font-bold text-wine mb-2">
-                {invitation?.status === 'published' ? 'Update Live Invitation?' : 'Publish Your Invitation'}
-              </h3>
+              {invitation?.status === 'published' ? (
+                /* ─── LIVE UPDATE MODE ─── */
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-wine mb-1">
+                    Push Changes Live
+                  </h3>
+                  <p className="font-body text-xs sm:text-sm text-charcoal/70 mb-5 leading-relaxed">
+                    Your draft edits will immediately update the live website for all guests.
+                  </p>
 
-              <p className="font-body text-xs sm:text-sm text-charcoal/70 mb-6 leading-relaxed">
-                {invitation?.status === 'published'
-                  ? 'Your draft changes will immediately update the live link shared with guests.'
-                  : 'Drafts and previews are free! Once published, your invitation goes live with guest tracking, RSVP collection, and personalized links.'}
-              </p>
+                  <div className="p-4 rounded-2xl bg-ivory border border-champagne mb-5 text-left space-y-3 text-xs">
+                    <div className="flex justify-between items-center">
+                      <span className="text-charcoal/60">Live Updates Remaining:</span>
+                      <span className={`font-bold ${hasUpdatesRemaining ? 'text-emerald-700' : 'text-rose-700'}`}>
+                        {Math.max(0, 3 - updatesUsed)} of 3 left
+                      </span>
+                    </div>
 
-              <div className="p-4 rounded-2xl bg-ivory border border-champagne mb-6 text-left space-y-2 text-xs">
-                <div className="flex justify-between font-semibold">
-                  <span className="text-charcoal/60">Template:</span>
-                  <span className="text-wine">{template.name}</span>
-                </div>
-                <div className="flex justify-between font-semibold">
-                  <span className="text-charcoal/60">Package:</span>
-                  <span className="capitalize text-gold font-bold">{invitation?.package} (₹{template.startingPrice})</span>
-                </div>
-                <div className="flex justify-between font-semibold">
-                  <span className="text-charcoal/60">Live URL:</span>
-                  <span className="text-wine">/invite/{invitation?.slug}</span>
-                </div>
-              </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-charcoal/60">6-Month Editing Window:</span>
+                      <span className={`font-bold ${isExpired ? 'text-rose-700' : 'text-wine'}`}>
+                        {isExpired ? 'Expired' : `${daysLeft} days remaining`}
+                      </span>
+                    </div>
 
-              <div className="flex gap-3">
-                <button
-                  type="button"
-                  onClick={() => setShowPublishModal(false)}
-                  className="flex-1 py-3 rounded-xl border border-champagne text-charcoal text-xs font-semibold hover:bg-champagne/20 transition-colors"
-                >
-                  Keep as Draft
-                </button>
-                <button
-                  type="button"
-                  onClick={handleConfirmPublish}
-                  disabled={publishing}
-                  className="flex-1 py-3 rounded-xl bg-wine hover:bg-gold text-white text-xs uppercase tracking-wider font-semibold shadow-md transition-all disabled:opacity-50"
-                >
-                  {publishing ? 'Publishing...' : 'Confirm & Publish'}
-                </button>
-              </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-charcoal/60">Public Link:</span>
+                      <span className="text-gold font-mono text-[11px]">/invite/{invitation?.slug}</span>
+                    </div>
+                  </div>
+
+                  {!hasUpdatesRemaining ? (
+                    <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs text-left mb-4 flex items-start gap-2">
+                      <AlertCircle size={16} className="shrink-0 mt-0.5 text-amber-600" />
+                      <span>
+                        You have published all 3 allowed live updates. If you have urgent ceremony changes, please reach out via WhatsApp support.
+                      </span>
+                    </div>
+                  ) : isExpired ? (
+                    <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs text-left mb-4 flex items-start gap-2">
+                      <AlertCircle size={16} className="shrink-0 mt-0.5 text-amber-600" />
+                      <span>
+                        The 6-month editing window has concluded. Your invitation website will remain live for guests to view.
+                      </span>
+                    </div>
+                  ) : null}
+
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      onClick={() => setShowPublishModal(false)}
+                      className="flex-1 py-3 rounded-xl border border-champagne text-charcoal text-xs font-semibold hover:bg-champagne/20 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handlePushLiveUpdate}
+                      disabled={publishing || !hasUpdatesRemaining || isExpired}
+                      className="flex-1 py-3 rounded-xl bg-wine hover:bg-gold text-white text-xs uppercase tracking-wider font-semibold shadow-md transition-all disabled:opacity-50"
+                    >
+                      {publishing ? 'Updating...' : 'Push Live Now'}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                /* ─── PUBLISH & MONETIZE MODE ─── */
+                <div>
+                  <h3 className="font-heading text-2xl font-bold text-wine mb-1">
+                    Publish & Unlock Live Sharing
+                  </h3>
+                  <p className="font-body text-xs sm:text-sm text-charcoal/70 mb-5 leading-relaxed">
+                    Select a wedding package to unlock guest tracking, real-time RSVPs, and personalized WhatsApp invitations.
+                  </p>
+
+                  {/* Package Selector Cards */}
+                  <div className="grid grid-cols-3 gap-2 mb-5 text-left">
+                    {packages.map((pkg) => {
+                      const isSelected = selectedPkgId === pkg.id;
+                      return (
+                        <div
+                          key={pkg.id}
+                          onClick={() => setSelectedPkgId(pkg.id)}
+                          className={`p-3 rounded-2xl border cursor-pointer transition-all relative ${
+                            isSelected
+                              ? 'border-wine bg-wine/5 shadow-xs ring-2 ring-wine/20'
+                              : 'border-champagne bg-ivory/60 hover:border-wine/50'
+                          }`}
+                        >
+                          {pkg.popular && (
+                            <span className="absolute -top-2 left-1/2 -translate-x-1/2 bg-gold text-white text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full shadow-2xs whitespace-nowrap">
+                              Popular
+                            </span>
+                          )}
+                          <span className="text-xs font-bold text-wine block truncate">{pkg.name}</span>
+                          <span className="font-heading text-sm font-bold text-charcoal block mt-0.5">
+                            {pkg.priceDisplay}
+                          </span>
+                          <span className="text-[10px] text-charcoal/60 block mt-1">
+                            {pkg.id === 'starter' ? '5 links' : pkg.id === 'signature' ? '25 links' : '100 links'}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Primary CTA: Razorpay Payment */}
+                  <button
+                    type="button"
+                    onClick={handleRazorpayPublish}
+                    disabled={publishing}
+                    className="w-full py-3.5 px-4 rounded-xl bg-wine hover:bg-gold text-white font-body text-xs uppercase tracking-wider font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 mb-2.5 disabled:opacity-60"
+                  >
+                    <CreditCard size={15} />
+                    <span>
+                      {publishing
+                        ? 'Processing Payment...'
+                        : `Pay ${packages.find((p) => p.id === selectedPkgId)?.priceDisplay || '₹1,499'} & Publish Live`}
+                    </span>
+                  </button>
+
+                  {/* Fallback 1: WhatsApp Enquiry */}
+                  <button
+                    type="button"
+                    onClick={handleWhatsAppPublishOrder}
+                    className="w-full py-2.5 px-4 rounded-xl border border-emerald-600/40 text-emerald-800 hover:bg-emerald-50 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors mb-2"
+                  >
+                    <MessageCircle size={14} className="text-emerald-600" />
+                    <span>Order via WhatsApp (Fallback)</span>
+                  </button>
+
+                  {/* Fallback 2: Free Developer Simulation */}
+                  <div className="pt-2 border-t border-champagne/60 text-center">
+                    <button
+                      type="button"
+                      onClick={handleSimulatedPublish}
+                      disabled={publishing}
+                      className="text-[11px] text-charcoal/50 hover:text-wine underline font-medium"
+                    >
+                      Instant Test Publish (Free / Sandbox Mode)
+                    </button>
+                  </div>
+                </div>
+              )}
             </motion.div>
           </div>
         )}

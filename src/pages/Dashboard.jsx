@@ -4,13 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plus, Eye, Users, Edit3, Share2, Copy, Check,
   ExternalLink, Sparkles, AlertCircle, Heart, Calendar,
-  Clock, MapPin, X, MessageCircle
+  Clock, MapPin, X, MessageCircle, BarChart2, ShieldCheck,
+  TrendingUp, ArrowRight
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import supabase, { isSupabaseConfigured } from '../lib/supabase';
 import templates from '../data/templates';
 import packages from '../data/pricing';
 import GuestListManager from '../components/dashboard/GuestListManager';
+import AnalyticsModal from '../components/dashboard/AnalyticsModal';
 
 export default function Dashboard() {
   const { user, profile, signOut } = useAuth();
@@ -36,6 +38,9 @@ export default function Dashboard() {
 
   // Guest Management Modal state
   const [activeGuestInvite, setActiveGuestInvite] = useState(null);
+
+  // Analytics Modal state
+  const [activeAnalyticsInvite, setActiveAnalyticsInvite] = useState(null);
 
   // Fetch host's invitations
   const fetchInvitations = async () => {
@@ -281,9 +286,38 @@ export default function Dashboard() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
-            <AlertCircle size={16} className="flex-shrink-0" />
-            <span>{error}</span>
+          <div className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs shadow-xs">
+            <div className="flex items-start gap-3">
+              <AlertCircle size={18} className="text-amber-600 mt-0.5 shrink-0" />
+              <div className="flex-1">
+                <p className="font-bold text-amber-950 mb-1">
+                  {error.includes('owner_id')
+                    ? 'Database Setup Required (Supabase Migration)'
+                    : 'Notice Loading Invitations'}
+                </p>
+                <p className="text-amber-800 leading-relaxed mb-3">
+                  {error.includes('owner_id')
+                    ? 'Your database requires the Phase 4 monetization & owner_id update. Copy and run the consolidated migration in your Supabase SQL Editor to enable publishing, live limits, and analytics.'
+                    : error}
+                </p>
+                {error.includes('owner_id') && (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <a
+                      href="https://supabase.com/dashboard/project/nvoynqxwkbtzdlgbjvfl/sql"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-wine text-white font-semibold text-[11px] hover:bg-gold transition-colors"
+                    >
+                      <span>Open Supabase SQL Editor</span>
+                      <ExternalLink size={12} />
+                    </a>
+                    <span className="font-mono bg-amber-100 text-amber-900 px-2 py-1 rounded text-[11px]">
+                      supabase/migrations/20261123_0006_phase4_monetization_and_publishing.sql
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
@@ -336,7 +370,7 @@ export default function Dashboard() {
                               : 'bg-amber-100 text-amber-800'
                           }`}
                         >
-                          {inv.status === 'published' ? 'Published' : 'Draft'}
+                          {inv.status === 'published' ? `Published (${inv.updates_used || 0}/3)` : 'Draft'}
                         </div>
                       </div>
 
@@ -403,16 +437,28 @@ export default function Dashboard() {
                         </button>
                       </div>
 
-                      {/* Prominent Manage Guests & RSVPs Button */}
-                      <button
-                        type="button"
-                        onClick={() => setActiveGuestInvite(inv)}
-                        className="w-full mt-2.5 py-2 px-3 rounded-xl bg-ivory hover:bg-wine hover:text-white border border-champagne text-wine font-body text-[11px] font-semibold text-center flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
-                        title="Manage guest list, create personal links and review RSVPs"
-                      >
-                        <Users size={13} />
-                        <span>Manage Guests & RSVPs</span>
-                      </button>
+                      {/* Dual Action Buttons: Guests and Analytics */}
+                      <div className="grid grid-cols-2 gap-2 mt-2.5">
+                        <button
+                          type="button"
+                          onClick={() => setActiveGuestInvite(inv)}
+                          className="py-2 px-2 rounded-xl bg-ivory hover:bg-wine hover:text-white border border-champagne text-wine font-body text-[11px] font-semibold text-center flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+                          title="Manage guest list, create personal links and review RSVPs"
+                        >
+                          <Users size={13} />
+                          <span>Guests & RSVPs</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setActiveAnalyticsInvite(inv)}
+                          className="py-2 px-2 rounded-xl bg-white hover:bg-wine hover:text-white border border-champagne text-charcoal hover:border-wine font-body text-[11px] font-semibold text-center flex items-center justify-center gap-1.5 transition-colors shadow-2xs"
+                          title="View live view counts, device breakdown and catering analytics"
+                        >
+                          <BarChart2 size={13} className="text-gold" />
+                          <span>Analytics</span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 );
@@ -637,6 +683,14 @@ export default function Dashboard() {
           invitation={activeGuestInvite}
           onClose={() => setActiveGuestInvite(null)}
           onRefreshMetrics={fetchInvitations}
+        />
+      )}
+
+      {/* Analytics & Catering Insights Modal */}
+      {activeAnalyticsInvite && (
+        <AnalyticsModal
+          invitation={activeAnalyticsInvite}
+          onClose={() => setActiveAnalyticsInvite(null)}
         />
       )}
     </div>
