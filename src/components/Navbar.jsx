@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Menu, X, Sparkles, ShoppingBag } from 'lucide-react';
+import { Menu, X, Sparkles, ShoppingBag, User } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../context/AuthContext';
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -13,9 +14,14 @@ const navLinks = [
 ];
 
 export default function Navbar() {
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+
+  const allNavLinks = user
+    ? [...navLinks, { to: '/dashboard', label: 'Dashboard' }]
+    : navLinks;
 
   useEffect(() => {
     setIsOpen(false);
@@ -54,7 +60,7 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-7">
-            {navLinks.map((link) => (
+            {allNavLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
@@ -71,6 +77,23 @@ export default function Navbar() {
             ))}
 
             <div className="flex items-center gap-2 pl-3 border-l border-champagne">
+              {user ? (
+                <Link
+                  to="/dashboard"
+                  className="py-2 px-4 rounded-lg bg-wine text-white hover:bg-gold font-body text-xs uppercase tracking-wider font-semibold shadow-xs transition-all duration-300 flex items-center gap-1.5"
+                >
+                  <User size={13} />
+                  <span>My Invitations</span>
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className="py-2 px-3 text-charcoal/70 hover:text-wine font-body text-xs uppercase tracking-wider font-semibold transition-colors"
+                >
+                  Host Login
+                </Link>
+              )}
+
               <Link
                 to="/invitations"
                 className="py-2 px-4 rounded-lg border border-wine/30 text-wine hover:bg-wine hover:text-white font-body text-xs uppercase tracking-wider font-semibold transition-all duration-300"
@@ -79,10 +102,10 @@ export default function Navbar() {
               </Link>
               <Link
                 to="/buy"
-                className="btn-primary text-xs uppercase tracking-wider font-semibold px-5 py-2.5 shadow-sm hover:shadow flex items-center gap-1.5"
+                className="btn-primary text-xs uppercase tracking-wider font-semibold px-4 py-2.5 shadow-sm hover:shadow flex items-center gap-1.5"
               >
                 <ShoppingBag size={14} />
-                <span>Buy a Template</span>
+                <span>Buy Template</span>
               </Link>
             </div>
           </div>
@@ -109,7 +132,7 @@ export default function Navbar() {
             className="lg:hidden bg-ivory/98 backdrop-blur-md border-t border-champagne overflow-hidden shadow-xl"
           >
             <div className="container-custom mx-auto px-4 py-6 space-y-4">
-              {navLinks.map((link) => (
+              {allNavLinks.map((link) => (
                 <NavLink
                   key={link.to}
                   to={link.to}
@@ -124,6 +147,14 @@ export default function Navbar() {
                   {link.label}
                 </NavLink>
               ))}
+              {!user && (
+                <Link
+                  to="/login"
+                  className="block font-body text-sm py-2 text-gold font-semibold"
+                >
+                  Host Sign In / Register
+                </Link>
+              )}
               <div className="pt-2 grid grid-cols-2 gap-3">
                 <Link
                   to="/invitations"

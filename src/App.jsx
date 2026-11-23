@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Invitations from './pages/Invitations';
@@ -11,6 +13,11 @@ import HowItWorks from './pages/HowItWorks';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import PublicInvitation from './pages/PublicInvitation';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import Dashboard from './pages/Dashboard';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -22,7 +29,7 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -37,11 +44,24 @@ function App() {
           <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="about" element={<About />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          {/* Protected Host Dashboard Routes */}
+          <Route
+            path="dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
         </Route>
         {/* Dedicated Guest Invitation Route (Standalone Mobile-First Experience) */}
         <Route path="invite/:slug" element={<PublicInvitation />} />
       </Routes>
-    </>
+    </AuthProvider>
   );
 }
 
