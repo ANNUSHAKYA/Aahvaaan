@@ -8,6 +8,8 @@ import supabase, { isSupabaseConfigured } from '../lib/supabase';
 import templates from '../data/templates';
 import useWeddingAudio from '../hooks/useWeddingAudio';
 import TemplateRenderer from '../components/invitation/TemplateRenderer';
+import { getCachedInvitation, setCachedInvitation } from '../utils/cache';
+import { checkRateLimit, recordRateLimitAction } from '../utils/rateLimiter';
 
 // ─── Live RPC RSVP Form ───
 function LiveRSVPForm({
@@ -54,6 +56,14 @@ function LiveRSVPForm({
       return;
     }
 
+    // Client-side rate limiting (max 5 per 10 mins)
+    const rlKey = `rsvp_${invitationId}_${cleanPhone}`;
+    const rlCheck = checkRateLimit(rlKey, 5, 10);
+    if (!rlCheck.allowed) {
+      setErrorMessage(rlCheck.error);
+      return;
+    }
+
     setSubmitting(true);
     try {
       const isInvUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(invitationId);
@@ -86,6 +96,7 @@ function LiveRSVPForm({
         }
       }
 
+      recordRateLimitAction(rlKey);
       setSubmitted(true);
       if (onSuccess) onSuccess();
     } catch (err) {
@@ -289,12 +300,25 @@ export default function PublicInvitation({ isPersonalized = false }) {
   const [envelopeOpen, setEnvelopeOpen] = useState(false);
   const { isPlaying, toggle: toggleAudio, start: startAudio } = useWeddingAudio();
 
-  // Load invitation via Security Definer RPC
+  // Load invitation via Security Definer RPC with fast caching
   useEffect(() => {
     let isMounted = true;
+    const cacheKey = personalSlug ? `p_${personalSlug}` : `c_${commonCode}`;
+
+    // 1. Check client-side cache for instant render on 4G
+    const cachedData = getCachedInvitation(cacheKey);
+    if (cachedData) {
+      setInvitationData(cachedData);
+      const tmpl = templates.find((t) => t.id === cachedData.template?.id) || templates[0];
+      setTemplate(tmpl);
+      setLoading(false);
+      const b = cachedData.content?.brideName || 'Bride';
+      const g = cachedData.content?.groomName || 'Groom';
+      document.title = `${b} & ${g}'s Wedding Invitation | Aahvaaan`;
+    }
 
     async function loadData() {
-      setLoading(true);
+      if (!cachedData) setLoading(true);
       try {
         let fetchedData = null;
 
@@ -317,6 +341,7 @@ export default function PublicInvitation({ isPersonalized = false }) {
         if (isMounted) {
           if (fetchedData) {
             setInvitationData(fetchedData);
+            setCachedInvitation(cacheKey, fetchedData);
             const tmpl = templates.find((t) => t.id === fetchedData.template?.id) || templates[0];
             setTemplate(tmpl);
 
@@ -337,7 +362,7 @@ export default function PublicInvitation({ isPersonalized = false }) {
                 p_device_type: deviceType,
               }).catch(() => {});
             }
-          } else {
+          } else if (!cachedData) {
             // Fallback sample invitation
             const fallbackTmpl = templates[0];
             setTemplate(fallbackTmpl);

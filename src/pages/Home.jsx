@@ -8,6 +8,8 @@ import {
 } from 'lucide-react';
 import templates from '../data/templates';
 import config from '../data/config';
+import SEO from '../components/SEO';
+import { checkRateLimit, recordRateLimitAction } from '../utils/rateLimiter';
 
 // ─── FAQ Accordion Item Component ───
 function FAQAccordionItem({ question, answer, isOpen, onToggle }) {
@@ -56,10 +58,21 @@ export default function Home() {
     message: '',
   });
   const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [contactError, setContactError] = useState(null);
 
   const handleContactSubmit = (e) => {
     e.preventDefault();
+    setContactError(null);
     if (!contactForm.name || !contactForm.email || !contactForm.message) return;
+
+    // Rate limit: max 3 submissions per 15 minutes
+    const rl = checkRateLimit('contact_form', 3, 15);
+    if (!rl.allowed) {
+      setContactError(rl.error);
+      return;
+    }
+
+    recordRateLimitAction('contact_form');
     setContactSubmitted(true);
     setTimeout(() => {
       setContactSubmitted(false);
@@ -104,6 +117,10 @@ export default function Home() {
 
   return (
     <div className="bg-ivory min-h-screen font-body overflow-x-hidden">
+      <SEO
+        title="Aahvaaan | Luxury Digital Wedding Invitations by Vow & Vision"
+        description="Four signature Indian wedding collections with personalized envelope reveals, live RSVP tracking, and Google Maps directions."
+      />
       {/* ════════════════ 1. 3D HERO SECTION ════════════════ */}
       <section className="bg-gradient-to-br from-[#1A030A] via-[#3D0A17] to-[#6B1D2F] text-white pt-28 sm:pt-36 pb-20 sm:pb-28 relative overflow-hidden">
         {/* Soft 3D ambient glows */}
@@ -729,6 +746,11 @@ export default function Home() {
             </div>
           ) : (
             <form onSubmit={handleContactSubmit} className="space-y-4">
+              {contactError && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl">
+                  {contactError}
+                </div>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] uppercase font-bold tracking-wider text-wine mb-1.5">
