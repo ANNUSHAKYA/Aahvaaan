@@ -71,8 +71,8 @@ export default function InvitationPreview() {
               <span>Back</span>
             </Link>
 
-            <span className="text-xs font-semibold text-[#7C3AED] flex items-center gap-1.5">
-              <Eye size={14} />
+            <span className="text-xs font-semibold text-[#512D38] flex items-center gap-1.5">
+              <Eye size={14} className="text-[#B69A70]" />
               <span>This is what your guests will see</span>
             </span>
           </div>
@@ -81,9 +81,9 @@ export default function InvitationPreview() {
           <div className="flex items-center gap-3">
             <Link
               to={`/dashboard/invitations/create?template=${template.id}`}
-              className="px-4 py-1.5 rounded-full border border-purple-200 text-[#7C3AED] bg-white hover:bg-purple-50 text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-all"
+              className="px-4 py-1.5 rounded-full border border-[#B69A70]/40 text-[#512D38] bg-white hover:bg-[#FAF7F2] text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-all"
             >
-              <Edit3 size={13} />
+              <Edit3 size={13} className="text-[#B69A70]" />
               <span>Try editing</span>
             </Link>
           </div>
@@ -114,7 +114,7 @@ export default function InvitationPreview() {
         <button
           type="button"
           onClick={() => setShowBuyModal(true)}
-          className="pointer-events-auto px-7 py-3.5 rounded-full bg-gradient-to-r from-[#7C3AED] via-[#6D28D9] to-[#5B21B6] hover:from-[#6D28D9] hover:to-[#4C1D95] text-white font-semibold text-xs sm:text-sm shadow-2xl hover:scale-105 active:scale-95 flex items-center gap-2 transition-all"
+          className="pointer-events-auto px-7 py-3.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#C99191] hover:from-[#411F29] hover:to-[#512D38] text-white font-semibold text-xs sm:text-sm shadow-2xl hover:scale-105 active:scale-95 flex items-center gap-2 transition-all"
         >
           <ShoppingBag size={15} />
           <span>Buy this template</span>
@@ -129,42 +129,42 @@ export default function InvitationPreview() {
               initial={{ opacity: 0, scale: 0.95, y: 15 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-100 text-left relative max-h-[90vh] overflow-y-auto"
+              className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-[#E9D8CC] text-left relative max-h-[90vh] overflow-y-auto"
             >
-              <span className="text-[11px] font-bold uppercase tracking-widest text-[#7C3AED] block mb-1">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#B69A70] block mb-1">
                 WEDDING
               </span>
-              <h3 className="font-heading text-2xl font-bold text-gray-900 mb-5">
+              <h3 className="font-heading text-2xl font-bold text-[#512D38] mb-5">
                 {template.name}
               </h3>
 
               {/* Your Invitation Box */}
-              <div className="bg-[#FAF9FF] border border-[#7C3AED]/40 rounded-2xl p-5 mb-6 text-xs text-gray-700 space-y-2.5">
-                <h4 className="font-bold text-gray-900 text-sm mb-3">Your Invitation</h4>
+              <div className="bg-[#FAF7F2] border border-[#B69A70]/30 rounded-2xl p-5 mb-6 text-xs text-gray-700 space-y-2.5">
+                <h4 className="font-bold text-[#512D38] text-sm mb-3">Your Invitation</h4>
                 <div className="flex items-start gap-2">
-                  <span className="text-[#7C3AED] font-bold">✓</span>
+                  <span className="text-[#B69A70] font-bold">✓</span>
                   <span>One common invitation link to share with everyone</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-[#7C3AED] font-bold">✓</span>
+                  <span className="text-[#B69A70] font-bold">✓</span>
                   <span>The complete, interactive invitation experience</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-[#7C3AED] font-bold">✓</span>
+                  <span className="text-[#B69A70] font-bold">✓</span>
                   <span>5 guests greeted by name, each with their own link</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-[#7C3AED] font-bold">✓</span>
+                  <span className="text-[#B69A70] font-bold">✓</span>
                   <span>RSVP replies and guest tracking</span>
                 </div>
               </div>
 
               {/* Want to greet guests by name? */}
               <div className="mb-6">
-                <h4 className="font-bold text-sm text-gray-900 mb-1">
+                <h4 className="font-bold text-sm text-[#512D38] mb-1">
                   Want to greet guests by name?
                 </h4>
-                <p className="text-xs text-gray-500 leading-relaxed mb-3">
+                <p className="text-xs text-[#65575A] leading-relaxed mb-3">
                   Everyone opens the same invitation link. A personalized guest gets their own instead, which opens with their name on it. Add more now, or anytime later from your dashboard.
                 </p>
 
@@ -174,8 +174,8 @@ export default function InvitationPreview() {
                     onClick={() => setGuestAddon('none')}
                     className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === 'none'
-                        ? 'border-[#7C3AED] bg-[#FAF9FF] ring-1 ring-[#7C3AED]'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
+                        : 'border-[#E9D8CC] hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
@@ -184,7 +184,7 @@ export default function InvitationPreview() {
                         name="modalAddon"
                         checked={guestAddon === 'none'}
                         onChange={() => setGuestAddon('none')}
-                        className="text-[#7C3AED]"
+                        className="text-[#512D38]"
                       />
                       <span className="font-semibold text-gray-800">Not now</span>
                     </div>
@@ -195,8 +195,8 @@ export default function InvitationPreview() {
                     onClick={() => setGuestAddon('50')}
                     className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === '50'
-                        ? 'border-[#7C3AED] bg-[#FAF9FF] ring-1 ring-[#7C3AED]'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
+                        : 'border-[#E9D8CC] hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
@@ -205,7 +205,7 @@ export default function InvitationPreview() {
                         name="modalAddon"
                         checked={guestAddon === '50'}
                         onChange={() => setGuestAddon('50')}
-                        className="text-[#7C3AED]"
+                        className="text-[#512D38]"
                       />
                       <span className="font-semibold text-gray-800">50 Guests</span>
                     </div>
@@ -216,8 +216,8 @@ export default function InvitationPreview() {
                     onClick={() => setGuestAddon('500')}
                     className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === '500'
-                        ? 'border-[#7C3AED] bg-[#FAF9FF] ring-1 ring-[#7C3AED]'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
+                        : 'border-[#E9D8CC] hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center gap-2.5">
@@ -226,7 +226,7 @@ export default function InvitationPreview() {
                         name="modalAddon"
                         checked={guestAddon === '500'}
                         onChange={() => setGuestAddon('500')}
-                        className="text-[#7C3AED]"
+                        className="text-[#512D38]"
                       />
                       <span className="font-semibold text-gray-800">500 Guests</span>
                     </div>
@@ -236,17 +236,17 @@ export default function InvitationPreview() {
               </div>
 
               {/* Modal Footer */}
-              <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
+              <div className="pt-4 border-t border-[#E9D8CC] flex items-center justify-between">
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block">
                     TOTAL
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-gray-400 line-through">₹3,499</span>
-                    <span className="text-lg font-bold text-gray-900">
+                    <span className="text-lg font-bold text-[#512D38]">
                       ₹{totalModalPrice}
                     </span>
-                    <span className="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-bold text-[#512D38] bg-[#FCEEE9] border border-[#C99191]/40 px-2 py-0.5 rounded-full">
                       50% OFF
                     </span>
                   </div>
@@ -263,7 +263,7 @@ export default function InvitationPreview() {
                   <button
                     type="button"
                     onClick={() => navigate(`/buy/${template.id}?addon=${guestAddon}`)}
-                    className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] hover:from-[#6D28D9] hover:to-[#5B21B6] text-white text-xs font-semibold shadow-md hover:shadow-lg transition-all"
+                    className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#C99191] hover:from-[#411F29] hover:to-[#512D38] text-white text-xs font-semibold shadow-md hover:shadow-lg transition-all"
                   >
                     Proceed to Buy
                   </button>

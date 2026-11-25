@@ -22,6 +22,8 @@ export interface WarpCard {
   mesh?: string[];
   /** Numeral fill, left to right. */
   numeral?: [string, string];
+  /** Text color for titles, footers, and labels on light/pastel cards. Defaults to "#512D38". */
+  textColor?: string;
   /** Colour of the glow this card casts onto the top and bottom edges while it faces the viewer. */
   glow?: string;
   /** The small graphic under the numeral. */
@@ -75,10 +77,11 @@ export const WARP_CAROUSEL_CARDS: WarpCard[] = [
     unit: "DEC",
     footer: "Sharma Courtyard • 11:00 AM",
     detail: "ring",
-    numeral: ["#F7E2A9", "#D4AF37"],
-    accent: "#D4AF37",
-    glow: "#722F37",
-    mesh: ["#48001c", "#400119", "#41011d", "#4b021e", "#47021a", "#480019", "#7e0036", "#8c0033", "#4b0120", "#10000c", "#1f010b", "#390116", "#e84396", "#ff568c", "#dc433c", "#0e0705", "#090004", "#2f0213", "#ff9fd9", "#ff6f90", "#a53625", "#190d05", "#050002", "#2f0110", "#ff67b5", "#b11348", "#000000", "#11000c", "#3e021b", "#8a0c31", "#e31771", "#5d0027", "#3a0021", "#620030", "#640627", "#dc184a", "#c10b5f", "#920245", "#ab054f", "#910041", "#650226", "#c01240"],
+    textColor: "#304535",
+    numeral: ["#304535", "#7A9A80"],
+    accent: "#5A7A60",
+    glow: "#7A9A80",
+    mesh: ["#FAF9F5", "#F2F6F0", "#E5EFE2", "#DAE8D6", "#E8F0E4", "#FAF8F5", "#F0F5EE", "#E0ECE0", "#D3E4D1", "#C7DDC5", "#D8E9D6", "#EFF5EC", "#E5EFE2", "#D2E5CE", "#BEDBB9", "#B0D3AA", "#C5E0C2", "#E2ECE0", "#DAE8D6", "#C5DFBF", "#ABD4A3", "#9BCB92", "#B8DBB3", "#D7E6D3", "#E2ECE0", "#D0E4CC", "#BEDBB9", "#B2D5AD", "#C8E1C5", "#E4EFE2", "#F0F5EE", "#DFECE0", "#D2E5CE", "#C7DEC5", "#DAE9D8", "#EFF5EC", "#FAF9F5", "#F2F6F0", "#E5EFE2", "#DAE8D6", "#E8F0E4", "#FAF8F5"],
   },
   {
     title: "Haldi\nRasana",
@@ -86,11 +89,12 @@ export const WARP_CAROUSEL_CARDS: WarpCard[] = [
     unit: "DEC",
     footer: "Poolside Lawn • 3:00 PM",
     detail: "slider",
-    labels: ["Auspicious", "Joy"],
-    numeral: ["#FFF8D6", "#FFC83B"],
-    accent: "#FFD700",
-    glow: "#D4AF37",
-    mesh: ["#ff623e", "#f57337", "#e49435", "#fba03f", "#ef6b36", "#f14c36", "#f29a3e", "#a0a92e", "#a2ba36", "#fffe65", "#ffd852", "#f2863b", "#a5b12e", "#46821d", "#6a6127", "#b88b44", "#b6bd41", "#c4b838", "#7e9f27", "#3b5a19", "#412c10", "#0d1700", "#255b0c", "#98ad28", "#a5b232", "#3e7c1e", "#002800", "#00300f", "#5b9745", "#c1b833", "#f3983b", "#b3b431", "#6fa31f", "#9bc976", "#edd896", "#fd8c3d", "#ff5f3b", "#ff7d47", "#ffa880", "#ffc1d8", "#ff8d99", "#ff5438"],
+    labels: ["Saffron", "Turmeric"],
+    textColor: "#5E3808",
+    numeral: ["#7A4B10", "#D48B28"],
+    accent: "#D48B28",
+    glow: "#E5A93C",
+    mesh: ["#FFFBF2", "#FFF6E8", "#FDEED8", "#FDE4C5", "#FCEFD8", "#FFFBF2", "#FFF4E2", "#FDE8CE", "#FCDDB8", "#FCD1A2", "#FCDCB6", "#FFF3E0", "#FDEED8", "#FCDDB8", "#FBCFA0", "#FAC188", "#FBCD9D", "#FDECD6", "#FDE4C5", "#FCD3A6", "#FAC38B", "#F8B270", "#F9C187", "#FDE2C2", "#FDEFD8", "#FCDCB6", "#FAC997", "#F8B678", "#F9C794", "#FDEED8", "#FFF4E2", "#FDE8CE", "#FCDDB8", "#FCD1A2", "#FCDCB6", "#FFF3E0", "#FFFBF2", "#FFF6E8", "#FDEED8", "#FDE4C5", "#FCEFD8", "#FFFBF2"],
   },
   {
     title: "Sangeet\nNight",
@@ -98,10 +102,11 @@ export const WARP_CAROUSEL_CARDS: WarpCard[] = [
     unit: "DEC",
     footer: "Grand Ballroom • 7:30 PM",
     detail: "wave",
-    numeral: ["#E3C5FF", "#A855F7"],
-    accent: "#C084FC",
-    glow: "#9333EA",
-    mesh: ["#4c2d5f", "#3b2245", "#3e285b", "#33204f", "#381844", "#572571", "#644096", "#4f3688", "#8358f6", "#8d54f3", "#5e20ac", "#6e24b7", "#482e6d", "#261b48", "#825bf6", "#d48cff", "#d07bff", "#b359ff", "#2d1837", "#140a1b", "#2c1d66", "#3a2383", "#693bca", "#8b42ef", "#411c5b", "#300753", "#3b006e", "#500f79", "#7e31c1", "#9541f3", "#44245a", "#3f0c69", "#6f15b9", "#d17cff", "#e2a3ff", "#a668ff", "#4b2f60", "#4d2172", "#6819aa", "#9b48dc", "#965dc9", "#7745c4"],
+    textColor: "#3D2456",
+    numeral: ["#4A2E66", "#9B72CF"],
+    accent: "#7E52A0",
+    glow: "#9B72CF",
+    mesh: ["#FAF7FC", "#F5EFF9", "#EFE5F5", "#E8DAF0", "#EEE3F4", "#FAF7FC", "#F2E8F7", "#EAD8F2", "#DEC3EB", "#D1ADE3", "#DDC0EB", "#F1E7F6", "#EFE5F5", "#DEC3EB", "#D0ACE3", "#C194D9", "#CEABE1", "#EFE3F5", "#E8DAF0", "#D3B0E5", "#C296DA", "#B079CD", "#BE92D7", "#E7D8EF", "#EEE3F4", "#DEC1EB", "#CA9FD9", "#B480CF", "#C79DD7", "#EDE1F4", "#F2E8F7", "#EAD8F2", "#DEC3EB", "#D1ADE3", "#DDC0EB", "#F1E7F6", "#FAF7FC", "#F5EFF9", "#EFE5F5", "#E8DAF0", "#EEE3F4", "#FAF7FC"],
   },
   {
     title: "Shubh\nVivaah",
@@ -110,10 +115,11 @@ export const WARP_CAROUSEL_CARDS: WarpCard[] = [
     footer: "The Palace Mandapam • 6:00 PM",
     detail: "cross",
     labels: ["Pheras", "Vidhi", "Vachan"],
-    numeral: ["#FFE4B5", "#FF8C00"],
-    accent: "#FFA500",
-    glow: "#B22222",
-    mesh: ["#022852", "#031e3f", "#031934", "#021831", "#021b36", "#022246", "#022345", "#020e1e", "#01040f", "#000416", "#020b31", "#021c57", "#01172f", "#01010c", "#03001d", "#0a0f4c", "#112383", "#0b36af", "#021142", "#050b47", "#0c2e8f", "#165bd4", "#1675fd", "#167bff", "#03288e", "#0438af", "#0d66e7", "#107eec", "#30afff", "#71dcff", "#0356e8", "#0259ec", "#0945b0", "#001a49", "#3f7c9d", "#d4ffff", "#0365ff", "#0256ea", "#052a87", "#00001f", "#1f4c7b", "#9ee7ff"],
+    textColor: "#512D38",
+    numeral: ["#512D38", "#8B3A4F"],
+    accent: "#B69A70",
+    glow: "#C99191",
+    mesh: ["#FDF8F6", "#FAF0EC", "#F6E4DE", "#F2D7CE", "#F5E2DA", "#FDF8F6", "#F9ECE7", "#F3DDD4", "#ECCBC0", "#E4B8AB", "#EBCEB7", "#F8EBE5", "#F6E4DE", "#ECCBC0", "#E2B5A7", "#D79C8C", "#E0B39F", "#F5E2DB", "#F2D7CE", "#E5B9AC", "#D89E8F", "#CA8171", "#D59A83", "#F1D5CB", "#F5E2DA", "#ECCBC0", "#DC9E8E", "#CD8372", "#DAA089", "#F4E0D8", "#F9ECE7", "#F3DDD4", "#ECCBC0", "#E4B8AB", "#EBCEB7", "#F8EBE5", "#FDF8F6", "#FAF0EC", "#F6E4DE", "#F2D7CE", "#F5E2DA", "#FDF8F6"],
   },
 ];
 
@@ -398,17 +404,20 @@ function paintCard(cv: HTMLCanvasElement, card: WarpCard, family: string) {
   paintMesh(ctx, w, h, card.mesh);
   ctx.setTransform(k, 0, 0, k, 0, 0);
   ctx.textBaseline = "alphabetic";
-  const white: [number, number, number] = [255, 255, 255];
-  const accent = parseColor(card.accent || "#ffffff");
+
+  const textCol = parseColor(card.textColor || "#512D38");
+  const textMuted = parseColor(card.textColor ? card.textColor : "#65575A");
+  const accent = parseColor(card.accent || "#B69A70");
 
   // title and footer
-  const small = sizeForCap(ctx, 400, family, 8.5, "H");
-  ctx.font = fontStr(400, small, family);
-  ctx.fillStyle = rgba(white, 0.95);
+  const small = sizeForCap(ctx, 500, family, 8.5, "H");
+  ctx.font = fontStr(500, small, family);
+  ctx.fillStyle = rgba(textCol, 0.95);
   const lines = (card.title || "").split("\n");
   lines.slice(0, 2).forEach((ln, i) => ctx.fillText(ln, 17, 37 + i * 14));
   if (card.footer) {
-    ctx.fillStyle = rgba(white, 0.9);
+    ctx.font = fontStr(400, small * 0.9, family);
+    ctx.fillStyle = rgba(textMuted, 0.85);
     ctx.fillText(card.footer, 17, 295);
   }
 
@@ -423,8 +432,8 @@ function paintCard(cv: HTMLCanvasElement, card: WarpCard, family: string) {
   const detail = card.detail || "none";
   const centre = detail === "wave" ? 112 : detail === "cross" ? 106 : 127;
   const x0 = centre - (vw + uw) / 2 + (detail === "cross" ? uw / 2 : 0);
-  const n0 = parseColor((card.numeral && card.numeral[0]) || "#ffffff");
-  const n1 = parseColor((card.numeral && card.numeral[1]) || "#ffffff");
+  const n0 = parseColor((card.numeral && card.numeral[0]) || "#512D38");
+  const n1 = parseColor((card.numeral && card.numeral[1]) || "#8C3A4F");
   const grad = ctx.createLinearGradient(x0, 0, x0 + vw, 0);
   grad.addColorStop(0, rgba(n0, 1));
   grad.addColorStop(1, rgba(n1, 1));
@@ -438,7 +447,7 @@ function paintCard(cv: HTMLCanvasElement, card: WarpCard, family: string) {
       const seedLen = 0.5 + 0.5 * Math.sin(i * 12.9898) * Math.sin(i * 4.1414 + 1.3);
       const top = 0.5 + 0.5 * Math.cos(a + Math.PI / 2);
       const len = 4 + 4.5 * Math.abs(seedLen) + 2 * top;
-      const fade = 0.22 + 0.5 * top * top;
+      const fade = 0.3 + 0.5 * top * top;
       ctx.strokeStyle = rgba(accent, fade);
       ctx.lineWidth = 1.0 + 0.7 * top;
       const r1 = 68;
@@ -454,23 +463,23 @@ function paintCard(cv: HTMLCanvasElement, card: WarpCard, family: string) {
     const y = 197.5;
     const kx = xa + 4 + (xb - xa - 8) * pct * 0.86;
     const lg = ctx.createLinearGradient(xa, 0, xb, 0);
-    lg.addColorStop(0, rgba(accent, 0.15));
-    lg.addColorStop(Math.max(0.01, (kx - xa) / (xb - xa)), rgba(accent, 0.85));
-    lg.addColorStop(1, rgba(accent, 0.35));
+    lg.addColorStop(0, rgba(accent, 0.2));
+    lg.addColorStop(Math.max(0.01, (kx - xa) / (xb - xa)), rgba(accent, 0.9));
+    lg.addColorStop(1, rgba(accent, 0.4));
     ctx.fillStyle = lg;
     ctx.fillRect(xa, y - 0.6, xb - xa, 1.2);
     ctx.save();
-    ctx.shadowColor = rgba(accent, 0.95);
-    ctx.shadowBlur = 9 * k;
-    ctx.fillStyle = rgba(white, 1);
+    ctx.shadowColor = rgba(accent, 0.5);
+    ctx.shadowBlur = 6 * k;
+    ctx.fillStyle = rgba(accent, 1);
     ctx.beginPath();
     ctx.arc(kx, y, 4.6, 0, Math.PI * 2);
     ctx.fill();
     ctx.restore();
     const lab = card.labels || [];
-    const lpx = sizeForCap(ctx, 400, family, 5.2, "H");
-    ctx.font = fontStr(400, lpx, family);
-    ctx.fillStyle = rgba(white, 0.6);
+    const lpx = sizeForCap(ctx, 500, family, 5.2, "H");
+    ctx.font = fontStr(500, lpx, family);
+    ctx.fillStyle = rgba(textMuted, 0.75);
     if (lab[0]) ctx.fillText(lab[0], 14, 208);
     if (lab[1]) {
       ctx.textAlign = "right";
@@ -478,11 +487,11 @@ function paintCard(cv: HTMLCanvasElement, card: WarpCard, family: string) {
       ctx.textAlign = "left";
     }
   } else if (detail === "wave") {
-    ctx.fillStyle = "rgba(20, 0, 8, 0.32)";
+    ctx.fillStyle = "rgba(250, 247, 242, 0.7)";
     ctx.beginPath();
     ctx.arc(27, 157, 18, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = rgba(white, 0.75);
+    ctx.strokeStyle = rgba(textCol, 0.6);
     ctx.lineWidth = 0.9;
     const plus = (px: number, py: number, r: number) => {
       ctx.beginPath();
@@ -499,27 +508,27 @@ function paintCard(cv: HTMLCanvasElement, card: WarpCard, family: string) {
       const r1 = Math.abs(Math.sin(i * 1.7 + 0.4) * Math.cos(i * 0.53));
       const hh = 1.5 + 6.5 * r1;
       const mark = i === 23;
-      ctx.fillStyle = mark ? rgba(accent, 0.95) : rgba(white, 0.3);
+      ctx.fillStyle = mark ? rgba(accent, 0.95) : rgba(textCol, 0.35);
       ctx.fillRect(x, 204 - (mark ? 8 : hh), mark ? 1.4 : 0.9, mark ? 16 : hh * 2);
     }
   } else if (detail === "cross") {
-    ctx.fillStyle = rgba(white, 0.28);
+    ctx.fillStyle = rgba(textCol, 0.15);
     ctx.fillRect(105.5, 66, 0.8, 182);
     ctx.fillRect(12, 156.5, 186, 0.8);
     const lab = card.labels || [];
     // ghost numeral
     ctx.font = fontStr(300, big * 0.72, family);
-    ctx.fillStyle = rgba(white, 0.07);
+    ctx.fillStyle = rgba(textCol, 0.08);
     ctx.textAlign = "center";
     ctx.fillText(String(Math.max(0, (parseFloat(value) || 0) - 8)), 106, 122);
     ctx.textAlign = "left";
     const badge = (x: number, y: number, t: string) => {
-      ctx.fillStyle = "rgba(10, 0, 30, 0.35)";
+      ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
       ctx.beginPath();
       ctx.arc(x, y, 6.5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = rgba(white, 0.7);
-      ctx.font = fontStr(500, 4.2, family);
+      ctx.fillStyle = rgba(textCol, 0.85);
+      ctx.font = fontStr(600, 4.2, family);
       ctx.textAlign = "center";
       ctx.fillText(t, x, y + 1.5);
       ctx.textAlign = "left";
@@ -527,10 +536,10 @@ function paintCard(cv: HTMLCanvasElement, card: WarpCard, family: string) {
     if (lab[1]) badge(28, 137, lab[1]);
     if (lab[2]) badge(181, 170, lab[2]);
     if (lab[0]) {
-      ctx.font = fontStr(400, 5.2, family);
+      ctx.font = fontStr(500, 5.2, family);
       const tw = ctx.measureText(lab[0]).width;
       const px = 208 - tw - 10;
-      ctx.fillStyle = rgba(white, 0.1);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
       ctx.beginPath();
       if (typeof ctx.roundRect === "function") {
         ctx.roundRect(px, 25, tw + 10, 11, 3);
@@ -538,7 +547,7 @@ function paintCard(cv: HTMLCanvasElement, card: WarpCard, family: string) {
         ctx.rect(px, 25, tw + 10, 11);
       }
       ctx.fill();
-      ctx.fillStyle = rgba(white, 0.55);
+      ctx.fillStyle = rgba(textCol, 0.8);
       ctx.fillText(lab[0], px + 5, 32.5);
     }
   }
@@ -1081,7 +1090,7 @@ export function WarpCarousel({
     let texW = 0;
     let raf = 0;
     let disposed = false;
-    const bg = parseColor(background, [250, 244, 235]);
+    const bg = parseColor(background, [250, 247, 242]);
     const glowOverride = glow ? parseColor(glow) : null;
     const glowCols = list.map((c) => (glowOverride ? glowOverride : parseColor(c.glow || "#D4AF37")));
 

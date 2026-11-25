@@ -97,15 +97,15 @@ export default function BuyTemplate() {
           {/* 3 Trust Badges */}
           <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-600">
             <span className="inline-flex items-center gap-1.5">
-              <Clock size={15} className="text-[#7C3AED]" />
+              <Clock size={15} className="text-[#B69A70]" />
               <span>Valid 6 months</span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Edit3 size={15} className="text-[#7C3AED]" />
+              <Edit3 size={15} className="text-[#B69A70]" />
               <span>Keep editing after you buy</span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <ShieldCheck size={15} className="text-[#7C3AED]" />
+              <ShieldCheck size={15} className="text-[#B69A70]" />
               <span>Secure payment</span>
             </span>
           </div>
@@ -132,19 +132,19 @@ export default function BuyTemplate() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-700">
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#7C3AED] font-bold text-base leading-none">✓</span>
+                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
                   <span>One common invitation link to share with everyone</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#7C3AED] font-bold text-base leading-none">✓</span>
+                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
                   <span>The complete, interactive invitation experience</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#7C3AED] font-bold text-base leading-none">✓</span>
+                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
                   <span>5 guests greeted by name, each with their own link</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#7C3AED] font-bold text-base leading-none">✓</span>
+                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
                   <span>RSVP replies and guest tracking</span>
                 </div>
               </div>
@@ -221,8 +221,8 @@ export default function BuyTemplate() {
                     onClick={() => setGuestAddon('none')}
                     className={`block p-3 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === 'none'
-                        ? 'border-[#7C3AED] bg-[#FAF9FF] ring-1 ring-[#7C3AED]'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
+                        : 'border-[#E9D8CC] hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-0.5">
@@ -232,7 +232,7 @@ export default function BuyTemplate() {
                           name="checkoutAddon"
                           checked={guestAddon === 'none'}
                           onChange={() => setGuestAddon('none')}
-                          className="text-[#7C3AED]"
+                          className="text-[#512D38]"
                         />
                         <span className="font-bold text-gray-800">Not now</span>
                       </div>
@@ -247,8 +247,8 @@ export default function BuyTemplate() {
                     onClick={() => setGuestAddon('50')}
                     className={`block p-3 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === '50'
-                        ? 'border-[#7C3AED] bg-[#FAF9FF] ring-1 ring-[#7C3AED]'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
+                        : 'border-[#E9D8CC] hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-0.5">
@@ -258,7 +258,7 @@ export default function BuyTemplate() {
                           name="checkoutAddon"
                           checked={guestAddon === '50'}
                           onChange={() => setGuestAddon('50')}
-                          className="text-[#7C3AED]"
+                          className="text-[#512D38]"
                         />
                         <span className="font-bold text-gray-800">50 Guests</span>
                       </div>
@@ -273,8 +273,8 @@ export default function BuyTemplate() {
                     onClick={() => setGuestAddon('500')}
                     className={`block p-3 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === '500'
-                        ? 'border-[#7C3AED] bg-[#FAF9FF] ring-1 ring-[#7C3AED]'
-                        : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
+                        : 'border-[#E9D8CC] hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-0.5">
@@ -284,7 +284,7 @@ export default function BuyTemplate() {
                           name="checkoutAddon"
                           checked={guestAddon === '500'}
                           onChange={() => setGuestAddon('500')}
-                          className="text-[#7C3AED]"
+                          className="text-[#512D38]"
                         />
                         <span className="font-bold text-gray-800">500 Guests</span>
                       </div>
@@ -305,7 +305,7 @@ export default function BuyTemplate() {
                     placeholder="COUPON CODE"
                     value={coupon}
                     onChange={(e) => setCoupon(e.target.value)}
-                    className="flex-1 px-3.5 py-2 rounded-xl border border-gray-200 text-xs uppercase tracking-wider font-semibold focus:outline-none focus:border-[#7C3AED]"
+                    className="flex-1 px-3.5 py-2 rounded-xl border border-gray-200 text-xs uppercase tracking-wider font-semibold focus:outline-none focus:border-[#C99191]"
                   />
                   <button
                     type="submit"
@@ -330,7 +330,7 @@ export default function BuyTemplate() {
               <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-gray-800">TOTAL</span>
-                  <span className="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold text-[#512D38] bg-[#FCEEE9] border border-[#C99191]/40 px-2 py-0.5 rounded-full">
                     50% OFF
                   </span>
                 </div>
@@ -344,7 +344,7 @@ export default function BuyTemplate() {
                 type="button"
                 disabled={payingOnline}
                 onClick={handleBuyAndEdit}
-                className="w-full py-3.5 rounded-full bg-gradient-to-r from-[#7C3AED] via-[#6D28D9] to-[#5B21B6] hover:from-[#6D28D9] hover:to-[#4C1D95] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#C99191] hover:from-[#411F29] hover:to-[#512D38] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <span>Buy & keep editing - ₹{finalTotal.toFixed(2)}</span>
               </button>

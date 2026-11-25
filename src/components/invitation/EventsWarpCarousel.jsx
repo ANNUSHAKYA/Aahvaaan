@@ -90,58 +90,64 @@ function parseDateParts(dateStr = '') {
   return { day, month };
 }
 
-// Distinct bespoke Indian wedding ceremony theme palettes
+// Distinct bespoke Indian wedding ceremony pastel theme palettes matching website colors
 const CEREMONY_PALETTES = [
-  // Ring Ceremony / Emerald & Sapphire
+  // Ring Ceremony / Soft Blush Rose & Champagne Pearl
   {
     detail: 'ring',
-    numeral: ['#F7E2A9', '#D4AF37'],
-    accent: '#D4AF37',
-    glow: '#C5A15E',
-    mesh: ['#041E42', '#0A2540', '#03142B', '#153243', '#091F2C', '#0C2340', '#173F5F', '#0E2938', '#051923', '#000814', '#081C15', '#1B4332', '#001D3D', '#003566', '#FFC300', '#D4AF37', '#740001', '#5B0E2D', '#2B0938', '#140024', '#001E3D', '#0A3A40', '#0F4C5C', '#1D2D44', '#0B132B', '#1C2541', '#3A506B', '#5BC0BE', '#6FFFE9', '#D4AF37', '#0A1128', '#1C2541', '#001F54', '#034078', '#1282A2', '#FEFCFB', '#001427', '#708D81', '#F4D58D', '#BF0603', '#8D0801', '#7209B7'],
+    textColor: '#512D38',
+    numeral: ['#512D38', '#C99191'],
+    accent: '#B69A70',
+    glow: '#C99191',
+    mesh: ['#FDF8F5', '#FAF0EA', '#F5E3DB', '#EED4C9', '#F4DFD5', '#FAF7F2', '#F9ECE5', '#F2D9CD', '#E8C2B3', '#DDAA97', '#E5BAA9', '#F8E9E2', '#F5E3DB', '#E8C2B3', '#DBA493', '#CE8573', '#D79685', '#F4DDD4', '#EED4C9', '#DDAA97', '#CE8573', '#BE6351', '#C87462', '#EDCEC2', '#F4DFD5', '#E8C2B3', '#D59685', '#C46D5C', '#D08170', '#F3DCD2', '#F9ECE5', '#F2D9CD', '#E8C2B3', '#DDAA97', '#E5BAA9', '#F8E9E2', '#FDF8F5', '#FAF0EA', '#F5E3DB', '#EED4C9', '#F4DFD5', '#FAF7F2'],
   },
-  // Mehendi / Lush Mehndi Green & Golden Mustard
+  // Mehendi / Pastel Pistachio & Fresh Henna Cream
   {
     detail: 'slider',
     labels: ['Henna', 'Rhythm'],
-    numeral: ['#FFF8D6', '#E2B842'],
-    accent: '#E5A93C',
-    glow: '#4E6E58',
-    mesh: ['#1A3323', '#24452F', '#162C1E', '#325C3E', '#203A27', '#112217', '#3F6E4C', '#51865F', '#24402B', '#0E1A11', '#172714', '#2B4323', '#859B27', '#B6C438', '#E6C653', '#DCAE36', '#4A6B22', '#324C16', '#21330F', '#0F1A07', '#1D3B2B', '#27523C', '#397858', '#4FA075', '#163123', '#2B573D', '#417A57', '#63A87B', '#A7D49B', '#D8C358', '#1E3B27', '#346140', '#569263', '#81BE8F', '#CBE5B8', '#F5EFD3', '#17301F', '#2D5638', '#4F885D', '#80BC8E', '#BADCA5', '#EAE6B9'],
+    textColor: '#2E4735',
+    numeral: ['#2E4735', '#7A9A80'],
+    accent: '#5A7A60',
+    glow: '#7A9A80',
+    mesh: ['#FAF9F5', '#F2F6F0', '#E5EFE2', '#DAE8D6', '#E8F0E4', '#FAF8F5', '#F0F5EE', '#E0ECE0', '#D3E4D1', '#C7DDC5', '#D8E9D6', '#EFF5EC', '#E5EFE2', '#D2E5CE', '#BEDBB9', '#B0D3AA', '#C5E0C2', '#E2ECE0', '#DAE8D6', '#C5DFBF', '#ABD4A3', '#9BCB92', '#B8DBB3', '#D7E6D3', '#E2ECE0', '#D0E4CC', '#BEDBB9', '#B2D5AD', '#C8E1C5', '#E4EFE2', '#F0F5EE', '#DFECE0', '#D2E5CE', '#C7DEC5', '#DAE9D8', '#EFF5EC', '#FAF9F5', '#F2F6F0', '#E5EFE2', '#DAE8D6', '#E8F0E4', '#FAF8F5'],
   },
-  // Haldi / Turmeric Sun & Gold
+  // Haldi / Warm Turmeric Cream & Pastel Apricot
   {
     detail: 'wave',
-    numeral: ['#FFFCEB', '#F39C12'],
-    accent: '#F39C12',
-    glow: '#D35400',
-    mesh: ['#4A2800', '#5E3402', '#3D2000', '#7A4305', '#522D02', '#2E1800', '#8F4F08', '#B0630D', '#542E02', '#1C0D00', '#2E1700', '#593003', '#C47E0B', '#E69E1C', '#F7B731', '#FA8231', '#8C4D05', '#613402', '#3D1F00', '#1A0C00', '#422401', '#663702', '#A65C08', '#D97D11', '#331A00', '#6B3803', '#A85E09', '#E08514', '#F5CD79', '#F7D794', '#472501', '#753F04', '#B86A0B', '#E88C15', '#F8A5C2', '#F7D794', '#381C00', '#633302', '#A65B07', '#DE8312', '#F3A683', '#F8C291'],
+    textColor: '#68400C',
+    numeral: ['#7A4B10', '#D48B28'],
+    accent: '#D48B28',
+    glow: '#E5A93C',
+    mesh: ['#FFFBF2', '#FFF6E8', '#FDEED8', '#FDE4C5', '#FCEFD8', '#FFFBF2', '#FFF4E2', '#FDE8CE', '#FCDDB8', '#FCD1A2', '#FCDCB6', '#FFF3E0', '#FDEED8', '#FCDDB8', '#FBCFA0', '#FAC188', '#FBCD9D', '#FDECD6', '#FDE4C5', '#FCD3A6', '#FAC38B', '#F8B270', '#F9C187', '#FDE2C2', '#FDEFD8', '#FCDCB6', '#FAC997', '#F8B678', '#F9C794', '#FDEED8', '#FFF4E2', '#FDE8CE', '#FCDDB8', '#FCD1A2', '#FCDCB6', '#FFF3E0', '#FFFBF2', '#FFF6E8', '#FDEED8', '#FDE4C5', '#FCEFD8', '#FFFBF2'],
   },
-  // Sangeet / Amethyst Violet & Starlight Gold
+  // Sangeet / Ethereal Pastel Lilac & Misty Lavender
   {
     detail: 'cross',
     labels: ['Beats', 'Groove', 'Sur'],
-    numeral: ['#F3E8FF', '#C084FC'],
-    accent: '#A855F7',
-    glow: '#7E22CE',
-    mesh: ['#300A45', '#3E0F57', '#250736', '#4D146C', '#360D4D', '#1D042B', '#5C1981', '#71229C', '#390D52', '#15021F', '#1E042D', '#3F0D5C', '#8328B5', '#9B3BD4', '#C059F5', '#8E2DE2', '#521075', '#3A0954', '#260438', '#11011A', '#2D0A41', '#471364', '#7525A1', '#9E3CD8', '#230633', '#4E146E', '#7D27AF', '#A841E6', '#CE7BF9', '#E9B9FF', '#2F0945', '#551778', '#8B2FC0', '#B54FF0', '#D689FA', '#F3DCFF', '#260538', '#4A116A', '#7F27B3', '#A73FE4', '#CE76F8', '#ECC6FF'],
+    textColor: '#42285E',
+    numeral: ['#4A2E66', '#9B72CF'],
+    accent: '#7E52A0',
+    glow: '#9B72CF',
+    mesh: ['#FAF7FC', '#F5EFF9', '#EFE5F5', '#E8DAF0', '#EEE3F4', '#FAF7FC', '#F2E8F7', '#EAD8F2', '#DEC3EB', '#D1ADE3', '#DDC0EB', '#F1E7F6', '#EFE5F5', '#DEC3EB', '#D0ACE3', '#C194D9', '#CEABE1', '#EFE3F5', '#E8DAF0', '#D3B0E5', '#C296DA', '#B079CD', '#BE92D7', '#E7D8EF', '#EEE3F4', '#DEC1EB', '#CA9FD9', '#B480CF', '#C79DD7', '#EDE1F4', '#F2E8F7', '#EAD8F2', '#DEC3EB', '#D1ADE3', '#DDC0EB', '#F1E7F6', '#FAF7FC', '#F5EFF9', '#EFE5F5', '#E8DAF0', '#EEE3F4', '#FAF7FC'],
   },
-  // Shubh Vivaah / Regal Royal Maroon, Sindoor & Heritage Gold
+  // Shubh Vivaah / Regal Dusty Rose, Warm Sand & Antique Gold
   {
     detail: 'cross',
     labels: ['Pheras', 'Vidhi', 'Vachan'],
-    numeral: ['#FFF5E6', '#D4AF37'],
-    accent: '#D4AF37',
-    glow: '#8B0000',
-    mesh: ['#3A0512', '#4D0819', '#2C030D', '#610B20', '#440616', '#22010A', '#750F28', '#911634', '#460516', '#170006', '#220008', '#470414', '#A61E3E', '#C22B4F', '#E63956', '#D4AF37', '#690B23', '#490517', '#2E020D', '#140005', '#380512', '#55091D', '#8C1433', '#BD2249', '#27020C', '#5C081F', '#941437', '#C9254F', '#F06282', '#F7D69E', '#3A0413', '#660923', '#A3153C', '#D42753', '#F27592', '#FAEDCB', '#2D020E', '#56061B', '#921134', '#C72149', '#EC6482', '#FCEADE'],
+    textColor: '#512D38',
+    numeral: ['#512D38', '#8B3A4F'],
+    accent: '#B69A70',
+    glow: '#B69A70',
+    mesh: ['#FDF8F6', '#FAF0EC', '#F6E4DE', '#F2D7CE', '#F5E2DA', '#FDF8F6', '#F9ECE7', '#F3DDD4', '#ECCBC0', '#E4B8AB', '#EBCEB7', '#F8EBE5', '#F6E4DE', '#ECCBC0', '#E2B5A7', '#D79C8C', '#E0B39F', '#F5E2DB', '#F2D7CE', '#E5B9AC', '#D89E8F', '#CA8171', '#D59A83', '#F1D5CB', '#F5E2DA', '#ECCBC0', '#DC9E8E', '#CD8372', '#DAA089', '#F4E0D8', '#F9ECE7', '#F3DDD4', '#ECCBC0', '#E4B8AB', '#EBCEB7', '#F8EBE5', '#FDF8F6', '#FAF0EC', '#F6E4DE', '#F2D7CE', '#F5E2DA', '#FDF8F6'],
   },
-  // Reception / Midnight Gold Elegance
+  // Reception / Champagne Silk & Pearl Ivory
   {
     detail: 'ring',
-    numeral: ['#F7E2A9', '#C5A15E'],
-    accent: '#E5C07B',
-    glow: '#8E6E3A',
-    mesh: ['#1C160F', '#261F16', '#140F0A', '#332A1E', '#241D14', '#100B06', '#423728', '#544734', '#251E14', '#0B0703', '#130E08', '#2B2114', '#705A3A', '#8F744C', '#BA9B6A', '#D4AF37', '#3C301F', '#292014', '#18120B', '#0B0703', '#1B140B', '#2F2416', '#54422A', '#7A6140', '#150E07', '#332717', '#5A462B', '#836842', '#B49364', '#E6CFA6', '#1D1409', '#392B18', '#634C2C', '#8F7146', '#BE9D6C', '#F3E5CB', '#160E05', '#2E200F', '#563F21', '#836237', '#B68E56', '#EED8B6'],
+    textColor: '#512D38',
+    numeral: ['#512D38', '#B69A70'],
+    accent: '#B69A70',
+    glow: '#E9D8CC',
+    mesh: ['#FAF8F5', '#F5EDE4', '#EFE4D6', '#E7D8C6', '#EEE1D2', '#FAF8F5', '#F6EFE6', '#EDE0D1', '#E2CFBC', '#D7BFA7', '#E0CBB5', '#F5EAE0', '#EFE4D6', '#E2CFBC', '#D4BDA4', '#C5A88B', '#CEB399', '#EDE0D1', '#E7D8C6', '#D7BFA7', '#C5A88B', '#B49071', '#BD9C7F', '#E5D5C2', '#EEE1D2', '#E0CBB5', '#CEB399', '#BC9B7C', '#C8A88B', '#ECDEC8', '#F6EFE6', '#EDE0D1', '#E2CFBC', '#D7BFA7', '#E0CBB5', '#F5EAE0', '#FAF8F5', '#F5EDE4', '#EFE4D6', '#E7D8C6', '#EEE1D2', '#FAF8F5'],
   },
 ];
 
@@ -187,6 +193,7 @@ export default function EventsWarpCarousel({
         footer: `${timeStr} • ${venueStr.split(',')[0]}`,
         detail: palette.detail,
         labels: palette.labels,
+        textColor: palette.textColor,
         numeral: palette.numeral,
         accent: palette.accent,
         glow: palette.glow,
@@ -210,7 +217,7 @@ export default function EventsWarpCarousel({
   return (
     <div className="w-full max-w-4xl mx-auto my-8">
       {/* 3D Cylindrical Ring Warp Carousel */}
-      <div className="relative rounded-[32px] overflow-hidden shadow-2xl border border-[#D4AF37]/40 bg-gradient-to-b from-[#1C040B] via-[#2A0612] to-[#140207] p-1 sm:p-2">
+      <div className="relative rounded-[32px] overflow-hidden shadow-xl border border-[#B69A70]/40 bg-gradient-to-b from-[#FAF7F2] via-[#F8F2EA] to-[#F1E5D8] p-1 sm:p-2">
         <WarpCarousel
           cards={cards}
           index={activeIdx}
@@ -218,8 +225,8 @@ export default function EventsWarpCarousel({
           autoplay={true}
           interval={3.8}
           step={1}
-          background="#140207"
-          glow="#D4AF37"
+          background="#FAF7F2"
+          glow="#C99191"
           warp={0.85}
           style={{
             minHeight: 380,
@@ -230,15 +237,15 @@ export default function EventsWarpCarousel({
 
         {/* Floating Ceremony Position Pill */}
         <div className="absolute top-4 left-4 z-20 pointer-events-none">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-[#D4AF37]/50 text-[#F7E2A9] text-[11px] font-semibold tracking-wider uppercase shadow-lg">
-            <Sparkles size={11} className="text-[#D4AF37]" />
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/85 backdrop-blur-md border border-[#B69A70]/40 text-[#512D38] text-[11px] font-semibold tracking-wider uppercase shadow-md">
+            <Sparkles size={11} className="text-[#B69A70]" />
             <span>Ceremony {activeIdx + 1} of {events.length}</span>
           </span>
         </div>
 
         {/* Swipe Hint overlay */}
         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none text-center">
-          <span className="text-[11px] text-[#F7E2A9]/75 tracking-widest font-body uppercase bg-black/50 backdrop-blur-xs px-3.5 py-1 rounded-full border border-white/10 shadow-sm">
+          <span className="text-[11px] text-[#65575A] tracking-widest font-body uppercase bg-white/85 backdrop-blur-md px-3.5 py-1 rounded-full border border-[#E9D8CC] shadow-sm">
             Drag cards or swipe sideways ⇄
           </span>
         </div>
@@ -252,16 +259,16 @@ export default function EventsWarpCarousel({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -15 }}
           transition={{ duration: 0.3 }}
-          className="mt-6 bg-[#FAF4EB] border-2 border-[#B69A70] rounded-3xl p-6 sm:p-8 shadow-xl text-center relative max-w-xl mx-auto"
+          className="mt-6 bg-[#FAF7F2] border-2 border-[#B69A70]/60 rounded-3xl p-6 sm:p-8 shadow-xl text-center relative max-w-xl mx-auto"
         >
-          <div className="absolute inset-2 border border-[#B69A70]/40 rounded-[20px] pointer-events-none" />
+          <div className="absolute inset-2 border border-[#B69A70]/30 rounded-[20px] pointer-events-none" />
 
           {/* Stepper controls */}
           <div className="flex items-center justify-between mb-3">
             <button
               type="button"
               onClick={handlePrev}
-              className="p-2 rounded-full border border-[#B69A70]/50 bg-white hover:bg-[#B69A70]/15 text-[#704B50] transition-colors"
+              className="p-2 rounded-full border border-[#B69A70]/40 bg-white hover:bg-[#B69A70]/10 text-[#512D38] transition-colors shadow-xs"
               aria-label="Previous Ceremony"
             >
               <ChevronLeft size={16} />
@@ -274,14 +281,14 @@ export default function EventsWarpCarousel({
             <button
               type="button"
               onClick={handleNext}
-              className="p-2 rounded-full border border-[#B69A70]/50 bg-white hover:bg-[#B69A70]/15 text-[#704B50] transition-colors"
+              className="p-2 rounded-full border border-[#B69A70]/40 bg-white hover:bg-[#B69A70]/10 text-[#512D38] transition-colors shadow-xs"
               aria-label="Next Ceremony"
             >
               <ChevronRight size={16} />
             </button>
           </div>
 
-          <h3 className="font-heading text-2xl sm:text-3xl font-bold text-[#704B50] mb-1">
+          <h3 className="font-heading text-2xl sm:text-3xl font-bold text-[#512D38] mb-1">
             {currentEvent.name}
           </h3>
 
@@ -295,7 +302,7 @@ export default function EventsWarpCarousel({
               href={eventMapUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs text-[#704B50] font-semibold hover:text-[#B69A70] bg-white px-4 py-2 rounded-full border border-[#B69A70]/40 shadow-xs hover:shadow-md transition-all group"
+              className="inline-flex items-center gap-1.5 text-xs text-[#512D38] font-semibold hover:text-[#B69A70] bg-white px-4 py-2 rounded-full border border-[#B69A70]/40 shadow-xs hover:shadow-md transition-all group"
             >
               <MapPin size={14} className="text-[#B69A70] group-hover:scale-110 transition-transform" />
               <span>{currentEvent.venue || venue}</span>
@@ -307,7 +314,7 @@ export default function EventsWarpCarousel({
             <button
               type="button"
               onClick={() => downloadIcsFile(currentEvent, brideName, groomName)}
-              className="px-4 py-2 rounded-full bg-gradient-to-r from-[#704B50] to-[#8C3A4F] text-white text-xs font-semibold hover:from-[#8C3A4F] hover:to-[#704B50] transition-all shadow-md active:scale-95 flex items-center gap-1.5"
+              className="px-4 py-2 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#C99191] text-white text-xs font-semibold hover:from-[#411F29] hover:to-[#512D38] transition-all shadow-md active:scale-95 flex items-center gap-1.5"
             >
               <Calendar size={13} />
               <span>Add to Calendar (.ics)</span>
@@ -317,7 +324,7 @@ export default function EventsWarpCarousel({
               href={calendarUrls.googleUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3.5 py-2 rounded-full border border-[#B69A70] bg-white text-[#704B50] hover:bg-[#B69A70]/10 text-xs font-semibold transition-all shadow-xs flex items-center gap-1"
+              className="px-3.5 py-2 rounded-full border border-[#B69A70]/50 bg-white text-[#512D38] hover:bg-[#B69A70]/10 text-xs font-semibold transition-all shadow-xs flex items-center gap-1"
               title="Add to Google Calendar"
             >
               <ExternalLink size={12} />

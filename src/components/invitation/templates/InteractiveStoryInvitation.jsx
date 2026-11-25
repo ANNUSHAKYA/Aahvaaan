@@ -138,14 +138,14 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
 
   if (submitted) {
     return (
-      <div className="text-center py-12 px-6 bg-white rounded-3xl border border-gray-100 shadow-xl max-w-lg mx-auto">
-        <div className="w-16 h-16 rounded-full bg-[#EDE9FE] text-[#7C3AED] flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+      <div className="text-center py-12 px-6 bg-white rounded-3xl border border-[#E9D8CC] shadow-xl max-w-lg mx-auto">
+        <div className="w-16 h-16 rounded-full bg-[#FAF0EC] text-[#C99191] flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
           ♥
         </div>
-        <h3 className="font-heading text-2xl font-bold text-gray-900 mb-2">
+        <h3 className="font-heading text-2xl font-bold text-[#512D38] mb-2">
           {isUpdate ? `Welcome back, ${name}!` : `Thank you, ${name}!`}
         </h3>
-        <p className="font-body text-xs sm:text-sm text-gray-600 max-w-sm mx-auto leading-relaxed mb-6">
+        <p className="font-body text-xs sm:text-sm text-[#65575A] max-w-sm mx-auto leading-relaxed mb-6">
           {isUpdate
             ? 'Your RSVP response has been successfully updated. Your host family will see your latest answers.'
             : "Your response has been recorded. We can't wait to celebrate with you!"}
@@ -153,7 +153,7 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
         <button
           type="button"
           onClick={() => setSubmitted(false)}
-          className="text-xs text-[#7C3AED] hover:underline font-semibold"
+          className="text-xs text-[#512D38] hover:text-[#C99191] underline font-semibold transition-colors"
         >
           Update response again
         </button>
@@ -162,13 +162,13 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white/95 backdrop-blur-md rounded-3xl border border-gray-100 shadow-xl p-6 sm:p-10 max-w-2xl mx-auto text-left">
+    <form onSubmit={handleSubmit} className="bg-white/95 backdrop-blur-md rounded-3xl border border-[#E9D8CC] shadow-xl p-6 sm:p-10 max-w-2xl mx-auto text-left">
       {/* Title */}
       <div className="text-center mb-8">
-        <h3 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
+        <h3 className="font-heading text-2xl sm:text-3xl font-bold text-[#512D38] mb-1">
           Your Presence Matters
         </h3>
-        <p className="font-body text-xs sm:text-sm text-gray-500">
+        <p className="font-body text-xs sm:text-sm text-[#65575A]">
           Let us know so we can make the arrangements just right.
         </p>
       </div>
@@ -192,7 +192,7 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
               placeholder="Your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#E9D8CC] bg-[#FAF7F2]/50 text-xs sm:text-sm text-[#512D38] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C99191]/25 focus:border-[#C99191] transition-all"
             />
           </div>
         </div>
@@ -209,7 +209,7 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
               placeholder="10-digit mobile number"
               value={mobile}
               onChange={(e) => setMobile(e.target.value.replace(/[^0-9]/g, ''))}
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#E9D8CC] bg-[#FAF7F2]/50 text-xs sm:text-sm text-[#512D38] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C99191]/25 focus:border-[#C99191] transition-all"
             />
           </div>
           <p className="text-[10px] text-gray-400 mt-1 pl-1">
@@ -219,25 +219,25 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
       </div>
 
       {/* How many of you are coming? */}
-      <div className="bg-[#FAF9FF] border border-[#E9E4F5] rounded-2xl p-5 mb-8 text-center">
-        <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-3">
+      <div className="bg-[#FAF7F2] border border-[#E9D8CC] rounded-2xl p-5 mb-8 text-center">
+        <label className="block text-xs sm:text-sm font-bold text-[#512D38] mb-3">
           How many of you are coming?
         </label>
-        <div className="inline-flex items-center gap-4 bg-white border border-gray-200 rounded-full px-4 py-1.5 shadow-2xs">
+        <div className="inline-flex items-center gap-4 bg-white border border-[#E9D8CC] rounded-full px-4 py-1.5 shadow-2xs">
           <button
             type="button"
             onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
-            className="w-7 h-7 rounded-full text-gray-600 hover:bg-gray-100 flex items-center justify-center transition-colors"
+            className="w-7 h-7 rounded-full text-[#65575A] hover:bg-[#FAF7F2] flex items-center justify-center transition-colors"
           >
             <Minus size={14} />
           </button>
-          <span className="font-bold text-base text-gray-900 w-6 text-center">
+          <span className="font-bold text-base text-[#512D38] w-6 text-center">
             {guestCount}
           </span>
           <button
             type="button"
             onClick={() => setGuestCount(Math.min(10, guestCount + 1))}
-            className="w-7 h-7 rounded-full text-gray-600 hover:bg-gray-100 flex items-center justify-center transition-colors"
+            className="w-7 h-7 rounded-full text-[#65575A] hover:bg-[#FAF7F2] flex items-center justify-center transition-colors"
           >
             <Plus size={14} />
           </button>
@@ -250,12 +250,12 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
       {/* Event Schedule Attendance Grid */}
       <div className="mb-8">
         <div className="flex items-center gap-2 mb-3">
-          <Calendar size={16} className="text-[#7C3AED]" />
+          <Calendar size={16} className="text-[#B69A70]" />
           <div>
-            <h4 className="font-bold text-sm text-gray-900 leading-tight">
+            <h4 className="font-bold text-sm text-[#512D38] leading-tight">
               Event Schedule
             </h4>
-            <p className="text-[11px] text-gray-500">
+            <p className="text-[11px] text-[#65575A]">
               Let us know which events you'll be joining.
             </p>
           </div>
@@ -267,13 +267,13 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
             return (
               <div
                 key={i}
-                className="p-3.5 rounded-2xl border border-gray-100 bg-[#FDFCFE] shadow-2xs"
+                className="p-3.5 rounded-2xl border border-[#E9D8CC] bg-[#FAF7F2]/50 shadow-2xs"
               >
                 <div className="mb-2">
-                  <span className="font-bold text-xs sm:text-sm text-gray-800 block">
+                  <span className="font-bold text-xs sm:text-sm text-[#512D38] block">
                     {ev.name}
                   </span>
-                  <span className="text-[11px] text-gray-400">
+                  <span className="text-[11px] text-[#B69A70] font-medium">
                     {ev.date}
                   </span>
                 </div>
@@ -290,8 +290,8 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
                         onClick={() => handleAttendanceChange(ev.name, val)}
                         className={`py-1.5 px-2 rounded-xl text-xs font-semibold border transition-all ${
                           isSelected
-                            ? 'bg-[#7C3AED] text-white border-[#7C3AED] shadow-xs'
-                            : 'bg-white text-gray-600 border-gray-200 hover:border-[#7C3AED]/50'
+                            ? 'bg-gradient-to-r from-[#512D38] to-[#6B3D4A] text-white border-[#512D38] shadow-xs'
+                            : 'bg-white text-[#65575A] border-[#E9D8CC] hover:border-[#C99191]'
                         }`}
                       >
                         {opt}
@@ -316,7 +316,7 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
             value={wishes}
             onChange={(e) => setWishes(e.target.value)}
             placeholder="Leave the couple a wish (optional)"
-            className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
+            className="w-full pl-10 pr-4 py-3 rounded-xl border border-[#E9D8CC] bg-[#FAF7F2]/50 text-xs sm:text-sm text-[#512D38] placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#C99191]/25 focus:border-[#C99191] transition-all"
           />
         </div>
       </div>
@@ -324,7 +324,7 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full py-3.5 rounded-full bg-gradient-to-r from-[#7C3AED] via-[#6D28D9] to-[#5B21B6] hover:from-[#6D28D9] hover:to-[#4C1D95] text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+        className="w-full py-3.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#C99191] hover:from-[#411F29] hover:to-[#512D38] text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
       >
         <span>♥</span>
         <span>Send RSVP</span>
@@ -335,11 +335,11 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
       </p>
 
       {/* Footer Branding */}
-      <div className="text-center pt-8 border-t border-gray-100 mt-6">
-        <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">
+      <div className="text-center pt-8 border-t border-[#E9D8CC]/60 mt-6">
+        <p className="text-[10px] text-[#65575A] uppercase tracking-widest mb-1">
           Crafted with love by
         </p>
-        <span className="font-heading text-lg font-bold text-wine tracking-tight">
+        <span className="font-heading text-lg font-bold text-[#512D38] tracking-tight">
           Aahvaaan
         </span>
       </div>
@@ -352,15 +352,16 @@ function PetalDateReveal({ weddingDate, onReveal, themeStyles }) {
   const [revealed, setRevealed] = useState(false);
   const [clearedCount, setClearedCount] = useState(0);
 
-  // Generate 36 realistic scattered rose petals with randomized angles & positions
+  // Generate 36 realistic scattered rose petals with randomized angles & positions in soft pastel tones
   const [petals, setPetals] = useState(() => {
+    const pastelPalette = ['#C99191', '#D4A5A5', '#E9D8CC', '#E8B4B8', '#DFCCA8', '#F5DFD5'];
     return Array.from({ length: 36 }, (_, i) => ({
       id: i,
       x: (i % 6) * 16 - 40 + (Math.random() * 20 - 10),
       y: Math.floor(i / 6) * 14 - 35 + (Math.random() * 20 - 10),
       rot: Math.random() * 360,
       scale: 0.8 + Math.random() * 0.4,
-      color: i % 3 === 0 ? '#E11D48' : i % 3 === 1 ? '#F43F5E' : '#FDA4AF',
+      color: pastelPalette[i % pastelPalette.length],
       cleared: false,
     }));
   });
@@ -389,21 +390,21 @@ function PetalDateReveal({ weddingDate, onReveal, themeStyles }) {
 
   return (
     <div className="relative py-12 px-4 max-w-xl mx-auto text-center select-none">
-      <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#8C3A48] italic mb-6">
+      <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#512D38] italic mb-6">
         Move the petals to reveal the Grand Date!
       </h3>
 
       <div className="relative min-h-[300px] flex items-center justify-center p-6">
         {/* Underlying Revealed Date Card */}
         <div
-          className={`transition-all duration-700 w-full max-w-md p-6 sm:p-8 rounded-3xl border shadow-xl text-center bg-[#FAF6F0] border-[#B69A70]/60 ${
+          className={`transition-all duration-700 w-full max-w-md p-6 sm:p-8 rounded-3xl border shadow-xl text-center bg-[#FAF7F2] border-[#B69A70]/60 ${
             revealed ? 'opacity-100 scale-100' : 'opacity-80 scale-95'
           }`}
         >
           <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-[#B69A70] block mb-2">
             The Sacred Muhurtham
           </span>
-          <h4 className="font-heading text-2xl sm:text-3xl font-bold text-[#704B50] mb-2">
+          <h4 className="font-heading text-2xl sm:text-3xl font-bold text-[#512D38] mb-2">
             {new Date(weddingDate || '2026-12-08').toLocaleDateString('en-IN', {
               weekday: 'long',
               day: 'numeric',
@@ -411,7 +412,7 @@ function PetalDateReveal({ weddingDate, onReveal, themeStyles }) {
               year: 'numeric',
             })}
           </h4>
-          <p className="font-body text-xs text-[#704B50]/70 mb-5">
+          <p className="font-body text-xs text-[#65575A] mb-5">
             Auspicious Wedding Muhurat • 7:00 PM Onwards
           </p>
 
@@ -427,10 +428,10 @@ function PetalDateReveal({ weddingDate, onReveal, themeStyles }) {
                 key={i}
                 className="bg-white rounded-xl p-2 border border-[#B69A70]/30 shadow-2xs"
               >
-                <span className="font-heading text-xl font-bold text-[#704B50] block">
+                <span className="font-heading text-xl font-bold text-[#512D38] block">
                   {String(u.val).padStart(2, '0')}
                 </span>
-                <span className="text-[9px] uppercase tracking-wider text-charcoal/50 block">
+                <span className="text-[9px] uppercase tracking-wider text-[#65575A] block">
                   {u.lbl}
                 </span>
               </div>
@@ -608,7 +609,7 @@ export default function InteractiveStoryInvitation({
               <svg viewBox="0 0 40 40" className="w-full h-full drop-shadow-sm opacity-80">
                 <path
                   d="M 20 4 C 12 12 6 22 10 32 C 14 40 26 40 30 32 C 34 22 28 12 20 4 Z"
-                  fill={i % 2 === 0 ? '#E11D48' : '#F43F5E'}
+                  fill={i % 3 === 0 ? '#C99191' : i % 3 === 1 ? '#D4A5A5' : '#E8B4B8'}
                 />
               </svg>
             </motion.div>
