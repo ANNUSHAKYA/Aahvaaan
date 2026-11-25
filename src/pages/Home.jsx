@@ -10,6 +10,7 @@ import templates from '../data/templates';
 import config from '../data/config';
 import SEO from '../components/SEO';
 import { checkRateLimit, recordRateLimitAction } from '../utils/rateLimiter';
+import InteractiveDiyaHook from '../components/home/InteractiveDiyaHook';
 
 // ─── FAQ Accordion Item Component ───
 function FAQAccordionItem({ question, answer, isOpen, onToggle }) {
@@ -168,6 +169,16 @@ export default function Home() {
               >
                 Ditch static PDFs and video files. Give your guests an interactive celebration website with personalized envelope reveals, live countdown, Google Maps navigation, background wedding music, and instant WhatsApp RSVPs.
               </motion.p>
+
+              {/* ─── INTERACTIVE HERO HOOK: TAP THE DIYAS (MOBILE-FIRST) ─── */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.28 }}
+                className="pt-2 pb-1"
+              >
+                <InteractiveDiyaHook />
+              </motion.div>
 
               {/* Action Buttons */}
               <motion.div

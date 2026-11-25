@@ -75,8 +75,8 @@ function downloadIcsFile(event, brideName, groomName) {
   URL.revokeObjectURL(url);
 }
 
-// ─── Default Demo RSVP Form (when not embedded in live database flow) ───
-function RoyalDemoRSVP() {
+// ─── Default RSVP Form (when not embedded in live database flow) ───
+function RoyalDefaultRSVP() {
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState({
     name: '',
@@ -1161,7 +1161,7 @@ export default function MaharajaRoyalInvitation({
           </p>
 
           <div className="p-6 sm:p-8 rounded-3xl bg-[#2D0D14] border-2 border-[#C5A15E] shadow-2xl">
-            {rsvpComponent ? rsvpComponent : <RoyalDemoRSVP />}
+            {rsvpComponent ? rsvpComponent : <RoyalDefaultRSVP />}
           </div>
         </div>
       </section>

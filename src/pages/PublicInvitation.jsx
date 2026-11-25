@@ -29,6 +29,7 @@ function LiveRSVPForm({
 
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
   // Sync if guest changes
@@ -85,12 +86,23 @@ function LiveRSVPForm({
         if (data && data.success === false) {
           throw new Error(data.error || 'Failed to submit RSVP');
         }
+        if (data && data.is_update) {
+          setIsUpdate(true);
+        }
       } else {
-        // Fallback for sample demo / non-UUID testing
+        // Fallback for offline / local preview
         try {
-          const stored = JSON.parse(localStorage.getItem('aahvaaan_demo_rsvps') || '[]');
-          stored.push({ ...formData, phone: cleanPhone, submittedAt: new Date().toISOString() });
-          localStorage.setItem('aahvaaan_demo_rsvps', JSON.stringify(stored));
+          const stored = JSON.parse(localStorage.getItem('aahvaaan_rsvps') || '[]');
+          const cleanPhone = (formData.phone || '').replace(/[^0-9+]/g, '');
+          const existingIdx = stored.findIndex(r => r.phone === cleanPhone);
+          if (existingIdx >= 0) {
+            stored[existingIdx] = { ...stored[existingIdx], ...formData, phone: cleanPhone, updatedAt: new Date().toISOString() };
+            setIsUpdate(true);
+          } else {
+            stored.push({ ...formData, phone: cleanPhone, submittedAt: new Date().toISOString() });
+            setIsUpdate(false);
+          }
+          localStorage.setItem('aahvaaan_rsvps', JSON.stringify(stored));
         } catch {
           // ignore
         }
@@ -120,10 +132,12 @@ function LiveRSVPForm({
           className="font-heading text-2xl font-bold mb-2"
           style={{ color: themeStyles.textPrimary || '#704B50' }}
         >
-          Response Received!
+          {isUpdate ? 'RSVP Updated Successfully!' : 'Response Received!'}
         </h4>
         <p className="font-body text-xs max-w-xs mx-auto mb-4" style={{ color: themeStyles.textSecondary || '#65575A' }}>
-          {formData.status === 'attending'
+          {isUpdate
+            ? 'We have updated your attendance details and informed the host family.'
+            : formData.status === 'attending'
             ? 'We are delighted and eagerly look forward to celebrating with you and your family!'
             : formData.status === 'maybe'
             ? 'Thank you for updating us. We hope you will be able to join us!'

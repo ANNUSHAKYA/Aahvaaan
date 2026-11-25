@@ -83,6 +83,8 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
   const [attendance, setAttendance] = useState({});
   const [wishes, setWishes] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [validationError, setValidationError] = useState('');
 
   const handleAttendanceChange = (eventName, status) => {
     setAttendance((prev) => ({
@@ -93,7 +95,43 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name.trim()) return;
+    setValidationError('');
+
+    if (!name.trim()) {
+      setValidationError('Please enter your full name.');
+      return;
+    }
+    const cleanMobile = (mobile || '').replace(/[^0-9]/g, '');
+    if (cleanMobile.length < 10) {
+      setValidationError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+
+    // Persist & Deduplicate by phone in storage
+    try {
+      const key = 'aahvaaan_rsvps';
+      const stored = JSON.parse(localStorage.getItem(key) || '[]');
+      const idx = stored.findIndex((r) => r.phone === cleanMobile);
+      const entry = {
+        name: name.trim(),
+        phone: cleanMobile,
+        guestCount,
+        attendance,
+        wishes: wishes.trim(),
+        updatedAt: new Date().toISOString(),
+      };
+      if (idx >= 0) {
+        stored[idx] = { ...stored[idx], ...entry };
+        setIsUpdate(true);
+      } else {
+        stored.push({ ...entry, createdAt: new Date().toISOString() });
+        setIsUpdate(false);
+      }
+      localStorage.setItem(key, JSON.stringify(stored));
+    } catch {
+      // ignore
+    }
+
     setSubmitted(true);
   };
 
@@ -104,17 +142,19 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
           ♥
         </div>
         <h3 className="font-heading text-2xl font-bold text-gray-900 mb-2">
-          Thank you, {name}!
+          {isUpdate ? `Welcome back, ${name}!` : `Thank you, ${name}!`}
         </h3>
         <p className="font-body text-xs sm:text-sm text-gray-600 max-w-sm mx-auto leading-relaxed mb-6">
-          Your response has been recorded. We can't wait to celebrate with you!
+          {isUpdate
+            ? 'Your RSVP response has been successfully updated. Your host family will see your latest answers.'
+            : "Your response has been recorded. We can't wait to celebrate with you!"}
         </p>
         <button
           type="button"
           onClick={() => setSubmitted(false)}
           className="text-xs text-[#7C3AED] hover:underline font-semibold"
         >
-          Update response
+          Update response again
         </button>
       </div>
     );
@@ -131,6 +171,12 @@ export function BalconyStyleRSVP({ events = [], coupleName = 'The Couple' }) {
           Let us know so we can make the arrangements just right.
         </p>
       </div>
+
+      {validationError && (
+        <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
+          {validationError}
+        </div>
+      )}
 
       {/* Guest Name & 10-Digit Mobile */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">

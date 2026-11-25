@@ -2,10 +2,16 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import templates from '../data/templates';
+import SEO from '../components/SEO';
 
 export default function Invitations() {
   return (
     <div className="pt-24 pb-24 min-h-screen bg-[#F8F7FC]">
+      <SEO
+        title="Wedding Invitation Templates & Gallery | Aahvaaan"
+        description="Explore Aahvaaan's signature interactive Indian wedding invitation templates. Experience live countdowns, music, personalized guest reveals, and RSVP management."
+        url="https://aahvaaan.vercel.app/templates"
+      />
       <div className="container-custom mx-auto px-4 sm:px-8 max-w-6xl">
         {/* Back Link */}
         <div className="mb-4">

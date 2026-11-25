@@ -315,8 +315,8 @@ export function InvitationEnvelope({
   );
 }
 
-// ─── Default Interactive Demo RSVP Form ───
-function DemoRSVPForm({ themeStyles }) {
+// ─── Default Interactive RSVP Form ───
+function DefaultRSVPForm({ themeStyles }) {
   const [rsvp, setRsvp] = useState({
     name: '',
     attending: '',
@@ -1114,7 +1114,7 @@ export default function TemplateRenderer({
               borderColor: `${themeStyles.accentPrimary}60`,
             }}
           >
-            {rsvpComponent ? rsvpComponent : <DemoRSVPForm themeStyles={themeStyles} />}
+            {rsvpComponent ? rsvpComponent : <DefaultRSVPForm themeStyles={themeStyles} />}
           </div>
         </div>
       </section>

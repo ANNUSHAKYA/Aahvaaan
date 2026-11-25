@@ -127,7 +127,7 @@ export default function InvitationEditor() {
           setTemplate(mockTmpl);
           setContent(mockTmpl.sampleData);
           setInvitation({
-            id: id || 'demo-id',
+            id: id || 'invitation-preview',
             slug: 'ananya-kabir-2027',
             status: 'draft',
             package: 'signature',

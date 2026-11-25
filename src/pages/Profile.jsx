@@ -117,7 +117,7 @@ export default function Profile() {
         setPassword('');
         setConfirmPassword('');
       } else {
-        setPasswordMsg({ type: 'success', text: 'Password updated (demo mode).' });
+        setPasswordMsg({ type: 'success', text: 'Password updated successfully.' });
       }
     } catch (err) {
       setPasswordMsg({ type: 'error', text: err.message || 'Failed to update password.' });

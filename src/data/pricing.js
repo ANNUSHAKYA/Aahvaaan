@@ -38,7 +38,7 @@ export const packages = [
       'Personalised couple love story',
       'Curated wedding photo gallery (up to 8 photos)',
       'Live wedding countdown timer',
-      'Interactive guest RSVP form demo',
+      'Interactive guest RSVP form',
       'Premium envelope opening animation',
       'Additional styling & palette personalisation',
       'Add-to-Calendar event downloads',

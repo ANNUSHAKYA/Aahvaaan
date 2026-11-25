@@ -5,6 +5,7 @@ import config from '../data/config';
 import packages from '../data/pricing';
 import templates from '../data/templates';
 import SectionHeading from '../components/SectionHeading';
+import SEO from '../components/SEO';
 
 const initialForm = {
   name: '',
@@ -119,6 +120,11 @@ export default function Contact() {
 
   return (
     <div className="pt-20">
+      <SEO
+        title="Contact Us & Book Your Invitation | Aahvaaan"
+        description="Get in touch with Aahvaaan by Vow & Vision. Book your bespoke digital wedding invitation, discuss custom requirements, or chat on WhatsApp."
+        url="https://aahvaaan.vercel.app/contact"
+      />
       {/* Header */}
       <section className="section-padding bg-champagne/30 pb-8">
         <div className="container-custom mx-auto">

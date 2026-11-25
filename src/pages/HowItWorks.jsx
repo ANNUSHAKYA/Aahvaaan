@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import SectionHeading from '../components/SectionHeading';
 import { FloralDivider } from '../components/Ornaments';
+import SEO from '../components/SEO';
 
 export default function HowItWorks() {
   const steps = [
@@ -60,6 +61,11 @@ export default function HowItWorks() {
 
   return (
     <div className="pt-20">
+      <SEO
+        title="How It Works – Simple 4-Step Process | Aahvaaan"
+        description="Learn how Aahvaaan crafts your bespoke interactive wedding invitation website. Pick a template, share your wedding story, review your draft, and share with guests."
+        url="https://aahvaaan.vercel.app/how-it-works"
+      />
       {/* Header */}
       <section className="section-padding bg-champagne/30">
         <div className="container-custom mx-auto">

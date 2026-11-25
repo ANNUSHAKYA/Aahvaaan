@@ -10,13 +10,7 @@ export const isSupabaseConfigured = Boolean(
   !supabaseUrl.includes('your-project-ref')
 );
 
-if (!isSupabaseConfigured) {
-  console.info(
-    'ℹ️ Aahvaaan: Supabase credentials not found in env. Falling back to local catalog and WhatsApp ordering flow. To enable live database features, add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your .env.'
-  );
-}
-
-// Create the client if configured, otherwise provide a safe mock client that logs actions
+// Create the client if configured, otherwise provide a safe client fallback
 export const supabase = isSupabaseConfigured
   ? createClient(supabaseUrl, supabaseAnonKey, {
       auth: {

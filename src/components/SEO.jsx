@@ -1,39 +1,69 @@
 import { useEffect } from 'react';
 
+const SITE_ORIGIN = 'https://aahvaaan.vercel.app';
+
 /**
  * Lightweight SEO & Meta tags manager for SPA
  */
 export default function SEO({
   title = 'Aahvaaan | Luxury Digital Wedding Invitations by Vow & Vision',
   description = 'Bespoke digital wedding invitations crafted with authentic Indian heritage, live RSVP tracking, Google Maps directions, and personalized guest links.',
-  image = '/assets/hero-bg.jpg',
-  url = window.location.href,
+  image = '/og-preview.png',
+  url,
+  type = 'website',
+  canonical,
 }) {
   useEffect(() => {
     // 1. Update document title
     document.title = title;
 
-    // 2. Helper to set or create meta tags
-    const setMetaTag = (selector, attribute, value) => {
-      let element = document.querySelector(selector);
+    // 2. Resolve absolute URLs
+    const currentPath = window.location.pathname + window.location.search;
+    const finalUrl = url || `${SITE_ORIGIN}${currentPath}`;
+    const finalCanonical = canonical || finalUrl.split('?')[0];
+    const finalImage = image.startsWith('http') ? image : `${SITE_ORIGIN}${image}`;
+
+    // 3. Helper to set or create meta tags
+    const setMetaTag = (attributeName, attributeValue, content) => {
+      let element = document.querySelector(`meta[${attributeName}='${attributeValue}']`);
       if (!element) {
         element = document.createElement('meta');
-        const [attrName, attrVal] = selector.replace(/[\[\]']/g, '').split('=');
-        element.setAttribute(attrName, attrVal);
+        element.setAttribute(attributeName, attributeValue);
         document.head.appendChild(element);
       }
-      element.setAttribute(attribute, value);
+      element.setAttribute('content', content);
     };
 
-    setMetaTag("meta[name='description']", 'content', description);
-    setMetaTag("meta[property='og:title']", 'content', title);
-    setMetaTag("meta[property='og:description']", 'content', description);
-    setMetaTag("meta[property='og:image']", 'content', image.startsWith('http') ? image : `${window.location.origin}${image}`);
-    setMetaTag("meta[property='og:url']", 'content', url);
-    setMetaTag("meta[name='twitter:card']", 'content', 'summary_large_image');
-    setMetaTag("meta[name='twitter:title']", 'content', title);
-    setMetaTag("meta[name='twitter:description']", 'content', description);
-  }, [title, description, image, url]);
+    // Standard meta description
+    setMetaTag('name', 'description', description);
+
+    // Canonical link tag
+    let canonicalLink = document.querySelector("link[rel='canonical']");
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', finalCanonical);
+
+    // Open Graph
+    setMetaTag('property', 'og:type', type);
+    setMetaTag('property', 'og:site_name', 'Aahvaaan by Vow & Vision');
+    setMetaTag('property', 'og:title', title);
+    setMetaTag('property', 'og:description', description);
+    setMetaTag('property', 'og:url', finalUrl);
+    setMetaTag('property', 'og:image', finalImage);
+    setMetaTag('property', 'og:image:secure_url', finalImage);
+    setMetaTag('property', 'og:image:width', '1200');
+    setMetaTag('property', 'og:image:height', '630');
+
+    // Twitter Cards
+    setMetaTag('name', 'twitter:card', 'summary_large_image');
+    setMetaTag('name', 'twitter:title', title);
+    setMetaTag('name', 'twitter:description', description);
+    setMetaTag('name', 'twitter:image', finalImage);
+    setMetaTag('name', 'twitter:url', finalUrl);
+  }, [title, description, image, url, type, canonical]);
 
   return null;
 }

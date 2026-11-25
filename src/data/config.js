@@ -1,21 +1,26 @@
-// Central configuration file for Vow & Vision / Aahvaaan
-// Update business details here
+import siteConfig, { isValidWhatsAppNumber, isValidEmail, getWhatsAppUrl } from '../config/site.config';
 
+// Central configuration file for Vow & Vision / Aahvaaan
 const config = {
   // Brand
-  brandName: 'Vow & Vision',
-  websiteName: 'Aahvaaan',
-  tagline: 'Every celebration deserves a beautiful beginning.',
+  brandName: siteConfig.brandName,
+  websiteName: siteConfig.websiteName,
+  tagline: siteConfig.tagline,
 
   // Contact – Business WhatsApp and Email
-  whatsappNumber: '919876543210', // Replace with your actual WhatsApp business number (with country code, no +)
-  email: 'hello@aahvaaan.com',
-  instagram: 'https://instagram.com/aahvaaan.invites',
-  instagramHandle: '@aahvaaan.invites',
+  whatsappNumber: siteConfig.whatsappNumber,
+  email: siteConfig.email,
+  instagram: siteConfig.instagram,
+  instagramHandle: siteConfig.instagramHandle,
 
   // Business details
-  location: 'Jaipur & Mumbai, India',
-  currency: '₹',
+  location: siteConfig.location,
+  currency: siteConfig.currency,
+
+  // Utilities
+  isValidWhatsAppNumber,
+  isValidEmail,
+  getWhatsAppUrl,
   
   // Default sample invitation details
   sampleInvitation: {
