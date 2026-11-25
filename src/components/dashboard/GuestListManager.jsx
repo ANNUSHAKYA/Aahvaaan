@@ -309,7 +309,7 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
     const cleanPhone = (guest.phone || '').replace(/[^0-9]/g, '');
     return cleanPhone
       ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`
-      : `https://wa.me/?text=${encodeURIComponent(reminderMsg)}`;
+      : `https://wa.me/?text=${encodeURIComponent(message)}`;
   };
 
   // Upgrade Limit Handler (e.g. Starter -> Signature -> Luxury -> Unlimited)

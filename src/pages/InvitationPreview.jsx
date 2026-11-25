@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft, ShoppingBag, Smartphone, Monitor, RotateCcw,
-  UserCheck, Volume2, VolumeX, Edit3
+  UserCheck, Volume2, VolumeX, Edit3, Eye
 } from 'lucide-react';
 import supabase, { isSupabaseConfigured } from '../lib/supabase';
 import templates from '../data/templates';
-import useWeddingAudio from '../hooks/useWeddingAudio';
 import TemplateRenderer from '../components/invitation/TemplateRenderer';
 
 export default function InvitationPreview() {

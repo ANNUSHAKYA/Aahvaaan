@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Lazy-loaded pages for fast initial bundle & 4G performance
 const Home = lazy(() => import('./pages/Home'));
@@ -54,8 +55,9 @@ export default function App() {
   return (
     <AuthProvider>
       <ScrollToTop />
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
+      <ErrorBoundary>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             {/* Templates / Gallery Routes */}
@@ -129,6 +131,7 @@ export default function App() {
           <Route path="invite/:slug" element={<PublicInvitation />} />
         </Routes>
       </Suspense>
-    </AuthProvider>
-  );
+    </ErrorBoundary>
+  </AuthProvider>
+);
 }

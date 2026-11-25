@@ -6,7 +6,7 @@ import {
   ExternalLink, Image as ImageIcon, Trash2, Plus, Upload,
   Music, Calendar, MapPin, Users, Heart, Sparkles,
   Smartphone, Monitor, ChevronRight, Lock, CheckCircle2,
-  Share2, ShieldAlert, Clock, CreditCard, MessageCircle
+  Share2, ShieldAlert, Clock, CreditCard, MessageCircle, X
 } from 'lucide-react';
 import supabase, { isSupabaseConfigured } from '../lib/supabase';
 import { useAuth } from '../context/AuthContext';
