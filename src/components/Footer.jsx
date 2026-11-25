@@ -10,7 +10,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#24050E] text-white/90 pt-16 pb-10 border-t border-white/10 font-body">
+    <footer className="bg-[#1F0510] text-white/90 pt-16 pb-12 border-t border-white/10 font-body relative">
       <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10 lg:gap-12 pb-12 border-b border-white/10">
           {/* Brand & Description (2 cols) */}
@@ -28,7 +28,7 @@ export default function Footer() {
             <div className="flex items-center gap-3 pt-2">
               <Link
                 to="/invitations"
-                className="px-5 py-2 rounded-full bg-white text-wine hover:bg-gold hover:text-white font-semibold text-xs transition-colors shadow-xs"
+                className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#6B1D2F] via-[#851C34] to-[#A02845] hover:opacity-95 text-white font-semibold text-xs transition-all shadow-md hover:shadow-lg"
               >
                 View templates
               </Link>
@@ -37,10 +37,10 @@ export default function Footer() {
                 href={config.instagram || 'https://instagram.com'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors border border-white/10"
+                className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors border border-white/15"
                 title="Follow us on Instagram"
               >
-                <Instagram size={15} />
+                <Instagram size={16} />
               </a>
             </div>
           </div>
@@ -50,7 +50,7 @@ export default function Footer() {
             <h4 className="text-xs uppercase tracking-widest font-bold text-gold-light mb-4">
               EXPLORE
             </h4>
-            <ul className="space-y-2 text-xs text-white/70">
+            <ul className="space-y-2.5 text-xs text-white/70">
               <li>
                 <Link to="/invitations" className="hover:text-gold transition-colors">
                   Templates
@@ -67,6 +67,11 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <a href="/#faqs" className="hover:text-gold transition-colors">
+                  FAQs
+                </a>
+              </li>
+              <li>
                 <Link to="/invitations" className="hover:text-gold transition-colors">
                   All templates
                 </Link>
@@ -79,11 +84,11 @@ export default function Footer() {
             <h4 className="text-xs uppercase tracking-widest font-bold text-gold-light mb-4">
               COMPANY
             </h4>
-            <ul className="space-y-2 text-xs text-white/70">
+            <ul className="space-y-2.5 text-xs text-white/70">
               <li>
-                <Link to="/about" className="hover:text-gold transition-colors">
+                <a href="/#about" className="hover:text-gold transition-colors">
                   About us
-                </Link>
+                </a>
               </li>
               <li>
                 <Link to="/contact" className="hover:text-gold transition-colors">
@@ -96,14 +101,14 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <Link to="/about" className="hover:text-gold transition-colors">
+                <a href="/#about" className="hover:text-gold transition-colors">
                   Terms of Service
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/about" className="hover:text-gold transition-colors">
+                <a href="/#about" className="hover:text-gold transition-colors">
                   Privacy Policy
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -113,7 +118,7 @@ export default function Footer() {
             <h4 className="text-xs uppercase tracking-widest font-bold text-gold-light mb-4">
               ACCOUNT
             </h4>
-            <ul className="space-y-2 text-xs text-white/70">
+            <ul className="space-y-2.5 text-xs text-white/70">
               <li>
                 <Link to="/login" className="hover:text-gold transition-colors">
                   Log in
@@ -139,15 +144,16 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar: Copyright & Back to Top */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
-          <p>© {currentYear} Aahvaaan by Vow & Vision. All rights reserved.</p>
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+          <p>© {currentYear} Aahvaaan. All rights reserved.</p>
 
           <button
+            type="button"
             onClick={scrollToTop}
             className="flex items-center gap-1.5 hover:text-white transition-colors"
           >
             <span>Back to top</span>
-            <ArrowUp size={13} />
+            <ArrowUp size={14} />
           </button>
         </div>
       </div>

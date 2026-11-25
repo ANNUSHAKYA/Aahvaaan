@@ -465,14 +465,14 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Center CTA Button */}
+        {/* Center CTA Button (Matches Screenshot 4) */}
         <div className="text-center mt-12">
           <Link
             to="/invitations"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-wine to-[#9E2A47] hover:from-[#9E2A47] hover:to-wine text-white font-body text-xs font-semibold uppercase tracking-wider shadow-md hover:shadow-lg transition-all"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#6B1D2F] via-[#851C34] to-[#A02845] hover:opacity-95 text-white font-body font-semibold text-xs sm:text-sm shadow-md hover:shadow-xl transition-all hover:scale-105"
           >
-            <span>View all 4 templates</span>
-            <ArrowRight size={15} />
+            <span>View all templates</span>
+            <ChevronRight size={16} />
           </Link>
         </div>
       </section>
@@ -563,121 +563,133 @@ export default function Home() {
 
         {/* ─── "With every invitation, you get" & Live Updates ─── */}
         <div className="max-w-5xl mx-auto space-y-6 mt-12">
-          {/* Top Inclusions Card */}
-          <div className="bg-[#FFF9F3] rounded-3xl p-6 sm:p-8 border border-champagne/70 text-center shadow-xs">
-            <h4 className="font-heading text-xl sm:text-2xl font-bold text-wine mb-2">
+          {/* Top Inclusions Card (Matches Screenshot 2) */}
+          <div className="bg-[#FFF9F3] rounded-[28px] p-8 sm:p-10 border border-[#F3E2D3] text-center shadow-xs">
+            <h4 className="font-heading text-2xl sm:text-3xl font-bold text-[#8A4A28] mb-4">
               With every invitation, you get
             </h4>
-            <div className="flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-charcoal/80">
-              <span className="font-bold text-wine">Common link</span>
-              <span className="text-gold font-bold text-lg">+</span>
-              <span className="font-bold text-wine">5 personalized guest links free</span>
+            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-base sm:text-lg font-semibold text-charcoal">
+              <span className="font-bold text-[#8A4A28]">Common link</span>
+              <span className="text-[#D97706] font-bold text-xl">+</span>
+              <span className="font-bold text-[#8A4A28]">5 personalized guest links free</span>
             </div>
-            <p className="text-[11px] text-charcoal/50 mt-1">
+            <p className="text-xs text-charcoal/60 mt-2">
               (You can increase the number of guests anytime by purchasing.)
             </p>
           </div>
 
-          {/* Bottom Live Updates Banner */}
-          <div className="bg-gradient-to-r from-[#3D0C1A] via-[#521324] to-[#6B1D2F] text-white rounded-3xl p-8 sm:p-12 text-center shadow-xl relative overflow-hidden">
-            <h4 className="font-heading text-2xl sm:text-3xl font-bold mb-3">
+          {/* Bottom Live Updates Banner (Matches Screenshot 2) */}
+          <div className="bg-[#5C2D91] text-white rounded-[28px] p-8 sm:p-12 text-center shadow-2xl relative overflow-hidden">
+            <h4 className="font-heading text-2xl sm:text-3xl font-bold mb-3 tracking-tight">
               Your guests always see the latest details.
             </h4>
-            <p className="font-body text-xs sm:text-sm text-white/80 max-w-xl mx-auto leading-relaxed mb-4">
+            <p className="font-body text-xs sm:text-sm text-white/85 max-w-xl mx-auto leading-relaxed mb-6">
               Change your mind about the venue? Caught a typo? Update your invitation and every guest link reflects it instantly. No resharing needed.
             </p>
-            <p className="font-body text-xs sm:text-sm text-white/90">
-              Up to <strong className="text-gold font-bold text-lg sm:text-xl">3</strong> updates within <strong className="text-gold font-bold text-lg sm:text-xl">6</strong> months of going live
+            <p className="font-body text-sm sm:text-base text-white/95">
+              Up to <span className="text-[#F59E0B] font-bold text-2xl sm:text-3xl mx-1">3</span> updates within <span className="text-[#F59E0B] font-bold text-2xl sm:text-3xl mx-1">6</span> months of going live
             </p>
           </div>
         </div>
       </section>
 
-      {/* ════════════════ 4. 3D FEATURES SECTION ════════════════ */}
-      <section id="features" className="bg-[#2D0A14] text-white py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-14">
-            <span className="inline-block px-8 py-2 rounded-full bg-white/10 text-white font-heading text-2xl sm:text-3xl font-bold">
+      {/* ════════════════ 4. 3D FEATURES SECTION (Exact Screenshot 6 Match) ════════════════ */}
+      <section id="features" className="bg-[#2D0A38] text-white py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        {/* Ambient atmospheric purple glows */}
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#8B2BE2]/15 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-[#6B1D4F]/20 rounded-full blur-[140px] pointer-events-none" />
+
+        <div className="max-w-5xl mx-auto relative z-10">
+          {/* Header Badge */}
+          <div className="text-center mb-16 relative">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-20 bg-white/10 blur-2xl rounded-full pointer-events-none" />
+            <span className="inline-block px-10 py-3 rounded-2xl bg-white/10 backdrop-blur-md text-white font-heading text-3xl sm:text-4xl font-bold tracking-tight shadow-inner border border-white/15">
               Features
             </span>
           </div>
 
+          {/* Row 1: 3 Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Card 1: Instant Directions */}
-            <div className="bg-white rounded-3xl p-7 text-charcoal shadow-xl border border-champagne/40 text-center flex flex-col items-center hover:-translate-y-1 transition-transform">
-              <div className="w-12 h-12 rounded-2xl bg-wine/10 text-wine flex items-center justify-center mb-4 shadow-sm">
-                <MapPin size={24} className="text-wine" />
+            <div className="bg-white rounded-[28px] p-8 text-charcoal shadow-2xl border border-gray-100 text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
+              {/* 3D Neon Glow Pin Icon */}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#C026D3]/10 flex items-center justify-center mb-5 relative group">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#7C3AED] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.35)] bg-white">
+                  <MapPin size={22} className="text-[#7C3AED] stroke-[2.2]" />
+                </div>
               </div>
-              <h4 className="font-heading text-base font-bold text-wine mb-2">
+              <h4 className="font-heading text-base sm:text-lg font-bold text-charcoal mb-2">
                 Instant Directions
               </h4>
               <p className="font-body text-xs text-charcoal/70 leading-relaxed">
-                Guests can open the venue location and get directions in a single tap on Google Maps.
+                Guests can open the venue location and get directions in a single tap.
               </p>
             </div>
 
             {/* Card 2: RSVP Tracking */}
-            <div className="bg-white rounded-3xl p-7 text-charcoal shadow-xl border border-champagne/40 text-center flex flex-col items-center hover:-translate-y-1 transition-transform">
-              <div className="w-12 h-12 rounded-2xl bg-wine/10 text-wine flex items-center justify-center mb-4 shadow-sm">
-                <Users size={24} className="text-wine" />
+            <div className="bg-white rounded-[28px] p-8 text-charcoal shadow-2xl border border-gray-100 text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
+              {/* 3D Neon Glow Users Icon */}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#C026D3]/10 flex items-center justify-center mb-5 relative">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#7C3AED] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.35)] bg-white">
+                  <Users size={22} className="text-[#7C3AED] stroke-[2.2]" />
+                </div>
               </div>
-              <h4 className="font-heading text-base font-bold text-wine mb-2">
-                RSVP & Dietary Tracking
+              <h4 className="font-heading text-base sm:text-lg font-bold text-charcoal mb-2">
+                RSVP Tracking
               </h4>
               <p className="font-body text-xs text-charcoal/70 leading-relaxed">
-                Collect headcounts, dietary choices (Jain/Pure Veg), and warm wishes automatically in your dashboard.
+                Collect guest responses effortlessly and know who's attending.
               </p>
             </div>
 
             {/* Card 3: Add to Calendar */}
-            <div className="bg-white rounded-3xl p-7 text-charcoal shadow-xl border border-champagne/40 text-center flex flex-col items-center hover:-translate-y-1 transition-transform">
-              <div className="w-12 h-12 rounded-2xl bg-wine/10 text-wine flex items-center justify-center mb-4 shadow-sm">
-                <Calendar size={24} className="text-wine" />
+            <div className="bg-white rounded-[28px] p-8 text-charcoal shadow-2xl border border-gray-100 text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
+              {/* 3D Neon Glow Calendar Icon */}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#C026D3]/10 flex items-center justify-center mb-5 relative">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#7C3AED] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.35)] bg-white">
+                  <Calendar size={22} className="text-[#7C3AED] stroke-[2.2]" />
+                </div>
               </div>
-              <h4 className="font-heading text-base font-bold text-wine mb-2">
+              <h4 className="font-heading text-base sm:text-lg font-bold text-charcoal mb-2">
                 Add to Calendar
               </h4>
               <p className="font-body text-xs text-charcoal/70 leading-relaxed">
-                Add ceremony dates to guests' calendars instantly — Google, Apple, or Outlook.
+                Add the event to guests' calendars instantly - Google, Apple or Outlook.
               </p>
             </div>
+          </div>
 
-            {/* Card 4: Background Music */}
-            <div className="bg-white rounded-3xl p-7 text-charcoal shadow-xl border border-champagne/40 text-center flex flex-col items-center hover:-translate-y-1 transition-transform">
-              <div className="w-12 h-12 rounded-2xl bg-wine/10 text-wine flex items-center justify-center mb-4 shadow-sm">
-                <Music size={24} className="text-wine" />
+          {/* Row 2: 2 Centered Cards (Matches Screenshot 6) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto mt-6">
+            {/* Card 4: Live Updates */}
+            <div className="bg-white rounded-[28px] p-8 text-charcoal shadow-2xl border border-gray-100 text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
+              {/* 3D Neon Glow Edit Icon */}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#C026D3]/10 flex items-center justify-center mb-5 relative">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#7C3AED] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.35)] bg-white">
+                  <Edit3 size={22} className="text-[#7C3AED] stroke-[2.2]" />
+                </div>
               </div>
-              <h4 className="font-heading text-base font-bold text-wine mb-2">
-                Ceremonial Music
+              <h4 className="font-heading text-base sm:text-lg font-bold text-charcoal mb-2">
+                Live Updates
               </h4>
               <p className="font-body text-xs text-charcoal/70 leading-relaxed">
-                Immerse guests with traditional shehnai, sufi melodies, or your personalized romantic audio track.
+                Update event details anytime, and changes reflect instantly for all guests.
               </p>
             </div>
 
-            {/* Card 5: Live Updates */}
-            <div className="bg-white rounded-3xl p-7 text-charcoal shadow-xl border border-champagne/40 text-center flex flex-col items-center hover:-translate-y-1 transition-transform">
-              <div className="w-12 h-12 rounded-2xl bg-wine/10 text-wine flex items-center justify-center mb-4 shadow-sm">
-                <Edit3 size={24} className="text-wine" />
+            {/* Card 5: Interactive Experience */}
+            <div className="bg-white rounded-[28px] p-8 text-charcoal shadow-2xl border border-gray-100 text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
+              {/* 3D Neon Glow Sparkle Icon */}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#C026D3]/10 flex items-center justify-center mb-5 relative">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#7C3AED] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.35)] bg-white">
+                  <Sparkles size={22} className="text-[#7C3AED] stroke-[2.2]" />
+                </div>
               </div>
-              <h4 className="font-heading text-base font-bold text-wine mb-2">
-                Live Updates (3x)
-              </h4>
-              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
-                Update event times or venues anytime; changes reflect live for all guest links instantly.
-              </p>
-            </div>
-
-            {/* Card 6: Interactive Experience */}
-            <div className="bg-white rounded-3xl p-7 text-charcoal shadow-xl border border-champagne/40 text-center flex flex-col items-center hover:-translate-y-1 transition-transform">
-              <div className="w-12 h-12 rounded-2xl bg-wine/10 text-wine flex items-center justify-center mb-4 shadow-sm">
-                <Sparkles size={24} className="text-wine" />
-              </div>
-              <h4 className="font-heading text-base font-bold text-wine mb-2">
+              <h4 className="font-heading text-base sm:text-lg font-bold text-charcoal mb-2">
                 Interactive Experience
               </h4>
               <p className="font-body text-xs text-charcoal/70 leading-relaxed">
-                More than a static card — an engaging digital experience guests cherish and remember.
+                More than a static invitation - an engaging experience guests can interact with.
               </p>
             </div>
           </div>

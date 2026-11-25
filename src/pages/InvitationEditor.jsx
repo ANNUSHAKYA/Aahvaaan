@@ -1239,22 +1239,149 @@ export default function InvitationEditor() {
             {/* ════ TAB 5: LOVE STORY ════ */}
             {activeTab === 'story' && (
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-5">
+                {/* General Couple Narrative */}
                 <div className="bg-white p-5 rounded-2xl border border-champagne shadow-2xs">
                   <h3 className="font-heading text-lg font-bold text-wine mb-2 flex items-center gap-2">
                     <Heart size={18} className="text-gold" />
-                    <span>A Note From Us (Our Story)</span>
+                    <span>Couple Story & Welcome Message</span>
                   </h3>
                   <p className="text-xs text-charcoal/60 mb-4">
-                    Share a personal message, your meeting story, or gratitude with your wedding guests.
+                    Share a personal welcoming message and your romantic journey with wedding guests.
                   </p>
 
                   <textarea
-                    rows={6}
+                    rows={4}
                     value={content?.coupleStory || ''}
                     onChange={(e) => handleContentChange({ coupleStory: e.target.value })}
                     placeholder="Write how you met, your bond, and your welcoming words..."
                     className="w-full px-3.5 py-3 bg-ivory/50 border border-champagne rounded-xl text-xs sm:text-sm font-body leading-relaxed focus:outline-none focus:border-wine transition-colors"
                   />
+                </div>
+
+                {/* Love Story Chapters (Hashtags + Cards) */}
+                <div className="bg-white p-5 rounded-2xl border border-champagne shadow-2xs">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <h3 className="font-heading text-lg font-bold text-wine">
+                        Love Story Timeline Chapters
+                      </h3>
+                      <p className="text-xs text-charcoal/60">
+                        Swipeable cards with hashtags like #howitstarted, #thelittlethings, #foreverbegins
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    {(content?.loveStory || [
+                      { hashtag: '#howitstarted', title: 'A Glimpse in the Pink City', description: 'Our first auspicious encounter...', image: '/templates/royal-maroon-and-gold/media/hero_scene.webp' },
+                      { hashtag: '#thelittlethings', title: 'Shared Rhythms & Royal Polo', description: 'Evenings spent discussing history...', image: '/templates/royal-maroon-and-gold/media/sangeet.webp' },
+                      { hashtag: '#foreverbegins', title: 'The Royal Promise', description: 'With the blessings of our elders...', image: '/templates/royal-maroon-and-gold/media/vivaah.webp' },
+                    ]).map((chapter, idx) => (
+                      <div key={idx} className="p-4 rounded-xl border border-champagne/80 bg-ivory/30 space-y-2.5">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                          <div>
+                            <label className="block text-[10px] font-bold text-wine uppercase tracking-wider mb-1">
+                              Hashtag
+                            </label>
+                            <input
+                              type="text"
+                              value={chapter.hashtag || ''}
+                              onChange={(e) => {
+                                const updated = [...(content?.loveStory || [])];
+                                updated[idx] = { ...updated[idx], hashtag: e.target.value };
+                                handleContentChange({ loveStory: updated });
+                              }}
+                              placeholder="#howitstarted"
+                              className="w-full px-2.5 py-1.5 bg-white border border-champagne rounded-lg text-xs font-mono text-wine font-semibold focus:outline-none focus:border-wine"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] font-bold text-wine uppercase tracking-wider mb-1">
+                              Chapter Title
+                            </label>
+                            <input
+                              type="text"
+                              value={chapter.title || ''}
+                              onChange={(e) => {
+                                const updated = [...(content?.loveStory || [])];
+                                updated[idx] = { ...updated[idx], title: e.target.value };
+                                handleContentChange({ loveStory: updated });
+                              }}
+                              placeholder="e.g. A Glimpse in Jaipur"
+                              className="w-full px-2.5 py-1.5 bg-white border border-champagne rounded-lg text-xs font-body focus:outline-none focus:border-wine"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-bold text-wine uppercase tracking-wider mb-1">
+                            Chapter Story
+                          </label>
+                          <textarea
+                            rows={2}
+                            value={chapter.description || ''}
+                            onChange={(e) => {
+                              const updated = [...(content?.loveStory || [])];
+                              updated[idx] = { ...updated[idx], description: e.target.value };
+                              handleContentChange({ loveStory: updated });
+                            }}
+                            placeholder="Describe this cherished milestone..."
+                            className="w-full px-2.5 py-1.5 bg-white border border-champagne rounded-lg text-xs font-body focus:outline-none focus:border-wine"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-bold text-wine uppercase tracking-wider mb-1">
+                            Photo URL or Asset Slot
+                          </label>
+                          <input
+                            type="text"
+                            value={chapter.image || ''}
+                            onChange={(e) => {
+                              const updated = [...(content?.loveStory || [])];
+                              updated[idx] = { ...updated[idx], image: e.target.value };
+                              handleContentChange({ loveStory: updated });
+                            }}
+                            placeholder="https://... or /templates/royal-maroon-and-gold/media/..."
+                            className="w-full px-2.5 py-1.5 bg-white border border-champagne rounded-lg text-xs font-body focus:outline-none focus:border-wine"
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Closing Note & Family Signature */}
+                <div className="bg-white p-5 rounded-2xl border border-champagne shadow-2xs space-y-4">
+                  <h3 className="font-heading text-lg font-bold text-wine">
+                    Closing Blessing & Family Signature
+                  </h3>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-charcoal mb-1">
+                      A Note From Us (Closing Words)
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={content?.noteFromUs || ''}
+                      onChange={(e) => handleContentChange({ noteFromUs: e.target.value })}
+                      placeholder="As we begin this sacred new chapter of life, your blessings..."
+                      className="w-full px-3.5 py-2.5 bg-ivory/50 border border-champagne rounded-xl text-xs font-body focus:outline-none focus:border-wine"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-charcoal mb-1">
+                      Closing Family Name Signature
+                    </label>
+                    <input
+                      type="text"
+                      value={content?.closingFamily || ''}
+                      onChange={(e) => handleContentChange({ closingFamily: e.target.value })}
+                      placeholder="e.g. The Rathore & Chauhan Families"
+                      className="w-full px-3.5 py-2 bg-ivory/50 border border-champagne rounded-xl text-xs font-body focus:outline-none focus:border-wine"
+                    />
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -1357,35 +1484,114 @@ export default function InvitationEditor() {
                 <div className="bg-white p-5 rounded-2xl border border-champagne shadow-2xs">
                   <h3 className="font-heading text-lg font-bold text-wine mb-2 flex items-center gap-2">
                     <Music size={18} className="text-gold" />
-                    <span>Traditional Shehnai & Tanpura Ambience</span>
+                    <span>Royal Wedding Music & Ambience</span>
                   </h3>
-                  <p className="text-xs text-charcoal/60 mb-4">
-                    Traditional instrumental music plays gently when the guest opens the royal envelope.
+                  <p className="text-xs text-charcoal/60 mb-5">
+                    Traditional shehnai and sitar instrumental music loops smoothly when the guest taps to open their royal invitation.
                   </p>
 
-                  <div className="flex items-center justify-between p-4 rounded-xl bg-ivory/50 border border-champagne mb-4">
+                  {/* Enable / Disable Toggle */}
+                  <div className="flex items-center justify-between p-4 rounded-xl bg-ivory/50 border border-champagne mb-5">
                     <div>
                       <span className="font-heading text-sm font-bold text-wine block">
-                        Enable Shehnai Music
+                        Enable Background Music
                       </span>
                       <span className="text-xs text-charcoal/60">
-                        Plays soft royal shehnai audio on mobile tap
+                        Autoplays with gentle volume fade-in upon tap
                       </span>
                     </div>
                     <label className="relative inline-flex items-center cursor-pointer">
                       <input
                         type="checkbox"
-                        checked={content?.audio?.enabled !== false}
-                        onChange={(e) =>
+                        checked={content?.music?.enabled !== false && content?.audio?.enabled !== false}
+                        onChange={(e) => {
+                          const isEnabled = e.target.checked;
                           handleContentChange((prev) => ({
                             ...prev,
-                            audio: { ...(prev.audio || {}), enabled: e.target.checked },
-                          }))
-                        }
+                            music: { ...(prev.music || {}), enabled: isEnabled },
+                            audio: { ...(prev.audio || {}), enabled: isEnabled },
+                          }));
+                        }}
                         className="sr-only peer"
                       />
                       <div className="w-11 h-6 bg-champagne peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-wine" />
                     </label>
+                  </div>
+
+                  {/* Track Selection Library */}
+                  <div className="space-y-3">
+                    <label className="block text-xs font-semibold text-charcoal">
+                      Select Wedding Instrumental Track
+                    </label>
+                    <div className="space-y-2">
+                      {[
+                        { id: 'shehnai-royal', title: 'Royal Shehnai & Sitar Melody', url: '/templates/royal-maroon-and-gold/media/music.mp3', desc: 'Raag Bhupali soothing shehnai lead with gentle tanpura' },
+                        { id: 'flute-raag', title: 'Jashn-e-Bahaar Classical Flute', url: '/templates/royal-maroon-and-gold/media/music.mp3', desc: 'Ethereal bansuri flute with ambient temple bells' },
+                        { id: 'sitar-symphony', title: 'Palace Sitar & Tanpura Drone', url: '/templates/royal-maroon-and-gold/media/music.mp3', desc: 'Classical sitar arpeggios fit for royal entrance' },
+                        { id: 'sufi-romance', title: 'Auspicious Wedding Shehnai', url: '/templates/royal-maroon-and-gold/media/music.mp3', desc: 'Traditional Vedic wedding shehnai loop' },
+                      ].map((trk) => {
+                        const isSelected = (content?.music?.track === trk.id) || (!content?.music?.track && trk.id === 'shehnai-royal');
+                        return (
+                          <div
+                            key={trk.id}
+                            onClick={() => {
+                              handleContentChange((prev) => ({
+                                ...prev,
+                                music: {
+                                  ...(prev.music || {}),
+                                  enabled: true,
+                                  track: trk.id,
+                                  title: trk.title,
+                                  url: trk.url,
+                                },
+                              }));
+                            }}
+                            className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all flex items-center justify-between ${
+                              isSelected
+                                ? 'bg-[#761F32]/10 border-wine shadow-xs'
+                                : 'bg-ivory/30 border-champagne/70 hover:border-wine/40'
+                            }`}
+                          >
+                            <div>
+                              <span className="font-heading text-xs font-bold text-wine block">
+                                {trk.title}
+                              </span>
+                              <span className="text-[11px] text-charcoal/60 block mt-0.5">
+                                {trk.desc}
+                              </span>
+                            </div>
+                            <span className={`w-5 h-5 rounded-full border flex items-center justify-center text-xs ${
+                              isSelected ? 'border-wine bg-wine text-white' : 'border-gray-300'
+                            }`}>
+                              {isSelected ? '✓' : ''}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Custom Audio Path */}
+                  <div className="mt-5 pt-4 border-t border-champagne/40">
+                    <label className="block text-xs font-semibold text-charcoal mb-1">
+                      Custom Audio File URL (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      value={content?.music?.url || ''}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        handleContentChange((prev) => ({
+                          ...prev,
+                          music: { ...(prev.music || {}), url: val },
+                        }));
+                      }}
+                      placeholder="/templates/royal-maroon-and-gold/media/music.mp3"
+                      className="w-full px-3.5 py-2.5 bg-ivory/50 border border-champagne rounded-xl text-xs font-body focus:outline-none focus:border-wine"
+                    />
+                    <p className="text-[11px] text-charcoal/50 mt-1">
+                      Default: <code className="text-wine">/templates/royal-maroon-and-gold/media/music.mp3</code>
+                    </p>
                   </div>
                 </div>
               </motion.div>

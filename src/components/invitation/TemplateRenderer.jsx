@@ -5,6 +5,8 @@ import {
   ExternalLink, Check, Utensils, Sparkles, Volume2, VolumeX
 } from 'lucide-react';
 import useCountdown from '../../hooks/useCountdown';
+import MaharajaRoyalInvitation from './templates/MaharajaRoyalInvitation';
+import InteractiveStoryInvitation from './templates/InteractiveStoryInvitation';
 
 // ─── Add to Calendar Helper ───
 export function downloadEventCalendar(event, bride, groom) {
@@ -482,6 +484,33 @@ export default function TemplateRenderer({
   showEnvelope = false,
   onOpenEnvelope = null,
 }) {
+  // Delegate to Maharaja Royal Maroon interactive story invitation if target template
+  if (
+    template?.id === 'royal-maroon-and-gold' ||
+    template?.alias === 'royal-maroon-and-gold' ||
+    template?.id === 'shahi-patra' ||
+    template?.alias === 'shahi-patra'
+  ) {
+    return (
+      <MaharajaRoyalInvitation
+        template={template}
+        content={content}
+        guestName={guestName}
+        rsvpComponent={rsvpComponent}
+      />
+    );
+  }
+
+  // All other templates (including Rose Watercolor / Champagne & Rose, Lotus Lagoon, Noor Patra)
+  // use the full InteractiveStoryInvitation matching the user's reference screenshots!
+  return (
+    <InteractiveStoryInvitation
+      template={template}
+      content={content}
+      guestName={guestName}
+      rsvpComponent={rsvpComponent}
+    />
+  );
   const themeStyles = template.themeStyles || {
     bgPrimary: '#FAF6F0',
     bgSecondary: '#E9D7CC',

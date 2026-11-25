@@ -41,13 +41,14 @@ export default function Navbar() {
     '/dashboard',
     '/host',
     '/invitations',
+    '/templates',
     '/gallery',
     '/profile',
   ].some((p) => location.pathname === p || location.pathname.startsWith(p + '/'));
 
   if (isAppPage) {
     const isDashboard = location.pathname === '/dashboard' || location.pathname === '/host';
-    const isTemplates = location.pathname === '/invitations' || location.pathname === '/gallery';
+    const isTemplates = location.pathname === '/invitations' || location.pathname === '/templates' || location.pathname === '/gallery';
 
     return (
       <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
@@ -71,7 +72,7 @@ export default function Navbar() {
               </Link>
 
               <Link
-                to="/invitations"
+                to="/templates"
                 className={`h-full flex items-center transition-colors relative font-medium ${
                   isTemplates
                     ? 'text-charcoal font-semibold border-b-2 border-wine'
@@ -125,7 +126,7 @@ export default function Navbar() {
 
           {/* Desktop Links in Center */}
           <div className="hidden md:flex items-center gap-6 lg:gap-8 text-xs font-semibold font-body text-charcoal/70">
-            <Link to="/invitations" className="hover:text-wine transition-colors">
+            <Link to="/templates" className="hover:text-wine transition-colors">
               Templates
             </Link>
             <a
@@ -208,7 +209,7 @@ export default function Navbar() {
             >
               <div className="space-y-1 font-body text-sm font-semibold text-charcoal">
                 <Link
-                  to="/invitations"
+                  to="/templates"
                   onClick={() => setIsOpen(false)}
                   className="block py-2 px-3 rounded-xl hover:bg-ivory hover:text-wine transition-colors"
                 >

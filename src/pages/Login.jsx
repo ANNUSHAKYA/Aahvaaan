@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import AuthIllustration from '../components/auth/AuthIllustration';
 
@@ -45,33 +45,51 @@ export default function Login() {
     }
   };
 
+  const handleClose = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
-    <div className="pt-24 pb-16 min-h-[92vh] bg-ivory flex items-center justify-center px-4 sm:px-6">
+    <div className="pt-20 pb-16 min-h-[94vh] bg-[#5C2D91]/15 backdrop-blur-md flex items-center justify-center px-4 sm:px-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-4xl bg-white rounded-3xl sm:rounded-[36px] border border-champagne/80 shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 relative"
+        transition={{ duration: 0.35 }}
+        className="w-full max-w-4xl bg-white rounded-3xl sm:rounded-[32px] border border-gray-100 shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 relative"
       >
+        {/* Close Button on Top Right (Exact Balcony screenshot match) */}
+        <button
+          type="button"
+          onClick={handleClose}
+          className="absolute top-5 right-5 z-20 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-charcoal hover:bg-gray-100 transition-colors"
+          title="Close"
+        >
+          <X size={18} />
+        </button>
+
         {/* Left Side: Modern 3D/Card Wedding Illustration */}
-        <div className="hidden md:flex p-4 bg-gradient-to-br from-ivory to-champagne/30 items-center justify-center border-r border-champagne/40">
+        <div className="hidden md:flex p-4 bg-gradient-to-br from-ivory to-champagne/30 items-center justify-center border-r border-gray-100">
           <AuthIllustration />
         </div>
 
         {/* Right Side: Clean Form */}
-        <div className="p-6 sm:p-10 lg:p-12 flex flex-col justify-center">
+        <div className="p-7 sm:p-10 lg:p-12 flex flex-col justify-center">
           {/* Brand header */}
-          <div className="mb-6">
+          <div className="text-center sm:text-left mb-6">
             <Link to="/" className="inline-block mb-3">
               <span className="font-heading text-2xl font-bold text-wine tracking-wide">
                 Aahvaaan
               </span>
             </Link>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-wine">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-charcoal">
               Welcome back
             </h2>
             <p className="font-body text-xs text-charcoal/60 mt-1">
-              Log in to manage your wedding websites & guest RSVPs.
+              Log in to manage your invitations.
             </p>
           </div>
 
@@ -87,7 +105,7 @@ export default function Login() {
             type="button"
             onClick={handleGoogle}
             disabled={googleLoading}
-            className="w-full py-3 px-4 rounded-xl border border-champagne bg-white hover:bg-champagne/10 text-charcoal text-xs font-semibold flex items-center justify-center gap-2.5 transition-all shadow-2xs hover:shadow-xs disabled:opacity-50"
+            className="w-full py-3 px-4 rounded-xl border border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 text-charcoal text-xs sm:text-sm font-semibold flex items-center justify-center gap-2.5 transition-all shadow-2xs hover:shadow-xs disabled:opacity-50"
           >
             <svg className="w-4 h-4" viewBox="0 0 24 24">
               <path
@@ -107,29 +125,29 @@ export default function Login() {
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
               />
             </svg>
-            <span>{googleLoading ? 'Signing in with Google...' : 'Continue with Google'}</span>
+            <span>{googleLoading ? 'Connecting...' : 'Continue with Google'}</span>
           </button>
 
-          {/* Divider */}
-          <div className="relative my-5 text-center">
+          {/* Clean Divider */}
+          <div className="relative my-5">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-champagne/70" />
+              <div className="w-full border-t border-gray-200" />
             </div>
-            <span className="relative bg-white px-3 text-[11px] text-charcoal/40 font-body uppercase tracking-wider">
-              or
-            </span>
+            <div className="relative flex justify-center text-xs">
+              <span className="bg-white px-3 text-gray-400 font-medium">or</span>
+            </div>
           </div>
 
-          {/* Email / Password Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-3.5">
             <div>
               <input
                 type="email"
                 required
-                placeholder="you@example.com"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-champagne bg-white text-xs sm:text-sm text-charcoal placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                placeholder="you@example.com"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-charcoal text-xs sm:text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
               />
             </div>
 
@@ -137,40 +155,42 @@ export default function Login() {
               <input
                 type={showPassword ? 'text' : 'password'}
                 required
-                placeholder="Enter your password"
                 value={form.password}
                 onChange={(e) => setForm({ ...form, password: e.target.value })}
-                className="w-full px-4 py-3 pr-11 rounded-xl border border-champagne bg-white text-xs sm:text-sm text-charcoal placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                placeholder="Enter your password"
+                className="w-full px-4 py-3 pr-10 rounded-xl border border-gray-200 text-charcoal text-xs sm:text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-charcoal/40 hover:text-wine transition-colors"
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-charcoal transition-colors"
+                title={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
 
+            {/* Gradient Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-full bg-gradient-to-r from-wine to-[#8A243E] hover:from-wine-dark hover:to-wine text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all disabled:opacity-60 mt-2"
+              className="w-full py-3.5 px-4 mt-2 rounded-2xl bg-gradient-to-r from-[#6B1D2F] via-[#851C34] to-[#A02845] hover:opacity-95 text-white font-body font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50"
             >
               {loading ? 'Logging in...' : 'Log in'}
             </button>
           </form>
 
-          {/* Bottom Switch Links */}
-          <div className="mt-6 flex items-center justify-between text-xs text-charcoal/70">
+          {/* Links Below Button */}
+          <div className="mt-5 flex items-center justify-between text-xs font-body">
             <Link
               to="/signup"
-              className="text-wine hover:text-gold font-semibold transition-colors"
+              className="text-wine hover:text-wine-dark font-medium transition-colors"
             >
               Create an account
             </Link>
             <Link
               to="/forgot-password"
-              className="text-charcoal/50 hover:text-wine transition-colors"
+              className="text-charcoal/60 hover:text-charcoal transition-colors"
             >
               Forgot password?
             </Link>

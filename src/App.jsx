@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
@@ -11,7 +11,6 @@ const InvitationPreview = lazy(() => import('./pages/InvitationPreview'));
 const BuyTemplate = lazy(() => import('./pages/BuyTemplate'));
 const Pricing = lazy(() => import('./pages/Pricing'));
 const HowItWorks = lazy(() => import('./pages/HowItWorks'));
-const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 const PublicInvitation = lazy(() => import('./pages/PublicInvitation'));
 const Login = lazy(() => import('./pages/Login'));
@@ -31,7 +30,7 @@ function ScrollToTop() {
       const id = hash.replace('#', '');
       const el = document.getElementById(id);
       if (el) {
-        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 50);
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 120);
         return;
       }
     }
@@ -59,6 +58,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            {/* Templates / Gallery Routes */}
+            <Route path="templates" element={<Invitations />} />
             <Route path="invitations" element={<Invitations />} />
             <Route path="gallery" element={<Invitations />} />
             <Route path="invitations/:id" element={<InvitationPreview />} />
@@ -67,7 +68,8 @@ export default function App() {
             <Route path="buy/:id" element={<BuyTemplate />} />
             <Route path="pricing" element={<Pricing />} />
             <Route path="how-it-works" element={<HowItWorks />} />
-            <Route path="about" element={<About />} />
+            {/* About us smoothly redirects to Homepage About Section */}
+            <Route path="about" element={<Navigate to="/#about" replace />} />
             <Route path="contact" element={<Contact />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
@@ -76,6 +78,14 @@ export default function App() {
             {/* Protected Host Dashboard Routes */}
             <Route
               path="dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="host"
               element={
                 <ProtectedRoute>
                   <Dashboard />

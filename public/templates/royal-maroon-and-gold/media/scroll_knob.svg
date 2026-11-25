@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="120" viewBox="0 0 48 120">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E6D0B5"/>
+      <stop offset="45%" stop-color="#C5A15E"/>
+      <stop offset="70%" stop-color="#9C7934"/>
+      <stop offset="100%" stop-color="#6E511D"/>
+    </linearGradient>
+    <linearGradient id="woodGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#2D0D14"/>
+      <stop offset="50%" stop-color="#4A1823"/>
+      <stop offset="100%" stop-color="#2D0D14"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-10%" width="140%" height="130%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <!-- Top Finial Orb -->
+    <circle cx="24" cy="18" r="14" fill="url(#goldGrad)" stroke="#431421" stroke-width="1.5"/>
+    <circle cx="24" cy="18" r="8" fill="url(#goldGrad)" stroke="#FFE8BD" stroke-width="0.8"/>
+    <circle cx="22" cy="14" r="3" fill="#FFF9EB" opacity="0.7"/>
+
+    <!-- Gold Collar Ring -->
+    <rect x="12" y="32" width="24" height="6" rx="3" fill="url(#goldGrad)" stroke="#431421" stroke-width="1"/>
+
+    <!-- Central Spindle Rod -->
+    <rect x="16" y="38" width="16" height="50" rx="2" fill="url(#woodGrad)" stroke="#C5A15E" stroke-width="1"/>
+
+    <!-- Middle Ring -->
+    <ellipse cx="24" cy="63" rx="10" ry="4" fill="url(#goldGrad)" stroke="#431421" stroke-width="0.8"/>
+
+    <!-- Bottom Collar Ring -->
+    <rect x="12" y="88" width="24" height="6" rx="3" fill="url(#goldGrad)" stroke="#431421" stroke-width="1"/>
+
+    <!-- Bottom Finial Orb -->
+    <circle cx="24" cy="106" r="12" fill="url(#goldGrad)" stroke="#431421" stroke-width="1.5"/>
+    <circle cx="22" cy="103" r="2.5" fill="#FFF9EB" opacity="0.6"/>
+  </g>
+</svg>

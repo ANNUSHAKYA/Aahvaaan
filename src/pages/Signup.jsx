@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { AlertCircle, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff, CheckCircle2, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import AuthIllustration from '../components/auth/AuthIllustration';
 
@@ -28,6 +28,10 @@ export default function Signup() {
     e.preventDefault();
     setError(null);
 
+    if (!form.name.trim()) {
+      setError('Please enter your name.');
+      return;
+    }
     if (form.password.length < 8) {
       setError('Password must be at least 8 characters.');
       return;
@@ -79,28 +83,46 @@ export default function Signup() {
     }
   };
 
+  const handleClose = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
-    <div className="pt-24 pb-16 min-h-[92vh] bg-ivory flex items-center justify-center px-4 sm:px-6">
+    <div className="pt-20 pb-16 min-h-[94vh] bg-[#5C2D91]/15 backdrop-blur-md flex items-center justify-center px-4 sm:px-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4 }}
-        className="w-full max-w-4xl bg-white rounded-3xl sm:rounded-[36px] border border-champagne/80 shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 relative"
+        transition={{ duration: 0.35 }}
+        className="w-full max-w-4xl bg-white rounded-3xl sm:rounded-[32px] border border-gray-100 shadow-2xl overflow-hidden grid grid-cols-1 md:grid-cols-2 relative"
       >
+        {/* Close Button Top Right */}
+        <button
+          type="button"
+          onClick={handleClose}
+          className="absolute top-5 right-5 z-20 w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-charcoal hover:bg-gray-100 transition-colors"
+          title="Close"
+        >
+          <X size={18} />
+        </button>
+
         {/* Left Side: Modern 3D Wedding Graphic */}
-        <div className="hidden md:flex p-4 bg-gradient-to-br from-ivory to-champagne/30 items-center justify-center border-r border-champagne/40">
+        <div className="hidden md:flex p-4 bg-gradient-to-br from-ivory to-champagne/30 items-center justify-center border-r border-gray-100">
           <AuthIllustration />
         </div>
 
         {/* Right Side: Form */}
-        <div className="p-6 sm:p-10 lg:p-12 flex flex-col justify-center">
-          <div className="mb-6">
+        <div className="p-7 sm:p-10 lg:p-12 flex flex-col justify-center">
+          <div className="text-center sm:text-left mb-6">
             <Link to="/" className="inline-block mb-3">
               <span className="font-heading text-2xl font-bold text-wine tracking-wide">
                 Aahvaaan
               </span>
             </Link>
-            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-wine">
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-charcoal">
               Create your account
             </h2>
             <p className="font-body text-xs text-charcoal/60 mt-1">
@@ -109,7 +131,7 @@ export default function Signup() {
           </div>
 
           {error && (
-            <div className="mb-5 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
+            <div className="mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
               <AlertCircle size={15} className="shrink-0" />
               <span>{error}</span>
             </div>
@@ -124,7 +146,7 @@ export default function Signup() {
               </p>
               <Link
                 to="/login"
-                className="inline-block px-5 py-2.5 rounded-full bg-wine text-white text-xs font-semibold uppercase tracking-wider"
+                className="inline-block px-6 py-2.5 rounded-full bg-wine text-white text-xs font-semibold uppercase tracking-wider"
               >
                 Proceed to Log In
               </Link>
@@ -136,7 +158,7 @@ export default function Signup() {
                 type="button"
                 onClick={handleGoogle}
                 disabled={googleLoading}
-                className="w-full py-3 px-4 rounded-xl border border-champagne bg-white hover:bg-champagne/10 text-charcoal text-xs font-semibold flex items-center justify-center gap-2.5 transition-all shadow-2xs hover:shadow-xs disabled:opacity-50"
+                className="w-full py-3 px-4 rounded-xl border border-gray-200 hover:border-gray-300 bg-white hover:bg-gray-50 text-charcoal text-xs sm:text-sm font-semibold flex items-center justify-center gap-2.5 transition-all shadow-2xs hover:shadow-xs disabled:opacity-50"
               >
                 <svg className="w-4 h-4" viewBox="0 0 24 24">
                   <path
@@ -156,27 +178,29 @@ export default function Signup() {
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
                   />
                 </svg>
-                <span>{googleLoading ? 'Signing up with Google...' : 'Continue with Google'}</span>
+                <span>{googleLoading ? 'Connecting...' : 'Continue with Google'}</span>
               </button>
 
-              <div className="relative my-4 text-center">
+              {/* Divider */}
+              <div className="relative my-4">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-champagne/70" />
+                  <div className="w-full border-t border-gray-200" />
                 </div>
-                <span className="relative bg-white px-3 text-[11px] text-charcoal/40 font-body uppercase tracking-wider">
-                  or
-                </span>
+                <div className="relative flex justify-center text-xs">
+                  <span className="bg-white px-3 text-gray-400 font-medium">or</span>
+                </div>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-3.5">
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-3">
                 <div>
                   <input
                     type="text"
                     required
-                    placeholder="Your name"
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-champagne bg-white text-xs sm:text-sm text-charcoal placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                    placeholder="Your name"
+                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 text-charcoal text-xs sm:text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
                   />
                 </div>
 
@@ -184,30 +208,31 @@ export default function Signup() {
                   <input
                     type="email"
                     required
-                    placeholder="you@example.com"
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-champagne bg-white text-xs sm:text-sm text-charcoal placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                    placeholder="you@example.com"
+                    className="w-full px-4 py-2.5 sm:py-3 rounded-xl border border-gray-200 text-charcoal text-xs sm:text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
                   />
                 </div>
 
-                {/* Password & Confirm Side-by-Side */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {/* Password & Confirm Side-by-Side (exact screenshot layout) */}
+                <div className="grid grid-cols-2 gap-3">
                   <div className="relative">
                     <input
                       type={showPassword ? 'text' : 'password'}
                       required
-                      placeholder="Password"
                       value={form.password}
                       onChange={(e) => setForm({ ...form, password: e.target.value })}
-                      className="w-full px-4 py-3 pr-10 rounded-xl border border-champagne bg-white text-xs text-charcoal placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                      placeholder="Password"
+                      className="w-full px-3.5 py-2.5 sm:py-3 pr-8 rounded-xl border border-gray-200 text-charcoal text-xs sm:text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-charcoal/40 hover:text-wine"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-charcoal transition-colors"
+                      title={showPassword ? 'Hide password' : 'Show password'}
                     >
-                      {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                      {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                     </button>
                   </div>
 
@@ -215,52 +240,56 @@ export default function Signup() {
                     <input
                       type={showConfirmPassword ? 'text' : 'password'}
                       required
-                      placeholder="Confirm"
                       value={form.confirmPassword}
                       onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
-                      className="w-full px-4 py-3 pr-10 rounded-xl border border-champagne bg-white text-xs text-charcoal placeholder:text-charcoal/40 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                      placeholder="Confirm"
+                      className="w-full px-3.5 py-2.5 sm:py-3 pr-8 rounded-xl border border-gray-200 text-charcoal text-xs sm:text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-charcoal/40 hover:text-wine"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-charcoal transition-colors"
+                      title={showConfirmPassword ? 'Hide password' : 'Show password'}
                     >
-                      {showConfirmPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+                      {showConfirmPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                     </button>
                   </div>
                 </div>
 
-                <p className="text-[11px] text-charcoal/50">
+                <p className="text-[10px] text-gray-400 pl-1">
                   At least 8 characters, no spaces.
                 </p>
 
-                {/* Agree Checkbox */}
-                <div className="flex items-start gap-2 pt-1">
-                  <input
-                    type="checkbox"
-                    id="agree"
-                    checked={form.agree}
-                    onChange={(e) => setForm({ ...form, agree: e.target.checked })}
-                    className="mt-1 rounded border-champagne text-wine focus:ring-wine/20"
-                  />
-                  <label htmlFor="agree" className="text-[11px] text-charcoal/70 uppercase tracking-wider font-semibold">
-                    I AGREE TO <Link to="/about" className="text-wine underline">TERMS OF SERVICE</Link> & <Link to="/about" className="text-wine underline">PRIVACY POLICY</Link>
+                {/* Terms Checkbox */}
+                <div className="pt-1">
+                  <label className="flex items-center gap-2 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={form.agree}
+                      onChange={(e) => setForm({ ...form, agree: e.target.checked })}
+                      className="w-3.5 h-3.5 text-wine rounded border-gray-300 focus:ring-wine"
+                    />
+                    <span className="text-[10px] sm:text-[11px] font-semibold text-charcoal/70 tracking-wider">
+                      I AGREE TO TERMS OF SERVICE & PRIVACY POLICY
+                    </span>
                   </label>
                 </div>
 
+                {/* Register Button */}
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3.5 rounded-full bg-gradient-to-r from-wine to-[#8A243E] hover:from-wine-dark hover:to-wine text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all disabled:opacity-60 mt-2"
+                  className="w-full py-3.5 px-4 mt-2 rounded-2xl bg-gradient-to-r from-[#6B1D2F] via-[#851C34] to-[#A02845] hover:opacity-95 text-white font-body font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50"
                 >
                   {loading ? 'Creating account...' : 'Register'}
                 </button>
               </form>
 
-              <div className="mt-5 text-center text-xs text-charcoal/70">
+              {/* Already registered link */}
+              <div className="mt-4 text-center">
                 <Link
                   to="/login"
-                  className="text-wine hover:text-gold font-semibold transition-colors"
+                  className="text-xs text-wine hover:text-wine-dark font-medium transition-colors"
                 >
                   Already registered?
                 </Link>

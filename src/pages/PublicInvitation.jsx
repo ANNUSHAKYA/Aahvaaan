@@ -489,8 +489,8 @@ export default function PublicInvitation({ isPersonalized = false }) {
         </div>
       </header>
 
-      {/* Main Single-Column Mobile-First Invitation */}
-      <main className="max-w-md mx-auto px-2 sm:px-4 pb-20 pt-2">
+      {/* Main Invitation Body */}
+      <main className="w-full max-w-2xl px-0 mx-auto pb-20">
         <TemplateRenderer
           template={template}
           content={content}

@@ -135,12 +135,12 @@ export default function Profile() {
     .toUpperCase() || 'AS';
 
   return (
-    <div className="pt-24 pb-24 min-h-screen bg-[#FAF8F5] font-body text-charcoal">
+    <div className="pt-24 pb-24 min-h-screen bg-[#F8F7FC] font-body text-charcoal">
       <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
         {/* ─── 1. TOP VERIFIED PROFILE CARD ─── */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/70 shadow-xs flex items-center gap-5 sm:gap-6">
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-center gap-5 sm:gap-6">
           {/* Avatar Initials Circle */}
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#EFE8F4] text-wine font-heading font-bold text-xl sm:text-2xl flex items-center justify-center shrink-0">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#EDE9FE] text-[#7C3AED] font-heading font-bold text-xl sm:text-2xl flex items-center justify-center shrink-0">
             {initials}
           </div>
 
@@ -150,8 +150,8 @@ export default function Profile() {
               <h1 className="font-heading text-2xl sm:text-3xl font-bold text-charcoal leading-tight">
                 {displayName}
               </h1>
-              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#03543F] bg-[#DEF7EC] px-2.5 py-0.5 rounded-full shrink-0">
-                <CheckCircle2 size={12} className="text-[#03543F]" />
+              <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#059669] bg-[#ECFDF5] border border-[#A7F3D0] px-2.5 py-0.5 rounded-full shrink-0">
+                <span className="font-bold">✓</span>
                 <span>Verified</span>
               </span>
             </div>
@@ -176,8 +176,8 @@ export default function Profile() {
                 onClick={() => scrollToSection('account')}
                 className={`block text-left transition-colors font-medium ${
                   activeSection === 'account'
-                    ? 'text-wine font-bold'
-                    : 'text-charcoal/70 hover:text-wine'
+                    ? 'text-charcoal font-bold'
+                    : 'text-charcoal/60 hover:text-charcoal'
                 }`}
               >
                 Account details
@@ -188,8 +188,8 @@ export default function Profile() {
                 onClick={() => scrollToSection('password')}
                 className={`block text-left transition-colors font-medium ${
                   activeSection === 'password'
-                    ? 'text-wine font-bold'
-                    : 'text-charcoal/70 hover:text-wine'
+                    ? 'text-charcoal font-bold'
+                    : 'text-charcoal/60 hover:text-charcoal'
                 }`}
               >
                 Password
@@ -200,8 +200,8 @@ export default function Profile() {
                 onClick={() => scrollToSection('billing')}
                 className={`block text-left transition-colors font-medium ${
                   activeSection === 'billing'
-                    ? 'text-wine font-bold'
-                    : 'text-charcoal/70 hover:text-wine'
+                    ? 'text-charcoal font-bold'
+                    : 'text-charcoal/60 hover:text-charcoal'
                 }`}
               >
                 Billing
@@ -212,14 +212,14 @@ export default function Profile() {
                 onClick={() => scrollToSection('actions')}
                 className={`block text-left transition-colors font-medium ${
                   activeSection === 'actions'
-                    ? 'text-wine font-bold'
-                    : 'text-charcoal/70 hover:text-wine'
+                    ? 'text-charcoal font-bold'
+                    : 'text-charcoal/60 hover:text-charcoal'
                 }`}
               >
                 Account actions
               </button>
 
-              <div className="pt-2">
+              <div className="pt-1">
                 <button
                   type="button"
                   onClick={() => signOut()}
@@ -236,7 +236,7 @@ export default function Profile() {
             {/* ─── CARD 1: ACCOUNT DETAILS ─── */}
             <section
               id="account"
-              className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/70 shadow-xs"
+              className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)]"
             >
               <h2 className="font-heading text-lg font-bold text-charcoal mb-1">
                 Account details
@@ -265,8 +265,8 @@ export default function Profile() {
                   <input
                     type="email"
                     value={email}
-                    disabled
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal/70 cursor-not-allowed"
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
                   />
                 </div>
 
@@ -274,7 +274,7 @@ export default function Profile() {
                   <button
                     type="submit"
                     disabled={savingName}
-                    className="px-7 py-3 rounded-full bg-gradient-to-r from-wine to-[#8A243E] hover:from-wine-dark hover:to-wine text-white font-medium text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50"
+                    className="px-8 py-3 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] hover:from-[#6D28D9] hover:to-[#5B21B6] text-white font-medium text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50"
                   >
                     {savingName ? 'Saving...' : 'Save changes'}
                   </button>
@@ -292,7 +292,7 @@ export default function Profile() {
             {/* ─── CARD 2: SET A PASSWORD ─── */}
             <section
               id="password"
-              className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/70 shadow-xs"
+              className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)]"
             >
               <h2 className="font-heading text-lg font-bold text-charcoal mb-1">
                 Set a password
@@ -325,7 +325,7 @@ export default function Profile() {
                       placeholder="New password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
                     />
                   </div>
 
@@ -338,7 +338,7 @@ export default function Profile() {
                       placeholder="Confirm password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
                     />
                   </div>
                 </div>
@@ -347,7 +347,7 @@ export default function Profile() {
                   <button
                     type="submit"
                     disabled={savingPassword}
-                    className="px-7 py-3 rounded-full bg-gradient-to-r from-wine to-[#8A243E] hover:from-wine-dark hover:to-wine text-white font-medium text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50"
+                    className="px-8 py-3 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] hover:from-[#6D28D9] hover:to-[#5B21B6] text-white font-medium text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50"
                   >
                     {savingPassword ? 'Updating...' : 'Set password'}
                   </button>
@@ -358,7 +358,7 @@ export default function Profile() {
             {/* ─── CARD 3: BILLING ─── */}
             <section
               id="billing"
-              className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/70 shadow-xs"
+              className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)]"
             >
               <h2 className="font-heading text-lg font-bold text-charcoal mb-1">
                 Billing
@@ -411,7 +411,7 @@ export default function Profile() {
             {/* ─── CARD 4: ACCOUNT ACTIONS ─── */}
             <section
               id="actions"
-              className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/70 shadow-xs"
+              className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)]"
             >
               <h2 className="font-heading text-lg font-bold text-charcoal mb-1">
                 Account actions
