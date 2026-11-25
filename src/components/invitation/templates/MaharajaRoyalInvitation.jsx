@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import useCountdown from '../../../hooks/useCountdown';
 import useRealWeddingAudio from '../../../hooks/useRealWeddingAudio';
+import EventsWarpCarousel from '../EventsWarpCarousel';
 
 // ─── Calendar Generator Utility ───
 function buildCalendarUrls(event, brideName, groomName) {
@@ -1000,10 +1001,10 @@ export default function MaharajaRoyalInvitation({
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          6. CEREMONIES: HORIZONTALLY SWIPEABLE ARCHED CARDS
+          6. CEREMONIES: 3D CYLINDRICAL WARP CAROUSEL
          ══════════════════════════════════════════════════════════════ */}
       <section className="py-20 px-4 sm:px-8 bg-[#431421]/60 border-y border-[#C5A15E]/30 overflow-hidden">
-        <div className="max-w-5xl mx-auto text-center mb-12">
+        <div className="max-w-5xl mx-auto text-center mb-8">
           <span className="font-heading text-xs uppercase tracking-[0.25em] text-[#C5A15E] font-bold block mb-1">
             Shubh Vivah Mahotsav
           </span>
@@ -1011,96 +1012,18 @@ export default function MaharajaRoyalInvitation({
             The Ceremonies
           </h2>
           <p className="font-body text-xs sm:text-sm text-[#E6D0B5]/80 mt-1">
-            Swipe sideways to view each royal ceremony, timings, and directions.
+            Drag the 3D cylindrical cards or swipe sideways to view each royal ceremony, timings, and directions.
           </p>
         </div>
 
-        {/* Horizontal Scrolling Arched Cards */}
-        <div className="flex gap-6 overflow-x-auto pb-8 pt-2 px-2 no-scrollbar snap-x snap-mandatory">
-          {events.map((ev, idx) => {
-            const calUrls = buildCalendarUrls(ev, bride, groom);
-            const artworkImg = ev.mediaImage || '/templates/royal-maroon-and-gold/media/hero_scene.webp';
-
-            return (
-              <div
-                key={idx}
-                className="w-[280px] sm:w-[320px] shrink-0 bg-[#2D0D14] rounded-t-[40px] rounded-b-2xl border-2 border-[#C5A15E] shadow-2xl flex flex-col justify-between overflow-hidden snap-center relative"
-              >
-                {/* Arched Illustration Header Slot */}
-                <div className="aspect-[4/3] w-full overflow-hidden bg-[#431421] relative border-b border-[#C5A15E]/40">
-                  <img
-                    src={artworkImg}
-                    alt={ev.name}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                    loading="lazy"
-                  />
-                  <div className="absolute top-3 left-3 w-8 h-8 rounded-full bg-[#761F32]/90 border border-[#C5A15E] flex items-center justify-center text-sm shadow-md">
-                    {ev.icon || '👑'}
-                  </div>
-                </div>
-
-                {/* Card Details */}
-                <div className="p-5 flex-1 flex flex-col justify-between text-center">
-                  <div>
-                    <h3 className="font-heading text-lg font-bold text-[#E6D0B5] mb-2 leading-tight">
-                      {ev.name}
-                    </h3>
-                    <p className="font-body text-xs text-[#FAF1E5]/75 leading-relaxed mb-4">
-                      {ev.description}
-                    </p>
-
-                    <div className="space-y-1.5 text-xs text-[#FAF1E5] py-2 border-y border-[#C5A15E]/20 mb-4">
-                      <div className="flex items-center justify-center gap-1.5 text-[#C5A15E] font-semibold">
-                        <Clock size={13} />
-                        <span>{ev.date} • {ev.time}</span>
-                      </div>
-                      <div className="flex items-center justify-center gap-1.5 text-[#E6D0B5]/80 text-[11px]">
-                        <MapPin size={13} className="text-[#C5A15E]" />
-                        <span>{ev.venue}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Actions: Google Maps Pin & Add to Calendar */}
-                  <div className="space-y-2 pt-2">
-                    <a
-                      href={mapUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full py-2.5 px-3 rounded-xl bg-[#431421] hover:bg-[#761F32] border border-[#C5A15E]/60 text-[#FAF1E5] font-body text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-xs"
-                    >
-                      <MapPin size={14} className="text-[#C5A15E]" />
-                      <span>One-Tap Google Maps</span>
-                    </a>
-
-                    <div className="grid grid-cols-2 gap-2 text-[10px]">
-                      <button
-                        type="button"
-                        onClick={() => downloadIcsFile(ev, bride, groom)}
-                        className="py-2 px-2 rounded-lg bg-[#761F32] text-[#FAF1E5] border border-[#C5A15E]/40 font-semibold flex items-center justify-center gap-1 hover:border-[#C5A15E] transition-all"
-                        title="Download Apple / Outlook .ics calendar file"
-                      >
-                        <Download size={11} />
-                        <span>.ICS File</span>
-                      </button>
-
-                      <a
-                        href={calUrls.googleUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="py-2 px-2 rounded-lg bg-[#761F32] text-[#FAF1E5] border border-[#C5A15E]/40 font-semibold flex items-center justify-center gap-1 hover:border-[#C5A15E] transition-all"
-                        title="Add to Google Calendar"
-                      >
-                        <Calendar size={11} />
-                        <span>Google Cal</span>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <EventsWarpCarousel
+          events={events}
+          brideName={bride}
+          groomName={groom}
+          mapUrl={mapUrl}
+          venue={venue}
+          background="#140207"
+        />
       </section>
 
       {/* ══════════════════════════════════════════════════════════════

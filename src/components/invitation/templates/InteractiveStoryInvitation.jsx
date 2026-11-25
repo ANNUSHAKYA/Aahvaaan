@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import useCountdown from '../../../hooks/useCountdown';
 import useRealWeddingAudio from '../../../hooks/useRealWeddingAudio';
+import EventsWarpCarousel from '../EventsWarpCarousel';
 
 // ─── Add to Calendar Helper ───
 function buildCalendarUrls(event, brideName, groomName) {
@@ -827,87 +828,23 @@ export default function InteractiveStoryInvitation({
         </div>
       </section>
 
-      {/* ════════════════ SECTION 6: CEREMONIES ARCHED DECK (Screenshot 5) ════════════════ */}
-      <section className="py-20 px-4 max-w-xl mx-auto text-center">
+      {/* ════════════════ SECTION 6: CEREMONIES 3D WARP CAROUSEL ════════════════ */}
+      <section className="py-20 px-4 max-w-4xl mx-auto text-center">
         <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#704B50] mb-2">
           Ceremonies
         </h2>
+        <p className="font-body text-xs sm:text-sm text-[#704B50]/75 max-w-md mx-auto mb-4">
+          Swipe sideways or drag the 3D cards to explore our wedding rituals, timings, and map pins.
+        </p>
 
-        <div className="relative mt-8 min-h-[460px] flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            {events[ceremonyIndex] && (
-              <motion.div
-                key={ceremonyIndex}
-                initial={{ opacity: 0, scale: 0.9, x: 50 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                exit={{ opacity: 0, scale: 0.9, x: -50 }}
-                transition={{ duration: 0.35 }}
-                className="w-full max-w-sm bg-[#FAF4EB] border-2 border-[#B69A70] rounded-3xl p-8 shadow-2xl text-center relative"
-              >
-                <div className="absolute inset-2 border border-[#B69A70]/40 rounded-[20px] pointer-events-none" />
-
-                <h3 className="font-heading text-2xl font-bold text-[#704B50] mb-2">
-                  {events[ceremonyIndex].name}
-                </h3>
-
-                <div className="w-16 h-px bg-[#B69A70] mx-auto my-3" />
-
-                <p className="font-heading font-semibold text-sm text-[#704B50] mb-1">
-                  {events[ceremonyIndex].date}
-                </p>
-                <p className="font-body text-xs text-[#704B50]/70 mb-4">
-                  {events[ceremonyIndex].time || '7:00 PM'}
-                </p>
-
-                {/* Venue Location */}
-                <a
-                  href={mapUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-[#704B50] font-semibold hover:text-[#B69A70] mb-6 bg-white/60 px-3 py-1.5 rounded-full border border-[#B69A70]/40 transition-colors"
-                >
-                  <MapPin size={13} className="text-[#B69A70]" />
-                  <span>{events[ceremonyIndex].venue || venue}</span>
-                </a>
-
-                {/* Ceremony Illustration Icon */}
-                <div className="w-20 h-20 mx-auto my-4 bg-white/70 rounded-2xl border border-[#B69A70]/40 flex items-center justify-center text-3xl shadow-sm">
-                  {ceremonyIndex === 0 ? '💍' : ceremonyIndex === 1 ? '🌿' : ceremonyIndex === 2 ? '✨' : ceremonyIndex === 3 ? '🎶' : ceremonyIndex === 4 ? '🔥' : '🥂'}
-                </div>
-
-                {/* Add to Calendar Action */}
-                <div className="flex items-center justify-center gap-2 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => downloadIcsFile(events[ceremonyIndex], bride, groom)}
-                    className="px-4 py-2 rounded-full border border-[#B69A70] bg-white text-[#704B50] text-xs font-semibold hover:bg-[#B69A70] hover:text-white transition-all shadow-xs"
-                  >
-                    Add to calendar (.ics)
-                  </button>
-                  <a
-                    href={buildCalendarUrls(events[ceremonyIndex], bride, groom).googleUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-full border border-[#B69A70] bg-white text-[#704B50] hover:bg-[#B69A70] hover:text-white transition-all"
-                    title="Add to Google Calendar"
-                  >
-                    <ExternalLink size={13} />
-                  </a>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-[#B69A70]/30">
-                  <button
-                    type="button"
-                    onClick={nextCeremony}
-                    className="text-xs text-[#B69A70] font-semibold hover:underline"
-                  >
-                    Swipe the card aside →
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+        <EventsWarpCarousel
+          events={events}
+          brideName={bride}
+          groomName={groom}
+          mapUrl={mapUrl}
+          venue={venue}
+          background="#FAF4EB"
+        />
       </section>
 
       {/* ════════════════ SECTION 7: WITH BEST COMPLIMENTS FROM (Screenshot 10) ════════════════ */}
