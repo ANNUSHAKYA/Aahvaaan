@@ -207,5 +207,7 @@ export const CardSplitAccordion: FC<AccordionProps> = ({ items, className = '' }
   );
 };
 
+export const CardSplitAccordian = CardSplitAccordion;
 export const AccordionApp = CardSplitAccordion;
-export default CardSplitAccordion;
+export default CardSplitAccordian;
+
