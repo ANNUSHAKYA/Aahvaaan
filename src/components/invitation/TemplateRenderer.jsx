@@ -7,6 +7,7 @@ import {
 import useCountdown from '../../hooks/useCountdown';
 import MaharajaRoyalInvitation from './templates/MaharajaRoyalInvitation';
 import InteractiveStoryInvitation from './templates/InteractiveStoryInvitation';
+import MorPankhInvitation from './templates/MorPankhInvitation';
 
 // ─── Add to Calendar Helper ───
 export function downloadEventCalendar(event, bride, groom) {
@@ -484,15 +485,20 @@ export default function TemplateRenderer({
   showEnvelope = false,
   onOpenEnvelope = null,
 }) {
-  // Delegate to Maharaja Royal Maroon interactive story invitation if target template
+  // Default & Primary: Mor Pankh Royal Invitation
   if (
+    !template?.id ||
+    template?.id === 'mor-pankh' ||
+    template?.alias === 'mor-pankh' ||
+    template?.id === 'rose-watercolor' ||
+    template?.alias === 'champagne-and-rose' ||
+    template?.id === 'lotus-lagoon' ||
+    template?.id === 'lotus-royale' ||
     template?.id === 'royal-maroon-and-gold' ||
-    template?.alias === 'royal-maroon-and-gold' ||
-    template?.id === 'shahi-patra' ||
-    template?.alias === 'shahi-patra'
+    template?.alias === 'royal-maroon-and-gold'
   ) {
     return (
-      <MaharajaRoyalInvitation
+      <MorPankhInvitation
         template={template}
         content={content}
         guestName={guestName}
@@ -501,10 +507,9 @@ export default function TemplateRenderer({
     );
   }
 
-  // All other templates (including Rose Watercolor / Champagne & Rose, Lotus Lagoon, Noor Patra)
-  // use the full InteractiveStoryInvitation matching the user's reference screenshots!
+  // Fallback to Mor Pankh
   return (
-    <InteractiveStoryInvitation
+    <MorPankhInvitation
       template={template}
       content={content}
       guestName={guestName}

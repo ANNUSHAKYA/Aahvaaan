@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <!-- Background Peacock Teal Radial Gradient -->
+    <radialGradient id="tealGrad" cx="50%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#235B54"/>
+      <stop offset="50%" stop-color="#0E4D4F"/>
+      <stop offset="100%" stop-color="#082D2E"/>
+    </radialGradient>
+
+    <!-- Metallic Royal Gold Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCE6B3"/>
+      <stop offset="35%" stop-color="#C9A24B"/>
+      <stop offset="70%" stop-color="#E5CE96"/>
+      <stop offset="100%" stop-color="#9C7729"/>
+    </linearGradient>
+
+    <!-- Feather Eye Gradient -->
+    <linearGradient id="featherPlume" x1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7DC8A2"/>
+      <stop offset="35%" stop-color="#217E74"/>
+      <stop offset="70%" stop-color="#124956"/>
+      <stop offset="100%" stop-color="#77B58C"/>
+    </linearGradient>
+
+    <radialGradient id="featherIris" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#101F43"/>
+      <stop offset="40%" stop-color="#284781"/>
+      <stop offset="70%" stop-color="#2BC0B4"/>
+      <stop offset="100%" stop-color="#A9B86B"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="800" height="500" fill="url(#tealGrad)"/>
+
+  <!-- Ornate Outer Border -->
+  <rect x="24" y="24" width="752" height="452" rx="20" fill="none" stroke="url(#goldGrad)" stroke-width="2" stroke-opacity="0.8"/>
+  <rect x="36" y="36" width="728" height="428" rx="14" fill="none" stroke="url(#goldGrad)" stroke-width="1" stroke-dasharray="6,4" stroke-opacity="0.5"/>
+
+  <!-- Corner Flourishes -->
+  <g stroke="url(#goldGrad)" fill="none" stroke-width="1.5">
+    <path d="M 45 70 C 45 45, 70 45, 70 45" />
+    <circle cx="58" cy="58" r="4" fill="url(#goldGrad)"/>
+    <path d="M 755 70 C 755 45, 730 45, 730 45" />
+    <circle cx="742" cy="58" r="4" fill="url(#goldGrad)"/>
+    <path d="M 45 430 C 45 455, 70 455, 70 455" />
+    <circle cx="58" cy="442" r="4" fill="url(#goldGrad)"/>
+    <path d="M 755 430 C 755 455, 730 455, 730 455" />
+    <circle cx="742" cy="442" r="4" fill="url(#goldGrad)"/>
+  </g>
+
+  <!-- Center Decorative Arch -->
+  <path d="M 280 440 V 160 Q 280 90, 400 60 Q 520 90, 520 160 V 440 Z" fill="#082D2E" fill-opacity="0.6" stroke="url(#goldGrad)" stroke-width="1.5"/>
+
+  <!-- Top Inscription -->
+  <text x="400" y="110" font-family="'Cinzel', 'Playfair Display', serif" font-size="14" font-weight="700" fill="url(#goldGrad)" text-anchor="middle" letter-spacing="4">
+    ॥ श्री गणेशाय नमः ॥
+  </text>
+  <text x="400" y="132" font-family="'Cinzel', 'Playfair Display', serif" font-size="10" font-weight="600" fill="#E3D3AE" text-anchor="middle" letter-spacing="3">
+    THE ROYAL COLLECTION · № 01
+  </text>
+
+  <!-- Central Mor Pankh Feather Motif -->
+  <g transform="translate(320, 145) scale(1)">
+    <!-- Feather Plume -->
+    <path d="M 80 180 Q 20 80, 80 10 Q 140 80, 80 180 Z" fill="url(#featherPlume)" stroke="url(#goldGrad)" stroke-width="1.2"/>
+    <!-- Plume Ribs -->
+    <path d="M 80 180 L 80 20" stroke="url(#goldGrad)" stroke-width="1.5"/>
+    <path d="M 80 140 Q 50 120, 35 100" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.7"/>
+    <path d="M 80 140 Q 110 120, 125 100" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.7"/>
+    <path d="M 80 110 Q 55 90, 45 70" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.7"/>
+    <path d="M 80 110 Q 105 90, 115 70" stroke="url(#goldGrad)" stroke-width="0.8" opacity="0.7"/>
+    <!-- Outer Eye Circle -->
+    <ellipse cx="80" cy="65" rx="26" ry="34" fill="#C9A24B"/>
+    <!-- Middle Eye Circle -->
+    <ellipse cx="80" cy="67" rx="20" ry="26" fill="url(#featherIris)"/>
+    <!-- Deep Core Center -->
+    <ellipse cx="80" cy="72" rx="11" ry="14" fill="#082D2E"/>
+    <circle cx="80" cy="72" r="5" fill="#2BC0B4"/>
+  </g>
+
+  <!-- Couple Names Title -->
+  <text x="400" y="365" font-family="'Playfair Display', 'Cormorant Garamond', serif" font-size="34" font-weight="700" fill="#FAF6F0" text-anchor="middle" letter-spacing="2">
+    Aarav &amp; Meera
+  </text>
+  <text x="400" y="395" font-family="'Cinzel', serif" font-size="13" font-weight="600" fill="url(#goldGrad)" text-anchor="middle" letter-spacing="5">
+    27 FEBRUARY 2027 · JAIPUR
+  </text>
+  <text x="400" y="420" font-family="sans-serif" font-size="11" fill="#E3D3AE" text-anchor="middle" letter-spacing="3" opacity="0.85">
+    MOR PANKH · A ROYAL INVITATION
+  </text>
+</svg>

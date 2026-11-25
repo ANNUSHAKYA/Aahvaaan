@@ -18,8 +18,8 @@ export default function InvitationPreview() {
   const { themeStyles } = template;
 
   const [envelopeOpen, setEnvelopeOpen] = useState(false);
-  const [guestName, setGuestName] = useState('The Patidar Family');
-  const [dynamicContent, setDynamicContent] = useState(template.sampleData);
+  const [guestName, setGuestName] = useState('Mr. Joshi and Family');
+  const [dynamicContent, setDynamicContent] = useState(template.defaultData || template.sampleData);
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [guestAddon, setGuestAddon] = useState('none');
 

@@ -1525,10 +1525,10 @@ export default function InvitationEditor() {
                     </label>
                     <div className="space-y-2">
                       {[
-                        { id: 'shehnai-royal', title: 'Royal Shehnai & Sitar Melody', url: '/templates/royal-maroon-and-gold/media/music.mp3', desc: 'Raag Bhupali soothing shehnai lead with gentle tanpura' },
-                        { id: 'flute-raag', title: 'Jashn-e-Bahaar Classical Flute', url: '/templates/royal-maroon-and-gold/media/music.mp3', desc: 'Ethereal bansuri flute with ambient temple bells' },
-                        { id: 'sitar-symphony', title: 'Palace Sitar & Tanpura Drone', url: '/templates/royal-maroon-and-gold/media/music.mp3', desc: 'Classical sitar arpeggios fit for royal entrance' },
-                        { id: 'sufi-romance', title: 'Auspicious Wedding Shehnai', url: '/templates/royal-maroon-and-gold/media/music.mp3', desc: 'Traditional Vedic wedding shehnai loop' },
+                        { id: 'shehnai-royal', title: 'Royal Shehnai & Sitar Melody', url: '/templates/mor-pankh/media/music.mp3', desc: 'Raag Bhupali soothing shehnai lead with gentle tanpura' },
+                        { id: 'flute-raag', title: 'Jashn-e-Bahaar Classical Flute', url: '/templates/mor-pankh/media/music.mp3', desc: 'Ethereal bansuri flute with ambient temple bells' },
+                        { id: 'sitar-symphony', title: 'Palace Sitar & Tanpura Drone', url: '/templates/mor-pankh/media/music.mp3', desc: 'Classical sitar arpeggios fit for royal entrance' },
+                        { id: 'sufi-romance', title: 'Auspicious Wedding Shehnai', url: '/templates/mor-pankh/media/music.mp3', desc: 'Traditional Vedic wedding shehnai loop' },
                       ].map((trk) => {
                         const isSelected = (content?.music?.track === trk.id) || (!content?.music?.track && trk.id === 'shehnai-royal');
                         return (

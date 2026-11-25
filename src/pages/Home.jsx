@@ -387,18 +387,18 @@ export default function Home() {
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-wine/10 text-wine text-xs font-semibold tracking-wider uppercase mb-2">
             <Sparkles size={13} className="text-gold" />
-            <span>Signature Catalog</span>
+            <span>The Royal Collection</span>
           </div>
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-charcoal tracking-tight mb-3">
-            Explore 4 Signature Collections
+            Mor Pankh · № 01
           </h2>
           <p className="font-body text-xs sm:text-sm text-charcoal/65 max-w-xl mx-auto">
-            Every celebration deserves a beautiful beginning. Discover our four distinct, meticulously crafted digital wedding invitation collections.
+            Every celebration deserves a majestic beginning. Experience our signature royal interactive wedding invitation featuring 3D arch gate opening, live music, and personalized guest reveals.
           </p>
         </div>
 
-        {/* 2x2 Template Cards Grid with 3D Depth */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10 max-w-5xl mx-auto">
+        {/* Featured Template Card */}
+        <div className="max-w-2xl mx-auto">
           {templates.map((tmpl, index) => (
             <Link
               key={tmpl.id}
@@ -476,13 +476,13 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Center CTA Button (Matches Screenshot 4) */}
+        {/* Center CTA Button */}
         <div className="text-center mt-12">
           <Link
-            to="/invitations"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#6B1D2F] via-[#851C34] to-[#A02845] hover:opacity-95 text-white font-body font-semibold text-xs sm:text-sm shadow-md hover:shadow-xl transition-all hover:scale-105"
+            to="/invitations/mor-pankh"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#0E4D4F] via-[#235B54] to-[#082D2E] hover:opacity-95 text-white font-body font-semibold text-xs sm:text-sm shadow-md hover:shadow-xl transition-all hover:scale-105"
           >
-            <span>View all templates</span>
+            <span>Experience Mor Pankh Live</span>
             <ChevronRight size={16} />
           </Link>
         </div>
