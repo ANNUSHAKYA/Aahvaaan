@@ -12,9 +12,12 @@
     "@supabase/supabase-js": "^2.119.2",
     "framer-motion": "^11.15.0",
     "lucide-react": "^0.460.0",
+    "motion": "^14.14.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.0"
+    "react-icons": "^5.7.0",
+    "react-router-dom": "^6.28.0",
+    "react-use-measure": "^2.1.7"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
