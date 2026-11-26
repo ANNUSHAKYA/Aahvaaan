@@ -1,4 +1,8 @@
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Calendar, Phone, User, Mail, Minus, Plus, Heart, MapPin, Check, Sparkles, ChevronRight
+} from 'lucide-react';
 
 const hindi: Record<string, string> = {
   'A little note, just for you': 'आपके नाम एक प्यार भरा संदेश',
@@ -7,6 +11,8 @@ const hindi: Record<string, string> = {
   'Two families. One beautiful bond.': 'दो परिवार, एक सुंदर बंधन',
   'Save our date': 'इस शुभ तिथि को याद रखिए',
   'Will you join us?': 'क्या आप हमारे साथ होंगे?',
+  'Your Presence Matters': 'आपकी उपस्थिति हमारे लिए अनमोल है',
+  'Ceremonies': 'मांगलिक कार्यक्रम',
   'Ring Ceremony': 'सगाई', Haldi: 'हल्दी', Mehendi: 'मेहंदी', Sangeet: 'संगीत', Vivaah: 'विवाह', Reception: 'स्वागत समारोह',
   'A sacred beginning': 'एक पावन शुरुआत', 'With love, our families': 'हमारे परिवारों की ओर से सप्रेम',
   'Three days of togetherness': 'तीन दिन, अनगिनत यादें', 'A note from our hearts': 'हमारे दिल की बात',
@@ -16,6 +22,7 @@ const hindi: Record<string, string> = {
   'Our joy begins with you.': 'आपके आने से हमारी खुशियाँ पूरी हैं',
   'Your reply is lovingly noted.': 'आपका उत्तर सप्रेम स्वीकार है',
 };
+
 const themes = {
   Ivory: { '--canvas': '#f7efdf', '--cover-start': '#24655d', '--cover-end': '#0b3c3c', '--color-ivory': '#FBF5E9', '--color-gold': '#C9A24B' },
   'Dark teal': { '--canvas': '#092f32', '--cover-start': '#124d50', '--cover-end': '#031e25', '--color-ivory': '#FBF5E9', '--color-gold': '#D8B86B' },
@@ -27,13 +34,14 @@ function Hindi({ text }: { text: string }) {
 }
 
 const events = [
-  { name: 'Ring Ceremony', day: '25', month: 'FEB', time: '6:00 PM', venue: 'The Lotus Terrace', note: 'A promise, a sparkle, a beginning', attire: 'Pastel occasion wear & a little sparkle', color: '#E8CCD2' },
-  { name: 'Haldi', day: '26', month: 'FEB', time: '10:00 AM', venue: 'The Marigold Courtyard', note: 'A little sunshine, a lot of love', attire: 'Sunshine yellows & easy festive wear', color: '#EED795' },
-  { name: 'Mehendi', day: '26', month: 'FEB', time: '4:00 PM', venue: 'The Garden Pavilion', note: 'Love, written in henna', attire: 'Garden greens & playful florals', color: '#D7DFCA' },
-  { name: 'Sangeet', day: '26', month: 'FEB', time: '7:00 PM', venue: 'The Peacock Ballroom', note: 'An evening of song & celebration', attire: 'Jewel tones & your dancing shoes', color: '#E7CCCA' },
-  { name: 'Vivaah', day: '27', month: 'FEB', time: '4:30 PM', venue: 'The Royal Courtyard', note: 'Seven promises. One forever.', attire: 'Royal Indian attire · Pheras at golden hour', color: '#C5D9D6' },
-  { name: 'Reception', day: '27', month: 'FEB', time: '7:30 PM', venue: 'The Palace Lawns', note: 'To new beginnings, together', attire: 'Champagne accents & evening elegance', color: '#E4D8BA' },
+  { name: 'Ring Ceremony', day: '25', month: 'FEB', fullDate: 'Thursday, 25 Feb 2027', time: '6:00 PM', venue: 'The Lotus Terrace', note: 'A promise, a sparkle, a beginning', attire: 'Pastel occasion wear & a little sparkle', color: '#E8CCD2', iconType: 'ring' },
+  { name: 'Haldi', day: '26', month: 'FEB', fullDate: 'Friday, 26 Feb 2027', time: '10:00 AM', venue: 'The Marigold Courtyard', note: 'A little sunshine, a lot of love', attire: 'Sunshine yellows & easy festive wear', color: '#EED795', iconType: 'haldi' },
+  { name: 'Mehendi', day: '26', month: 'FEB', fullDate: 'Friday, 26 Feb 2027', time: '4:00 PM', venue: 'The Garden Pavilion', note: 'Love, written in henna', attire: 'Garden greens & playful florals', color: '#D7DFCA', iconType: 'mehendi' },
+  { name: 'Sangeet', day: '26', month: 'FEB', fullDate: 'Friday, 26 Feb 2027', time: '7:00 PM', venue: 'The Peacock Ballroom', note: 'An evening of song & celebration', attire: 'Jewel tones & your dancing shoes', color: '#E7CCCA', iconType: 'sangeet' },
+  { name: 'Vivaah', day: '27', month: 'FEB', fullDate: 'Saturday, 27 Feb 2027', time: '4:30 PM', venue: 'The Royal Courtyard', note: 'Seven promises. One forever.', attire: 'Royal Indian attire · Pheras at golden hour', color: '#C5D9D6', iconType: 'vivaah' },
+  { name: 'Reception', day: '27', month: 'FEB', fullDate: 'Saturday, 27 Feb 2027', time: '7:30 PM', venue: 'The Palace Lawns', note: 'To new beginnings, together', attire: 'Champagne accents & evening elegance', color: '#E4D8BA', iconType: 'reception' },
 ];
+
 const wedding = new Date('2027-02-27T16:30:00+05:30');
 const mapLink = 'https://www.google.com/maps/search/?api=1&query=The+Leela+Palace+Jaipur';
 const button = 'inline-flex min-h-11 items-center justify-center gap-3 border border-[#C9A24B] px-6 py-3 text-xs font-medium tracking-[0.13em] uppercase transition hover:bg-[#C9A24B] hover:text-[#0E4D4F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A24B] focus-visible:ring-offset-4';
@@ -43,39 +51,56 @@ function ActionIcon({ kind }: { kind: 'pin' | 'calendar' }) {
 }
 
 function Lotus({ className = '' }: { className?: string }) {
-  const id = useId();
-  return <svg viewBox="0 0 150 110" aria-hidden="true" className={`h-20 w-28 shrink-0 drop-shadow-[0_5px_3px_#082d2e40] ${className}`}>
-    <defs><linearGradient id={id} x2=".2" y2="1"><stop stopColor="#fff0df" /><stop offset=".45" stopColor="#ed9ab1" /><stop offset="1" stopColor="#a6356d" /></linearGradient></defs>
-    <ellipse cx="43" cy="90" rx="37" ry="13" fill="#366b4e" transform="rotate(-10 43 90)" /><ellipse cx="106" cy="92" rx="36" ry="12" fill="#568661" /><path d="M12 95L67 84M89 92L134 93" stroke="#b8bd6b" strokeWidth=".8" />
-    {[-55, -30, 0, 30, 55].map((a, i) => <path key={a} d="M75 87C37 63 53 28 75 8C96 29 111 64 75 87Z" transform={`rotate(${a} 75 87) scale(${i === 2 ? 1 : .9})`} fill={`url(#${id})`} stroke="#f5c3bd" strokeWidth="1" />)}
-    <path d="M75 87Q42 67 49 50Q72 57 75 87Q78 57 101 50Q108 67 75 87" fill="#edb4bd" stroke="#ffe1ce" /><path d="M62 86Q75 57 88 86" fill="#e9bf68" />
+  return <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" className={`h-8 w-8 text-gold drop-shadow-sm ${className}`}>
+    <path d="M50 20 C45 35 25 45 20 60 C15 75 30 85 50 85 C70 85 85 75 80 60 C75 45 55 35 50 20 Z" fill="currentColor" fillOpacity=".25" stroke="currentColor" strokeWidth="1.5" />
+    <path d="M50 30 C45 42 35 50 30 62 C26 74 38 82 50 82 C62 82 74 74 70 62 C65 50 55 42 50 30 Z" fill="currentColor" fillOpacity=".4" stroke="currentColor" strokeWidth="1.2" />
+    <path d="M50 40 C47 48 42 55 40 65 C38 72 45 78 50 78 C55 78 62 72 60 65 C58 55 53 48 50 40 Z" fill="currentColor" fillOpacity=".7" stroke="currentColor" strokeWidth="1" />
+    <circle cx="50" cy="55" r="3" fill="#FFF" />
   </svg>;
 }
 
 function Peacock({ className = '' }: { className?: string }) {
-  return <svg viewBox="0 0 240 210" className={`h-40 w-48 shrink-0 drop-shadow-[0_7px_5px_#082d2e40] ${className}`} aria-hidden="true">
-    {Array.from({ length: 11 }, (_, i) => <g key={i} transform={`rotate(${(i - 5) * 15} 120 164)`}><path d="M120 166Q72 62 120 7Q168 62 120 166" fill={i % 2 ? '#276955' : '#39816b'} stroke="#C9A24B" strokeWidth=".7" /><ellipse cx="120" cy="52" rx="12" ry="20" fill="#c4ab59" /><ellipse cx="120" cy="52" rx="8" ry="14" fill="#29a8a0" /><ellipse cx="120" cy="53" rx="5" ry="8" fill="#15396a" /><path d="M120 77v87" stroke="#d8ba67" strokeWidth=".6" /></g>)}
-    <path d="M116 172Q92 148 114 118Q135 92 131 77Q126 68 118 75Q107 89 106 69Q108 50 125 56Q150 61 143 93Q135 119 146 140Q161 167 131 179Z" fill="#167a88" stroke="#d3b96b" /><path d="M119 141Q161 126 148 155Q137 177 120 167Z" fill="#175347" stroke="#C9A24B" /><path d="M118 177v21l-12 5M132 178v20l13 5M112 58L101 61L110 65M121 55l-4-14M126 55l2-15" stroke="#C9A24B" fill="none" /><circle cx="118" cy="62" r="2" fill="#fff6dd" />
+  return <svg viewBox="0 0 100 100" fill="none" aria-hidden="true" className={`h-12 w-12 text-gold ${className}`}>
+    <path d="M50 15 C35 25 25 45 30 65 C35 85 65 85 70 65 C75 45 65 25 50 15 Z" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity=".15" />
+    <circle cx="50" cy="40" r="10" stroke="currentColor" strokeWidth="1.5" fill="currentColor" fillOpacity=".3" />
+    <path d="M48 20 C48 10 52 10 52 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="50" cy="9" r="2.5" fill="currentColor" />
+    <path d="M40 70 Q50 90 60 70" stroke="currentColor" strokeWidth="1.5" fill="none" />
   </svg>;
 }
 
 function Booklet() {
   const [page, setPage] = useState(0);
   const notes = [
-    { title: 'A sacred beginning', text: 'With gratitude to Ganesh ji and the blessings of our elders, we invite you to the wedding of Aarav & Meera.', detail: 'श्री गणेशाय नमः' },
-    { title: 'With love, our families', text: 'Sunita & Rajesh Sharma and Kavita & Vikram Kapoor request the pleasure of your company as their children begin a lifetime together.', detail: 'Two families. One beautiful bond.' },
-    { title: 'Three days of togetherness', text: '25–27 February 2027 · From the first ring to the final dance, join us for six celebrations at The Leela Palace Jaipur.', detail: 'Jaipur, Rajasthan' },
-    { title: 'A note from our hearts', text: 'Bring your blessings, your laughter, and your dancing shoes. The most precious part of our celebration will be having you there.', detail: 'With love, Aarav & Meera' },
+    { title: 'A sacred beginning', subtitle: 'The journey starts here', text: 'With the blessings of our elders and the universe, Aarav and Meera invite you to join them on their most auspicious day.', detail: 'Preserving tradition, crafting elegance.' },
+    { title: 'With love, our families', subtitle: 'Two families, one union', text: 'Sunita & Rajesh Sharma along with Kavita & Vikram Kapoor warmly invite you to celebrate this joyous bond.', detail: 'A union of hearts and heritage.' },
+    { title: 'Three days of togetherness', subtitle: 'Ceremonies & Celebrations', text: 'Six heartfelt ceremonies across three golden days in Jaipur, culminating in sacred pheras at golden hour.', detail: 'Jaipur, Rajasthan · 2027' },
+    { title: 'A note from our hearts', subtitle: 'Forever starts now', text: 'We cannot wait to share the laughter, the rituals, and the lifelong memories with you by our side.', detail: 'Aarav & Meera' },
   ];
-  return <section className="my-8 bg-ivory px-6 py-20">
-    <Heading eyebrow="The Mor Pankh keepsake" title="A little note, just for you" />
-    <div className="relative mx-auto max-w-md border border-gold/60 bg-[#eee3cb] p-2 shadow-[8px_8px_0_#d5c49d,12px_12px_0_#e9ddc5,0_20px_35px_#082d2e20]">
-      <div className="relative min-h-[420px] overflow-hidden border border-gold/50 bg-ivory px-8 pb-8 pt-12 text-center">
-        <Feather small className="absolute -left-1 top-2 -rotate-45" /><Feather small className="absolute -right-1 top-2 rotate-45" />
-        <div key={page} aria-live="polite" className="motion-safe:animate-[note_.6s_ease_both]"><Lotus className="mx-auto" /><p className="mt-3 text-xs uppercase tracking-[0.2em] text-teal">Note 0{page + 1} / 04</p><h3 className="mt-6 font-serif text-3xl text-teal">{notes[page].title}<Hindi text={notes[page].title} /></h3><p className="mt-7 text-sm leading-8 text-stone-600">{notes[page].text}</p><p className="mt-6 font-serif text-xl text-teal">{notes[page].detail}</p></div>
+  return <section className="my-8 bg-[radial-gradient(ellipse_at_top,#2a6a61,#0e4d4f_70%)] px-6 py-20 text-ivory">
+    <div className="text-center">
+      <Peacock className="mx-auto mb-4" />
+      <p className="text-xs uppercase tracking-[0.25em] text-[#E3D3AE]">The Keepsake Booklet</p>
+      <h2 className="mt-3 font-serif text-3xl italic">A journey of love</h2>
+    </div>
+    <div className="relative mx-auto mt-10 max-w-sm rounded-2xl border-2 border-gold/70 bg-ivory p-6 text-charcoal shadow-2xl">
+      <div className="absolute inset-2 rounded-xl border border-gold/30 pointer-events-none" />
+      <div className="min-h-[220px] flex flex-col justify-between text-center">
+        <div>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#937532] block">Chapter 0{page + 1} of 04</span>
+          <h3 className="mt-2 font-serif text-2xl text-teal">{notes[page].title}</h3>
+          <p className="mt-1 text-xs italic text-stone-600">{notes[page].subtitle}</p>
+          <div className="my-4 flex items-center justify-center gap-2"><span className="h-px w-10 bg-gold/50" /><span>❧</span><span className="h-px w-10 bg-gold/50" /></div>
+          <p className="text-sm leading-relaxed text-stone-700">{notes[page].text}</p>
+        </div>
+        <p className="mt-4 font-serif text-sm italic text-teal">{notes[page].detail}</p>
+      </div>
+      <div className="mt-6 flex items-center justify-between border-t border-gold/30 pt-4">
+        <button onClick={() => setPage(Math.max(0, page - 1))} disabled={page === 0} className="text-xs font-semibold text-teal disabled:opacity-30">← Previous</button>
+        <span className="text-xs text-stone-500">{page + 1} / {notes.length}</span>
+        <button onClick={() => setPage((page + 1) % notes.length)} className="text-xs font-semibold text-teal">{page === 3 ? 'Read again ↺' : 'Pull String →'}</button>
       </div>
     </div>
-    <div className="mt-8 flex flex-col items-center"><div className="h-10 w-px bg-gold" aria-hidden="true" /><button onClick={() => setPage((page + 1) % notes.length)} className={`${button} rounded-full bg-teal text-ivory`}>{page === 3 ? 'Read the notes again' : 'Pull the string for the next note'} ↓</button><button disabled={page === 0} onClick={() => setPage(page - 1)} className="mt-3 min-h-11 px-5 text-sm text-teal underline decoration-gold underline-offset-4 disabled:invisible focus-visible:ring-2 focus-visible:ring-gold">Previous note</button></div>
   </section>;
 }
 
@@ -108,7 +133,7 @@ function Ornament() {
 
 function ShriGanesh() {
   const id = useId();
-  return <svg viewBox="0 0 240 250" role="img" aria-label="Shri Ganesh seated on a lotus, with an ornate gold crown and a curved trunk" className="h-56 w-52 shrink-0 drop-shadow-[0_8px_9px_#8e6b2730]">
+  return <svg viewBox="0 0 240 250" role="img" aria-label="Shri Ganesh seated on a lotus" className="h-56 w-52 shrink-0 drop-shadow-[0_8px_9px_#8e6b2730]">
     <defs><linearGradient id={id} x1="0" y1="0" x2="1" y2="1"><stop stopColor="#f0d695" /><stop offset=".45" stopColor="#c19a45" /><stop offset="1" stopColor="#8a6122" /></linearGradient></defs>
     <circle cx="120" cy="110" r="86" fill="#C9A24B" fillOpacity=".08" stroke="#C9A24B" strokeWidth=".7" />
     <circle cx="120" cy="110" r="76" fill="none" stroke="#C9A24B" strokeDasharray="1 6" />
@@ -119,109 +144,617 @@ function ShriGanesh() {
       <path d="M100 136Q71 139 70 168L79 190Q48 184 44 204Q63 227 106 206Q120 222 134 206Q177 227 196 204Q192 184 161 190L170 167Q165 141 145 136L149 184Q119 198 91 184Z" />
       <path d="M77 146Q55 135 47 155L41 179Q47 188 54 181L63 164L73 174M163 146Q185 135 193 155L199 179Q193 188 186 181L177 164L167 174" />
     </g>
-    <g stroke="#0E4D4F" strokeWidth="2" strokeLinecap="round" fill="none"><path d="M98 94q7-6 13 0M130 94q7-6 13 0M116 78h8M120 73v12" /></g>
-    <path d="M100 109L95 125L108 119M141 109L146 123L134 119" fill="#FBF5E9" />
-    <path d="M93 64h54M102 54h36" stroke="#fff0be" strokeWidth="1.5" />
-    <circle cx="120" cy="45" r="4" fill="#0E4D4F" />
-    <path d="M120 231Q75 238 61 214Q98 208 120 231Q142 208 179 214Q165 238 120 231ZM120 231Q94 215 120 197Q146 215 120 231Z" fill="#0E4D4F" stroke="#C9A24B" />
-    <path d="M76 239h88" stroke="#C9A24B" />
   </svg>;
 }
 
 function Heading({ eyebrow, title, text }: { eyebrow: string; title: string; text?: string }) {
-  return <div className="mb-12 text-center motion-safe:animate-[rise_1s_ease_both] motion-safe:[animation-timeline:view()] motion-safe:[animation-range:entry_0%_entry_100%]"><p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-teal">{eyebrow}</p><h2 className="font-serif text-4xl leading-tight text-teal">{title}<Hindi text={title} /></h2>{text && <p className="mx-auto mt-6 max-w-xs text-sm leading-8 text-stone-600">{text}</p>}</div>;
+  return <div className="mb-8 text-center"><p className="text-xs uppercase tracking-[0.24em] text-teal">{eyebrow}</p><h2 className="mt-4 font-serif text-4xl text-teal">{title}<Hindi text={title} /></h2>{text && <p className="mx-auto mt-4 max-w-sm text-sm leading-7 text-stone-600">{text}</p>}</div>;
 }
 
-function GalleryArt({ index }: { index: number }) {
-  const backgrounds = ['#ddd9cb', '#dfc8bd', '#bdd0c8', '#e7d7b5', '#c3cece', '#e1c7c2'];
-  return <svg viewBox="0 0 240 280" preserveAspectRatio="xMidYMid slice" className="h-full w-full" role="img" aria-label={`Wedding photo placeholder ${index + 1}`}>
-    <rect width="240" height="280" fill={backgrounds[index]} />
-    <circle cx={index % 2 ? 170 : 80} cy="76" r="44" fill="#FBF5E9" fillOpacity=".45" />
-    <path d="M35 280V125a85 85 0 01170 0v155" fill="#FBF5E9" fillOpacity=".27" stroke="#FBF5E9" strokeOpacity=".6" />
-    <path d="M-10 250Q55 140 125 241T270 200V300H-10Z" fill="#0E4D4F" fillOpacity=".13" />
-    <path d="M0 290Q130 170 240 260" stroke="#C9A24B" fill="none" />
-    <path d="M180 280Q143 180 194 125M174 234q-43-25-39-48q33 3 39 48M179 208q38-17 35-42q-30 5-35 42" stroke="#0E4D4F" strokeOpacity=".4" fill="none" />
-    <path d="M70 270L85 165Q96 150 110 165L132 270Z" fill="#0E4D4F" fillOpacity=".6" />
-    <circle cx="99" cy="144" r="15" fill="#234E48" />
-    <path d="M113 270Q118 219 133 166Q146 154 159 172L184 270Z" fill="#AF6F76" fillOpacity=".75" />
-    <circle cx="145" cy="149" r="14" fill="#805753" />
-    <path d="M123 168Q125 123 144 129Q169 130 178 239L146 173Z" fill="#F9E4CD" fillOpacity=".65" stroke="#C9A24B" strokeWidth=".7" />
-    <path d="M107 187Q126 203 137 188" stroke="#E9C79C" strokeWidth="5" fill="none" />
-  </svg>;
-}
+// ─── 1. INTERACTIVE PETAL DATE REVEAL HOOK (Screenshot 6) ───
+function PetalDateReveal({ weddingDate = '2027-02-27', onAddCalendar }: { weddingDate?: string; onAddCalendar: () => void }) {
+  const [revealed, setRevealed] = useState(false);
+  const [clearedCount, setClearedCount] = useState(0);
 
-function Festivities() {
-  const [active, setActive] = useState(0);
-  const track = useRef<HTMLDivElement>(null);
-  function goTo(index: number) {
-    const next = Math.max(0, Math.min(events.length - 1, index));
-    if (!track.current) return;
-    track.current.scrollTo({ left: next * track.current.clientWidth, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
-  }
-  return <section id="celebrations" className="my-8 scroll-mt-16 bg-ivory py-20">
-    <div className="px-6"><Heading eyebrow={`${events.length} celebrations, a thousand memories`} title="Let the festivities begin" text="Swipe through our six beautiful chapters." /></div>
-    <div className="mx-6 mb-5 flex items-center justify-between border-y border-gold/40 py-2">
-      <p className="text-xs uppercase tracking-[0.15em] text-teal">The wedding diary</p>
-      <span aria-live="polite" className="font-serif text-xl tabular-nums text-teal">0{active + 1} <span className="text-sm text-stone-600">/ 0{events.length}</span></span>
-    </div>
-    <div ref={track} role="region" aria-roledescription="carousel" aria-label="Wedding festivities" tabIndex={0} onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); goTo(active + (e.key === 'ArrowRight' ? 1 : -1)); } }} onScroll={e => { const el = e.currentTarget; if (el.clientWidth) setActive(Math.max(0, Math.min(events.length - 1, Math.round(el.scrollLeft / el.clientWidth)))); }} className="flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain pb-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold">
-      {events.map((ceremony, index) => <div key={ceremony.name} role="group" aria-roledescription="slide" aria-label={`${index + 1} of ${events.length}: ${ceremony.name}`} className="w-full min-w-0 shrink-0 snap-center snap-always px-6">
-        <article className="relative mx-auto max-w-md overflow-hidden rounded-t-[180px] border border-gold bg-[linear-gradient(150deg,#fffdf5,#efe3cb)] px-7 pb-12 pt-20 text-center shadow-[0_12px_25px_#53452518]">
-          <div className="pointer-events-none absolute inset-2 rounded-t-[175px] border border-gold/30" />
-          <div className="relative">
-            <div style={{ background: ceremony.color }} className="mx-auto flex h-24 w-24 items-center justify-center rounded-full border border-gold/50 shadow-inner"><Lotus /></div>
-            <p className="mt-5 text-xs uppercase tracking-[0.2em] text-teal">Chapter 0{index + 1}</p>
-            <h3 className="mt-5 font-serif text-4xl text-teal">{ceremony.name}<Hindi text={ceremony.name} /></h3>
-            <p className="mb-5 mt-5 min-h-14 font-serif text-xl italic text-teal">{ceremony.note}</p>
-            <Ornament />
-            <p className="mt-5 text-sm font-medium text-teal">{new Date(`2027-02-${ceremony.day}T12:00:00+05:30`).toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Asia/Kolkata' })} 2027</p>
-            <p className="mt-2 text-sm tracking-wider text-teal">{ceremony.time} IST</p>
-            <p className="mt-4 min-h-12 text-sm leading-6 text-stone-600">{ceremony.venue}<br />The Leela Palace, Jaipur</p>
-            <div className="my-5 min-h-24 border-y border-gold/30 py-3"><p className="text-xs uppercase tracking-[0.15em] text-[#77591e]">Dress the part</p><p className="mt-2 text-sm leading-6 text-teal">{ceremony.attire}</p></div>
-            <a href={mapLink} target="_blank" rel="noreferrer" tabIndex={active === index ? 0 : -1} className={`${button} bg-teal text-ivory`} aria-label={`Directions for ${ceremony.name}`}><ActionIcon kind="pin" />Directions</a>
+  // 36 scattered petals in realistic pastel tones (rose, blush, coral, marigold, cream)
+  const [petals, setPetals] = useState(() => {
+    const palette = ['#E29393', '#EBABAB', '#F4C2BE', '#EDBB99', '#F9E4D4', '#E6C280', '#D4A373', '#F28482'];
+    return Array.from({ length: 38 }, (_, i) => ({
+      id: i,
+      x: (i % 6) * 18 - 45 + (Math.random() * 22 - 11),
+      y: Math.floor(i / 6) * 15 - 38 + (Math.random() * 20 - 10),
+      rot: Math.random() * 360,
+      scale: 0.85 + Math.random() * 0.45,
+      color: palette[i % palette.length],
+      cleared: false,
+    }));
+  });
+
+  const handleClear = (id: number) => {
+    setPetals(prev => prev.map(p => (p.id === id ? { ...p, cleared: true } : p)));
+    setClearedCount(c => {
+      const next = c + 1;
+      if (next >= 10 && !revealed) {
+        setRevealed(true);
+      }
+      return next;
+    });
+  };
+
+  const handleScatterAll = () => {
+    setPetals(prev => prev.map(p => ({ ...p, cleared: true })));
+    setRevealed(true);
+  };
+
+  // Live Auspicious Countdown
+  const [diff, setDiff] = useState(() => {
+    const d = new Date(weddingDate + 'T16:30:00+05:30').getTime() - Date.now();
+    return Math.max(0, d);
+  });
+
+  useEffect(() => {
+    const t = setInterval(() => {
+      const d = new Date(weddingDate + 'T16:30:00+05:30').getTime() - Date.now();
+      setDiff(Math.max(0, d));
+    }, 1000);
+    return () => clearInterval(t);
+  }, [weddingDate]);
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  return (
+    <section className="relative my-8 overflow-hidden bg-gradient-to-b from-ivory via-[#fbf5e9] to-ivory px-4 py-16 text-center">
+      <Peacock className="mx-auto text-gold mb-3" />
+      <h3 className="font-serif text-2xl sm:text-3xl font-bold text-teal italic mb-2">
+        Move the petals to reveal the Grand Date!
+      </h3>
+      <p className="font-hindi text-sm text-teal mb-6">इस शुभ तिथि को याद रखिए</p>
+
+      <div className="relative min-h-[320px] max-w-md mx-auto flex items-center justify-center p-4">
+        {/* Underlying Revealed Date Card */}
+        <div
+          className={`transition-all duration-700 w-full rounded-3xl border-2 border-gold/70 bg-[#fffdf7] p-7 shadow-2xl text-center ${
+            revealed ? 'opacity-100 scale-100' : 'opacity-85 scale-95'
+          }`}
+        >
+          <div className="absolute inset-2 rounded-[20px] border border-gold/30 pointer-events-none" />
+          <span className="text-[10px] font-bold tracking-[0.22em] uppercase text-[#96752d] block mb-2">
+            The Sacred Muhurtham
+          </span>
+          <h4 className="font-serif text-3xl sm:text-4xl font-bold text-teal mb-2">
+            Saturday, 27 February 2027
+          </h4>
+          <p className="font-hindi text-sm text-teal mb-2">शुभ विवाह मुहूर्त · गोधूलि वेला</p>
+          <p className="text-xs text-stone-600 mb-6">
+            Pheras at 4:30 PM Onwards · The Royal Courtyard, Jaipur
+          </p>
+
+          {/* Live Auspicious Countdown Grid */}
+          <div className="grid grid-cols-4 gap-2 max-w-xs mx-auto mb-6">
+            {[
+              { val: days, lbl: 'Days' },
+              { val: hours, lbl: 'Hours' },
+              { val: minutes, lbl: 'Mins' },
+              { val: seconds, lbl: 'Secs' },
+            ].map((u, i) => (
+              <div key={i} className="bg-ivory rounded-xl p-2 border border-gold/40 shadow-xs">
+                <span className="font-serif text-2xl font-bold text-teal block tabular-nums">
+                  {String(u.val).padStart(2, '0')}
+                </span>
+                <span className="text-[9px] uppercase tracking-wider text-stone-600 block mt-0.5">
+                  {u.lbl}
+                </span>
+              </div>
+            ))}
           </div>
-        </article>
-      </div>)}
-    </div>
-    <div className="mx-auto flex max-w-md flex-wrap items-center justify-between gap-1 px-6">
-      <button onClick={() => goTo(active - 1)} disabled={active === 0} aria-label="Previous ceremony" className="h-11 w-11 shrink-0 rounded-full border border-gold text-xl text-teal transition hover:bg-gold/20 focus-visible:ring-2 focus-visible:ring-teal disabled:cursor-not-allowed disabled:border-stone-300 disabled:text-stone-600">←</button>
-      <div className="order-last flex w-full justify-center">{events.map((event, index) => <button key={event.name} onClick={() => goTo(index)} aria-label={`Show ${event.name}`} aria-pressed={active === index} className="flex h-11 w-11 items-center justify-center focus-visible:ring-2 focus-visible:ring-gold"><span className={`h-2 rounded-full transition-all ${active === index ? 'w-6 bg-teal' : 'w-2 bg-[#AC935F]'}`} /></button>)}</div>
-      <button onClick={() => goTo(active + 1)} disabled={active === events.length - 1} aria-label="Next ceremony" className="h-11 w-11 shrink-0 rounded-full border border-gold text-xl text-teal transition hover:bg-gold/20 focus-visible:ring-2 focus-visible:ring-teal disabled:cursor-not-allowed disabled:border-stone-300 disabled:text-stone-600">→</button>
-    </div>
-    <p className="mt-4 text-center text-xs uppercase tracking-[0.16em] text-stone-600">← Swipe to celebrate →</p>
-  </section>;
+
+          <button onClick={onAddCalendar} className={`${button} rounded-full bg-teal text-ivory text-xs px-6 py-2.5`}>
+            <ActionIcon kind="calendar" /> Add to Calendar (.ics)
+          </button>
+        </div>
+
+        {/* Scattered Interactive Petals Pile Overlay */}
+        <div
+          onClick={handleScatterAll}
+          className="absolute inset-0 flex items-center justify-center cursor-pointer overflow-hidden pointer-events-auto"
+          title="Swipe or drag petals to reveal date"
+        >
+          {petals.map(p => (
+            <motion.div
+              key={p.id}
+              animate={
+                p.cleared
+                  ? {
+                      x: p.x * 5.5 + (Math.random() * 240 - 120),
+                      y: p.y * 5.5 + (Math.random() * 240 - 120),
+                      opacity: 0,
+                      scale: 0.2,
+                      rotate: p.rot + 180,
+                    }
+                  : {
+                      x: `${p.x * 2.8}px`,
+                      y: `${p.y * 2.8}px`,
+                      opacity: 0.95,
+                      scale: p.scale,
+                      rotate: p.rot,
+                    }
+              }
+              transition={{ duration: 0.85, ease: 'easeOut' }}
+              onMouseEnter={() => handleClear(p.id)}
+              onTouchMove={() => handleClear(p.id)}
+              className="absolute w-11 h-11 select-none pointer-events-auto cursor-pointer"
+              style={{ zIndex: 25 }}
+            >
+              <svg viewBox="0 0 40 40" className="w-full h-full drop-shadow-md">
+                <path
+                  d="M 20 3 C 11 11 5 21 9 32 C 14 41 26 41 31 32 C 35 21 29 11 20 3 Z"
+                  fill={p.color}
+                  opacity="0.92"
+                />
+              </svg>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {!revealed && (
+        <button
+          type="button"
+          onClick={handleScatterAll}
+          className="mt-3 text-xs text-[#96752d] font-semibold underline underline-offset-4 hover:opacity-80"
+        >
+          Tap or swipe petals to reveal date ✨
+        </button>
+      )}
+    </section>
+  );
 }
 
-function Glimpses() {
-  const [selected, setSelected] = useState(0);
-  const memories = [
-    { title: 'Where it all began', note: 'One hello. A thousand possibilities.' },
-    { title: 'The little things', note: 'Ordinary days, extraordinary company.' },
-    { title: 'Side by side', note: 'Our favourite place has always been together.' },
-    { title: 'Our kind of love', note: 'A little laughter. A little magic. Always us.' },
-    { title: 'Always you', note: 'In every chapter, I would choose you.' },
-    { title: 'Forever starts here', note: 'The most beautiful part is still to come.' },
+// ─── 2. CEREMONIES STACKED DECK WITH "SWIPE THE CARD ASIDE" (Screenshot 5) ───
+function CeremoniesStackedDeck() {
+  const [topIndex, setTopIndex] = useState(0);
+
+  const nextCard = () => {
+    setTopIndex(prev => (prev + 1) % events.length);
+  };
+
+  const activeCeremony = events[topIndex];
+  const nextCeremony1 = events[(topIndex + 1) % events.length];
+  const nextCeremony2 = events[(topIndex + 2) % events.length];
+
+  return (
+    <section id="celebrations" className="my-8 scroll-mt-16 bg-ivory py-16 px-4">
+      <div className="text-center mb-8">
+        <p className="text-xs uppercase tracking-[0.22em] text-[#96752d]">A sacred journey of six chapters</p>
+        <h2 className="mt-2 font-serif text-4xl text-teal">Ceremonies<Hindi text="मांगलिक कार्यक्रम" /></h2>
+      </div>
+
+      {/* Stack Container */}
+      <div className="relative mx-auto max-w-sm h-[480px] flex items-center justify-center select-none">
+        {/* Layer 3 (Back) */}
+        <div
+          className="absolute inset-x-4 top-2 h-[420px] rounded-3xl border border-gold/30 bg-[#f4ebda] shadow-md transition-all duration-300"
+          style={{ transform: 'rotate(-4deg) translateY(-14px) scale(0.92)', opacity: 0.6 }}
+        />
+
+        {/* Layer 2 (Middle) */}
+        <div
+          className="absolute inset-x-2 top-4 h-[430px] rounded-3xl border border-gold/40 bg-[#fbf5e7] shadow-lg transition-all duration-300"
+          style={{ transform: 'rotate(3deg) translateY(-7px) scale(0.96)', opacity: 0.85 }}
+        >
+          <div className="p-6 text-center opacity-40">
+            <span className="text-xs uppercase tracking-widest text-teal">{nextCeremony1.name}</span>
+          </div>
+        </div>
+
+        {/* Layer 1 (Front Active Card) */}
+        <motion.div
+          key={topIndex}
+          initial={{ x: -40, rotate: -3, opacity: 0.8, scale: 0.95 }}
+          animate={{ x: 0, rotate: 0, opacity: 1, scale: 1 }}
+          exit={{ x: 300, rotate: 20, opacity: 0 }}
+          transition={{ duration: 0.45 }}
+          onClick={nextCard}
+          className="relative w-full h-[450px] rounded-3xl border-2 border-gold/70 bg-[#fffdf5] p-7 shadow-2xl flex flex-col justify-between text-center cursor-pointer overflow-hidden z-20"
+        >
+          {/* Inner Golden Border */}
+          <div className="absolute inset-2.5 rounded-[20px] border border-gold/30 pointer-events-none" />
+
+          {/* Top Info */}
+          <div>
+            <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#96752d] block">
+              Chapter 0{topIndex + 1} of 0{events.length}
+            </span>
+            <h3 className="mt-3 font-serif text-3xl font-bold text-teal">
+              {activeCeremony.name}
+            </h3>
+            <Hindi text={activeCeremony.name} />
+
+            <div className="my-3 flex items-center justify-center gap-2">
+              <span className="h-px w-8 bg-gold/50" />
+              <span className="text-gold text-sm">❧</span>
+              <span className="h-px w-8 bg-gold/50" />
+            </div>
+
+            <p className="font-serif text-lg font-semibold text-teal">
+              {activeCeremony.fullDate}
+            </p>
+            <p className="text-sm font-medium text-stone-600 mt-1">
+              {activeCeremony.time} IST
+            </p>
+
+            <div className="mt-4 flex items-center justify-center gap-1.5 text-xs text-stone-600">
+              <MapPin size={14} className="text-[#96752d]" />
+              <span>{activeCeremony.venue}, Jaipur</span>
+            </div>
+
+            <p className="mt-4 text-xs italic text-stone-600 max-w-xs mx-auto">
+              "{activeCeremony.note}"
+            </p>
+          </div>
+
+          {/* Bottom Illustration & Action */}
+          <div className="relative pt-4 border-t border-gold/30 flex items-center justify-between">
+            <div className="text-left">
+              <span className="text-[10px] uppercase tracking-wider text-[#96752d] block">Dress code</span>
+              <span className="text-xs font-medium text-teal">{activeCeremony.attire}</span>
+            </div>
+            <a
+              href={mapLink}
+              target="_blank"
+              rel="noreferrer"
+              onClick={e => e.stopPropagation()}
+              className="text-xs font-semibold text-teal underline flex items-center gap-1"
+            >
+              Directions ↗
+            </a>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Swipe the card aside helper prompt */}
+      <div className="mt-6 text-center">
+        <button
+          type="button"
+          onClick={nextCard}
+          className="inline-flex items-center gap-2 text-xs font-serif italic text-teal hover:text-gold transition-colors"
+        >
+          <span>Swipe the card aside</span>
+          <span className="inline-block animate-pulse">👉</span>
+        </button>
+
+        {/* Dots progress indicator */}
+        <div className="mt-3 flex justify-center gap-1.5">
+          {events.map((ev, i) => (
+            <button
+              key={ev.name}
+              onClick={() => setTopIndex(i)}
+              className={`h-1.5 rounded-full transition-all ${
+                topIndex === i ? 'w-6 bg-teal' : 'w-1.5 bg-gold/40'
+              }`}
+              title={ev.name}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── 3. CLOTHESLINE HANGING POLAROID PHOTO GALLERY (Screenshots 4 & 7) ───
+function HangingPolaroidGallery() {
+  const polaroids = [
+    { tag: '#howitstarted', caption: 'One hello. A thousand possibilities.' },
+    { tag: '#adventures', caption: 'Exploring the world, hand in hand.' },
+    { isNote: true, quote: 'Friendship grew into something more, and we realized life’s best moments were the ones we shared together.', tag: '#thelittlethings' },
+    { tag: '#foreverstarts', caption: 'In every chapter, I would choose you.' },
+    { tag: '#familymoments', caption: 'Surrounded by the warmth of those we love.' },
   ];
-  return <section className="relative my-8 overflow-hidden border-y border-gold/40 bg-[radial-gradient(ellipse_at_top,#eae2cd,#fbf5e9_65%)] px-6 py-16 md:px-10">
-    <Feather className="pointer-events-none absolute -right-12 top-0 rotate-[-30deg]" />
-    <div className="relative"><Heading eyebrow="A love story in little frames" title="Glimpses of us" text="Little moments. Lifelong memories." /></div>
-    <div className="relative mx-auto max-w-md">
-      <div className="absolute inset-0 translate-x-2 translate-y-2 rotate-2 border border-gold/40 bg-[#e5d8bc]" aria-hidden="true" />
-      <figure className="relative border border-gold/60 bg-[#fffaf0] p-3 pb-6 shadow-[0_16px_35px_#533f2425]">
-        <div key={selected} className="relative h-72 overflow-hidden rounded-t-[130px] border border-gold/50 md:h-96 motion-safe:animate-[note_.6s_ease_both]"><GalleryArt index={selected} /><span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border border-gold/40 bg-ivory/95 px-4 py-2 text-xs text-teal">Illustrated photo placeholder</span></div>
-        <figcaption aria-live="polite" className="px-2 pt-7 text-center"><p className="text-xs uppercase tracking-[0.2em] text-[#77591e]">Our story · 0{selected + 1}</p><h3 className="mt-4 font-serif text-3xl italic text-teal">{memories[selected].title}<Hindi text={memories[selected].title} /></h3><p className="mt-4 text-sm leading-7 text-stone-600">{memories[selected].note}</p></figcaption>
-      </figure>
-      <Lotus className="pointer-events-none absolute -bottom-7 -right-5 rotate-12" />
-    </div>
-    <div className="mt-12 flex items-center justify-between border-b border-gold/40 pb-3"><p className="text-xs uppercase tracking-[0.18em] text-teal">The memory collection</p><span className="font-serif text-xl italic text-teal">Six little forevers</span></div>
-    <div className="mt-7 grid grid-cols-2 gap-5">
-      {memories.map((memory, index) => <button key={memory.title} onClick={() => setSelected(index)} aria-pressed={selected === index} aria-label={`Feature memory: ${memory.title}`} className={`group min-w-0 border bg-ivory p-2 pb-4 text-left shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal ${selected === index ? 'border-teal ring-1 ring-teal' : 'border-gold/40'}`}>
-        <div className={`relative h-36 overflow-hidden ${index % 2 === 0 ? 'rounded-t-[70px]' : ''}`}><div className="h-full transition duration-500 group-hover:scale-105"><GalleryArt index={index} /></div><span className="absolute bottom-2 left-2 bg-ivory/95 px-2 py-1 text-xs text-teal">0{index + 1}</span></div>
-        <p className="mt-3 px-1 font-serif text-lg leading-5 text-teal">{memory.title}</p><span className="mt-2 block px-1 text-xs text-stone-600">{selected === index ? 'On display above' : 'View this moment ↗'}</span>
-      </button>)}
-    </div>
-    <div className="mt-9"><Ornament /><p className="mt-4 text-center text-sm italic leading-6 text-stone-600">A beautifully imagined album, waiting for your photographs.</p></div>
-  </section>;
+
+  return (
+    <section className="relative my-8 overflow-hidden bg-gradient-to-b from-[#FAF4EB] via-[#FAF6F0] to-[#FAF4EB] py-16 px-4">
+      <div className="text-center mb-6">
+        <p className="text-xs uppercase tracking-[0.24em] text-[#96752d]">A love story in little frames</p>
+        <h2 className="mt-2 font-serif text-4xl text-teal">Glimpses of us<Hindi text="हमारी कुछ झलकियाँ" /></h2>
+      </div>
+
+      {/* Wooden Hanging Clothesline Rod */}
+      <div className="max-w-lg mx-auto mb-2 px-6">
+        <div className="h-3 bg-gradient-to-r from-[#6e4324] via-[#8B5A2B] to-[#5C3818] rounded-full shadow-md relative w-full">
+          {[20, 40, 60, 80].map(p => (
+            <div key={p} className="absolute top-1/2 -translate-y-1/2 w-2 h-2 bg-[#422510] rounded-full border border-[#b7936a]" style={{ left: `${p}%` }} />
+          ))}
+        </div>
+      </div>
+
+      {/* Horizontal Swipeable Clothesline Reel */}
+      <div className="flex items-start gap-5 overflow-x-auto pb-6 pt-1 px-6 max-w-2xl mx-auto scrollbar-none snap-x snap-mandatory">
+        {polaroids.map((item, idx) => (
+          <div key={idx} className="snap-center shrink-0 w-64 flex flex-col items-center">
+            {/* Hanging String */}
+            <div className="w-px h-7 bg-[#9e7a4b] shadow-xs mb-[-2px] z-10" />
+
+            {/* Frame Content */}
+            {item.isNote ? (
+              <div className="w-full bg-[#FAF4EB] border-2 border-gold/60 rounded-xl p-6 shadow-xl flex flex-col justify-between text-center min-h-[300px]">
+                <div className="my-auto">
+                  <span className="text-gold text-lg block mb-2">❧</span>
+                  <p className="font-serif text-base text-teal italic leading-relaxed">
+                    "{item.quote}"
+                  </p>
+                </div>
+                <span className="font-serif text-xs font-bold text-[#96752d] block mt-4">
+                  {item.tag}
+                </span>
+              </div>
+            ) : (
+              <div className="w-full bg-white rounded-xl p-3 pb-4 shadow-xl border border-stone-200 flex flex-col items-center min-h-[300px]">
+                <div className="w-full aspect-[4/5] bg-[#EFECE6] rounded-lg flex flex-col items-center justify-center text-stone-400 text-xs italic mb-3 p-4 text-center border border-dashed border-stone-300">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center text-gold mb-2 shadow-xs">
+                    <Heart size={14} />
+                  </div>
+                  <span>Your photo here</span>
+                </div>
+                <span className="font-serif text-sm font-bold text-[#96752d] italic">
+                  {item.tag}
+                </span>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Swipe prompt pill */}
+      <div className="text-center mt-2">
+        <span className="inline-block rounded-full bg-white/90 border border-gold/40 px-5 py-1 text-[11px] font-semibold text-teal tracking-widest uppercase shadow-2xs">
+          &lt;&lt;&lt; Swipe &gt;&gt;&gt;
+        </span>
+      </div>
+    </section>
+  );
+}
+
+// ─── 4. "YOUR PRESENCE MATTERS" BALCONY-STYLE RSVP SECTION (Screenshots 1, 2, 3) ───
+function YourPresenceMattersRSVP({ guestDefault = '' }: { guestDefault?: string }) {
+  const [name, setName] = useState(guestDefault || '');
+  const [mobile, setMobile] = useState('');
+  const [guestCount, setGuestCount] = useState(1);
+  const [eventSchedule, setEventSchedule] = useState<Record<string, string>>({
+    'Ring Ceremony': 'yes',
+    'Haldi': 'yes',
+    'Mehendi': 'yes',
+    'Sangeet': 'yes',
+    'Vivaah': 'yes',
+    'Reception': 'yes',
+  });
+  const [wishes, setWishes] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleAttendance = (eventName: string, choice: string) => {
+    setEventSchedule(prev => ({ ...prev, [eventName]: choice }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !mobile) return;
+    try {
+      localStorage.setItem('aahvaaan_rsvp_' + mobile.replace(/[^0-9]/g, ''), JSON.stringify({
+        name,
+        mobile,
+        guestCount,
+        eventSchedule,
+        wishes,
+        timestamp: new Date().toISOString(),
+      }));
+    } catch {
+      // fallback
+    }
+    setSubmitted(true);
+  };
+
+  if (submitted) {
+    return (
+      <section id="rsvp" className="my-8 scroll-mt-16 bg-ivory px-6 py-16 text-center">
+        <div className="max-w-md mx-auto p-8 rounded-3xl border-2 border-gold/70 bg-[#fffdf5] shadow-2xl">
+          <div className="w-12 h-12 rounded-full bg-teal text-gold flex items-center justify-center mx-auto mb-4">
+            <Check size={24} />
+          </div>
+          <h3 className="font-serif text-3xl font-bold text-teal mb-2">Response Lovingly Noted!</h3>
+          <Hindi text="आपका उत्तर सप्रेम स्वीकार है" />
+          <p className="text-sm text-stone-600 mt-4 leading-relaxed">
+            Thank you, {name}! We have recorded your attendance. We cannot wait to celebrate with you in Jaipur!
+          </p>
+          <button
+            type="button"
+            onClick={() => setSubmitted(false)}
+            className="mt-6 text-xs text-[#96752d] font-semibold underline"
+          >
+            Update response
+          </button>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section id="rsvp" className="my-8 scroll-mt-16 bg-ivory px-4 py-16">
+      <div className="max-w-lg mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-teal">
+            Your Presence Matters
+          </h2>
+          <Hindi text="आपकी उपस्थिति हमारे लिए अनमोल है" />
+          <p className="mt-2 text-xs sm:text-sm text-stone-600">
+            Let us know so we can make the arrangements just right.
+          </p>
+        </div>
+
+        {/* Card Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="rounded-3xl border-2 border-gold/60 bg-[#fffdf5] p-6 sm:p-8 shadow-2xl space-y-6"
+        >
+          {/* Top Inputs: Name & Mobile */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <div className="relative">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
+                  <User size={16} />
+                </span>
+                <input
+                  type="text"
+                  required
+                  placeholder="Your name"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gold/40 bg-white text-xs sm:text-sm text-teal placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-teal/30"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="relative">
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400">
+                  <Phone size={16} />
+                </span>
+                <input
+                  type="tel"
+                  required
+                  maxLength={10}
+                  placeholder="10-digit mobile number"
+                  value={mobile}
+                  onChange={e => setMobile(e.target.value.replace(/[^0-9]/g, ''))}
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-gold/40 bg-white text-xs sm:text-sm text-teal placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-teal/30"
+                />
+              </div>
+              <p className="text-[10px] text-stone-500 mt-1 pl-1">
+                Reply again from this number any time to update your answer.
+              </p>
+            </div>
+          </div>
+
+          {/* Stepper: How many of you are coming? */}
+          <div className="bg-[#FAF7F2] border border-gold/30 rounded-2xl p-5 text-center">
+            <label className="block text-xs sm:text-sm font-bold text-teal mb-3">
+              How many of you are coming?
+            </label>
+            <div className="inline-flex items-center gap-4 bg-white border border-gold/40 rounded-full px-5 py-1.5 shadow-2xs">
+              <button
+                type="button"
+                onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
+                className="w-7 h-7 rounded-full text-stone-600 hover:bg-[#FAF7F2] flex items-center justify-center transition-colors"
+              >
+                <Minus size={14} />
+              </button>
+              <span className="font-serif text-lg font-bold text-teal w-6 text-center tabular-nums">
+                {guestCount}
+              </span>
+              <button
+                type="button"
+                onClick={() => setGuestCount(Math.min(10, guestCount + 1))}
+                className="w-7 h-7 rounded-full text-stone-600 hover:bg-[#FAF7F2] flex items-center justify-center transition-colors"
+              >
+                <Plus size={14} />
+              </button>
+            </div>
+            <p className="text-[10px] text-stone-500 mt-2">
+              Counts for every event you say Yes or Maybe to, below. Up to 10 people.
+            </p>
+          </div>
+
+          {/* Event Schedule Grid */}
+          <div className="pt-2">
+            <div className="flex items-center gap-2 mb-3">
+              <Calendar size={16} className="text-[#96752d]" />
+              <div>
+                <h4 className="font-bold text-sm text-teal leading-tight">Event Schedule</h4>
+                <p className="text-[11px] text-stone-500">Let us know which events you'll be joining.</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {events.map((ev, i) => {
+                const current = eventSchedule[ev.name] || 'yes';
+                return (
+                  <div key={i} className="p-3.5 rounded-2xl border border-gold/30 bg-white shadow-2xs">
+                    <div className="mb-2">
+                      <span className="font-bold text-xs sm:text-sm text-teal block">{ev.name}</span>
+                      <span className="text-[11px] text-[#96752d] font-medium">{ev.day} Feb 2027</span>
+                    </div>
+
+                    {/* Radio Options: Yes / Maybe / No */}
+                    <div className="grid grid-cols-3 gap-1.5 text-center">
+                      {['Yes', 'Maybe', 'No'].map(opt => {
+                        const val = opt.toLowerCase();
+                        const isSelected = current === val;
+                        return (
+                          <button
+                            key={opt}
+                            type="button"
+                            onClick={() => handleAttendance(ev.name, val)}
+                            className={`py-1.5 px-2 rounded-xl text-xs font-semibold border transition-all ${
+                              isSelected
+                                ? 'bg-teal text-ivory border-teal shadow-xs'
+                                : 'bg-[#FAF7F2] text-stone-600 border-gold/30 hover:border-gold'
+                            }`}
+                          >
+                            {opt}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Leave couple a wish */}
+          <div>
+            <div className="relative">
+              <span className="absolute left-3.5 top-3.5 text-stone-400">
+                <Mail size={16} />
+              </span>
+              <textarea
+                rows={2}
+                value={wishes}
+                onChange={e => setWishes(e.target.value)}
+                placeholder="Leave the couple a wish (optional)"
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-gold/40 bg-white text-xs sm:text-sm text-teal placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-teal/30"
+              />
+            </div>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full py-3.5 rounded-full bg-gradient-to-r from-teal via-[#135d5f] to-[#1c7870] hover:from-[#0a383a] hover:to-teal text-ivory font-semibold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+          >
+            <span>♥</span>
+            <span>Send RSVP</span>
+          </button>
+
+          <p className="text-[11px] text-stone-500 text-center mt-2">
+            Preview - your guests will be able to send this once your invitation is live.
+          </p>
+
+          {/* Footer Branding */}
+          <div className="text-center pt-6 border-t border-gold/30 mt-6">
+            <p className="text-[10px] text-stone-500 uppercase tracking-widest mb-1">
+              Crafted with love by
+            </p>
+            <span className="font-serif text-lg font-bold text-teal tracking-tight">
+              Aahvaaan
+            </span>
+          </div>
+        </form>
+      </div>
+    </section>
+  );
 }
 
 function CoupleWelcome({ guest, onContinue }: { guest: string; onContinue: () => void }) {
@@ -240,189 +773,260 @@ function CoupleWelcome({ guest, onContinue }: { guest: string; onContinue: () =>
         <path d="M92 87h2M109 87h2M185 94h2M201 94h2M94 101q7 7 14 0M187 107q7 7 14 0" stroke="#382c29" strokeWidth="3" strokeLinecap="round" fill="none" />
         <path d="M75 151L101 179L125 151M172 156L195 184L218 156" stroke="#c38a61" strokeWidth="12" fill="none" /><path d="M100 179v-30M195 184v-30" stroke="#c38a61" strokeWidth="10" strokeLinecap="round" />
         <path d="M82 125v130M173 139l56 119" stroke="#C9A24B" strokeWidth="6" />
-      </svg> : <img src="/images/mor-pankh-couple.png" alt="3D-style Aarav and Meera together, welcoming you with namaste in ivory, emerald and blush wedding attire" width={1024} height={1024} onError={() => setImageError(true)} className="relative h-auto w-full mix-blend-multiply motion-safe:animate-[avatar-welcome_1.2s_ease-out_both]" />}
-      <Feather small className="pointer-events-none absolute -left-2 bottom-6 -rotate-12" />
-      <Lotus className="pointer-events-none absolute -bottom-3 -right-3 !h-16 !w-24" />
+      </svg> : <img src="/images/mor-pankh-couple.png" alt="Bride and groom in ivory, emerald and gold namaste pose" onError={() => setImageError(true)} className="relative h-auto w-full object-contain drop-shadow-[0_12px_24px_#0e4d4f35]" />}
     </div>
-    <div className="relative mt-7 border-t border-gold/40 pt-6">
-      <p className="font-serif text-2xl italic text-teal">Namaste, {guest || 'our loved ones'}.</p>
-      <h2 className="mt-5 font-serif text-4xl text-teal">Our joy begins with you.<Hindi text="Our joy begins with you." /></h2>
-      <p className="mx-auto mt-4 max-w-xs text-sm leading-7 text-stone-600">With folded hands and full hearts, we welcome you to our wedding celebration.</p>
-      <p className="mt-4 font-script text-4xl text-teal">Aarav & Meera</p>
-      <button onClick={onContinue} className={`${button} mt-6 w-full bg-teal text-ivory sm:w-auto`}>Enter our celebration <span aria-hidden="true">↓</span></button>
+    <div className="relative mt-7 space-y-4">
+      <h2 className="font-serif text-3xl italic text-teal">Dear {guest || 'our loved ones'},<Hindi text="प्रिय अतिथि, आपका हार्दिक स्वागत है" /></h2>
+      <p className="mx-auto max-w-sm text-sm leading-7 text-stone-600">We are overjoyed to invite you to celebrate our union. Having you with us to share these moments means the world to our hearts and families.</p>
+      <div className="pt-2"><button onClick={onContinue} className={`${button} rounded-full bg-teal text-ivory`}>Step into our story ↓</button></div>
     </div>
   </div>;
 }
 
-export default function MorPankhInvitation({ template = {}, content = {}, guestName: propGuestName, rsvpComponent = null } = {}) {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [theme, setTheme] = useState<keyof typeof themes>('Ivory');
+// ─── MASTER MOR PANKH TEMPLATE COMPONENT ───
+export default function MorPankhInvitation({ template = {}, content = {}, guestName: propGuestName, rsvpComponent = null }: any = {}) {
   const [opened, setOpened] = useState(false);
-  const [now, setNow] = useState(Date.now());
-  const [attending, setAttending] = useState('Joyfully Attending');
-  const [reply, setReply] = useState({ name: '', mobile: '', guests: '1', meal: 'Vegetarian', message: '' });
-  const [eventReplies, setEventReplies] = useState<Record<string, string>>(() => Object.fromEntries(events.map(e => [e.name, 'Maybe'])));
-  const [dateRevealed, setDateRevealed] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [saveError, setSaveError] = useState('');
-  const [guest, setGuest] = useState('Mr. Joshi and Family');
-  const greeting = useRef<HTMLElement>(null);
-  const welcome = useRef<HTMLElement>(null);
+  const [guest, setGuest] = useState(propGuestName || content?.guestName || 'Mr. Joshi and Family');
+  const [theme, setTheme] = useState<keyof typeof themes>('Ivory');
+  const [musicPlaying, setMusicPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const welcome = useRef<HTMLElement | null>(null);
+  const greeting = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(Date.now()), 1000);
-    const name = propGuestName || new URLSearchParams(window.location.search).get('guest');
-    if (name) setGuest(name);
-    return () => window.clearInterval(timer);
-  }, []);
-  const remaining = Math.max(0, wedding.getTime() - now);
-  const countdown = [Math.floor(remaining / 86400000), Math.floor(remaining / 3600000) % 24, Math.floor(remaining / 60000) % 60];
+    if (propGuestName) setGuest(propGuestName);
+  }, [propGuestName]);
 
   function openInvitation() {
-    if (audioRef.current) {
-      audioRef.current.play().catch(() => {});
-    }
     setOpened(true);
-    window.setTimeout(() => { welcome.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' }); welcome.current?.focus({ preventScroll: true }); }, 3200);
+    if (audioRef.current) {
+      audioRef.current.play().then(() => setMusicPlaying(true)).catch(() => {});
+    }
+    setTimeout(() => {
+      welcome.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 400);
   }
+
   function addCalendar() {
-    const content = 'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nBEGIN:VEVENT\r\nUID:aarav-meera-2027@aahvaaan\r\nDTSTAMP:20260601T000000Z\r\nDTSTART:20270227T110000Z\r\nDTEND:20270227T173000Z\r\nSUMMARY:Aarav & Meera — Wedding Celebration\r\nLOCATION:The Leela Palace Jaipur\\, Rajasthan\r\nEND:VEVENT\r\nEND:VCALENDAR';
-    const url = URL.createObjectURL(new Blob([content], { type: 'text/calendar' }));
-    const link = document.createElement('a');
-    link.href = url; link.download = 'aarav-and-meera.ics'; link.click();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Aahvaaan//Mor Pankh//EN\nBEGIN:VEVENT\nSUMMARY:Aarav & Meera Wedding\nDTSTART:20270227T110000Z\nDTEND:20270227T180000Z\nLOCATION:The Leela Palace, Jaipur\nDESCRIPTION:Seven promises. One forever.\nEND:VEVENT\nEND:VCALENDAR`;
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'aarav-meera-wedding.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
 
-  return <div style={themes[theme] as CSSProperties} className="min-h-screen overflow-x-hidden bg-[radial-gradient(ellipse_at_top,#235b54,#082d2e_70%)] font-sans text-charcoal selection:bg-gold/30 md:px-8 md:py-12">
-    <div className="mx-auto flex max-w-[450px] flex-wrap items-center justify-center gap-2 px-4 py-5 md:mb-7 md:py-0" role="group" aria-label="Invitation colour variant">
-      {(Object.keys(themes) as Array<keyof typeof themes>).map(name => <button key={name} aria-pressed={theme === name} onClick={() => setTheme(name)} className={`min-h-11 rounded-full border px-5 text-sm transition focus-visible:ring-2 focus-visible:ring-gold ${theme === name ? 'border-gold bg-ivory text-teal' : 'border-[#9c966e] text-[#f5ead1] hover:bg-white/10'}`}>{name}</button>)}
-    </div>
-    <p className="mb-6 hidden text-center text-xs uppercase tracking-[0.23em] text-[#E3D3AE] md:block">Mor Pankh · The royal collection</p>
-    <div className="relative isolate mx-auto max-w-[450px] overflow-hidden bg-[var(--canvas)] shadow-[0_30px_100px_#001c1c80] transition-colors duration-500 md:rounded-[44px] md:border-[9px] md:border-[#142f2e] md:ring-1 md:ring-[#b7a16a]">
-    <div className="pointer-events-none absolute left-1/2 top-2 z-40 hidden h-1.5 w-14 -translate-x-1/2 rounded-full bg-teal/30 md:block" />
-    <audio ref={audioRef} src="/templates/mor-pankh/media/music.mp3" loop preload="auto" />
-    <PaperTexture />
-    <header className="relative z-30 flex min-h-28 items-center justify-between border-b border-gold/30 bg-ivory px-6">
-      <a href="#" className="text-teal" aria-label="Aahvaaan home"><span className="font-serif text-2xl tracking-[0.06em]">aahvaaan<span className="text-gold">.</span></span><span className="mt-0.5 block text-[12px] uppercase tracking-[0.14em]">by Vow & Vision</span></a>
-      <span className="text-right text-xs uppercase leading-6 tracking-[0.15em] text-teal">Mor Pankh<br /><span className="tracking-wider">A royal invitation</span></span>
-    </header>
+  return (
+    <div style={themes[theme] as CSSProperties} className="relative min-h-screen bg-[var(--canvas)] font-body text-charcoal transition-colors duration-500">
+      <div className="relative isolate mx-auto max-w-[450px] overflow-hidden bg-[var(--canvas)] shadow-[0_30px_100px_#001c1c80] transition-colors duration-500 md:rounded-[44px] md:border-[9px] md:border-[#142f2e] md:ring-1 md:ring-[#b7a16a]">
+        <audio ref={audioRef} src="/templates/mor-pankh/media/music.mp3" loop preload="auto" />
+        <PaperTexture />
 
-    <main>
-      <section className="relative bg-ivory px-5 pb-12 pt-9 text-center">
-        <p className="font-hindi text-lg text-teal">॥ श्री गणेशाय नमः ॥</p>
-        <p className="mb-6 mt-3 text-xs uppercase tracking-[0.23em] text-teal">An auspicious beginning. An eternal bond.</p>
-        <div className="relative mx-auto min-h-[650px] max-w-[430px] overflow-hidden rounded-t-[210px] border-2 border-gold bg-[radial-gradient(ellipse_at_top,var(--cover-start),var(--cover-end))] shadow-[0_18px_35px_-10px_#0e4d4f60,0_0_0_5px_#c9a24b15] [perspective:1100px]">
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-ivory px-7 pb-14">
-            <ShriGanesh />
-            <p lang="hi" className="mt-6 font-hindi text-xl leading-9 text-teal">॥ श्री गणेशाय नमः ॥</p>
-            <div className="my-5"><Ornament /></div>
-            <p className="font-serif text-2xl italic text-teal">With Shri Ganesh ji’s blessings</p>
-            <p lang="hi" className="mt-4 font-hindi text-sm leading-7 text-teal">मंगलमय हो यह शुभ आरंभ</p>
+        {/* Brand Header */}
+        <header className="relative z-30 flex min-h-24 items-center justify-between border-b border-gold/30 bg-ivory px-6">
+          <a href="#" className="text-teal" aria-label="Aahvaaan home">
+            <span className="font-serif text-2xl tracking-[0.06em]">aahvaaan<span className="text-gold">.</span></span>
+            <span className="mt-0.5 block text-[11px] uppercase tracking-[0.14em]">by Vow & Vision</span>
+          </a>
+          <span className="text-right text-xs uppercase leading-5 tracking-[0.15em] text-teal">
+            Mor Pankh<br />
+            <span className="tracking-wider text-[10px] text-stone-500">№ 01 Royal Edition</span>
+          </span>
+        </header>
+
+        <main>
+          {/* Arch Gate Cover Section with Wax Seal */}
+          <section className="relative bg-ivory px-5 pb-12 pt-9 text-center">
+            <p className="font-hindi text-lg text-teal">॥ श्री गणेशाय नमः ॥</p>
+            <p className="mb-6 mt-3 text-xs uppercase tracking-[0.23em] text-teal">An auspicious beginning. An eternal bond.</p>
+            
+            <div className="relative mx-auto min-h-[640px] max-w-[430px] overflow-hidden rounded-t-[210px] border-2 border-gold bg-[radial-gradient(ellipse_at_top,var(--cover-start),var(--cover-end))] shadow-[0_18px_35px_-10px_#0e4d4f60] [perspective:1100px]">
+              {/* Shri Ganesh inside revealed view */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-ivory px-7 pb-14">
+                <ShriGanesh />
+                <p lang="hi" className="mt-6 font-hindi text-xl leading-9 text-teal">॥ श्री गणेशाय नमः ॥</p>
+                <div className="my-5"><Ornament /></div>
+                <p className="font-serif text-2xl italic text-teal">With Shri Ganesh ji’s blessings</p>
+                <p lang="hi" className="mt-3 font-hindi text-sm leading-7 text-teal">मंगलमय हो यह शुभ आरंभ</p>
+              </div>
+
+              {/* Two 3D Arch Gates */}
+              {[0, 1].map(side => (
+                <div
+                  key={side}
+                  className={`pointer-events-none absolute inset-y-0 w-1/2 overflow-hidden border-gold/60 bg-[radial-gradient(ellipse_at_top,var(--cover-start),var(--cover-end))] transition-transform duration-1000 ${
+                    side ? 'right-0 origin-right border-l' : 'left-0 origin-left border-r'
+                  }`}
+                  style={{ transform: opened ? `rotateY(${side ? '' : '-'}110deg)` : 'rotateY(0deg)' }}
+                >
+                  <div className={`absolute inset-y-0 w-[200%] ${side ? 'right-0' : 'left-0'}`}>
+                    <RoyalFrame />
+                    <Feather className="absolute left-1/2 top-14 -translate-x-1/2 text-gold" />
+                    <div className="absolute inset-x-8 top-[225px] text-center">
+                      <p className="text-xs uppercase tracking-[0.2em] text-[#E3D3AE]">Together, a beautiful forever</p>
+                      <h1 className="mt-5 font-serif text-5xl text-ivory">Aarav <span className="font-serif italic text-gold">&</span> Meera<Hindi text="आरव एवं मीरा" /></h1>
+                      <p className="mt-5 text-xs uppercase tracking-[0.2em] text-[#E3D3AE]">27 February 2027 · Jaipur</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* Wax Seal Trigger */}
+              {!opened && (
+                <button
+                  onClick={openInvitation}
+                  aria-label="Break the wax seal and open the invitation"
+                  className="absolute left-1/2 top-[420px] z-10 flex h-24 w-24 -translate-x-1/2 items-center justify-center rounded-[45%_55%_49%_51%/54%_45%_55%_46%] border-4 border-[#b78b43] bg-[radial-gradient(circle_at_30%_25%,#f1d99c,#c29b51_55%,#8f692c)] shadow-[0_7px_16px_#001c1c80] transition hover:scale-105 active:scale-95"
+                >
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full border border-[#806026] font-serif text-3xl italic text-[#4c371c]">A&M</span>
+                </button>
+              )}
+
+              {/* Open CTA Button */}
+              <button
+                onClick={openInvitation}
+                disabled={opened}
+                className="absolute bottom-8 left-1/2 z-10 min-h-12 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#E5CE96] bg-[linear-gradient(120deg,#e6d09a,#bd9446,#e6d09a)] px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#173d35] shadow-lg transition hover:scale-105 active:scale-95"
+              >
+                {opened ? 'Invitation Opened' : 'Tap Wax Seal to Open'}
+              </button>
+            </div>
+          </section>
+
+          {/* Invitation Content Unfolded */}
+          <div id="invitation-story" hidden={!opened}>
+            {/* Couple Namaste Royal Welcome */}
+            <section ref={welcome} tabIndex={-1} className="px-5 py-8 focus:outline-none">
+              {opened && (
+                <CoupleWelcome
+                  guest={guest}
+                  onContinue={() => {
+                    greeting.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                />
+              )}
+            </section>
+
+            {/* Quick Navigation Sticky Bar */}
+            <nav className="sticky top-0 z-30 flex justify-center gap-6 border-y border-gold/30 bg-ivory/95 px-4 backdrop-blur py-2.5">
+              {[
+                ['Date', '#date-reveal'],
+                ['Ceremonies', '#celebrations'],
+                ['Memories', '#glimpses'],
+                ['RSVP', '#rsvp'],
+              ].map(([label, href]) => (
+                <a key={href} href={href} className="text-xs uppercase tracking-widest text-teal hover:underline font-semibold">
+                  {label}
+                </a>
+              ))}
+            </nav>
+
+            {/* Formal Invitation Card */}
+            <section ref={greeting} tabIndex={-1} className="relative mx-5 my-10 border border-gold/60 bg-ivory/95 px-6 py-10 text-center shadow-xl">
+              <div className="pointer-events-none absolute inset-2 border border-gold/25" />
+              <Feather small className="mx-auto mb-4 text-gold" />
+              <p className="font-hindi text-lg text-teal">॥ श्री गणेशाय नमः ॥</p>
+              <h2 className="mt-6 font-serif text-3xl italic text-teal">
+                Dear {guest || 'our loved ones'},
+                <Hindi text="प्रिय अतिथि, आपका हार्दिक स्वागत है" />
+              </h2>
+              <p className="mx-auto mt-6 max-w-xs text-sm leading-relaxed text-stone-600">
+                Join us as we begin our forever, surrounded by the warmth and blessings of the people we cherish most.
+              </p>
+              <div className="my-6"><Ornament /></div>
+              <p className="text-sm leading-7 text-stone-600">
+                Sunita & Rajesh Sharma<br />
+                <span className="font-serif text-xl italic text-teal">and</span><br />
+                Kavita & Vikram Kapoor
+              </p>
+              <p className="mt-4 text-xs uppercase tracking-wider text-[#96752d]">request the pleasure of your company at the wedding of</p>
+              <p className="mt-4 font-serif text-5xl text-teal">Aarav <span className="italic text-gold">&</span> Meera</p>
+              <p className="mt-4 font-serif text-lg italic text-teal">Seven Sacred Vows · One Eternal Bond</p>
+            </section>
+
+            {/* Family Lineage Cards */}
+            <section className="my-10 bg-ivory px-6 py-12">
+              <Heading eyebrow="Rooted in love, blessed by family" title="Two families. One beautiful bond." />
+              <div className="grid gap-6">
+                {[
+                  { side: "The groom’s family", surname: 'The Sharmas', names: 'Sunita & Rajesh Sharma', child: 'Beloved son, Aarav' },
+                  { side: "The bride’s family", surname: 'The Kapoors', names: 'Kavita & Vikram Kapoor', child: 'Beloved daughter, Meera' },
+                ].map(f => (
+                  <article key={f.surname} className="rounded-2xl border border-gold/50 bg-[linear-gradient(145deg,#fffaf0,#eee4d1)] p-6 text-center shadow-md">
+                    <Lotus className="mx-auto text-gold" />
+                    <p className="mb-2 mt-3 text-xs uppercase tracking-[0.16em] text-stone-600">{f.side}</p>
+                    <h3 className="font-serif text-2xl text-teal">{f.surname}<Hindi text={f.surname} /></h3>
+                    <p className="mt-3 text-sm font-medium text-stone-700">{f.names}</p>
+                    <p className="mt-1 text-xs italic text-stone-600">{f.child}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            {/* 1. INTERACTIVE "MOVE THE PETALS TO REVEAL THE GRAND DATE" (Screenshot 6) */}
+            <div id="date-reveal">
+              <PetalDateReveal weddingDate="2027-02-27" onAddCalendar={addCalendar} />
+            </div>
+
+            {/* Keepsake Booklet with Flip String */}
+            <Booklet />
+
+            {/* 2. CEREMONIES STACKED DECK OF CARDS (Screenshot 5) */}
+            <CeremoniesStackedDeck />
+
+            {/* Venue Location Showcase */}
+            <section id="venue" className="my-8 scroll-mt-16 bg-ivory px-6 py-16 text-center">
+              <Peacock className="mx-auto text-gold" />
+              <h2 className="mt-3 font-serif text-3xl italic text-teal">The Leela Palace Jaipur</h2>
+              <p className="mt-2 text-xs uppercase tracking-widest text-[#96752d]">The Royal Destination</p>
+              <p className="mx-auto mt-4 max-w-sm text-xs sm:text-sm text-stone-600 leading-relaxed">
+                Delhi Highway, NH 11, Kukas, Jaipur, Rajasthan 302028
+              </p>
+              <div className="mt-6">
+                <a
+                  href={mapLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`${button} rounded-full bg-teal text-ivory text-xs px-8 py-3`}
+                >
+                  <ActionIcon kind="pin" /> Open in Google Maps ↗
+                </a>
+              </div>
+            </section>
+
+            {/* 3. CLOTHESLINE HANGING POLAROID LOVE STORY GALLERY (Screenshots 4 & 7) */}
+            <div id="glimpses">
+              <HangingPolaroidGallery />
+            </div>
+
+            {/* 4. BALCONY-STYLE "YOUR PRESENCE MATTERS" RSVP FORM (Screenshots 1, 2, 3) */}
+            {rsvpComponent ? (
+              <div id="rsvp" className="my-8 scroll-mt-16 bg-ivory px-4 py-16">
+                {rsvpComponent}
+              </div>
+            ) : (
+              <YourPresenceMattersRSVP guestDefault={guest} />
+            )}
+
+            {/* Royal Mor Pankh Footer */}
+            <footer className="bg-[radial-gradient(ellipse_at_top,#24655d,#0b3c3c)] px-6 py-14 text-center text-ivory">
+              <Feather small className="mx-auto text-gold" />
+              <p className="mt-3 font-serif text-2xl italic">The best part of our day will be having you there.</p>
+              <p className="mb-4 mt-6 font-script text-5xl">Aarav & Meera</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-[#E3D3AE]">27.02.2027 · Jaipur</p>
+              <div className="mx-auto my-8 h-px max-w-xs bg-gold/40" />
+              <p className="text-xs text-[#E3D3AE]">
+                Crafted with love by <span className="font-serif text-base text-ivory">Aahvaaan</span>
+              </p>
+              <p className="mt-1 text-[10px] tracking-widest text-[#E3D3AE]">MOR PANKH · BY VOW & VISION</p>
+            </footer>
           </div>
-          {[0, 1].map(side => <div key={side} className={`pointer-events-none absolute inset-y-0 w-1/2 overflow-hidden border-gold/60 bg-[radial-gradient(ellipse_at_top,var(--cover-start),var(--cover-end))] transition-transform duration-1000 motion-reduce:transition-none ${side ? 'right-0 origin-right border-l' : 'left-0 origin-left border-r'}`} style={{ transform: opened ? `rotateY(${side ? '' : '-'}110deg)` : 'rotateY(0deg)' }}><div className={`absolute inset-y-0 w-[200%] ${side ? 'right-0' : 'left-0'}`}><RoyalFrame /><Feather className="absolute left-1/2 top-14 -translate-x-1/2 text-gold" /><div className="absolute inset-x-8 top-[225px] text-center"><p className="text-xs uppercase tracking-[0.2em] text-[#E3D3AE]">Together, a beautiful forever</p><h1 className="mt-5 font-serif text-5xl text-ivory">Aarav <span className="font-serif italic text-gold">&</span> Meera<Hindi text="आरव एवं मीरा" /></h1><p className="mt-5 text-xs uppercase tracking-[0.2em] text-[#E3D3AE]">27 February 2027 · Jaipur</p></div></div></div>)}
-          {!opened && <button onClick={openInvitation} aria-label="Break the wax seal and open the invitation" className="absolute left-1/2 top-[430px] z-10 flex h-24 w-24 -translate-x-1/2 items-center justify-center rounded-[45%_55%_49%_51%/54%_45%_55%_46%] border-4 border-[#b78b43] bg-[radial-gradient(circle_at_30%_25%,#f1d99c,#c29b51_55%,#8f692c)] shadow-[0_7px_16px_#001c1c80,inset_0_0_0_2px_#ead193,inset_0_0_10px_#67461d60] transition hover:scale-105 focus-visible:ring-2 focus-visible:ring-ivory"><span className="flex h-16 w-16 items-center justify-center rounded-full border border-[#806026] font-serif text-3xl italic text-[#4c371c]">A&M</span></button>}
-          {!opened && <div className="pointer-events-none absolute inset-0">{Array.from({ length: 9 }, (_, i) => <span key={i} className="absolute h-1 w-1 rounded-full bg-[#E5CE96] motion-safe:animate-[float_5s_ease-in-out_infinite]" style={{ left: `${10 + i * 10}%`, top: `${20 + (i * 17) % 64}%`, animationDelay: `${i * .6}s` }} />)}</div>}
-          <button onClick={openInvitation} disabled={opened} aria-expanded={opened} aria-controls="invitation-story" className="absolute bottom-9 left-1/2 z-10 min-h-12 -translate-x-1/2 whitespace-nowrap rounded-full border border-[#E5CE96] bg-[linear-gradient(120deg,#e6d09a,#bd9446,#e6d09a)] px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-[#173d35] shadow-[0_4px_24px_#c9a24b40] transition hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-ivory disabled:cursor-default">{opened ? 'Welcome inside' : 'Tap to open'} <span className="ml-2" aria-hidden="true">↗</span></button>
-        </div>
-        <p className="mt-6 font-serif text-xl italic text-teal">A royal celebration. A deeply personal invitation.</p>
-        <details className="mx-auto mt-5 max-w-sm text-left"><summary className="min-h-11 cursor-pointer text-center text-xs uppercase tracking-[0.14em] text-teal">Personalise your invitation preview</summary><label className="mt-2 block text-sm text-teal">Guest name<input aria-label="Preview guest name" value={guest} onChange={e => setGuest(e.target.value)} className="mt-2 min-h-12 w-full border border-gold/60 bg-ivory/90 px-4 outline-none focus-visible:ring-2 focus-visible:ring-gold" /></label><p className="mt-3 text-sm text-stone-600">Addressed to: {guest || 'our loved ones'}</p></details>
-      </section>
-
-      <div id="invitation-story" hidden={!opened}>
-      <section ref={welcome} tabIndex={-1} aria-label="A welcome from Aarav and Meera" className="scroll-mt-4 px-5 py-8 focus:outline-none md:px-10">
-        {opened && <CoupleWelcome guest={guest} onContinue={() => { greeting.current?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start' }); greeting.current?.focus({ preventScroll: true }); }} />}
-      </section>
-      <nav className="sticky top-0 z-30 flex justify-center gap-6 border-y border-gold/30 bg-ivory/95 px-4 backdrop-blur" aria-label="Invitation sections">{[['Celebrations', '#celebrations'], ['Venue', '#venue'], ['RSVP', '#rsvp']].map(([label, href]) => <a key={href} href={href} className="flex min-h-12 items-center text-xs uppercase tracking-widest text-teal hover:underline focus-visible:ring-2 focus-visible:ring-gold">{label}</a>)}</nav>
-      <section ref={greeting} tabIndex={-1} className="relative mx-5 my-10 scroll-mt-16 border border-gold/60 bg-ivory/95 px-6 py-10 text-center shadow-[0_10px_35px_#53452512] focus:outline-none md:mx-10 md:px-10">
-        <div className="pointer-events-none absolute inset-2 border border-gold/25" />
-        <Feather small className="mx-auto mb-4 text-gold" />
-        <p className="font-hindi text-lg text-teal">॥ श्री गणेशाय नमः ॥</p>
-        <p className="mt-8 text-xs uppercase tracking-[0.2em] text-stone-600">With hearts full of love</p>
-        <h2 className="mt-6 font-serif text-3xl italic text-teal">Dear {guest || 'our loved ones'},<Hindi text="प्रिय अतिथि, आपका हार्दिक स्वागत है" /></h2>
-        <p className="mt-2 text-xs uppercase tracking-[0.15em] text-stone-600">An invitation especially for you</p>
-        <p className="mx-auto mt-7 max-w-xs text-sm leading-8 text-stone-600">Join us as we begin our forever, surrounded by the people we love.</p>
-        <div className="my-6"><Ornament /></div>
-        <p className="text-sm leading-7 text-stone-600">Sunita & Rajesh Sharma<br /><span className="font-serif text-xl italic text-teal">and</span><br />Kavita & Vikram Kapoor</p>
-        <p className="mt-5 text-sm text-stone-600">request the pleasure of your company at the wedding of</p>
-        <p className="mt-5 font-serif text-5xl text-teal">Aarav <span className="italic text-[#866622]">&</span> Meera</p>
-        <p className="mt-5 font-serif text-xl italic text-teal">With the blessings of our elders,<br />and the love of those we hold dear.</p>
-      </section>
-
-      <section className="relative mx-4 overflow-hidden rounded-t-[180px] bg-[radial-gradient(ellipse_at_top,#29685f,#0b3c3c_75%)] px-9 pb-16 pt-32 text-center text-ivory shadow-[0_15px_35px_#0e4d4f25]">
-        <RoyalFrame />
-        <Peacock className="mx-auto mb-5" />
-        <div className="relative border border-gold/60 bg-ivory px-4 py-7 text-teal shadow-xl">
-        <p className="mt-4 text-xs uppercase tracking-[0.25em] text-teal">Together with our families</p>
-        <div className="my-7 flex flex-col items-center justify-center gap-1"><span className="font-script text-7xl">Aarav</span><span className="font-serif text-4xl italic text-[#866622]">&</span><span className="font-script text-7xl">Meera</span></div>
-        <p className="text-sm font-light tracking-wide">invite you to celebrate their wedding</p>
-        <div className="my-7"><Ornament /></div>
-        <p className="mt-3 text-xs uppercase tracking-[0.22em] text-teal">Jaipur, Rajasthan</p>
-        </div><Lotus className="mx-auto -mt-3" />
-      </section>
-
-      <section className="my-10 bg-ivory px-6 py-20">
-        <Heading eyebrow="Rooted in love, blessed by family" title="Two families. One beautiful bond." />
-        <div className="grid gap-8">
-          {[{ side: "The groom’s family", surname: 'The Sharmas', names: 'Sunita & Rajesh Sharma', child: 'Beloved son, Aarav' }, { side: "The bride’s family", surname: 'The Kapoors', names: 'Kavita & Vikram Kapoor', child: 'Beloved daughter, Meera' }].map(f => <article key={f.surname} className="rounded-t-[120px] border border-gold/50 bg-[linear-gradient(145deg,#fffaf0,#eee4d1)] px-7 pb-12 pt-14 text-center shadow-[0_8px_25px_#664d2112]"><Lotus className="mx-auto text-gold" /><p className="mb-6 mt-5 text-xs uppercase tracking-[0.16em] text-stone-600">{f.side}</p><h3 className="font-serif text-3xl text-teal">{f.surname}<Hindi text={f.surname} /></h3><p className="mt-6 text-sm">{f.names}</p><p className="mt-3 text-sm italic text-stone-600">{f.child}</p></article>)}
-        </div>
-        <p className="mt-8 text-center font-serif text-xl italic text-teal">With the blessings of those who made us who we are.</p>
-      </section>
-
-      <section className="border-y border-gold/30 bg-[#F1EBDD] px-6 py-16 text-center">
-        <Heading eyebrow="A day to remember" title="Save our date" />
-        <div className="relative mx-auto max-w-sm [perspective:1000px]">
-          <div className="pointer-events-none absolute -left-4 top-4 -rotate-12"><Feather /></div><div className="pointer-events-none absolute -right-4 top-4 rotate-12"><Feather /></div>
-          {dateRevealed ? <div id="revealed-date" role="status" className="relative border border-gold bg-ivory px-6 py-8 shadow-lg motion-safe:animate-[note_.8s_ease_both]"><p className="text-sm uppercase tracking-[0.2em] text-teal">Saturday</p><p className="my-2 font-serif text-8xl text-teal">27</p><p className="font-serif text-3xl italic text-teal">February</p><p className="mt-3 text-lg tracking-[0.3em] text-teal">2027</p><p className="mt-4 text-sm text-stone-600">Jaipur, India · 4:30 PM IST</p></div> : <div className="relative border border-gold bg-ivory px-5 py-9 shadow-lg"><Lotus className="mx-auto" /><p className="my-5 font-serif text-3xl italic text-teal">A day written in the stars…</p><button onClick={() => setDateRevealed(true)} aria-controls="revealed-date" aria-expanded={false} className={`${button} bg-teal text-ivory`}>Reveal the Date! ↗</button></div>}
-        </div>
-        <div className="mx-auto my-9 flex max-w-sm justify-center divide-x divide-gold/40">{countdown.map((n, i) => <div className="w-1/3 px-5" key={i}><p className="font-serif text-4xl tabular-nums text-teal">{String(n).padStart(2, '0')}</p><p className="mt-2 text-xs uppercase tracking-[0.15em] text-stone-600">{['Days', 'Hours', 'Minutes'][i]}</p></div>)}</div>
-        <button onClick={addCalendar} className={`${button} bg-teal text-ivory`}>Add to calendar <span aria-hidden="true">＋</span></button>
-      </section>
-
-      <Booklet />
-      <Festivities />
-
-      <section id="venue" className="mx-5 grid min-w-0 scroll-mt-16 gap-8 border border-gold/50 bg-ivory/90 px-6 py-10 shadow-[0_10px_35px_#53452512] md:mx-10">
-        <div className="relative flex h-72 items-center justify-center overflow-hidden border border-gold/40 bg-[#E9E9DC]">
-          <svg viewBox="0 0 460 300" className="absolute h-full w-full" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path d="M-20 40L480 240M-20 60L480 260M70-20L160 320M90-20L180 320M300-20L230 320" stroke="#FBF5E9" strokeWidth="13" /><path d="M0 200Q150 170 190 70T460 50" stroke="#B6CEC4" strokeWidth="28" fill="none" /><path d="M0 200Q150 170 190 70T460 50" stroke="#D1DED4" strokeWidth="20" fill="none" /></svg>
-          <div className="relative bg-ivory px-7 py-5 text-center shadow-md"><span className="text-2xl text-gold">⌖</span><p className="mt-2 font-serif text-xl text-teal">The Leela Palace</p><p className="mt-1 text-xs uppercase tracking-widest text-stone-600">Jaipur</p><p className="mt-3 text-xs text-stone-600">Illustrative map</p></div>
-        </div>
-        <div className="min-w-0 text-center">
-          <p className="text-xs uppercase tracking-[0.2em] text-teal">Venue & schedule</p>
-          <h2 className="mt-6 font-serif text-4xl text-teal">A royal setting.<Hindi text="एक शाही स्थल, अनमोल यादें" /></h2>
-          <p className="mt-8 text-sm font-medium">The Leela Palace Jaipur</p>
-          <p className="mt-3 text-sm leading-8 text-stone-600">Jaipur–Delhi Highway, NH 11<br />Kukas, Jaipur, Rajasthan 302028</p>
-          <div className="my-8 border-y border-gold/30 py-6"><p className="font-serif text-2xl text-teal">25–27 February 2027</p><p className="mt-4 text-sm leading-8 text-stone-600">Three days. Six celebrations.<br />Vivaah · Saturday, 4:30 PM IST</p></div>
-          <div className="flex flex-col justify-center gap-4"><a href={mapLink} target="_blank" rel="noreferrer" className={`${button} bg-teal text-ivory`}><ActionIcon kind="pin" />Get directions</a><button type="button" onClick={addCalendar} className={`${button} text-teal`}><ActionIcon kind="calendar" />Add to calendar</button></div>
-        </div>
-      </section>
-
-      <Glimpses />
-
-      <section id="rsvp" className="mx-4 mb-10 scroll-mt-16 rounded-t-[100px] border border-gold/50 bg-[linear-gradient(145deg,#fffbf2,#eee2cb)] px-6 py-16 shadow-[0_12px_35px_#53452518] md:px-10 md:py-20">
-        <div className="mx-auto max-w-xl"><Heading eyebrow="The celebration is incomplete without you" title="Will you join us?" text="Kindly share your wishes by 1 February 2027. We can't wait to celebrate with you." />
-          <p className="mb-6 border-y border-gold/30 py-3 text-center text-sm text-teal">Personally invited: <span className="font-medium">{guest || 'our loved ones'}</span></p>
-          {sent && <div className="mb-5 border border-gold/40 bg-ivory/80 p-5"><p className="text-sm text-teal">Your celebration choices · {reply.mobile}</p><dl className="mt-3 space-y-2">{events.map(event => <div key={event.name} className="flex items-center justify-between gap-3 text-sm"><dt className="text-stone-600">{event.name}</dt><dd className="font-medium text-teal">{eventReplies[event.name]}</dd></div>)}</dl></div>}
-          {sent ? <div role="status" className="border border-gold bg-ivory p-8 text-center"><Ornament /><h3 className="mt-6 font-serif text-3xl text-teal">Your reply is lovingly noted.<Hindi text="Your reply is lovingly noted." /></h3><p className="mt-6 text-sm font-medium text-teal">{reply.name} · {attending}</p>{attending !== 'Regretfully Decline' && <p className="mt-3 text-sm text-teal">{reply.guests} {reply.guests === '1' ? 'guest' : 'guests'} · {reply.meal}</p>}<p className="mt-6 text-sm leading-8 text-stone-600">Saved in this browser only, not sent to the couple.</p><button onClick={() => setSent(false)} className={`${button} mt-7 text-teal`}>Edit your reply</button></div> :
-          <form onSubmit={e => { e.preventDefault(); try { localStorage.setItem('mor-pankh-rsvp', JSON.stringify({ ...reply, attending, eventReplies, submittedAt: new Date().toISOString() })); setSent(true); setSaveError(''); } catch { setSaveError('Your browser could not save this reply. Please enable local storage and try again.'); } }} className="space-y-6">
-            <Field label="Mobile number (with country code)"><input required type="tel" name="mobile" autoComplete="tel" inputMode="tel" pattern="\+?[0-9 ()-]{7,20}" title="Enter 7–20 characters using digits, spaces, parentheses or hyphens, with an optional leading +." value={reply.mobile} onChange={e => setReply({ ...reply, mobile: e.target.value })} placeholder="+91 98765 43210" className="min-h-12 w-full bg-transparent py-3 text-sm outline-none" /></Field>
-            <div className="grid gap-7"><Field label="Your full name"><input required name="name" autoComplete="name" value={reply.name} onChange={e => setReply({ ...reply, name: e.target.value })} placeholder="Enter your name" className="min-h-12 w-full bg-transparent py-3 text-sm outline-none" /></Field><Field label="Number of guests"><select name="guests" value={reply.guests} onChange={e => setReply({ ...reply, guests: e.target.value })} disabled={attending === 'Regretfully Decline'} className="min-h-12 w-full bg-transparent text-sm outline-none disabled:text-stone-600">{[1, 2, 3, 4, 5, 6].map(n => <option key={n} value={n}>{n} {n === 1 ? 'guest' : 'guests'}</option>)}</select></Field></div>
-            <fieldset><legend className="mb-3 text-sm text-teal">Will you be attending?</legend><div className="grid gap-3">{['Joyfully Attending', 'Regretfully Decline', 'Tentative'].map(value => <button type="button" key={value} onClick={() => setAttending(value)} aria-pressed={attending === value} className={`min-h-12 border px-4 text-sm transition hover:border-gold active:scale-[.99] focus-visible:ring-2 focus-visible:ring-gold ${attending === value ? 'border-teal bg-teal text-ivory shadow-md' : 'border-gold/50 bg-ivory/60 text-teal'}`}>{value} {attending === value && '✓'}</button>)}</div></fieldset>
-            <div className="space-y-4 border-y border-gold/40 py-6"><p className="font-serif text-2xl text-teal">Which moments will we share?</p><p className="text-sm leading-6 text-stone-600">Choose for each celebration. These selections are saved with your reply.</p>{events.map(event => <fieldset key={event.name} className="border border-gold/40 bg-ivory/80 p-3"><legend className="px-2 text-sm font-medium text-teal">{event.name} · {event.day} Feb</legend><div className="grid grid-cols-3 gap-2">{['Yes', 'Maybe', 'No'].map(choice => <label key={choice} className={`flex min-h-11 cursor-pointer items-center justify-center gap-2 border text-sm transition hover:border-gold focus-within:ring-2 focus-within:ring-gold ${eventReplies[event.name] === choice ? 'border-teal bg-teal text-ivory' : 'border-gold/40 text-teal'}`}><input type="radio" name={`event-${event.name}`} value={choice} checked={eventReplies[event.name] === choice} onChange={() => setEventReplies({ ...eventReplies, [event.name]: choice })} className="sr-only" />{choice}{eventReplies[event.name] === choice && <span aria-hidden="true">✓</span>}</label>)}</div></fieldset>)}</div>
-            {attending !== 'Regretfully Decline' && <Field label="Meal preference"><select name="meal" value={reply.meal} onChange={e => setReply({ ...reply, meal: e.target.value })} className="min-h-12 w-full bg-transparent text-sm outline-none"><option>Vegetarian</option><option>Jain</option><option>Vegan</option><option>Other — please note below</option></select></Field>}
-            <Field label="A little note for the couple"><textarea name="message" rows={3} value={reply.message} onChange={e => setReply({ ...reply, message: e.target.value })} placeholder="Your wishes, a song request, or dietary requirements…" className="w-full resize-y bg-transparent py-3 text-sm outline-none" /></Field>
-            {saveError && <p role="alert" className="text-sm text-red-800">{saveError}</p>}
-            <button className={`${button} w-full bg-teal text-ivory`} type="submit">Send with love <span aria-hidden="true">♡</span></button><p className="text-center text-xs leading-5 text-stone-600">A preview for your special day. Replies are saved on this device only.</p>
-          </form>}
-        </div>
-      </section>
-      <footer className="bg-[radial-gradient(ellipse_at_top,#24655d,#0b3c3c)] px-6 py-14 text-center text-ivory"><Feather small className="mx-auto text-gold" /><p className="mt-3 font-serif text-2xl italic">The best part of our day will be having you there.</p><p className="mb-5 mt-8 font-script text-5xl">Aarav & Meera</p><p className="text-xs uppercase tracking-[0.2em] text-[#E3D3AE]">27.02.2027 · Jaipur</p><div className="mx-auto my-9 h-px max-w-xs bg-gold/40" /><p className="text-xs text-[#E3D3AE]">Made with <span className="font-serif text-lg text-ivory">aahvaaan.</span></p><p className="mt-2 text-xs tracking-widest text-[#E3D3AE]">MOR PANKH · BY VOW & VISION</p></footer>
+        </main>
       </div>
-    </main>
     </div>
-  </div>;
+  );
 }
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return <label className="block border-b border-teal/30 focus-within:border-teal focus-within:ring-2 focus-within:ring-gold/60"><span className="text-sm text-teal">{label}</span>{children}</label>;
-}
-
-
