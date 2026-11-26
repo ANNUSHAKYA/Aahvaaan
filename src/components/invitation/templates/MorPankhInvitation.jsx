@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Volume2, VolumeX, Sparkles, Calendar, MapPin, Clock,
-  ChevronDown, ExternalLink, Navigation, Check, Heart, User
+  ChevronDown, ExternalLink, Navigation, Check, Heart, User, Bookmark
 } from 'lucide-react';
 import {
   PaperGrainFilter, MorPankhFeather, LotusCrest,
@@ -29,11 +29,11 @@ export default function MorPankhInvitation({
   const location = content.location || 'Jaipur, Rajasthan';
   const venue = content.venue || 'The Leela Palace, Jaipur – Delhi Highway, NH 11, Kukas, Jaipur, Rajasthan 302028';
   const mapUrl = content.mapUrl || 'https://maps.google.com/?q=The+Leela+Palace+Jaipur';
-  const coupleStory = content.coupleStory || '';
+  const coupleStory = content.coupleStory || 'Friendship grew into something more, and we realized life’s best moments were the ones we shared together.';
   const events = content.events && content.events.length > 0 ? content.events : [];
   const gallery = content.gallery && content.gallery.length > 0 ? content.gallery : [];
 
-  // Guest Name personalization (fallback to royal default if not passed)
+  // Live Guest Personalization (updates across whole invitation)
   const [guestName, setGuestName] = useState(propGuestName || 'Mr. Joshi and Family');
   useEffect(() => {
     if (propGuestName) setGuestName(propGuestName);
@@ -162,7 +162,7 @@ export default function MorPankhInvitation({
             {/* Persistent Audio Equalizer Pill */}
             <button
               onClick={toggleMute}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0E4D4F]/10 border border-[#C9A24B]/60 text-[#0E4D4F] hover:bg-[#0E4D4F]/20 transition-all text-xs shadow-xs"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0E4D4F]/10 border border-[#C9A24B]/60 text-[#0E4D4F] hover:bg-[#0E4D4F]/20 transition-all text-xs shadow-xs cursor-pointer"
               title={isMuted ? 'Unmute music' : 'Mute music'}
             >
               {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
@@ -275,12 +275,12 @@ export default function MorPankhInvitation({
           </div>
         </section>
 
-        {/* ════════════════ SECTION 1: "पधारो सा" ROYAL WELCOME ════════════════ */}
+        {/* ════════════════ SECTION 1: "पधारो सा" ROYAL WELCOME & LIVE PERSONALIZATION ════════════════ */}
         <section id="invitation-story" className="relative px-5 py-12 text-center md:px-14 border-t border-[#C9A24B]/30 bg-white/40">
           <p className="font-hindi text-2xl sm:text-3xl font-bold text-[#0E4D4F] mb-1">
             पधारो सा
           </p>
-          <p className="text-xs uppercase tracking-[0.2em] text-[#C9A24B] font-bold mb-8">
+          <p className="text-xs uppercase tracking-[0.2em] text-[#C9A24B] font-bold mb-6">
             A royal welcome, from the two of us
           </p>
 
@@ -295,7 +295,7 @@ export default function MorPankhInvitation({
             </div>
           </div>
 
-          <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#082D2E] mb-3">
+          <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#082D2E] mb-2">
             Namaste, {guestName}.
           </h3>
           <p className="font-serif italic text-base sm:text-lg text-[#0E4D4F] mb-2">
@@ -307,6 +307,26 @@ export default function MorPankhInvitation({
           <p className="font-serif text-lg font-bold text-[#0E4D4F]">
             {groom} &amp; {bride}
           </p>
+
+          {/* Collapsible "Personalise your invitation preview" details (Figma Exact) */}
+          <details className="mx-auto mt-6 max-w-sm rounded-xl border border-[#C9A24B]/40 bg-[#FAF6F0]/80 p-4 text-left shadow-xs">
+            <summary className="cursor-pointer text-xs uppercase tracking-widest text-[#0E4D4F] font-bold select-none">
+              Personalise your invitation preview
+            </summary>
+            <label className="mt-3 block text-xs font-semibold text-[#0E4D4F]">
+              Guest name
+              <input
+                type="text"
+                aria-label="Preview guest name"
+                value={guestName}
+                onChange={(e) => setGuestName(e.target.value)}
+                className="mt-1.5 min-h-10 w-full border border-[#C9A24B]/60 bg-white px-3.5 text-xs text-[#082D2E] rounded-md outline-hidden focus:ring-1 focus:ring-[#C9A24B]"
+              />
+            </label>
+            <p className="mt-2 text-[11px] text-[#57534E]">
+              Addressed to: <span className="font-semibold text-[#0E4D4F]">{guestName}</span>
+            </p>
+          </details>
 
           {/* Sticky Nav Anchor Bar */}
           <div className="mt-8 inline-flex items-center gap-3 p-1.5 rounded-full bg-white/90 border border-[#C9A24B]/50 shadow-md text-xs font-semibold text-[#0E4D4F]">
@@ -324,7 +344,26 @@ export default function MorPankhInvitation({
           </div>
         </section>
 
-        {/* ════════════════ SECTION 2: FORMAL WEDDING INVITATION ════════════════ */}
+        {/* ════════════════ SECTION 2: PERSONALIZED LETTER TO GUEST ════════════════ */}
+        <section className="relative mx-5 my-8 border border-[#C9A24B]/60 bg-[#FAF6F0]/95 px-6 py-10 text-center shadow-lg md:mx-10 md:px-10 rounded-3xl">
+          <LotusCrest className="h-16 w-24 mx-auto mb-2 text-[#C9A24B]" />
+          <p className="font-hindi text-lg text-[#0E4D4F] font-bold">॥ श्री गणेशाय नमः ॥</p>
+          <p className="mt-6 text-xs uppercase tracking-[0.2em] text-[#57534E]">With hearts full of love</p>
+          <h2 className="mt-2 font-serif text-3xl sm:text-4xl italic text-[#0E4D4F]">
+            Dear {guestName},
+          </h2>
+          <p className="mt-1 text-xs uppercase tracking-widest text-[#C9A24B] font-semibold">
+            An invitation especially for you
+          </p>
+          <p className="mx-auto mt-6 max-w-lg font-serif italic text-sm sm:text-base leading-relaxed text-[#27665E]">
+            "Some moments are too special to celebrate alone. We would be honoured to have you by our side as we begin our new journey together."
+          </p>
+          <p className="mt-6 text-xs font-serif font-bold text-[#0E4D4F]">
+            With affection and respect, {groom} &amp; {bride}
+          </p>
+        </section>
+
+        {/* ════════════════ SECTION 3: FORMAL ROYAL MANDAP ANNOUNCEMENT ════════════════ */}
         <section className="relative px-6 py-14 text-center border-t border-[#C9A24B]/30">
           <MorPankhFan className="h-40 w-48 shrink-0 drop-shadow-[0_7px_5px_#082d2e40] mx-auto mb-4" />
 
@@ -384,7 +423,7 @@ export default function MorPankhInvitation({
           </div>
         </section>
 
-        {/* ════════════════ SECTION 3: INTERACTIVE PETAL DATE REVEAL ════════════════ */}
+        {/* ════════════════ SECTION 4: INTERACTIVE PETAL DATE REVEAL ════════════════ */}
         <section className="border-t border-[#C9A24B]/30 bg-white/30">
           <PetalDateReveal
             weddingDate={weddingDate}
@@ -396,16 +435,16 @@ export default function MorPankhInvitation({
           />
         </section>
 
-        {/* ════════════════ SECTION 4: KEEPSAKE NOTES READER ════════════════ */}
+        {/* ════════════════ SECTION 5: KEEPSAKE NOTES READER ════════════════ */}
         <MorPankhKeepsake bride={bride} groom={groom} />
 
-        {/* ════════════════ SECTION 5: CELEBRATIONS / WEDDING DIARY ════════════════ */}
+        {/* ════════════════ SECTION 6: CELEBRATIONS / WEDDING DIARY ════════════════ */}
         <DiaryCeremonies
           events={events}
           onAddCalendar={handleAddCalendar}
         />
 
-        {/* ════════════════ SECTION 6: THE LEELA PALACE VENUE MAP ════════════════ */}
+        {/* ════════════════ SECTION 7: THE LEELA PALACE VENUE MAP ════════════════ */}
         <section id="venue" className="py-16 px-5 sm:px-8 text-center border-t border-[#C9A24B]/30 bg-[radial-gradient(ellipse_at_top,#fffdf5,#FAF6F0)]">
           <div className="max-w-xl mx-auto">
             <span className="text-[11px] uppercase tracking-[0.25em] text-[#C9A24B] font-bold block mb-1">
@@ -415,7 +454,7 @@ export default function MorPankhInvitation({
               Venue &amp; Schedule
             </h2>
             <p className="text-xs text-[#57534e] mb-8">
-              A royal setting. An unforgettable celebration.
+              A royal setting. An unforgettable celebration · 25–27 February 2027
             </p>
 
             {/* Venue Illustration Card */}
@@ -446,13 +485,13 @@ export default function MorPankhInvitation({
           </div>
         </section>
 
-        {/* ════════════════ SECTION 7: HANGING POLAROIDS LOVE STORY ════════════════ */}
+        {/* ════════════════ SECTION 8: HANGING POLAROIDS LOVE STORY ════════════════ */}
         <HangingPolaroids
           photos={gallery}
           coupleStory={coupleStory}
         />
 
-        {/* ════════════════ SECTION 8: COMPLETE GUEST RSVP ════════════════ */}
+        {/* ════════════════ SECTION 9: COMPLETE GUEST RSVP ════════════════ */}
         <section id="rsvp" className="py-16 px-4 sm:px-8 border-t border-[#C9A24B]/30 bg-[#FAF6F0]">
           <div className="max-w-2xl mx-auto">
             {rsvpComponent ? (
@@ -464,6 +503,7 @@ export default function MorPankhInvitation({
                 events={events}
                 coupleName={`${groom} & ${bride}`}
                 invitationId="mor-pankh"
+                guestName={guestName}
               />
             )}
           </div>

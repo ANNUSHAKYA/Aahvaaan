@@ -6,10 +6,12 @@ export default function MorPankhRSVP({
   events = [],
   coupleName = 'Aarav & Meera',
   invitationId = 'mor-pankh',
+  guestName = 'Mr. Joshi and Family',
 }) {
   const [name, setName] = useState('');
   const [mobile, setMobile] = useState('');
   const [guestCount, setGuestCount] = useState(1);
+  const [attendanceStatus, setAttendanceStatus] = useState('attending'); // 'attending' | 'decline' | 'tentative'
   const [attendance, setAttendance] = useState({});
   const [diet, setDiet] = useState('vegetarian');
   const [wishes, setWishes] = useState('');
@@ -107,14 +109,48 @@ export default function MorPankhRSVP({
       className="bg-white/95 backdrop-blur-md rounded-3xl border-2 border-[#C9A24B]/60 shadow-2xl p-6 sm:p-10 max-w-2xl mx-auto text-left"
     >
       {/* Title */}
-      <div className="text-center mb-8">
+      <div className="text-center mb-6">
         <MorPankhFeather className="h-16 w-14 mx-auto mb-1 text-[#C9A24B]" />
-        <h3 className="font-serif text-3xl font-bold text-[#082D2E] mb-1">
-          Your Presence Matters
+        <span className="text-[10px] uppercase font-bold tracking-[0.22em] text-[#C9A24B] block mb-1">
+          The celebration is incomplete without you
+        </span>
+        <h3 className="font-serif text-3xl sm:text-4xl font-bold text-[#082D2E] mb-2">
+          Will you join us?
         </h3>
         <p className="font-body text-xs sm:text-sm text-[#57534e]">
-          Let us know so we can make the arrangements just right.
+          Kindly share your wishes by 1 February 2027. We can't wait to celebrate with you.
         </p>
+      </div>
+
+      <p className="mb-6 border-y border-[#C9A24B]/30 py-2.5 text-center text-xs text-[#0E4D4F]">
+        Personally invited: <span className="font-semibold">{guestName}</span>
+      </p>
+
+      {/* Attendance Status Selector */}
+      <div className="mb-6">
+        <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#0E4D4F] mb-2">
+          Your Attendance
+        </label>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { id: 'attending', label: 'Joyfully attending ✨' },
+            { id: 'tentative', label: 'Tentative 🤔' },
+            { id: 'decline', label: 'Regretfully decline' },
+          ].map((status) => (
+            <button
+              type="button"
+              key={status.id}
+              onClick={() => setAttendanceStatus(status.id)}
+              className={`p-2.5 rounded-xl border text-center text-xs font-medium transition-all ${
+                attendanceStatus === status.id
+                  ? 'bg-[#0E4D4F] text-[#FAF6F0] border-[#0E4D4F] shadow-sm font-semibold'
+                  : 'bg-[#FAF6F0]/60 text-[#57534e] border-[#C9A24B]/30 hover:bg-white'
+              }`}
+            >
+              {status.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {validationError && (
