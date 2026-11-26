@@ -7,21 +7,26 @@ export default {
   theme: {
     extend: {
       colors: {
-        ivory: '#FAF7F2',
+        teal: '#0E4D4F',
+        gold: '#C9A24B',
+        'gold-light': '#E3D3AE',
+        ivory: '#FBF5E9',
+        blush: '#E8B4B8',
+        charcoal: '#2B2B2B',
         wine: '#512D38',
         'wine-light': '#6B3D4A',
         rose: '#C99191',
         'rose-light': '#D4A5A5',
         champagne: '#E9D8CC',
         'champagne-light': '#F0E4DA',
-        gold: '#B69A70',
-        'gold-light': '#C9B08A',
-        charcoal: '#65575A',
-        'charcoal-light': '#7D6E71',
       },
       fontFamily: {
+        sans: ['"DM Sans"', 'sans-serif'],
+        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
         heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
         body: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        script: ['"Great Vibes"', 'cursive'],
+        hindi: ['"Noto Serif Devanagari"', 'serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.8s ease-out',
