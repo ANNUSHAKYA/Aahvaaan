@@ -167,7 +167,7 @@ export default function PaymentModal({
                   <h3 className="font-heading text-lg sm:text-xl font-bold text-gray-900 leading-tight">
                     Pay {displayInvoiceId}
                   </h3>
-                  <p className="text-xs sm:text-sm font-semibold text-purple-700 mt-0.5">
+                  <p className="text-xs sm:text-sm font-semibold text-wine mt-0.5">
                     Rs{formattedAmount}
                   </p>
                 </div>
@@ -180,11 +180,11 @@ export default function PaymentModal({
                 </button>
               </div>
 
-              {/* 1. Pay with Wallet Balance (Exact visual match from Screenshot 1) */}
-              <div className="bg-[#FAF9FF] border border-purple-100 rounded-2xl p-4 sm:p-4.5 space-y-3">
+              {/* 1. Pay with Wallet Balance */}
+              <div className="bg-[#FAF7F2] border border-champagne/80 rounded-2xl p-4 sm:p-4.5 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-purple-100/70 text-purple-700 flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-xl bg-champagne/50 text-wine flex items-center justify-center shrink-0">
                       <Wallet size={18} />
                     </div>
                     <div>
@@ -213,7 +213,7 @@ export default function PaymentModal({
                   <button
                     type="button"
                     onClick={() => setView('phonepe')}
-                    className="py-2 px-4 rounded-xl bg-[#5D5FEF] hover:bg-[#4B4DDF] text-white text-[11px] font-semibold flex items-center justify-center gap-1 shadow-xs transition-colors"
+                    className="py-2 px-4 rounded-xl bg-wine hover:bg-wine-light text-white text-[11px] font-semibold flex items-center justify-center gap-1 shadow-xs transition-colors"
                   >
                     <Plus size={13} />
                     <span>Add Funds</span>
@@ -221,10 +221,10 @@ export default function PaymentModal({
                 </div>
               </div>
 
-              {/* 2. Pay with PhonePe (Exact visual match from Screenshot 1) */}
+              {/* 2. Pay with PhonePe */}
               <div
                 onClick={() => setView('phonepe')}
-                className="p-4 rounded-2xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/20 cursor-pointer transition-all flex items-center justify-between group shadow-2xs"
+                className="p-4 rounded-2xl border border-gray-200 hover:border-wine/40 hover:bg-[#FAF7F2]/60 cursor-pointer transition-all flex items-center justify-between group shadow-2xs"
               >
                 <div className="flex items-center gap-3">
                   {/* PhonePe official purple badge */}
@@ -232,7 +232,7 @@ export default function PaymentModal({
                     पे
                   </div>
                   <div>
-                    <h4 className="font-bold text-xs sm:text-sm text-gray-900 leading-tight group-hover:text-purple-700 transition-colors">
+                    <h4 className="font-bold text-xs sm:text-sm text-gray-900 leading-tight group-hover:text-wine transition-colors">
                       Pay with PhonePe
                     </h4>
                     <p className="text-[11px] text-gray-500 mt-0.5">
@@ -240,20 +240,20 @@ export default function PaymentModal({
                     </p>
                   </div>
                 </div>
-                <ChevronRight size={18} className="text-gray-400 group-hover:text-purple-700 group-hover:translate-x-0.5 transition-all" />
+                <ChevronRight size={18} className="text-gray-400 group-hover:text-wine group-hover:translate-x-0.5 transition-all" />
               </div>
 
               {/* 3. Pay via Razorpay (Automated Card / NetBanking / UPI) */}
               <div
                 onClick={handlePayViaRazorpay}
-                className="p-4 rounded-2xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/20 cursor-pointer transition-all flex items-center justify-between group shadow-2xs"
+                className="p-4 rounded-2xl border border-gray-200 hover:border-wine/40 hover:bg-[#FAF7F2]/60 cursor-pointer transition-all flex items-center justify-between group shadow-2xs"
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-[#0C2340] text-[#00BAF2] flex items-center justify-center font-bold text-base shadow-xs shrink-0">
                     <CreditCard size={18} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xs sm:text-sm text-gray-900 leading-tight group-hover:text-purple-700 transition-colors">
+                    <h4 className="font-bold text-xs sm:text-sm text-gray-900 leading-tight group-hover:text-wine transition-colors">
                       Pay via Razorpay
                     </h4>
                     <p className="text-[11px] text-gray-500 mt-0.5">
@@ -261,7 +261,7 @@ export default function PaymentModal({
                     </p>
                   </div>
                 </div>
-                <ChevronRight size={18} className="text-gray-400 group-hover:text-purple-700 group-hover:translate-x-0.5 transition-all" />
+                <ChevronRight size={18} className="text-gray-400 group-hover:text-wine group-hover:translate-x-0.5 transition-all" />
               </div>
 
               {/* 4. WhatsApp Direct Concierge */}
@@ -307,7 +307,7 @@ export default function PaymentModal({
                 <button
                   type="button"
                   onClick={() => setView('options')}
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-purple-700 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-600 hover:text-wine transition-colors"
                 >
                   <ArrowLeft size={14} />
                   <span>Back to options</span>
@@ -360,7 +360,7 @@ export default function PaymentModal({
               </div>
 
               {/* UPI ID & Amount summary */}
-              <div className="bg-purple-50/50 border border-purple-100 rounded-2xl p-3.5 space-y-2 text-xs">
+              <div className="bg-[#FAF7F2] border border-champagne/70 rounded-2xl p-3.5 space-y-2 text-xs">
                 <div className="flex items-center justify-between text-gray-700">
                   <span className="text-gray-500">Payable Amount:</span>
                   <span className="font-heading text-base font-bold text-gray-900">
@@ -368,7 +368,7 @@ export default function PaymentModal({
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-purple-100/70">
+                <div className="flex items-center justify-between pt-2 border-t border-champagne/50">
                   <div>
                     <span className="text-[10px] text-gray-400 block uppercase tracking-wider">
                       UPI ID
@@ -380,7 +380,7 @@ export default function PaymentModal({
                   <button
                     type="button"
                     onClick={handleCopyUpi}
-                    className="px-2.5 py-1 rounded-lg border border-purple-200 bg-white hover:bg-purple-50 text-[11px] font-semibold text-purple-700 flex items-center gap-1 transition-colors"
+                    className="px-2.5 py-1 rounded-lg border border-champagne bg-white hover:bg-[#FAF7F2] text-[11px] font-semibold text-wine flex items-center gap-1 transition-colors"
                   >
                     {copiedUpi ? (
                       <>
@@ -420,7 +420,7 @@ export default function PaymentModal({
                       setUtrError('');
                     }}
                     placeholder="e.g. 432109876543 (from PhonePe receipt)"
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs font-mono font-semibold focus:outline-none focus:border-purple-600 transition-colors"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-xs font-mono font-semibold focus:outline-none focus:border-wine transition-colors"
                   />
                   {utrError && (
                     <p className="text-[11px] text-rose-500 mt-1 pl-1">
@@ -503,7 +503,7 @@ export default function PaymentModal({
                   onClose();
                   window.location.href = '/dashboard?payment=success';
                 }}
-                className="w-full py-3.5 rounded-full bg-gradient-to-r from-purple-700 to-indigo-600 hover:from-purple-800 hover:to-indigo-700 text-white font-semibold text-xs shadow-md transition-all"
+                className="w-full py-3.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white font-semibold text-xs shadow-md transition-all border border-[#C9A24B]/30"
               >
                 Go to Host Dashboard
               </button>

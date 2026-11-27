@@ -418,7 +418,7 @@ export default function Dashboard() {
                       <button
                         type="button"
                         onClick={() => setActivePaymentInvite(inv)}
-                        className="w-full mt-2 py-2 px-3 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-600 hover:from-purple-800 hover:to-indigo-700 text-white font-body text-[11px] font-bold text-center flex items-center justify-center gap-1.5 shadow-xs transition-all"
+                        className="w-full mt-2 py-2 px-3 rounded-xl bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white font-body text-[11px] font-bold text-center flex items-center justify-center gap-1.5 shadow-xs transition-all border border-[#C9A24B]/30"
                       >
                         <span>Unlock Live & Pay</span>
                       </button>

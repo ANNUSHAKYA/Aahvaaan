@@ -390,7 +390,7 @@ export default function Admin() {
                           <span
                             className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                               u.is_admin
-                                ? 'bg-purple-100 text-purple-800'
+                                ? 'bg-wine/10 text-wine border border-wine/20'
                                 : 'bg-gray-100 text-gray-700'
                             }`}
                           >

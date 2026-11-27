@@ -119,24 +119,15 @@ export default function InvitationPreview() {
         />
       </div>
 
-      {/* Floating Bottom Right Action Bar: Mini PiP Preview & Buy This Template Button */}
-      <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3 pointer-events-none">
-        {/* Floating Mini PiP Card */}
-        <div className="hidden sm:block pointer-events-auto w-32 aspect-[16/10] bg-white rounded-xl border border-gray-200 shadow-xl overflow-hidden">
-          <img
-            src={template.image}
-            alt="Mini preview"
-            className="w-full h-full object-cover"
-          />
-        </div>
-
+      {/* Floating Bottom Right Action: Buy This Template Button */}
+      <div className="fixed bottom-6 right-6 z-40 pointer-events-none">
         {/* Buy This Template Trigger Button */}
         <button
           type="button"
           onClick={() => setShowBuyModal(true)}
-          className="pointer-events-auto px-7 py-3.5 rounded-full bg-gradient-to-r from-purple-700 via-purple-800 to-indigo-800 hover:from-purple-800 hover:to-indigo-900 text-white font-semibold text-xs sm:text-sm shadow-2xl hover:scale-105 active:scale-95 flex items-center gap-2 transition-all"
+          className="pointer-events-auto px-7 py-3.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-[#FBF5E9] font-body font-semibold text-xs sm:text-sm shadow-2xl hover:scale-105 active:scale-95 flex items-center gap-2 border border-[#C9A24B]/40 transition-all cursor-pointer"
         >
-          <ShoppingBag size={15} />
+          <ShoppingBag size={15} className="text-[#C9A24B]" />
           <span>Buy this template</span>
         </button>
       </div>
@@ -151,30 +142,30 @@ export default function InvitationPreview() {
               exit={{ opacity: 0, scale: 0.95, y: 15 }}
               className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-gray-100 text-left relative max-h-[92vh] overflow-y-auto"
             >
-              <span className="text-[11px] font-bold uppercase tracking-widest text-purple-700 block mb-1">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#512D38] block mb-1">
                 WEDDING
               </span>
               <h3 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-5">
                 {templateDisplayName}
               </h3>
 
-              {/* Your Invitation Box (Purple border with white bg matching Screenshot 1) */}
-              <div className="rounded-2xl border border-purple-600/40 p-5 mb-5 text-xs text-gray-700 space-y-2.5">
-                <h4 className="font-bold text-gray-900 text-sm mb-3">Your Invitation</h4>
+              {/* Your Invitation Box (Royal Wine border with warm ivory bg) */}
+              <div className="rounded-2xl border border-[#512D38]/20 bg-[#FAF7F2] p-5 mb-5 text-xs text-gray-700 space-y-2.5">
+                <h4 className="font-bold text-[#512D38] text-sm mb-3">Your Invitation</h4>
                 <div className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">✓</span>
+                  <span className="text-[#C9A24B] font-bold">✓</span>
                   <span>One common invitation link to share with everyone</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">✓</span>
+                  <span className="text-[#C9A24B] font-bold">✓</span>
                   <span>The complete, interactive invitation experience</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">✓</span>
+                  <span className="text-[#C9A24B] font-bold">✓</span>
                   <span>5 guests greeted by name, each with their own link</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-purple-600 font-bold">✓</span>
+                  <span className="text-[#C9A24B] font-bold">✓</span>
                   <span>RSVP replies and guest tracking</span>
                 </div>
               </div>
@@ -188,13 +179,13 @@ export default function InvitationPreview() {
                   Everyone opens the same invitation link. A personalized guest gets their own instead, which opens with their name on it. Add more now, or anytime later from your dashboard.
                 </p>
 
-                {/* 3 Radio options matching Screenshot 1 */}
+                {/* 3 Radio options matching refined palette */}
                 <div className="space-y-2 text-xs">
                   <label
                     onClick={() => setGuestAddon('none')}
                     className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === 'none'
-                        ? 'border-purple-600 bg-white ring-1 ring-purple-600'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -204,7 +195,7 @@ export default function InvitationPreview() {
                         name="modalAddon"
                         checked={guestAddon === 'none'}
                         onChange={() => setGuestAddon('none')}
-                        className="accent-purple-600"
+                        className="accent-[#512D38]"
                       />
                       <span className="font-semibold text-gray-800">Not now</span>
                     </div>
@@ -215,7 +206,7 @@ export default function InvitationPreview() {
                     onClick={() => setGuestAddon('50')}
                     className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === '50'
-                        ? 'border-purple-600 bg-white ring-1 ring-purple-600'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -225,7 +216,7 @@ export default function InvitationPreview() {
                         name="modalAddon"
                         checked={guestAddon === '50'}
                         onChange={() => setGuestAddon('50')}
-                        className="accent-purple-600"
+                        className="accent-[#512D38]"
                       />
                       <span className="font-semibold text-gray-800">50 Guests</span>
                     </div>
@@ -236,7 +227,7 @@ export default function InvitationPreview() {
                     onClick={() => setGuestAddon('500')}
                     className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === '500'
-                        ? 'border-purple-600 bg-white ring-1 ring-purple-600'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -246,7 +237,7 @@ export default function InvitationPreview() {
                         name="modalAddon"
                         checked={guestAddon === '500'}
                         onChange={() => setGuestAddon('500')}
-                        className="accent-purple-600"
+                        className="accent-[#512D38]"
                       />
                       <span className="font-semibold text-gray-800">500 Guests</span>
                     </div>
@@ -266,7 +257,7 @@ export default function InvitationPreview() {
                     <span className="text-xl font-bold text-gray-900">
                       ₹{totalModalPrice}
                     </span>
-                    <span className="text-[10px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] font-bold text-[#512D38] bg-[#512D38]/10 border border-[#512D38]/20 px-2 py-0.5 rounded-full">
                       50% OFF
                     </span>
                   </div>
@@ -283,7 +274,7 @@ export default function InvitationPreview() {
                   <button
                     type="button"
                     onClick={() => navigate(`/buy/${template.id}/checkout?addon=${guestAddon}`)}
-                    className="px-6 py-2.5 rounded-full bg-gradient-to-r from-purple-700 to-indigo-600 hover:from-purple-800 hover:to-indigo-700 text-white text-xs font-semibold shadow-md hover:shadow-lg transition-all"
+                    className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white text-xs font-semibold shadow-md hover:shadow-lg transition-all border border-[#C9A24B]/30"
                   >
                     Proceed to Buy
                   </button>

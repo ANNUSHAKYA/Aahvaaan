@@ -68,10 +68,10 @@ export default function BuyTemplate() {
           </Link>
         </div>
 
-        {/* Page Heading & Trust Badges (Matches Screenshot 3) */}
+        {/* Page Heading & Trust Badges */}
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-widest text-purple-700 block mb-1">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-[#512D38] block mb-1">
               WEDDING • YOUR INVITATION
             </span>
             <h1 className="font-heading text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-2">
@@ -85,15 +85,15 @@ export default function BuyTemplate() {
           {/* 3 Trust Badges */}
           <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-600">
             <span className="inline-flex items-center gap-1.5">
-              <Clock size={15} className="text-purple-600" />
+              <Clock size={15} className="text-[#C9A24B]" />
               <span>Valid 6 months</span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Edit3 size={15} className="text-purple-600" />
+              <Edit3 size={15} className="text-[#C9A24B]" />
               <span>Keep editing after you buy</span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <ShieldCheck size={15} className="text-purple-600" />
+              <ShieldCheck size={15} className="text-[#C9A24B]" />
               <span>Secure payment</span>
             </span>
           </div>
@@ -120,19 +120,19 @@ export default function BuyTemplate() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-700">
                 <div className="flex items-start gap-2.5">
-                  <span className="text-purple-600 font-bold text-base leading-none">✓</span>
+                  <span className="text-[#C9A24B] font-bold text-base leading-none">✓</span>
                   <span>One common invitation link to share with everyone</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-purple-600 font-bold text-base leading-none">✓</span>
+                  <span className="text-[#C9A24B] font-bold text-base leading-none">✓</span>
                   <span>The complete, interactive invitation experience</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-purple-600 font-bold text-base leading-none">✓</span>
+                  <span className="text-[#C9A24B] font-bold text-base leading-none">✓</span>
                   <span>5 guests greeted by name, each with their own link</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-purple-600 font-bold text-base leading-none">✓</span>
+                  <span className="text-[#C9A24B] font-bold text-base leading-none">✓</span>
                   <span>RSVP replies and guest tracking</span>
                 </div>
               </div>
@@ -209,7 +209,7 @@ export default function BuyTemplate() {
                     onClick={() => setGuestAddon('none')}
                     className={`block p-3 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === 'none'
-                        ? 'border-purple-600 bg-white ring-1 ring-purple-600'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -220,7 +220,7 @@ export default function BuyTemplate() {
                           name="checkoutAddon"
                           checked={guestAddon === 'none'}
                           onChange={() => setGuestAddon('none')}
-                          className="accent-purple-600"
+                          className="accent-[#512D38]"
                         />
                         <span className="font-bold text-gray-800">Not now</span>
                       </div>
@@ -235,7 +235,7 @@ export default function BuyTemplate() {
                     onClick={() => setGuestAddon('50')}
                     className={`block p-3 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === '50'
-                        ? 'border-purple-600 bg-white ring-1 ring-purple-600'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -246,7 +246,7 @@ export default function BuyTemplate() {
                           name="checkoutAddon"
                           checked={guestAddon === '50'}
                           onChange={() => setGuestAddon('50')}
-                          className="accent-purple-600"
+                          className="accent-[#512D38]"
                         />
                         <span className="font-bold text-gray-800">50 Guests</span>
                       </div>
@@ -261,7 +261,7 @@ export default function BuyTemplate() {
                     onClick={() => setGuestAddon('500')}
                     className={`block p-3 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === '500'
-                        ? 'border-purple-600 bg-white ring-1 ring-purple-600'
+                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
                         : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
@@ -272,7 +272,7 @@ export default function BuyTemplate() {
                           name="checkoutAddon"
                           checked={guestAddon === '500'}
                           onChange={() => setGuestAddon('500')}
-                          className="accent-purple-600"
+                          className="accent-[#512D38]"
                         />
                         <span className="font-bold text-gray-800">500 Guests</span>
                       </div>
@@ -293,7 +293,7 @@ export default function BuyTemplate() {
                     placeholder="COUPON CODE"
                     value={coupon}
                     onChange={(e) => setCoupon(e.target.value)}
-                    className="flex-1 px-3.5 py-2 rounded-xl border border-gray-200 text-xs uppercase tracking-wider font-semibold focus:outline-none focus:border-purple-500"
+                    className="flex-1 px-3.5 py-2 rounded-xl border border-gray-200 text-xs uppercase tracking-wider font-semibold focus:outline-none focus:border-[#512D38]"
                   />
                   <button
                     type="submit"
@@ -318,7 +318,7 @@ export default function BuyTemplate() {
               <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-gray-800">TOTAL</span>
-                  <span className="text-[10px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold text-[#512D38] bg-[#512D38]/10 border border-[#512D38]/20 px-2 py-0.5 rounded-full">
                     50% OFF
                   </span>
                 </div>
@@ -332,7 +332,7 @@ export default function BuyTemplate() {
                 type="button"
                 disabled={payingOnline}
                 onClick={handleBuyAndEdit}
-                className="w-full py-3.5 rounded-full bg-gradient-to-r from-purple-700 to-indigo-600 hover:from-purple-800 hover:to-indigo-700 text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 border border-[#C9A24B]/30"
               >
                 <span>Buy & keep editing - ₹{finalTotal.toFixed(2)}</span>
               </button>
