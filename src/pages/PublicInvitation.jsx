@@ -24,6 +24,8 @@ function LiveRSVPForm({
     status: 'attending',
     guestCount: 1,
     dietary: 'Pure Vegetarian',
+    stayRequired: 'No Stay Needed',
+    stayDetails: '',
     message: '',
   });
 
@@ -80,11 +82,22 @@ function LiveRSVPForm({
           p_dietary: formData.dietary,
           p_message: formData.message.trim() || null,
           p_guest_id: isGuestUuid ? guest.id : null,
+          p_stay_required: formData.stayRequired,
+          p_stay_details: formData.stayDetails.trim() || null,
         });
 
-        if (error) throw error;
-        if (data && data.success === false) {
-          throw new Error(data.error || 'Failed to submit RSVP');
+        if (error) {
+          // If updated RPC fails with argument error, fallback to legacy arguments
+          await supabase.rpc('submit_guest_rsvp', {
+            p_invitation_id: invitationId,
+            p_name: formData.name.trim(),
+            p_phone: cleanPhone,
+            p_status: formData.status,
+            p_guest_count: parseInt(formData.guestCount, 10) || 1,
+            p_dietary: formData.dietary,
+            p_message: `${formData.message.trim()}${formData.stayRequired === 'Stay Required' ? ` [Stay: ${formData.stayDetails || 'Required'}]` : ''}` || null,
+            p_guest_id: isGuestUuid ? guest.id : null,
+          });
         }
         if (data && data.is_update) {
           setIsUpdate(true);
@@ -265,9 +278,49 @@ function LiveRSVPForm({
             >
               <option value="Pure Vegetarian">Pure Vegetarian</option>
               <option value="Jain (No Onion/Garlic)">Jain (No Onion/Garlic)</option>
+              <option value="Non-Vegetarian">Non-Vegetarian</option>
               <option value="Multi-Cuisine">Multi-Cuisine</option>
             </select>
           </div>
+        </div>
+      )}
+
+      {/* Accommodation / Stay Requirement */}
+      {formData.status !== 'not_attending' && (
+        <div className="p-3 bg-ivory/50 rounded-xl border border-champagne space-y-2">
+          <label className="block text-xs font-semibold" style={{ color: themeStyles.textPrimary || '#704B50' }}>
+            Accommodation / Stay Requirement
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { id: 'No Stay Needed', label: 'No Stay Needed' },
+              { id: 'Stay Required', label: 'Stay Required' },
+            ].map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setFormData({ ...formData, stayRequired: opt.id })}
+                className={`py-1.5 px-2 rounded-lg text-xs font-medium border transition-all ${
+                  formData.stayRequired === opt.id
+                    ? 'bg-wine text-white border-wine'
+                    : 'bg-white text-charcoal border-champagne'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+
+          {formData.stayRequired === 'Stay Required' && (
+            <input
+              type="text"
+              value={formData.stayDetails}
+              onChange={(e) => setFormData({ ...formData, stayDetails: e.target.value })}
+              placeholder="e.g. 2 nights, check-in 25th Feb, 3 persons"
+              className="w-full px-3 py-2 bg-white border rounded-lg text-xs font-body focus:outline-none mt-1"
+              style={{ borderColor: `${themeStyles.accentPrimary || '#B69A70'}60` }}
+            />
+          )}
         </div>
       )}
 
@@ -510,6 +563,7 @@ export default function PublicInvitation({ isPersonalized = false }) {
           content={content}
           guestName={activeGuestName}
           showEnvelope={!envelopeOpen}
+          isPreview={invitationData?.status !== 'published'}
           onOpenEnvelope={() => {
             setEnvelopeOpen(true);
             startAudio();

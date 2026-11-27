@@ -8,6 +8,7 @@ const templates = [
     aliases: [
       'mor-pankh',
       'rose-watercolor',
+      'rose-invitation',
       'champagne-and-rose',
       'lotus-lagoon',
       'lotus-royale',

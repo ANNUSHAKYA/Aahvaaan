@@ -18,6 +18,11 @@ export default function BuyTemplate() {
     templates.find((t) => t.id === id || t.alias === id || t.aliases?.includes(id)) ||
     templates[0];
 
+  const templateDisplayName =
+    id === 'rose-watercolor' || id === 'rose-invitation'
+      ? 'Rose - Watercolor'
+      : selectedTemplate.name;
+
   const initialAddon = searchParams.get('addon') || 'none';
   const [guestAddon, setGuestAddon] = useState(initialAddon);
   const [coupon, setCoupon] = useState('');
@@ -83,11 +88,11 @@ export default function BuyTemplate() {
         {/* Page Heading & Trust Badges (Matches Screenshot 3) */}
         <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-widest text-gray-500 block mb-1">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-purple-700 block mb-1">
               WEDDING • YOUR INVITATION
             </span>
             <h1 className="font-heading text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight mb-2">
-              {selectedTemplate.name}
+              {templateDisplayName}
             </h1>
             <p className="text-xs sm:text-sm text-gray-500 max-w-xl leading-relaxed">
               Everything you edited stays exactly as it is - it all unlocks the moment you buy.
@@ -97,15 +102,15 @@ export default function BuyTemplate() {
           {/* 3 Trust Badges */}
           <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-600">
             <span className="inline-flex items-center gap-1.5">
-              <Clock size={15} className="text-[#B69A70]" />
+              <Clock size={15} className="text-purple-600" />
               <span>Valid 6 months</span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Edit3 size={15} className="text-[#B69A70]" />
+              <Edit3 size={15} className="text-purple-600" />
               <span>Keep editing after you buy</span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <ShieldCheck size={15} className="text-[#B69A70]" />
+              <ShieldCheck size={15} className="text-purple-600" />
               <span>Secure payment</span>
             </span>
           </div>
@@ -119,7 +124,7 @@ export default function BuyTemplate() {
             <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden aspect-[16/10] relative">
               <img
                 src={selectedTemplate.image}
-                alt={selectedTemplate.name}
+                alt={templateDisplayName}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -132,19 +137,19 @@ export default function BuyTemplate() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-700">
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
+                  <span className="text-purple-600 font-bold text-base leading-none">✓</span>
                   <span>One common invitation link to share with everyone</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
+                  <span className="text-purple-600 font-bold text-base leading-none">✓</span>
                   <span>The complete, interactive invitation experience</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
+                  <span className="text-purple-600 font-bold text-base leading-none">✓</span>
                   <span>5 guests greeted by name, each with their own link</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
+                  <span className="text-purple-600 font-bold text-base leading-none">✓</span>
                   <span>RSVP replies and guest tracking</span>
                 </div>
               </div>
@@ -167,13 +172,13 @@ export default function BuyTemplate() {
                   <div className="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
                     <img
                       src={selectedTemplate.image}
-                      alt={selectedTemplate.name}
+                      alt={templateDisplayName}
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div>
                     <h4 className="font-heading text-base font-bold text-gray-900 leading-tight">
-                      {selectedTemplate.name}
+                      {templateDisplayName}
                     </h4>
                     <p className="text-xs text-gray-400">
                       Invitation • valid 6 months
@@ -221,8 +226,8 @@ export default function BuyTemplate() {
                     onClick={() => setGuestAddon('none')}
                     className={`block p-3 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === 'none'
-                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
-                        : 'border-[#E9D8CC] hover:border-gray-300'
+                        ? 'border-purple-600 bg-white ring-1 ring-purple-600'
+                        : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-0.5">
@@ -232,7 +237,7 @@ export default function BuyTemplate() {
                           name="checkoutAddon"
                           checked={guestAddon === 'none'}
                           onChange={() => setGuestAddon('none')}
-                          className="text-[#512D38]"
+                          className="accent-purple-600"
                         />
                         <span className="font-bold text-gray-800">Not now</span>
                       </div>
@@ -247,8 +252,8 @@ export default function BuyTemplate() {
                     onClick={() => setGuestAddon('50')}
                     className={`block p-3 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === '50'
-                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
-                        : 'border-[#E9D8CC] hover:border-gray-300'
+                        ? 'border-purple-600 bg-white ring-1 ring-purple-600'
+                        : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-0.5">
@@ -258,7 +263,7 @@ export default function BuyTemplate() {
                           name="checkoutAddon"
                           checked={guestAddon === '50'}
                           onChange={() => setGuestAddon('50')}
-                          className="text-[#512D38]"
+                          className="accent-purple-600"
                         />
                         <span className="font-bold text-gray-800">50 Guests</span>
                       </div>
@@ -273,8 +278,8 @@ export default function BuyTemplate() {
                     onClick={() => setGuestAddon('500')}
                     className={`block p-3 rounded-2xl border cursor-pointer transition-all ${
                       guestAddon === '500'
-                        ? 'border-[#512D38] bg-[#FAF7F2] ring-1 ring-[#512D38]'
-                        : 'border-[#E9D8CC] hover:border-gray-300'
+                        ? 'border-purple-600 bg-white ring-1 ring-purple-600'
+                        : 'border-gray-200 hover:border-gray-300'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-0.5">
@@ -284,7 +289,7 @@ export default function BuyTemplate() {
                           name="checkoutAddon"
                           checked={guestAddon === '500'}
                           onChange={() => setGuestAddon('500')}
-                          className="text-[#512D38]"
+                          className="accent-purple-600"
                         />
                         <span className="font-bold text-gray-800">500 Guests</span>
                       </div>
@@ -305,7 +310,7 @@ export default function BuyTemplate() {
                     placeholder="COUPON CODE"
                     value={coupon}
                     onChange={(e) => setCoupon(e.target.value)}
-                    className="flex-1 px-3.5 py-2 rounded-xl border border-gray-200 text-xs uppercase tracking-wider font-semibold focus:outline-none focus:border-[#C99191]"
+                    className="flex-1 px-3.5 py-2 rounded-xl border border-gray-200 text-xs uppercase tracking-wider font-semibold focus:outline-none focus:border-purple-500"
                   />
                   <button
                     type="submit"
@@ -330,7 +335,7 @@ export default function BuyTemplate() {
               <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-gray-800">TOTAL</span>
-                  <span className="text-[10px] font-bold text-[#512D38] bg-[#FCEEE9] border border-[#C99191]/40 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">
                     50% OFF
                   </span>
                 </div>
@@ -344,7 +349,7 @@ export default function BuyTemplate() {
                 type="button"
                 disabled={payingOnline}
                 onClick={handleBuyAndEdit}
-                className="w-full py-3.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#C99191] hover:from-[#411F29] hover:to-[#512D38] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-3.5 rounded-full bg-gradient-to-r from-purple-700 to-indigo-600 hover:from-purple-800 hover:to-indigo-700 text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <span>Buy & keep editing - ₹{finalTotal.toFixed(2)}</span>
               </button>

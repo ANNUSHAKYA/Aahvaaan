@@ -62,12 +62,14 @@ export default function App() {
             <Route index element={<Home />} />
             {/* Templates / Gallery Routes */}
             <Route path="templates" element={<Invitations />} />
+            <Route path="templates/:id" element={<InvitationPreview />} />
             <Route path="invitations" element={<Invitations />} />
             <Route path="gallery" element={<Invitations />} />
             <Route path="invitations/:id" element={<InvitationPreview />} />
             <Route path="try/:id" element={<InvitationPreview />} />
             <Route path="buy" element={<BuyTemplate />} />
             <Route path="buy/:id" element={<BuyTemplate />} />
+            <Route path="buy/:id/checkout" element={<BuyTemplate />} />
             <Route path="pricing" element={<Pricing />} />
             <Route path="how-it-works" element={<HowItWorks />} />
             {/* About us smoothly redirects to Homepage About Section */}

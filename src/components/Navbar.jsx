@@ -44,6 +44,7 @@ export default function Navbar() {
     '/templates',
     '/gallery',
     '/profile',
+    '/buy',
   ].some((p) => location.pathname === p || location.pathname.startsWith(p + '/'));
 
   if (isAppPage) {
@@ -55,7 +56,7 @@ export default function Navbar() {
         <div className="container-custom mx-auto px-4 sm:px-8 h-16 flex items-center justify-between max-w-6xl">
           {/* Left: Brand & Navigation Tabs */}
           <div className="flex items-center gap-8 h-16">
-            <Link to="/" className="font-heading text-2xl font-bold text-wine tracking-tight">
+            <Link to="/" className="font-heading text-2xl font-bold text-[#512D38] tracking-tight">
               Aahvaaan
             </Link>
 
@@ -64,8 +65,8 @@ export default function Navbar() {
                 to="/dashboard"
                 className={`h-full flex items-center transition-colors relative font-medium ${
                   isDashboard
-                    ? 'text-charcoal font-semibold border-b-2 border-wine'
-                    : 'text-charcoal/70 hover:text-wine'
+                    ? 'text-charcoal font-semibold border-b-2 border-[#512D38]'
+                    : 'text-charcoal/70 hover:text-[#512D38]'
                 }`}
               >
                 My invitations
@@ -75,8 +76,8 @@ export default function Navbar() {
                 to="/templates"
                 className={`h-full flex items-center transition-colors relative font-medium ${
                   isTemplates
-                    ? 'text-charcoal font-semibold border-b-2 border-wine'
-                    : 'text-charcoal/70 hover:text-wine'
+                    ? 'text-charcoal font-semibold border-b-2 border-[#512D38]'
+                    : 'text-charcoal/70 hover:text-[#512D38]'
                 }`}
               >
                 Templates
@@ -84,27 +85,25 @@ export default function Navbar() {
             </nav>
           </div>
 
-          {/* Right: User Profile or Sign In */}
+          {/* Right: Dashboard CTA (Matches Screenshot 3) & User Profile */}
           <div className="flex items-center gap-3">
+            <Link
+              to="/dashboard"
+              className="px-4 py-1.5 rounded-full bg-[#512D38] hover:bg-[#3D1E28] text-white text-xs font-semibold shadow-xs transition-colors"
+            >
+              Dashboard
+            </Link>
             {user ? (
               <Link
                 to="/profile"
-                className="flex items-center gap-2 font-body text-sm text-charcoal/80 hover:text-wine transition-colors group"
+                className="flex items-center gap-2 font-body text-sm text-charcoal/80 hover:text-[#512D38] transition-colors group"
                 title="Account Settings"
               >
-                <span className="hidden sm:inline font-medium">{displayName}</span>
-                <div className="w-8 h-8 rounded-full bg-ivory border border-champagne flex items-center justify-center text-charcoal/70 group-hover:border-wine group-hover:text-wine transition-colors">
+                <div className="w-8 h-8 rounded-full bg-ivory border border-champagne flex items-center justify-center text-charcoal/70 group-hover:border-[#512D38] group-hover:text-[#512D38] transition-colors">
                   <User size={16} />
                 </div>
               </Link>
-            ) : (
-              <Link
-                to="/login"
-                className="px-5 py-2 rounded-full bg-wine hover:bg-wine/90 text-white font-body text-xs font-semibold shadow-xs transition-colors"
-              >
-                Sign in
-              </Link>
-            )}
+            ) : null}
           </div>
         </div>
       </header>

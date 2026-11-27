@@ -27,6 +27,7 @@ export default {
         body: ['"DM Sans"', 'system-ui', 'sans-serif'],
         script: ['"Great Vibes"', 'cursive'],
         hindi: ['"Noto Serif Devanagari"', 'serif'],
+        punjabi: ['"Noto Serif Gurmukhi"', 'serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.8s ease-out',

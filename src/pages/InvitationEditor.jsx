@@ -719,7 +719,7 @@ export default function InvitationEditor() {
                 { id: 'events', label: 'Ceremonies', icon: Sparkles },
                 { id: 'story', label: 'Love Story', icon: Heart },
                 { id: 'gallery', label: 'Photo Gallery', icon: ImageIcon },
-                { id: 'audio', label: 'Shehnai Audio', icon: Music },
+                { id: 'audio', label: 'Theme & Audio', icon: Music },
               ].map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.id;
@@ -918,6 +918,59 @@ export default function InvitationEditor() {
                       className="w-full px-3.5 py-2.5 bg-ivory/50 border border-champagne rounded-xl text-xs font-body focus:outline-none focus:border-wine transition-colors"
                     />
                   </div>
+
+                  {/* Wedding-Day Live Location Tracker */}
+                  <div className="mt-5 pt-4 border-t border-champagne/40">
+                    <div className="flex items-center justify-between mb-2">
+                      <div>
+                        <span className="font-heading text-xs font-bold text-wine block flex items-center gap-1.5">
+                          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                          <span>Wedding-Day Live Location Tracker</span>
+                        </span>
+                        <span className="text-[11px] text-charcoal/60">
+                          Toggle live Baraat/venue tracking on wedding day for instant WhatsApp guest navigation
+                        </span>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={content?.liveLocationEnabled || false}
+                          onChange={(e) => handleContentChange({ liveLocationEnabled: e.target.checked })}
+                          className="sr-only peer"
+                        />
+                        <div className="w-9 h-5 bg-champagne peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600" />
+                      </label>
+                    </div>
+
+                    {content?.liveLocationEnabled && (
+                      <div className="mt-3 space-y-3 p-3.5 bg-emerald-50/50 rounded-xl border border-emerald-200/60">
+                        <div>
+                          <label className="block text-[11px] font-semibold text-emerald-900 mb-1">
+                            Live Google Maps Sharing URL / Coordinates *
+                          </label>
+                          <input
+                            type="url"
+                            value={content?.liveLocationUrl || ''}
+                            onChange={(e) => handleContentChange({ liveLocationUrl: e.target.value })}
+                            placeholder="https://maps.app.goo.gl/... or https://maps.google.com/?q=..."
+                            className="w-full px-3 py-2 bg-white border border-emerald-300 rounded-lg text-xs font-body focus:outline-none focus:border-emerald-600"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-[11px] font-semibold text-emerald-900 mb-1">
+                            Current Status Note (Displayed to Guests)
+                          </label>
+                          <input
+                            type="text"
+                            value={content?.liveLocationStatus || ''}
+                            onChange={(e) => handleContentChange({ liveLocationStatus: e.target.value })}
+                            placeholder="e.g. Baraat has started from hotel · Reaching palace courtyard at 7:30 PM"
+                            className="w-full px-3 py-2 bg-white border border-emerald-300 rounded-lg text-xs font-body focus:outline-none focus:border-emerald-600"
+                          />
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             )}
@@ -968,6 +1021,44 @@ export default function InvitationEditor() {
                         className="w-full px-3.5 py-2.5 bg-ivory/50 border border-champagne rounded-xl text-xs font-body focus:outline-none focus:border-wine transition-colors"
                       />
                     </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-charcoal mb-1">
+                        Groom Family Surname / Clan (Ladkewale)
+                      </label>
+                      <input
+                        type="text"
+                        value={content?.groomFamilyName || content?.lineage?.groomFamilyName || ''}
+                        onChange={(e) =>
+                          handleContentChange((prev) => ({
+                            ...prev,
+                            groomFamilyName: e.target.value,
+                            lineage: { ...(prev.lineage || {}), groomFamilyName: e.target.value },
+                          }))
+                        }
+                        placeholder="e.g. The Singhania Parivaar"
+                        className="w-full px-3.5 py-2.5 bg-ivory/50 border border-champagne rounded-xl text-xs font-body focus:outline-none focus:border-wine transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-charcoal mb-1">
+                        Groom Family Warm Welcome Note
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={content?.groomWelcomeNote || content?.lineage?.groomWelcomeNote || ''}
+                        onChange={(e) =>
+                          handleContentChange((prev) => ({
+                            ...prev,
+                            groomWelcomeNote: e.target.value,
+                            lineage: { ...(prev.lineage || {}), groomWelcomeNote: e.target.value },
+                          }))
+                        }
+                        placeholder="e.g. With open hearts and folded hands, we warmly welcome you to celebrate the union of our children."
+                        className="w-full px-3.5 py-2.5 bg-ivory/50 border border-champagne rounded-xl text-xs font-body focus:outline-none focus:border-wine transition-colors"
+                      />
+                    </div>
                   </div>
                 </div>
 
@@ -1011,6 +1102,44 @@ export default function InvitationEditor() {
                           }))
                         }
                         placeholder="e.g. Late Shri Pandit Brij Mohan Sharma & Late Smt. Shanti Devi Sharma"
+                        className="w-full px-3.5 py-2.5 bg-ivory/50 border border-champagne rounded-xl text-xs font-body focus:outline-none focus:border-wine transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-charcoal mb-1">
+                        Bride Family Surname / Clan (Ladkiwale)
+                      </label>
+                      <input
+                        type="text"
+                        value={content?.brideFamilyName || content?.lineage?.brideFamilyName || ''}
+                        onChange={(e) =>
+                          handleContentChange((prev) => ({
+                            ...prev,
+                            brideFamilyName: e.target.value,
+                            lineage: { ...(prev.lineage || {}), brideFamilyName: e.target.value },
+                          }))
+                        }
+                        placeholder="e.g. The Sharma Parivaar"
+                        className="w-full px-3.5 py-2.5 bg-ivory/50 border border-champagne rounded-xl text-xs font-body focus:outline-none focus:border-wine transition-colors"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-charcoal mb-1">
+                        Bride Family Warm Welcome Note
+                      </label>
+                      <textarea
+                        rows={2}
+                        value={content?.brideWelcomeNote || content?.lineage?.brideWelcomeNote || ''}
+                        onChange={(e) =>
+                          handleContentChange((prev) => ({
+                            ...prev,
+                            brideWelcomeNote: e.target.value,
+                            lineage: { ...(prev.lineage || {}), brideWelcomeNote: e.target.value },
+                          }))
+                        }
+                        placeholder="e.g. Blessed by the almighty and our ancestors, we invite you to shower your love and blessings on our beloved daughter."
                         className="w-full px-3.5 py-2.5 bg-ivory/50 border border-champagne rounded-xl text-xs font-body focus:outline-none focus:border-wine transition-colors"
                       />
                     </div>
@@ -1592,6 +1721,88 @@ export default function InvitationEditor() {
                     <p className="text-[11px] text-charcoal/50 mt-1">
                       Default: <code className="text-wine">/templates/royal-maroon-and-gold/media/music.mp3</code>
                     </p>
+                  </div>
+                </div>
+
+                {/* Per-Host Theme Palette & Font Pairing Customization */}
+                <div className="bg-white p-5 rounded-2xl border border-champagne shadow-2xs space-y-5">
+                  <h3 className="font-heading text-lg font-bold text-wine flex items-center gap-2">
+                    <Sparkles size={18} className="text-gold" />
+                    <span>Theme Palette & Font Customization</span>
+                  </h3>
+                  <p className="text-xs text-charcoal/60">
+                    Customize the royal color accent and font pairing for your live wedding website.
+                  </p>
+
+                  {/* Palette Overrides */}
+                  <div>
+                    <label className="block text-xs font-semibold text-charcoal mb-2">
+                      Royal Color Palette
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {[
+                        { id: 'peacock', name: 'Royal Peacock & Gold', primary: '#0E4D4F', accent: '#C9A24B', bg: '#FAF6F0' },
+                        { id: 'ivory', name: 'Classic Ivory & Blush', primary: '#7C3AED', accent: '#D9777F', bg: '#FFFDF9' },
+                        { id: 'teal', name: 'Dark Emerald & Antique Gold', primary: '#082D2E', accent: '#D4AF37', bg: '#F5EBE1' },
+                        { id: 'ruby', name: 'Royal Ruby & Gold', primary: '#761F32', accent: '#C9A24B', bg: '#FDFBF7' },
+                      ].map((pal) => {
+                        const isSelected = (content?.themePalette || 'peacock') === pal.id;
+                        return (
+                          <div
+                            key={pal.id}
+                            onClick={() => handleContentChange({ themePalette: pal.id })}
+                            className={`p-3 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
+                              isSelected
+                                ? 'border-wine bg-wine/5 ring-1 ring-wine/30'
+                                : 'border-champagne bg-ivory/30 hover:border-wine/40'
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5">
+                              <div className="flex items-center -space-x-1">
+                                <span className="w-5 h-5 rounded-full border border-white shadow-2xs" style={{ backgroundColor: pal.primary }} />
+                                <span className="w-5 h-5 rounded-full border border-white shadow-2xs" style={{ backgroundColor: pal.accent }} />
+                                <span className="w-5 h-5 rounded-full border border-gray-200 shadow-2xs" style={{ backgroundColor: pal.bg }} />
+                              </div>
+                              <span className="text-xs font-semibold text-charcoal">{pal.name}</span>
+                            </div>
+                            <span className="text-xs font-bold text-wine">{isSelected ? '✓' : ''}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Font Pairing Selection */}
+                  <div>
+                    <label className="block text-xs font-semibold text-charcoal mb-2">
+                      Typography & Font Pairing
+                    </label>
+                    <div className="space-y-2">
+                      {[
+                        { id: 'heritage', name: 'Royal Heritage', desc: 'Cormorant Garamond (English) + Noto Serif (Devanagari / Gurmukhi)' },
+                        { id: 'contemporary', name: 'Contemporary Palace', desc: 'Playfair Display + DM Sans' },
+                        { id: 'vedic', name: 'Sacred Vedic', desc: 'Cinzel Decorative + Noto Serif' },
+                      ].map((fnt) => {
+                        const isSelected = (content?.fontPairing || 'heritage') === fnt.id;
+                        return (
+                          <div
+                            key={fnt.id}
+                            onClick={() => handleContentChange({ fontPairing: fnt.id })}
+                            className={`p-3 rounded-xl border cursor-pointer transition-all flex items-center justify-between ${
+                              isSelected
+                                ? 'border-wine bg-wine/5 ring-1 ring-wine/30'
+                                : 'border-champagne bg-ivory/30 hover:border-wine/40'
+                            }`}
+                          >
+                            <div>
+                              <span className="text-xs font-bold text-wine block">{fnt.name}</span>
+                              <span className="text-[11px] text-charcoal/60 block mt-0.5">{fnt.desc}</span>
+                            </div>
+                            <span className="text-xs font-bold text-wine">{isSelected ? '✓' : ''}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </motion.div>
