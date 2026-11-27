@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@400;500;600;700&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Noto+Serif+Gurmukhi:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=DM+Sans:wght@400;500;600;700;800&family=Petit+Formal+Script&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@500;600;700&family=Noto+Serif+Gurmukhi:wght@500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,16 +7,29 @@
   html {
     scroll-behavior: smooth;
     background-color: #FAF7F2;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
-    @apply font-body text-charcoal bg-ivory antialiased;
+    @apply font-body text-charcoal bg-ivory font-medium;
     background-color: #FAF7F2;
-    color: #65575A;
+    color: #55474A;
+    font-weight: 500;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading text-wine;
+    @apply font-heading text-wine font-bold;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  p {
+    font-weight: 500;
+  }
+
+  a, button {
+    font-weight: 600;
   }
 }
 
