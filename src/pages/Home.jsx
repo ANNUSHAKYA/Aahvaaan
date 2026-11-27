@@ -124,6 +124,15 @@ export default function Home() {
       />
       {/* ════════════════ 1. 3D HERO SECTION ════════════════ */}
       <section className="bg-gradient-to-br from-[#1A030A] via-[#3D0A17] to-[#6B1D2F] text-white pt-28 sm:pt-36 pb-20 sm:pb-28 relative overflow-hidden">
+        {/* Subtle royal couple ambient background texture */}
+        <div className="absolute inset-0 opacity-15 mix-blend-luminosity pointer-events-none overflow-hidden">
+          <img
+            src="/hero-couple.jpg"
+            alt=""
+            className="w-full h-full object-cover object-center filter blur-xs scale-105"
+            aria-hidden="true"
+          />
+        </div>
         {/* Soft 3D ambient glows */}
         <div className="absolute top-1/4 left-10 w-96 h-96 bg-wine/40 rounded-full blur-[100px] pointer-events-none" />
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-gold/20 rounded-full blur-[120px] pointer-events-none" />
@@ -227,33 +236,37 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* Right Column: 3D Perspective Device & Card Showcase (5 Cols) */}
+            {/* Right Column: 3D Perspective Device & Royal Couple Showcase (5 Cols) */}
             <div className="lg:col-span-5 flex justify-center perspective-1000">
               <div className="relative w-full max-w-[340px] sm:max-w-[380px] preserve-3d">
-                {/* ─── Layer 1: Background 3D Tilted Card ─── */}
+                {/* ─── Layer 1: Royal Couple Portrait Arch Card ─── */}
                 <motion.div
                   initial={{ opacity: 0, rotateY: 10, rotateX: 10 }}
                   animate={{ opacity: 1, rotateY: -8, rotateX: 6, z: -30 }}
                   transition={{ duration: 0.8 }}
-                  className="absolute -top-6 -right-6 w-full h-[420px] rounded-[36px] bg-gradient-to-br from-[#FAF7F2] via-[#F2ECE2] to-[#E9D8CC] border-2 border-gold/50 shadow-2xl p-5 overflow-hidden hidden sm:block pointer-events-none opacity-85"
+                  className="absolute -top-10 -right-8 w-full h-[540px] rounded-[38px] overflow-hidden border-2 border-gold/60 shadow-2xl hidden sm:block pointer-events-none opacity-90 bg-gradient-to-br from-[#FAF7F2] to-[#E9D8CC]"
                   style={{
                     transform: 'rotateY(-12deg) rotateX(8deg) rotateZ(3deg) translateZ(-40px)',
                   }}
                 >
-                  <div className="border border-gold/40 h-full rounded-[28px] p-4 flex flex-col justify-between text-charcoal">
-                    <div className="text-center pt-2">
-                      <span className="text-[10px] tracking-widest uppercase font-semibold text-gold block">
-                        THE MAHARAJA COLLECTION
-                      </span>
-                      <p className="font-heading text-lg font-bold text-wine mt-1">
-                        Royal Maroon & Gold
-                      </p>
-                    </div>
-                    <div className="text-center pb-2">
-                      <span className="text-xs text-charcoal/60 font-serif italic">
-                        || श्री गणेशाय नमः ||
-                      </span>
-                    </div>
+                  <img
+                    src="/hero-couple.jpg"
+                    alt="Royal Indian Wedding Couple"
+                    className="w-full h-full object-cover object-top filter brightness-95"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#512D38]/90 via-transparent to-black/35" />
+                  <div className="absolute top-4 left-4 right-4 text-center">
+                    <span className="text-[10px] tracking-widest uppercase font-semibold text-gold-light bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-gold/30">
+                      Bespoke Royal Invitations
+                    </span>
+                  </div>
+                  <div className="absolute bottom-4 left-4 right-4 text-center text-white">
+                    <p className="font-heading text-xl font-bold tracking-wide drop-shadow-md">
+                      Ananya &amp; Kabir
+                    </p>
+                    <p className="text-[10px] text-gold-light tracking-widest uppercase mt-0.5">
+                      The Royal Heritage Collection
+                    </p>
                   </div>
                 </motion.div>
 
@@ -271,40 +284,35 @@ export default function Home() {
                   <div className="w-24 h-5 bg-black rounded-full mx-auto mb-2 z-30 relative shadow-inner" />
 
                   {/* Smartphone Screen Content */}
-                  <div className="h-[calc(100%-28px)] rounded-[34px] overflow-hidden bg-gradient-to-b from-[#FAF7F2] via-[#FFFDF9] to-[#E9D8CC] p-4 flex flex-col justify-between text-center relative border border-champagne/80 shadow-inner">
+                  <div className="h-[calc(100%-28px)] rounded-[34px] overflow-hidden bg-gradient-to-b from-[#FAF7F2] via-[#FFFDF9] to-[#E9D8CC] p-3.5 flex flex-col justify-between text-center relative border border-champagne/80 shadow-inner">
                     {/* Top Gold Corner Filigree */}
                     <div className="absolute top-2 left-2 text-[10px] text-gold opacity-60">✦</div>
                     <div className="absolute top-2 right-2 text-[10px] text-gold opacity-60">✦</div>
 
                     {/* Header */}
-                    <div className="pt-2">
-                      <span className="text-[9px] font-heading tracking-[0.25em] text-gold uppercase block font-bold mb-1">
-                        THE ROMANCE COLLECTION
+                    <div className="pt-0.5">
+                      <span className="text-[9px] font-heading tracking-[0.25em] text-gold uppercase block font-bold mb-0.5">
+                        THE ROYAL COLLECTION
                       </span>
                       <span className="text-[10px] text-charcoal/70 font-serif italic block">
-                        || वक्रतुण्ड महाकाय सूर्यकोटि समप्रभ ||
+                        || श्री गणेशाय नमः ||
                       </span>
                     </div>
 
-                    {/* Couple Names & Invitation Body */}
-                    <div className="my-auto py-2">
-                      <span className="text-[10px] uppercase font-semibold tracking-widest text-charcoal/60 block mb-1">
-                        We Joyfully Invite You To Celebrate
-                      </span>
-                      <h2 className="font-heading text-2xl font-bold text-wine leading-tight">
-                        Ananya
-                      </h2>
-                      <div className="font-heading text-base font-bold text-gold my-0.5">
-                        &
-                      </div>
-                      <h2 className="font-heading text-2xl font-bold text-wine leading-tight">
-                        Kabir
-                      </h2>
-
-                      {/* 3D Wax Seal Badge */}
-                      <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#851C34] to-[#4A0E1C] mx-auto my-3 flex items-center justify-center text-white font-heading font-bold text-sm shadow-md border-2 border-gold/70 relative">
-                        <span className="drop-shadow-xs">ॐ</span>
-                        <div className="absolute -bottom-1 w-3 h-3 bg-wine rotate-45 border-b border-r border-gold/60" />
+                    {/* Couple Portrait Card inside Smartphone Screen */}
+                    <div className="my-auto py-1">
+                      <div className="relative mx-auto w-full aspect-[4/3] rounded-2xl overflow-hidden border border-gold/60 shadow-md mb-2">
+                        <img
+                          src="/hero-couple.jpg"
+                          alt="Ananya & Kabir"
+                          className="w-full h-full object-cover object-top"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                        <div className="absolute bottom-1.5 inset-x-0 text-center text-white">
+                          <h3 className="font-heading text-base sm:text-lg font-bold drop-shadow-md leading-tight">
+                            Ananya &amp; Kabir
+                          </h3>
+                        </div>
                       </div>
 
                       {/* Wedding Date & Venue */}
@@ -316,16 +324,16 @@ export default function Home() {
                       </p>
 
                       {/* Live Countdown Pills */}
-                      <div className="flex items-center justify-center gap-1.5 mt-3">
-                        <div className="bg-white/80 border border-champagne px-2 py-1 rounded-md shadow-2xs">
+                      <div className="flex items-center justify-center gap-1.5 mt-2">
+                        <div className="bg-white/80 border border-champagne px-2 py-0.5 rounded-md shadow-2xs">
                           <span className="text-[10px] font-bold text-wine block leading-none">248</span>
                           <span className="text-[7px] text-charcoal/50 uppercase block">Days</span>
                         </div>
-                        <div className="bg-white/80 border border-champagne px-2 py-1 rounded-md shadow-2xs">
+                        <div className="bg-white/80 border border-champagne px-2 py-0.5 rounded-md shadow-2xs">
                           <span className="text-[10px] font-bold text-wine block leading-none">14</span>
                           <span className="text-[7px] text-charcoal/50 uppercase block">Hours</span>
                         </div>
-                        <div className="bg-white/80 border border-champagne px-2 py-1 rounded-md shadow-2xs">
+                        <div className="bg-white/80 border border-champagne px-2 py-0.5 rounded-md shadow-2xs">
                           <span className="text-[10px] font-bold text-wine block leading-none">32</span>
                           <span className="text-[7px] text-charcoal/50 uppercase block">Mins</span>
                         </div>
@@ -333,7 +341,7 @@ export default function Home() {
                     </div>
 
                     {/* Bottom CTA Mockup */}
-                    <div className="pt-2">
+                    <div className="pt-1">
                       <div className="w-full py-2 rounded-full bg-wine text-white text-[11px] font-semibold tracking-wide shadow-xs flex items-center justify-center gap-1">
                         <span>RSVP & View Schedule</span>
                         <ChevronRight size={13} />
@@ -712,21 +720,67 @@ export default function Home() {
       </section>
 
       {/* ════════════════ 5. ABOUT US SECTION ════════════════ */}
-      <section id="about" className="bg-[#3D0C1A] text-white py-20 px-4 sm:px-6 lg:px-8 border-t border-white/10 text-center">
-        <div className="max-w-3xl mx-auto space-y-4">
-          <div className="mb-8">
-            <span className="inline-block px-8 py-2 rounded-full bg-white/10 text-white font-heading text-2xl sm:text-3xl font-bold">
+      <section id="about" className="bg-[#3D0A17] text-white py-20 px-4 sm:px-6 lg:px-8 border-t border-white/10 relative overflow-hidden">
+        {/* Subtle background ambient glows */}
+        <div className="absolute top-1/2 left-0 w-80 h-80 bg-gold/10 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 bg-wine/30 rounded-full blur-[100px] pointer-events-none" />
+
+        <div className="container-custom mx-auto max-w-5xl relative z-10">
+          <div className="text-center mb-12">
+            <span className="inline-block px-8 py-2 rounded-full bg-white/10 text-white font-heading text-2xl sm:text-3xl font-bold border border-white/15">
               About us
             </span>
           </div>
 
-          <h3 className="font-heading text-xl sm:text-2xl font-bold text-gold-light mb-3">
-            Invitations made simple. Celebrations made special.
-          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
+            {/* Left Column: Royal Couple Portrait Arched Card */}
+            <div className="md:col-span-5 flex justify-center">
+              <div className="relative w-full max-w-[300px] aspect-[4/5] rounded-t-[140px] rounded-b-3xl overflow-hidden border-2 border-gold/60 shadow-2xl bg-[#512D38]">
+                <img
+                  src="/hero-couple.jpg"
+                  alt="Aahvaaan Royal Wedding Inspiration"
+                  className="w-full h-full object-cover object-top filter brightness-95"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#512D38]/80 via-transparent to-transparent" />
+                <div className="absolute bottom-4 inset-x-0 text-center text-white px-4">
+                  <span className="font-heading text-base font-bold tracking-wider block drop-shadow-md">
+                    Vow &amp; Vision
+                  </span>
+                  <span className="text-[10px] text-gold-light uppercase tracking-widest block mt-0.5">
+                    Crafting Royal Indian Celebrations
+                  </span>
+                </div>
+              </div>
+            </div>
 
-          <p className="font-body text-xs sm:text-sm text-white/80 leading-relaxed max-w-2xl mx-auto">
-            At Aahvaaan by Vow & Vision, we create luxury digital wedding invitations that honour timeless Indian traditions while delivering effortless modern convenience. From creating personalized envelopes for family elders to monitoring live guest RSVPs, everything comes together in one elegant, thoughtful experience so you can spend less time managing invitations and more time celebrating.
-          </p>
+            {/* Right Column: Story Copy */}
+            <div className="md:col-span-7 text-center md:text-left space-y-4">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold/15 text-gold-light text-xs font-semibold uppercase tracking-wider">
+                <Sparkles size={12} className="text-gold" />
+                <span>Our Heritage &amp; Promise</span>
+              </div>
+
+              <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-gold-light leading-tight">
+                Invitations made simple. Celebrations made special.
+              </h3>
+
+              <p className="font-body text-xs sm:text-sm text-white/80 leading-relaxed">
+                At Aahvaaan by Vow &amp; Vision, we create luxury digital wedding invitations that honour timeless Indian traditions while delivering effortless modern convenience. From creating personalized envelopes for family elders to monitoring live guest RSVPs, everything comes together in one elegant, thoughtful experience so you can spend less time managing invitations and more time celebrating.
+              </p>
+
+              <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-gold-light">
+                <div className="flex items-center gap-1.5">
+                  <Heart size={14} className="text-rose" />
+                  <span>Handcrafted for Indian Traditions</span>
+                </div>
+                <span>•</span>
+                <div className="flex items-center gap-1.5">
+                  <ShieldCheck size={14} className="text-gold" />
+                  <span>Personalized &amp; Private</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
