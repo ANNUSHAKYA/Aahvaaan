@@ -7,18 +7,25 @@ export default {
   theme: {
     extend: {
       colors: {
-        teal: '#0E4D4F',
-        gold: '#C9A24B',
-        'gold-light': '#E3D3AE',
-        ivory: '#FBF5E9',
-        blush: '#E8B4B8',
-        charcoal: '#2B2B2B',
-        wine: '#512D38',
+        // Aahvaaan Core Luxury Palette
+        ivory: '#FAF7F2',             // Warm Ivory: primary background
+        'warm-ivory': '#FAF7F2',
+        wine: '#512D38',              // Deep Wine: headings, logo, primary buttons
+        'deep-wine': '#512D38',
         'wine-light': '#6B3D4A',
-        rose: '#C99191',
-        'rose-light': '#D4A5A5',
-        champagne: '#E9D8CC',
-        'champagne-light': '#F0E4DA',
+        rose: '#C99191',              // Dusty Rose: decorative highlights and accents
+        'dusty-rose': '#C99191',
+        'rose-light': '#DDB0B0',
+        champagne: '#E9D8CC',         // Champagne Beige: cards and alternate sections
+        'champagne-beige': '#E9D8CC',
+        'champagne-light': '#F5ECE5',
+        gold: '#B69A70',              // Antique Gold: fine borders, icons and decorative details
+        'antique-gold': '#B69A70',
+        'gold-light': '#C8B28F',
+        charcoal: '#65575A',          // Warm Charcoal: body text
+        'warm-charcoal': '#65575A',
+        blush: '#E8B4B8',
+        teal: '#0E4D4F',
       },
       fontFamily: {
         sans: ['"DM Sans"', 'sans-serif'],

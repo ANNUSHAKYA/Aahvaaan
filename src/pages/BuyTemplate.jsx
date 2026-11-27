@@ -85,15 +85,15 @@ export default function BuyTemplate() {
           {/* 3 Trust Badges */}
           <div className="flex flex-wrap items-center gap-4 text-xs font-medium text-gray-600">
             <span className="inline-flex items-center gap-1.5">
-              <Clock size={15} className="text-[#C9A24B]" />
+              <Clock size={15} className="text-[#B69A70]" />
               <span>Valid 6 months</span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Edit3 size={15} className="text-[#C9A24B]" />
+              <Edit3 size={15} className="text-[#B69A70]" />
               <span>Keep editing after you buy</span>
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <ShieldCheck size={15} className="text-[#C9A24B]" />
+              <ShieldCheck size={15} className="text-[#B69A70]" />
               <span>Secure payment</span>
             </span>
           </div>
@@ -120,19 +120,19 @@ export default function BuyTemplate() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-700">
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#C9A24B] font-bold text-base leading-none">✓</span>
+                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
                   <span>One common invitation link to share with everyone</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#C9A24B] font-bold text-base leading-none">✓</span>
+                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
                   <span>The complete, interactive invitation experience</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#C9A24B] font-bold text-base leading-none">✓</span>
+                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
                   <span>5 guests greeted by name, each with their own link</span>
                 </div>
                 <div className="flex items-start gap-2.5">
-                  <span className="text-[#C9A24B] font-bold text-base leading-none">✓</span>
+                  <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
                   <span>RSVP replies and guest tracking</span>
                 </div>
               </div>
@@ -332,7 +332,7 @@ export default function BuyTemplate() {
                 type="button"
                 disabled={payingOnline}
                 onClick={handleBuyAndEdit}
-                className="w-full py-3.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 border border-[#C9A24B]/30"
+                className="w-full py-3.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-50 border border-[#B69A70]/30"
               >
                 <span>Buy & keep editing - ₹{finalTotal.toFixed(2)}</span>
               </button>

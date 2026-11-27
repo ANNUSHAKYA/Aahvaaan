@@ -206,7 +206,7 @@ export default function InteractiveDiyaHook() {
               transition={{ duration: 0.45, ease: 'easeOut' }}
               className="mt-4 pt-4 border-t border-gold/30 text-left"
             >
-              <div className="bg-gradient-to-br from-[#FAF6F0] to-[#F2E8DC] text-charcoal rounded-2xl p-4 sm:p-5 border border-gold/50 shadow-inner relative">
+              <div className="bg-gradient-to-br from-[#FAF7F2] to-[#E9D8CC] text-charcoal rounded-2xl p-4 sm:p-5 border border-gold/50 shadow-inner relative">
                 {/* Traditional corner filigree accents */}
                 <div className="absolute top-2 right-2 text-gold text-xs">❖</div>
                 <div className="absolute top-2 left-2 text-gold text-xs">❖</div>

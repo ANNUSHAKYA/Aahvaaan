@@ -9,10 +9,10 @@ import { getTranslation } from '../../../utils/translations';
 import supabase, { isSupabaseConfigured } from '../../../lib/supabase';
 
 const themes = {
-  Ivory: { '--canvas': '#f7efdf', '--cover-start': '#24655d', '--cover-end': '#0b3c3c', '--color-ivory': '#FBF5E9', '--color-gold': '#C9A24B' },
-  'Dark teal': { '--canvas': '#092f32', '--cover-start': '#124d50', '--cover-end': '#031e25', '--color-ivory': '#FBF5E9', '--color-gold': '#D8B86B' },
-  Blush: { '--canvas': '#e8c8cd', '--cover-start': '#884c60', '--cover-end': '#472b3d', '--color-ivory': '#FFF4EE', '--color-gold': '#B99049' },
-  Ruby: { '--canvas': '#fbf0f0', '--cover-start': '#512D38', '--cover-end': '#2A141D', '--color-ivory': '#FFF5F5', '--color-gold': '#C99191' },
+  Ivory: { '--canvas': '#FAF7F2', '--cover-start': '#24655d', '--cover-end': '#0b3c3c', '--color-ivory': '#FAF7F2', '--color-gold': '#B69A70' },
+  'Dark teal': { '--canvas': '#092f32', '--cover-start': '#124d50', '--cover-end': '#031e25', '--color-ivory': '#FAF7F2', '--color-gold': '#B69A70' },
+  Blush: { '--canvas': '#e8c8cd', '--cover-start': '#884c60', '--cover-end': '#472b3d', '--color-ivory': '#FAF7F2', '--color-gold': '#B69A70' },
+  Ruby: { '--canvas': '#fbf0f0', '--cover-start': '#512D38', '--cover-end': '#2A141D', '--color-ivory': '#FAF7F2', '--color-gold': '#B69A70' },
 };
 
 const DEFAULT_EVENTS = [
@@ -24,7 +24,7 @@ const DEFAULT_EVENTS = [
 ];
 
 const mapLink = 'https://www.google.com/maps/search/?api=1&query=The+Leela+Palace+Jaipur';
-const button = 'inline-flex min-h-11 items-center justify-center gap-2.5 border border-[#C9A24B] px-6 py-2.5 text-xs font-medium tracking-[0.13em] uppercase transition hover:bg-[#C9A24B] hover:text-[#0E4D4F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C9A24B] focus-visible:ring-offset-4';
+const button = 'inline-flex min-h-11 items-center justify-center gap-2.5 border border-[#B69A70] px-6 py-2.5 text-xs font-medium tracking-[0.13em] uppercase transition hover:bg-[#B69A70] hover:text-[#0E4D4F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B69A70] focus-visible:ring-offset-4';
 
 function ActionIcon({ kind }: { kind: 'pin' | 'calendar' }) {
   return (

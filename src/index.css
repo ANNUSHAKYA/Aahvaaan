@@ -6,14 +6,17 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    background-color: #FAF7F2;
   }
 
   body {
     @apply font-body text-charcoal bg-ivory antialiased;
+    background-color: #FAF7F2;
+    color: #65575A;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
+    @apply font-heading text-wine;
   }
 }
 

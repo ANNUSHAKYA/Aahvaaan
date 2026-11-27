@@ -235,7 +235,7 @@ export default function Home() {
                   initial={{ opacity: 0, rotateY: 10, rotateX: 10 }}
                   animate={{ opacity: 1, rotateY: -8, rotateX: 6, z: -30 }}
                   transition={{ duration: 0.8 }}
-                  className="absolute -top-6 -right-6 w-full h-[420px] rounded-[36px] bg-gradient-to-br from-[#FAF6F0] via-[#F5EDE3] to-[#E9D7CC] border-2 border-gold/50 shadow-2xl p-5 overflow-hidden hidden sm:block pointer-events-none opacity-85"
+                  className="absolute -top-6 -right-6 w-full h-[420px] rounded-[36px] bg-gradient-to-br from-[#FAF7F2] via-[#F2ECE2] to-[#E9D8CC] border-2 border-gold/50 shadow-2xl p-5 overflow-hidden hidden sm:block pointer-events-none opacity-85"
                   style={{
                     transform: 'rotateY(-12deg) rotateX(8deg) rotateZ(3deg) translateZ(-40px)',
                   }}
@@ -271,7 +271,7 @@ export default function Home() {
                   <div className="w-24 h-5 bg-black rounded-full mx-auto mb-2 z-30 relative shadow-inner" />
 
                   {/* Smartphone Screen Content */}
-                  <div className="h-[calc(100%-28px)] rounded-[34px] overflow-hidden bg-gradient-to-b from-[#FAF6F0] via-[#FFFDF9] to-[#F2E8DC] p-4 flex flex-col justify-between text-center relative border border-champagne/80 shadow-inner">
+                  <div className="h-[calc(100%-28px)] rounded-[34px] overflow-hidden bg-gradient-to-b from-[#FAF7F2] via-[#FFFDF9] to-[#E9D8CC] p-4 flex flex-col justify-between text-center relative border border-champagne/80 shadow-inner">
                     {/* Top Gold Corner Filigree */}
                     <div className="absolute top-2 left-2 text-[10px] text-gold opacity-60">✦</div>
                     <div className="absolute top-2 right-2 text-[10px] text-gold opacity-60">✦</div>
@@ -504,7 +504,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* Card 1: Common Link */}
-          <div className="bg-[#FAF4EE] rounded-[36px] p-6 sm:p-8 border border-champagne/60 text-center shadow-xs flex flex-col items-center hover:shadow-md transition-shadow">
+          <div className="bg-[#FAF7F2] rounded-[36px] p-6 sm:p-8 border border-champagne/60 text-center shadow-xs flex flex-col items-center hover:shadow-md transition-shadow">
             <h3 className="font-heading text-2xl font-bold text-wine mb-1">
               Common link
             </h3>
@@ -520,7 +520,7 @@ export default function Home() {
             {/* Mockup Phone Frame */}
             <div className="w-60 sm:w-64 aspect-[9/17] bg-slate-900 rounded-[38px] p-2.5 shadow-xl border-2 border-slate-700 relative flex flex-col overflow-hidden">
               <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mb-1 z-20" />
-              <div className="flex-1 bg-gradient-to-b from-[#FAF6F0] to-[#E9D7CC] rounded-[30px] p-4 flex flex-col items-center justify-center text-center relative border border-champagne/80">
+              <div className="flex-1 bg-gradient-to-b from-[#FAF7F2] to-[#E9D8CC] rounded-[30px] p-4 flex flex-col items-center justify-center text-center relative border border-champagne/80">
                 <span className="font-heading text-[9px] text-wine uppercase tracking-widest mb-1">
                   Wedding Invitation
                 </span>
@@ -538,7 +538,7 @@ export default function Home() {
           </div>
 
           {/* Card 2: Personalized Link */}
-          <div className="bg-[#FAF4EE] rounded-[36px] p-6 sm:p-8 border border-champagne/60 text-center shadow-xs flex flex-col items-center hover:shadow-md transition-shadow">
+          <div className="bg-[#FAF7F2] rounded-[36px] p-6 sm:p-8 border border-champagne/60 text-center shadow-xs flex flex-col items-center hover:shadow-md transition-shadow">
             <h3 className="font-heading text-2xl font-bold text-wine mb-1">
               Personalized link
             </h3>
@@ -554,7 +554,7 @@ export default function Home() {
             {/* Mockup Phone Frame */}
             <div className="w-60 sm:w-64 aspect-[9/17] bg-slate-900 rounded-[38px] p-2.5 shadow-xl border-2 border-slate-700 relative flex flex-col overflow-hidden">
               <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mb-1 z-20" />
-              <div className="flex-1 bg-gradient-to-b from-[#FAF6F0] to-[#E9D7CC] rounded-[30px] p-4 flex flex-col items-center justify-center text-center relative border border-champagne/80">
+              <div className="flex-1 bg-gradient-to-b from-[#FAF7F2] to-[#E9D8CC] rounded-[30px] p-4 flex flex-col items-center justify-center text-center relative border border-champagne/80">
                 <span className="font-heading text-xs sm:text-sm font-bold text-wine mb-1">
                   Mr. Sharma and Family
                 </span>
@@ -574,9 +574,9 @@ export default function Home() {
 
         {/* ─── "With every invitation, you get" & Live Updates ─── */}
         <div className="max-w-5xl mx-auto space-y-6 mt-12">
-          {/* Top Inclusions Card (Matches Screenshot 2) */}
-          <div className="bg-[#FFF9F3] rounded-[28px] p-8 sm:p-10 border border-[#F3E2D3] text-center shadow-xs">
-            <h4 className="font-heading text-2xl sm:text-3xl font-bold text-[#8A4A28] mb-4">
+          {/* Top Inclusions Card */}
+          <div className="bg-[#FAF7F2] rounded-[28px] p-8 sm:p-10 border border-champagne text-center shadow-xs">
+            <h4 className="font-heading text-2xl sm:text-3xl font-bold text-wine mb-4">
               With every invitation, you get
             </h4>
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-base sm:text-lg font-semibold text-charcoal">

@@ -125,9 +125,9 @@ export default function InvitationPreview() {
         <button
           type="button"
           onClick={() => setShowBuyModal(true)}
-          className="pointer-events-auto px-7 py-3.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-[#FBF5E9] font-body font-semibold text-xs sm:text-sm shadow-2xl hover:scale-105 active:scale-95 flex items-center gap-2 border border-[#C9A24B]/40 transition-all cursor-pointer"
+          className="pointer-events-auto px-7 py-3.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-[#FAF7F2] font-body font-semibold text-xs sm:text-sm shadow-2xl hover:scale-105 active:scale-95 flex items-center gap-2 border border-[#B69A70]/50 transition-all cursor-pointer"
         >
-          <ShoppingBag size={15} className="text-[#C9A24B]" />
+          <ShoppingBag size={15} className="text-[#B69A70]" />
           <span>Buy this template</span>
         </button>
       </div>
@@ -153,19 +153,19 @@ export default function InvitationPreview() {
               <div className="rounded-2xl border border-[#512D38]/20 bg-[#FAF7F2] p-5 mb-5 text-xs text-gray-700 space-y-2.5">
                 <h4 className="font-bold text-[#512D38] text-sm mb-3">Your Invitation</h4>
                 <div className="flex items-start gap-2">
-                  <span className="text-[#C9A24B] font-bold">✓</span>
+                  <span className="text-[#B69A70] font-bold">✓</span>
                   <span>One common invitation link to share with everyone</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-[#C9A24B] font-bold">✓</span>
+                  <span className="text-[#B69A70] font-bold">✓</span>
                   <span>The complete, interactive invitation experience</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-[#C9A24B] font-bold">✓</span>
+                  <span className="text-[#B69A70] font-bold">✓</span>
                   <span>5 guests greeted by name, each with their own link</span>
                 </div>
                 <div className="flex items-start gap-2">
-                  <span className="text-[#C9A24B] font-bold">✓</span>
+                  <span className="text-[#B69A70] font-bold">✓</span>
                   <span>RSVP replies and guest tracking</span>
                 </div>
               </div>
@@ -274,7 +274,7 @@ export default function InvitationPreview() {
                   <button
                     type="button"
                     onClick={() => navigate(`/buy/${template.id}/checkout?addon=${guestAddon}`)}
-                    className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white text-xs font-semibold shadow-md hover:shadow-lg transition-all border border-[#C9A24B]/30"
+                    className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white text-xs font-semibold shadow-md hover:shadow-lg transition-all border border-[#B69A70]/30"
                   >
                     Proceed to Buy
                   </button>
