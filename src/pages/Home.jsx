@@ -455,21 +455,53 @@ export default function Home() {
               aahvaaan.com/invite/patidar-family-2027
             </div>
 
-            {/* Mockup Phone Frame */}
-            <div className="w-60 sm:w-64 aspect-[9/17] bg-slate-900 rounded-[38px] p-2.5 shadow-xl border-2 border-slate-700 relative flex flex-col overflow-hidden">
-              <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mb-1 z-20" />
-              <div className="flex-1 bg-gradient-to-b from-[#FAF7F2] to-[#E9D8CC] rounded-[30px] p-4 flex flex-col items-center justify-center text-center relative border border-champagne/80">
-                <span className="font-heading text-[9px] text-wine uppercase tracking-widest mb-1">
-                  Wedding Invitation
-                </span>
-                <p className="font-heading text-xs font-bold text-wine leading-tight mb-2">
-                  We cordially invite you to grace the auspicious occasion of our wedding...
-                </p>
-                <div className="w-8 h-0.5 bg-gold/50 rounded-full" />
+            {/* Mockup Phone Frame with Royal Arch Lotus Background */}
+            <div className="w-60 sm:w-64 aspect-[9/17] bg-slate-900 rounded-[40px] p-2.5 shadow-2xl border-2 border-slate-700 relative flex flex-col overflow-hidden">
+              <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mb-1 z-30" />
+              <div className="flex-1 rounded-[32px] overflow-hidden relative flex flex-col items-center justify-between p-4 text-center border border-gold/40 shadow-inner">
+                {/* Royal Arch Lotus Background Image */}
+                <img
+                  src="/invitation-frame.jpg"
+                  alt="Royal Wedding Frame"
+                  className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+                />
+                {/* Subtle dark tint overlay for readability */}
+                <div className="absolute inset-0 bg-[#3D0A17]/25 pointer-events-none" />
+
+                {/* Top Auspicious Inscription */}
+                <div className="relative z-20 pt-8 sm:pt-10">
+                  <span className="text-[10px] text-gold-light font-serif italic block drop-shadow-sm">
+                    ॥ श्री गणेशाय नमः ॥
+                  </span>
+                  <span className="font-heading text-[8px] sm:text-[9px] text-[#E9D8CC] uppercase tracking-[0.25em] font-semibold block mt-0.5">
+                    Wedding Invitation
+                  </span>
+                </div>
+
+                {/* Center Content Inside Arch */}
+                <div className="relative z-20 my-auto px-2 max-w-[190px]">
+                  <p className="font-heading text-sm sm:text-base font-bold text-white drop-shadow-md leading-tight">
+                    Kabir &amp; Ananya
+                  </p>
+                  <div className="w-6 h-0.5 bg-gold/70 rounded-full mx-auto my-1.5" />
+                  <p className="font-body text-[10px] text-[#FAF7F2]/90 leading-tight drop-shadow-xs">
+                    Cordially invite you &amp; family to celebrate our holy union
+                  </p>
+                  <p className="font-heading text-[9px] text-gold-light mt-1.5 tracking-wider font-semibold">
+                    Sunday, 22 Feb 2027
+                  </p>
+                </div>
+
+                {/* Bottom CTA Mockup */}
+                <div className="relative z-20 pb-3 w-full">
+                  <div className="py-1 px-3 rounded-full bg-wine/85 backdrop-blur-xs border border-gold/50 text-gold-light text-[9px] font-semibold uppercase tracking-wider shadow-sm">
+                    Open Invitation ✦
+                  </div>
+                </div>
               </div>
 
               {/* Realistic Sticky Note */}
-              <div className="absolute bottom-6 right-3 bg-[#FEF08A] text-charcoal/90 p-3 rounded-xl shadow-lg -rotate-3 text-[11px] font-semibold max-w-[130px] leading-tight border border-amber-300">
+              <div className="absolute bottom-6 right-3 bg-[#FEF08A] text-charcoal/90 p-2.5 sm:p-3 rounded-xl shadow-xl -rotate-3 text-[10px] sm:text-[11px] font-semibold max-w-[125px] leading-tight border border-amber-300 z-30">
                 Best for quick and bulk sharing.
               </div>
             </div>
@@ -489,21 +521,56 @@ export default function Home() {
               aahvaaan.com/invite/r/mrsharma&family123
             </div>
 
-            {/* Mockup Phone Frame */}
-            <div className="w-60 sm:w-64 aspect-[9/17] bg-slate-900 rounded-[38px] p-2.5 shadow-xl border-2 border-slate-700 relative flex flex-col overflow-hidden">
-              <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mb-1 z-20" />
-              <div className="flex-1 bg-gradient-to-b from-[#FAF7F2] to-[#E9D8CC] rounded-[30px] p-4 flex flex-col items-center justify-center text-center relative border border-champagne/80">
-                <span className="font-heading text-xs sm:text-sm font-bold text-wine mb-1">
-                  Mr. Sharma and Family
-                </span>
-                <p className="font-body text-[10px] text-charcoal/70 leading-tight mb-2">
-                  We warmly invite you to grace the auspicious celebrations of our family...
-                </p>
-                <div className="w-8 h-0.5 bg-gold/50 rounded-full" />
+            {/* Mockup Phone Frame with Royal Arch Lotus Background */}
+            <div className="w-60 sm:w-64 aspect-[9/17] bg-slate-900 rounded-[40px] p-2.5 shadow-2xl border-2 border-slate-700 relative flex flex-col overflow-hidden">
+              <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mb-1 z-30" />
+              <div className="flex-1 rounded-[32px] overflow-hidden relative flex flex-col items-center justify-between p-4 text-center border border-gold/40 shadow-inner">
+                {/* Royal Arch Lotus Background Image */}
+                <img
+                  src="/invitation-frame.jpg"
+                  alt="Personalized Royal Frame"
+                  className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+                />
+                {/* Subtle dark tint overlay for readability */}
+                <div className="absolute inset-0 bg-[#3D0A17]/25 pointer-events-none" />
+
+                {/* Top Auspicious Inscription */}
+                <div className="relative z-20 pt-8 sm:pt-10">
+                  <span className="text-[10px] text-gold-light font-serif italic block drop-shadow-sm">
+                    ॥ श्री गणेशाय नमः ॥
+                  </span>
+                  <span className="font-heading text-[8px] sm:text-[9px] text-[#E9D8CC] uppercase tracking-[0.25em] font-semibold block mt-0.5">
+                    Personalized For You
+                  </span>
+                </div>
+
+                {/* Center Content Inside Arch */}
+                <div className="relative z-20 my-auto px-2 max-w-[190px]">
+                  <span className="text-[8px] uppercase tracking-widest text-gold-light font-bold block mb-0.5">
+                    Namaste
+                  </span>
+                  <p className="font-heading text-sm sm:text-base font-bold text-white drop-shadow-md leading-tight">
+                    Mr. Sharma &amp; Family
+                  </p>
+                  <div className="w-6 h-0.5 bg-gold/70 rounded-full mx-auto my-1.5" />
+                  <p className="font-body text-[10px] text-[#FAF7F2]/90 leading-tight drop-shadow-xs">
+                    With joyous hearts, we invite you to grace the wedding of Kabir &amp; Ananya
+                  </p>
+                  <p className="font-heading text-[9px] text-gold-light mt-1.5 tracking-wider font-semibold">
+                    The Oberoi Udaivilas, Udaipur
+                  </p>
+                </div>
+
+                {/* Bottom CTA Mockup */}
+                <div className="relative z-20 pb-3 w-full">
+                  <div className="py-1 px-3 rounded-full bg-gradient-to-r from-wine to-[#8C3A50] border border-gold/50 text-gold-light text-[9px] font-semibold uppercase tracking-wider shadow-sm">
+                    View Your Invitation 💌
+                  </div>
+                </div>
               </div>
 
               {/* Realistic Sticky Note */}
-              <div className="absolute bottom-6 right-3 bg-[#FEF08A] text-charcoal/90 p-3 rounded-xl shadow-lg rotate-2 text-[11px] font-semibold max-w-[140px] leading-tight border border-amber-300">
+              <div className="absolute bottom-6 right-3 bg-[#FEF08A] text-charcoal/90 p-2.5 sm:p-3 rounded-xl shadow-xl rotate-2 text-[10px] sm:text-[11px] font-semibold max-w-[135px] leading-tight border border-amber-300 z-30">
                 Best if you want to make guests feel personally invited.
               </div>
             </div>

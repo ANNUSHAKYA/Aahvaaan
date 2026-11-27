@@ -1204,35 +1204,47 @@ export default function MorPankhInvitation({
             <p className="font-hindi text-base text-teal">॥ श्री गणेशाय नमः ॥</p>
             <p className="mb-5 mt-2 text-[11px] uppercase tracking-[0.23em] text-teal">{t.auspiciousBeginning}</p>
             
-            <div className="relative mx-auto min-h-[630px] max-w-[420px] overflow-hidden rounded-t-[210px] border-2 border-gold bg-[radial-gradient(ellipse_at_top,var(--cover-start),var(--cover-end))] shadow-[0_18px_35px_-10px_#0e4d4f60] [perspective:1100px]">
-              {/* Shri Ganesh Inside View */}
+            <div className="relative mx-auto min-h-[630px] max-w-[420px] overflow-hidden rounded-t-[210px] border-2 border-gold shadow-[0_18px_35px_-10px_#0e4d4f60] [perspective:1100px] bg-wine">
+              {/* Shri Ganesh Inside View (Revealed when gates open) */}
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-ivory px-6 pb-14">
                 <ShriGanesh shloka={content.shloka} />
                 <div className="my-4"><Ornament /></div>
                 <p className="font-serif text-2xl italic text-teal">With Divine Blessings</p>
-                <p className="mt-2 text-xs uppercase tracking-widest text-[#96752d]">The Wedding of {brideName} & {groomName}</p>
+                <p className="mt-2 text-xs uppercase tracking-widest text-[#96752d]">The Wedding of {brideName} &amp; {groomName}</p>
               </div>
 
-              {/* Two 3D Perspective Opening Arch Gates */}
+              {/* Two 3D Perspective Opening Arch Gates with Royal Arch Lotus Background */}
               {[0, 1].map(side => (
                 <div
                   key={side}
-                  className={`pointer-events-none absolute inset-y-0 w-1/2 overflow-hidden border-gold/60 bg-[radial-gradient(ellipse_at_top,var(--cover-start),var(--cover-end))] transition-transform duration-1000 ${
+                  className={`pointer-events-none absolute inset-y-0 w-1/2 overflow-hidden border-gold/60 transition-transform duration-1000 ${
                     side ? 'right-0 origin-right border-l' : 'left-0 origin-left border-r'
                   }`}
                   style={{ transform: opened ? `rotateY(${side ? '' : '-'}110deg)` : 'rotateY(0deg)' }}
                 >
                   <div className={`absolute inset-y-0 w-[200%] ${side ? 'right-0' : 'left-0'}`}>
-                    <RoyalFrame />
-                    <Feather className="absolute left-1/2 top-14 -translate-x-1/2 text-gold" />
-                    <div className="absolute inset-x-8 top-[215px] text-center">
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-[#E3D3AE]">{t.togetherForever}</p>
-                      <h1 className="mt-4 font-serif text-5xl text-ivory">
-                        {groomName} <span className="font-serif italic text-gold">&</span> {brideName}
-                      </h1>
-                      <p className="mt-4 text-xs uppercase tracking-[0.2em] text-[#E3D3AE]">
-                        {content.weddingDate || '27 February 2027'} · {content.location || 'Jaipur'}
-                      </p>
+                    {/* Authentic Royal Lotus Palace Arch Background Image */}
+                    <img
+                      src="/invitation-frame.jpg"
+                      alt="Auspicious Wedding Arch Frame"
+                      className="absolute inset-0 w-full h-full object-cover object-top"
+                    />
+                    {/* Subtle ambient overlay */}
+                    <div className="absolute inset-0 bg-[#3D0A17]/20 pointer-events-none" />
+
+                    <div className="relative z-10">
+                      <Feather className="absolute left-1/2 top-12 -translate-x-1/2 text-gold drop-shadow-md" />
+                      <div className="absolute inset-x-8 top-[195px] text-center">
+                        <p className="text-[11px] uppercase tracking-[0.2em] text-gold-light drop-shadow-sm font-semibold">
+                          {t.togetherForever}
+                        </p>
+                        <h1 className="mt-3 font-serif text-4xl sm:text-5xl text-white drop-shadow-lg font-bold">
+                          {groomName} <span className="font-serif italic text-gold-light">&amp;</span> {brideName}
+                        </h1>
+                        <p className="mt-3 text-xs uppercase tracking-[0.2em] text-[#E9D8CC] font-semibold drop-shadow-xs">
+                          {content.weddingDate || '27 February 2027'} · {content.location || 'Jaipur'}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
