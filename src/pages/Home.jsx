@@ -123,22 +123,23 @@ export default function Home() {
         description="Four signature Indian wedding collections with personalized envelope reveals, live RSVP tracking, and Google Maps directions."
       />
       {/* ════════════════ 1. 3D HERO SECTION (BALCONY PALACE ARCH STYLE) ════════════════ */}
-      <section className="bg-gradient-to-b from-[#220710] via-[#380E1B] to-[#512D38] text-white pt-28 sm:pt-36 pb-14 sm:pb-20 relative overflow-hidden">
+      <section className="bg-gradient-to-b from-[#18030B] via-[#2D0B16] to-[#512D38] text-white pt-24 sm:pt-32 lg:pt-36 pb-14 sm:pb-20 relative overflow-hidden">
         {/* Soft 3D ambient glows */}
-        <div className="absolute top-1/4 left-10 w-96 h-96 bg-[#8C3A50]/20 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#B69A70]/15 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/4 left-5 sm:left-10 w-72 sm:w-96 h-72 sm:h-96 bg-[#8C3A50]/25 rounded-full blur-[100px] sm:blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-5 right-5 sm:right-10 w-80 sm:w-[500px] h-80 sm:h-[500px] bg-[#B69A70]/20 rounded-full blur-[110px] sm:blur-[150px] pointer-events-none" />
+        <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-full max-w-4xl h-40 bg-gold/10 rounded-full blur-[90px] pointer-events-none" />
 
         <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
             {/* Left Content (Balcony typography & layout) */}
-            <div className="lg:col-span-6 text-center lg:text-left space-y-6">
+            <div className="lg:col-span-6 text-center lg:text-left space-y-5 sm:space-y-6">
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-gold/40 text-gold-light text-xs font-semibold tracking-wider uppercase"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-gold/40 text-gold-light text-xs font-semibold tracking-wider uppercase shadow-xs"
               >
-                <Sparkles size={13} className="text-gold" />
+                <Sparkles size={13} className="text-gold animate-pulse" />
                 <span>Bespoke Digital Invitations</span>
               </motion.div>
 
@@ -146,7 +147,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.12] tracking-tight"
+                className="font-heading text-3xl xs:text-4xl sm:text-5xl lg:text-[3.75rem] font-bold text-white leading-[1.12] tracking-tight"
               >
                 Make your first impression unforgettable.
               </motion.h1>
@@ -155,7 +156,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="font-heading text-2xl sm:text-3xl text-gold-light/90 font-normal tracking-wide"
+                className="font-heading text-xl sm:text-2xl lg:text-3xl text-gold-light/95 font-normal tracking-wide"
               >
                 Wedding Invitations
               </motion.p>
@@ -164,7 +165,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
-                className="font-body text-xs sm:text-sm text-white/80 leading-relaxed max-w-lg mx-auto lg:mx-0"
+                className="font-body text-xs sm:text-sm text-white/85 leading-relaxed max-w-lg mx-auto lg:mx-0"
               >
                 Ditch static PDFs and video files. Give your guests an interactive celebration website with personalized envelope reveals, live countdown, Google Maps navigation, background wedding music, and instant WhatsApp RSVPs.
               </motion.p>
@@ -174,11 +175,11 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4"
+                className="pt-2 flex flex-col xs:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-4"
               >
                 <Link
                   to="/templates"
-                  className="inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-wine via-[#6B3D4A] to-[#8C3A50] hover:scale-105 text-white font-body font-semibold text-sm shadow-xl border border-[#B69A70]/50 transition-all duration-300"
+                  className="w-full xs:w-auto inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-wine via-[#6B3D4A] to-[#8C3A50] hover:brightness-110 active:scale-95 hover:scale-105 text-white font-body font-semibold text-sm shadow-[0_10px_25px_-5px_rgba(81,45,56,0.6)] border border-[#B69A70]/60 transition-all duration-300"
                 >
                   <span>View templates</span>
                   <ArrowRight size={16} className="text-gold-light" />
@@ -186,7 +187,7 @@ export default function Home() {
 
                 <Link
                   to="/invitations"
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-gold/40 text-gold-light hover:bg-white/10 text-xs sm:text-sm font-semibold transition-all backdrop-blur-xs"
+                  className="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-gold/40 text-gold-light hover:bg-white/10 active:scale-95 text-xs sm:text-sm font-semibold transition-all backdrop-blur-xs"
                 >
                   <span>Explore Collections</span>
                 </Link>
@@ -207,18 +208,18 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-5 text-xs text-white/70"
+                className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-5 text-xs text-white/75"
               >
                 <div className="flex items-center gap-1.5">
                   <span className="text-gold font-bold">★★★★★</span>
                   <span className="font-semibold text-white">1,200+</span> Weddings
                 </div>
-                <span>•</span>
+                <span className="hidden xs:inline text-white/40">•</span>
                 <div className="flex items-center gap-1.5">
                   <ShieldCheck size={14} className="text-gold" />
                   <span>5 Free Personal Links</span>
                 </div>
-                <span>•</span>
+                <span className="hidden xs:inline text-white/40">•</span>
                 <div className="flex items-center gap-1.5">
                   <Clock size={14} className="text-gold" />
                   <span>3 Live Updates Included</span>
@@ -227,85 +228,88 @@ export default function Home() {
             </div>
 
             {/* Right Column: Architectural Palace Arch Window (Matching Balcony reference) */}
-            <div className="lg:col-span-6 flex justify-center lg:justify-end items-end relative">
+            <div className="lg:col-span-6 flex justify-center lg:justify-end items-end relative pt-4 lg:pt-0">
               {/* Outer architectural arch container */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.95, y: 30 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: 'easeOut' }}
-                className="relative w-full max-w-[420px] sm:max-w-[460px]"
+                className="relative w-full max-w-[340px] xs:max-w-[380px] sm:max-w-[440px] lg:max-w-[460px] mx-auto"
               >
-                {/* Backing palace wall shadow depth */}
-                <div className="absolute -inset-2 rounded-t-[230px] rounded-b-2xl bg-gradient-to-b from-[#B69A70]/40 via-[#512D38]/50 to-transparent blur-md -z-10" />
+                {/* Backing palace wall shadow depth & warm candlelight glow */}
+                <div className="absolute -inset-2.5 rounded-t-[200px] sm:rounded-t-[240px] rounded-b-3xl bg-gradient-to-b from-[#B69A70]/40 via-[#8C3A50]/30 to-transparent blur-xl -z-10" />
 
-                {/* 3D Palace Architectural Arch Bezel */}
-                <div className="relative rounded-t-[220px] rounded-b-2xl overflow-hidden border-[6px] border-[#B69A70] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] bg-[#FAF7F2]">
-                  {/* Subtle inner depth shadow for 3D alcove feel */}
-                  <div className="absolute inset-0 shadow-[inset_0_15px_30px_rgba(0,0,0,0.45)] pointer-events-none z-20 rounded-t-[214px]" />
+                {/* Outer Architectural Palace Trim (Double Frame Effect) */}
+                <div className="p-1.5 sm:p-2 rounded-t-[195px] sm:rounded-t-[235px] rounded-b-3xl bg-gradient-to-b from-[#E9D8CC] via-[#B69A70] to-[#512D38] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)]">
+                  {/* 3D Palace Architectural Arch Bezel */}
+                  <div className="relative rounded-t-[185px] sm:rounded-t-[225px] rounded-b-2xl overflow-hidden border-[4px] sm:border-[6px] border-[#B69A70] bg-[#FAF7F2]">
+                    {/* Subtle inner depth shadow for 3D alcove feel */}
+                    <div className="absolute inset-0 shadow-[inset_0_20px_35px_rgba(0,0,0,0.55)] pointer-events-none z-20 rounded-t-[180px] sm:rounded-t-[220px]" />
 
-                  {/* Top arch decorative keystone filigree */}
-                  <div className="absolute top-3 inset-x-0 flex justify-center z-30 pointer-events-none">
-                    <span className="bg-[#512D38]/90 text-gold-light border border-gold/60 text-[10px] tracking-[0.25em] uppercase font-heading px-4 py-1 rounded-full shadow-md backdrop-blur-xs">
-                      The Royal Heritage
-                    </span>
-                  </div>
+                    {/* Top arch decorative keystone filigree */}
+                    <div className="absolute top-2.5 sm:top-3.5 inset-x-0 flex justify-center z-30 pointer-events-none">
+                      <span className="bg-[#512D38]/95 text-gold-light border border-gold/60 text-[9px] sm:text-[10px] tracking-[0.25em] uppercase font-heading px-3.5 sm:px-4 py-1 rounded-full shadow-lg backdrop-blur-md">
+                        The Royal Heritage
+                      </span>
+                    </div>
 
-                  {/* Main Couple Portrait inside the Arch */}
-                  <div className="relative aspect-[3/4.5] w-full overflow-hidden bg-wine">
-                    <img
-                      src="/hero-couple.jpg"
-                      alt="Aahvaaan Royal Wedding Couple"
-                      className="w-full h-full object-cover object-top filter brightness-[0.98] transition-transform duration-700 hover:scale-105"
-                      loading="eager"
-                    />
+                    {/* Main Couple Portrait inside the Arch */}
+                    <div className="relative aspect-[3/4.4] w-full overflow-hidden bg-wine group">
+                      <img
+                        src="/hero-couple.jpg"
+                        alt="Aahvaaan Royal Wedding Couple"
+                        className="w-full h-full object-cover object-top filter brightness-[0.98] transition-transform duration-700 ease-out group-hover:scale-105"
+                        loading="eager"
+                      />
 
-                    {/* Rich gradient at the base for luxury text overlay */}
-                    <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#220710] via-[#512D38]/70 to-transparent z-10 pointer-events-none" />
+                      {/* Rich gradient at the base for luxury text overlay */}
+                      <div className="absolute inset-x-0 bottom-0 h-32 sm:h-40 bg-gradient-to-t from-[#18030B] via-[#512D38]/80 to-transparent z-10 pointer-events-none" />
 
-                    {/* Bottom Royal Names & Tagline */}
-                    <div className="absolute bottom-4 inset-x-0 text-center z-20 text-white px-4">
-                      <p className="text-gold-light text-[11px] font-heading tracking-[0.2em] uppercase font-medium">
-                        || श्री गणेशाय नमः ||
-                      </p>
-                      <h3 className="font-heading text-2xl sm:text-3xl font-bold tracking-wide text-white drop-shadow-lg">
-                        Ananya &amp; Kabir
-                      </h3>
-                      <p className="text-xs text-champagne/90 font-light mt-0.5">
-                        Interactive Celebration Experience
-                      </p>
+                      {/* Bottom Royal Names & Tagline */}
+                      <div className="absolute bottom-3.5 sm:bottom-5 inset-x-0 text-center z-20 text-white px-3 sm:px-4">
+                        <p className="text-gold-light text-[10px] sm:text-[11px] font-heading tracking-[0.2em] uppercase font-medium">
+                          || श्री गणेशाय नमः ||
+                        </p>
+                        <h3 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold tracking-wide text-white drop-shadow-lg leading-tight mt-0.5">
+                          Ananya &amp; Kabir
+                        </h3>
+                        <p className="text-[11px] sm:text-xs text-champagne/90 font-light mt-0.5 sm:mt-1">
+                          Interactive Celebration Experience
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Floating Live Badge (Left side) */}
+                {/* Floating Live Badge (Left side) - carefully tuned for mobile screens */}
                 <motion.div
                   animate={{ y: [0, -6, 0] }}
                   transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -top-3 -left-3 sm:-left-6 bg-white/95 backdrop-blur-md rounded-2xl p-2.5 px-3.5 shadow-xl border border-gold/50 flex items-center gap-2.5 z-40 text-charcoal"
+                  className="absolute -top-2 -left-2 sm:-top-3 sm:-left-6 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl p-2 sm:p-2.5 px-2.5 sm:px-3.5 shadow-xl border border-gold/50 flex items-center gap-2 sm:gap-2.5 z-40 text-charcoal"
                 >
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping shrink-0" />
+                  <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 animate-ping shrink-0" />
                   <div>
-                    <span className="text-[10px] font-bold text-wine block leading-none">
+                    <span className="text-[9px] sm:text-[10px] font-bold text-wine block leading-none">
                       Live RSVP Active
                     </span>
-                    <span className="text-[9px] text-charcoal/70">
+                    <span className="text-[8px] sm:text-[9px] text-charcoal/70">
                       Sharma Family • Attending (3)
                     </span>
                   </div>
                 </motion.div>
 
-                {/* Floating Personal Link Badge (Right side) */}
+                {/* Floating Personal Link Badge (Right side) - carefully tuned for mobile screens */}
                 <motion.div
                   animate={{ y: [0, 6, 0] }}
                   transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -bottom-3 -right-3 sm:-right-6 bg-gradient-to-r from-wine to-[#8C3A50] text-white rounded-2xl p-2.5 px-4 shadow-xl border border-gold/50 flex items-center gap-2.5 z-40"
+                  className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-6 bg-gradient-to-r from-wine to-[#8C3A50] text-white rounded-xl sm:rounded-2xl p-2 sm:p-2.5 px-3 sm:px-4 shadow-xl border border-gold/50 flex items-center gap-2 sm:gap-2.5 z-40"
                 >
-                  <span className="text-base select-none">💌</span>
+                  <span className="text-sm sm:text-base select-none">💌</span>
                   <div>
-                    <span className="text-[10px] font-bold block leading-none text-gold-light">
+                    <span className="text-[9px] sm:text-[10px] font-bold block leading-none text-gold-light">
                       Personal Link
                     </span>
-                    <span className="text-[9px] text-white/80">
+                    <span className="text-[8px] sm:text-[9px] text-white/85">
                       aahvaaan.com/invite/kabir-ananya
                     </span>
                   </div>
