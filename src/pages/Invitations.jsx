@@ -6,7 +6,7 @@ import SEO from '../components/SEO';
 
 export default function Invitations() {
   return (
-    <div className="pt-24 pb-24 min-h-screen bg-[#F8F7FC]">
+    <div className="pt-24 pb-24 min-h-screen bg-[#FAF7F2]">
       <SEO
         title="Wedding Invitation Templates & Gallery | Aahvaaan"
         description="Explore Aahvaaan's signature interactive Indian wedding invitation templates. Experience live countdowns, music, personalized guest reveals, and RSVP management."

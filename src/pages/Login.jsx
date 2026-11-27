@@ -61,7 +61,7 @@ export default function Login() {
   };
 
   return (
-    <div className="pt-20 pb-16 min-h-[94vh] bg-[#5C2D91]/15 backdrop-blur-md flex items-center justify-center px-4 sm:px-6">
+    <div className="pt-20 pb-16 min-h-[94vh] bg-[#512D38]/10 backdrop-blur-md flex items-center justify-center px-4 sm:px-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}

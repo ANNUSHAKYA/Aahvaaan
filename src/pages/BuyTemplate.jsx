@@ -55,7 +55,7 @@ export default function BuyTemplate() {
   };
 
   return (
-    <div className="pt-24 pb-24 min-h-screen bg-[#F8F7FC] font-body text-charcoal">
+    <div className="pt-24 pb-24 min-h-screen bg-[#FAF7F2] font-body text-charcoal">
       <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
         {/* Top Breadcrumb Link */}
         <div className="mb-4">

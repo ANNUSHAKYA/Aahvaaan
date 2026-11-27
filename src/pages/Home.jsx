@@ -580,25 +580,29 @@ export default function Home() {
               With every invitation, you get
             </h4>
             <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-base sm:text-lg font-semibold text-charcoal">
-              <span className="font-bold text-[#8A4A28]">Common link</span>
-              <span className="text-[#D97706] font-bold text-xl">+</span>
-              <span className="font-bold text-[#8A4A28]">5 personalized guest links free</span>
+              <span className="font-bold text-wine">Common link</span>
+              <span className="text-gold font-bold text-xl">+</span>
+              <span className="font-bold text-wine">5 personalized guest links free</span>
             </div>
             <p className="text-xs text-charcoal/60 mt-2">
               (You can increase the number of guests anytime by purchasing.)
             </p>
           </div>
 
-          {/* Bottom Live Updates Banner (Matches Screenshot 2) */}
-          <div className="bg-[#5C2D91] text-white rounded-[28px] p-8 sm:p-12 text-center shadow-2xl relative overflow-hidden">
-            <h4 className="font-heading text-2xl sm:text-3xl font-bold mb-3 tracking-tight">
+          {/* Bottom Live Updates Banner */}
+          <div className="bg-gradient-to-br from-[#512D38] via-[#6B3D4A] to-[#3D1E28] text-white rounded-[28px] p-8 sm:p-12 text-center shadow-2xl relative overflow-hidden border border-[#B69A70]/30">
+            {/* Ambient gold & rose glow highlights */}
+            <div className="absolute -top-16 -right-16 w-48 h-48 bg-[#B69A70]/15 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-[#C99191]/15 rounded-full blur-3xl pointer-events-none" />
+
+            <h4 className="font-heading text-2xl sm:text-3xl font-bold mb-3 tracking-tight relative z-10 text-white">
               Your guests always see the latest details.
             </h4>
-            <p className="font-body text-xs sm:text-sm text-white/85 max-w-xl mx-auto leading-relaxed mb-6">
+            <p className="font-body text-xs sm:text-sm text-white/85 max-w-xl mx-auto leading-relaxed mb-6 relative z-10">
               Change your mind about the venue? Caught a typo? Update your invitation and every guest link reflects it instantly. No resharing needed.
             </p>
-            <p className="font-body text-sm sm:text-base text-white/95">
-              Up to <span className="text-[#F59E0B] font-bold text-2xl sm:text-3xl mx-1">3</span> updates within <span className="text-[#F59E0B] font-bold text-2xl sm:text-3xl mx-1">6</span> months of going live
+            <p className="font-body text-sm sm:text-base text-white/95 relative z-10">
+              Up to <span className="text-[#B69A70] font-bold text-2xl sm:text-3xl mx-1 font-heading">3</span> updates within <span className="text-[#B69A70] font-bold text-2xl sm:text-3xl mx-1 font-heading">6</span> months of going live
             </p>
           </div>
         </div>

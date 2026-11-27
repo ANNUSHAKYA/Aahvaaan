@@ -244,7 +244,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="pt-24 pb-24 min-h-screen bg-[#F8F7FC]">
+    <div className="pt-24 pb-24 min-h-screen bg-[#FAF7F2]">
       <div className="container-custom mx-auto px-4 sm:px-8 max-w-6xl">
         {/* Breadcrumb & Section Title */}
         <div className="mb-8">
