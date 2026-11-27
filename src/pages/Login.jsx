@@ -6,16 +6,18 @@ import { useAuth } from '../context/AuthContext';
 import AuthIllustration from '../components/auth/AuthIllustration';
 
 export default function Login() {
-  const { signIn, signInWithGoogle } = useAuth();
+  const { signIn, signInWithGoogle, signInWithOtp } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
 
+  const [authMode, setAuthMode] = useState('password'); // 'password' | 'otp'
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [otpSent, setOtpSent] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,11 +25,16 @@ export default function Login() {
     setLoading(true);
 
     try {
-      await signIn({ email: form.email.trim(), password: form.password });
-      navigate(from, { replace: true });
+      if (authMode === 'otp') {
+        await signInWithOtp(form.email.trim());
+        setOtpSent(true);
+      } else {
+        await signIn({ email: form.email.trim(), password: form.password });
+        navigate(from, { replace: true });
+      }
     } catch (err) {
       console.error('Login error:', err);
-      setError(err.message || 'Invalid email or password. Please try again.');
+      setError(err.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -138,47 +145,95 @@ export default function Login() {
             </div>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-3.5">
-            <div>
-              <input
-                type="email"
-                required
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                placeholder="you@example.com"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 text-charcoal text-xs sm:text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
-              />
-            </div>
+          {/* Auth Mode Toggle (Password vs Email OTP) */}
+          <div className="flex p-1 bg-gray-100 rounded-xl mb-4 text-xs font-semibold">
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode('password');
+                setOtpSent(false);
+              }}
+              className={`flex-1 py-1.5 rounded-lg transition-all ${
+                authMode === 'password' ? 'bg-white text-gray-900 shadow-2xs' : 'text-gray-500 hover:text-gray-900'
+              }`}
+            >
+              Password
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setAuthMode('otp');
+                setOtpSent(false);
+              }}
+              className={`flex-1 py-1.5 rounded-lg transition-all ${
+                authMode === 'otp' ? 'bg-white text-gray-900 shadow-2xs' : 'text-gray-500 hover:text-gray-900'
+              }`}
+            >
+              Email OTP
+            </button>
+          </div>
 
-            <div className="relative">
-              <input
-                type={showPassword ? 'text' : 'password'}
-                required
-                value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-                placeholder="Enter your password"
-                className="w-full px-4 py-3 pr-10 rounded-xl border border-gray-200 text-charcoal text-xs sm:text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
-              />
+          {otpSent ? (
+            <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs space-y-2 mb-4">
+              <span className="font-bold block text-sm">✉️ Check your inbox!</span>
+              <p className="leading-relaxed">
+                We sent an instant login OTP link to <strong>{form.email}</strong>. Tap the link in your email to immediately access your dashboard.
+              </p>
               <button
                 type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-charcoal transition-colors"
-                title={showPassword ? 'Hide password' : 'Show password'}
+                onClick={() => setOtpSent(false)}
+                className="text-emerald-700 underline font-semibold mt-1 inline-block"
               >
-                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                Send again or use different email
               </button>
             </div>
+          ) : (
+            /* Form */
+            <form onSubmit={handleSubmit} className="space-y-3.5">
+              <div>
+                <input
+                  type="email"
+                  required
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  placeholder="you@example.com"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-charcoal text-xs sm:text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                />
+              </div>
 
-            {/* Gradient Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3.5 px-4 mt-2 rounded-2xl bg-gradient-to-r from-[#6B1D2F] via-[#851C34] to-[#A02845] hover:opacity-95 text-white font-body font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50"
-            >
-              {loading ? 'Logging in...' : 'Log in'}
-            </button>
-          </form>
+              {authMode === 'password' && (
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={form.password}
+                    onChange={(e) => setForm({ ...form, password: e.target.value })}
+                    placeholder="Enter your password"
+                    className="w-full px-4 py-3 pr-10 rounded-xl border border-gray-200 text-charcoal text-xs sm:text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-charcoal transition-colors"
+                    title={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              )}
+
+              {/* Gradient Submit Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3.5 px-4 mt-2 rounded-2xl bg-gradient-to-r from-[#6B1D2F] via-[#851C34] to-[#A02845] hover:opacity-95 text-white font-body font-semibold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50"
+              >
+                {loading
+                  ? authMode === 'otp' ? 'Sending Link...' : 'Logging in...'
+                  : authMode === 'otp' ? 'Send Login OTP Link' : 'Log in'}
+              </button>
+            </form>
+          )}
 
           {/* Links Below Button */}
           <div className="mt-5 flex items-center justify-between text-xs font-body">

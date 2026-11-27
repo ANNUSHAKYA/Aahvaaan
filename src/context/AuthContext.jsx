@@ -9,6 +9,7 @@ const AuthContext = createContext({
   signUp: async () => {},
   signIn: async () => {},
   signInWithGoogle: async () => {},
+  signInWithOtp: async () => {},
   resetPasswordForEmail: async () => {},
   updatePassword: async () => {},
   signOut: async () => {},
@@ -164,6 +165,23 @@ export function AuthProvider({ children }) {
     return data;
   };
 
+  // 3b. Sign in with Email OTP / Magic Link
+  const signInWithOtp = async (email) => {
+    if (!isSupabaseConfigured) {
+      throw new Error('Supabase is not configured yet. Please check your .env.');
+    }
+
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        emailRedirectTo: `${window.location.origin}/dashboard`,
+      },
+    });
+
+    if (error) throw error;
+    return data;
+  };
+
   // 4. Request Password Reset Link via Email OTP
   const resetPasswordForEmail = async (email) => {
     if (!isSupabaseConfigured) {
@@ -219,6 +237,7 @@ export function AuthProvider({ children }) {
     signUp,
     signIn,
     signInWithGoogle,
+    signInWithOtp,
     resetPasswordForEmail,
     updatePassword,
     signOut,

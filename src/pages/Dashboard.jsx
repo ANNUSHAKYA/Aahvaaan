@@ -11,6 +11,7 @@ import templates from '../data/templates';
 import packages from '../data/pricing';
 import GuestListManager from '../components/dashboard/GuestListManager';
 import AnalyticsModal from '../components/dashboard/AnalyticsModal';
+import PaymentModal from '../components/payment/PaymentModal';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -18,6 +19,9 @@ export default function Dashboard() {
 
   const [invitations, setInvitations] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Payment Modal state
+  const [activePaymentInvite, setActivePaymentInvite] = useState(null);
 
   // Create Modal state
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -409,6 +413,16 @@ export default function Dashboard() {
                         <span>Analytics</span>
                       </button>
                     </div>
+
+                    {inv.status !== 'published' && (
+                      <button
+                        type="button"
+                        onClick={() => setActivePaymentInvite(inv)}
+                        className="w-full mt-2 py-2 px-3 rounded-xl bg-gradient-to-r from-purple-700 to-indigo-600 hover:from-purple-800 hover:to-indigo-700 text-white font-body text-[11px] font-bold text-center flex items-center justify-center gap-1.5 shadow-xs transition-all"
+                      >
+                        <span>Unlock Live & Pay</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               );
@@ -625,6 +639,26 @@ export default function Dashboard() {
         <AnalyticsModal
           invitation={activeAnalyticsInvite}
           onClose={() => setActiveAnalyticsInvite(null)}
+        />
+      )}
+
+      {/* Modern Payment Options Modal (PhonePe QR & Razorpay) */}
+      {activePaymentInvite && (
+        <PaymentModal
+          isOpen={Boolean(activePaymentInvite)}
+          onClose={() => setActivePaymentInvite(null)}
+          amount={activePaymentInvite.package === 'luxury' ? 1999 : activePaymentInvite.package === 'starter' ? 999 : 1499}
+          invitationId={activePaymentInvite.id}
+          packageId={activePaymentInvite.package || 'signature'}
+          templateName={
+            activePaymentInvite.published_content?.brideName
+              ? `${activePaymentInvite.published_content.brideName} & ${activePaymentInvite.published_content.groomName}`
+              : 'Wedding Invitation'
+          }
+          onPaymentSuccess={() => {
+            setActivePaymentInvite(null);
+            fetchInvitations();
+          }}
         />
       )}
     </div>

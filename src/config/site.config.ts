@@ -16,6 +16,10 @@ export interface SiteConfig {
   instagramHandle: string;
   location: string;
   currency: string;
+  upiId: string;
+  payeeName: string;
+  phonePeQrImage: string;
+  walletBalance: number;
 }
 
 /**
@@ -61,6 +65,12 @@ export const siteConfig: SiteConfig = {
   instagramHandle: '@aahvaaan.invites',
   location: 'Jaipur & Mumbai, India',
   currency: '₹',
+
+  // Payment & UPI Configuration
+  upiId: (import.meta.env.VITE_UPI_ID as string) || 'annushakya94526@ybl',
+  payeeName: (import.meta.env.VITE_PAYEE_NAME as string) || 'ANNU SHAKYA DO RAJVEER SINGH',
+  phonePeQrImage: '/payment/phonepe-qr.jpg',
+  walletBalance: 0,
 };
 
 export default siteConfig;

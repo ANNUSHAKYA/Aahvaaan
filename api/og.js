@@ -1,4 +1,4 @@
-// Vercel Serverless Function: Open Graph Meta Generator for /api/og?slug=<slug>
+// Vercel Serverless Function: Open Graph Meta Generator for WhatsApp & Social Crawlers
 import { createClient } from '@supabase/supabase-js';
 
 export default async function handler(req, res) {
@@ -13,17 +13,67 @@ export default async function handler(req, res) {
   const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
   try {
-    const { data: inv, error } = await supabase.rpc('get_invitation_by_common_code', {
-      p_code: slug,
-    });
+    let inv = null;
+    let guestName = null;
+    const isPersonalGuest = String(slug).startsWith('r/');
+    const cleanSlug = isPersonalGuest ? String(slug).replace(/^r\//, '') : String(slug);
 
-    if (error || !inv) {
-      return res.status(404).send('Invitation not found');
+    // 1. Try personal guest lookup if slug starts with r/
+    if (isPersonalGuest) {
+      const { data: guestData } = await supabase
+        .from('guests')
+        .select('*, invitations(*)')
+        .eq('personal_slug', cleanSlug)
+        .maybeSingle();
+
+      if (guestData) {
+        guestName = guestData.name;
+        inv = guestData.invitations;
+      }
     }
 
-    const content = inv.content || {};
-    const bride = content.brideName || 'Bride';
-    const groom = content.groomName || 'Groom';
+    // 2. Try common code lookup
+    if (!inv) {
+      const { data: rpcInv } = await supabase.rpc('get_invitation_by_common_code', {
+        p_code: cleanSlug,
+      });
+      inv = rpcInv;
+    }
+
+    // 3. Fallback direct table query by slug or common_code
+    if (!inv) {
+      const { data: directInv } = await supabase
+        .from('invitations')
+        .select('*')
+        .or(`slug.eq.${cleanSlug},common_code.eq.${cleanSlug}`)
+        .maybeSingle();
+      inv = directInv;
+    }
+
+    if (!inv) {
+      // Default brand OG tags if invitation not found
+      return res.status(200).send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Aahvaaan by Vow & Vision | Luxury Digital Wedding Invitations</title>
+  <meta name="description" content="Experience royal Indian digital wedding invitations with 3D arch gate opening, shehnai music, and seamless WhatsApp guest tracking.">
+  <meta property="og:title" content="Aahvaaan by Vow & Vision | Luxury Wedding Invitations">
+  <meta property="og:description" content="Every celebration deserves a beautiful beginning. Craft your royal digital wedding invitation.">
+  <meta property="og:image" content="https://aahvaaan.vercel.app/templates/mor-pankh.svg">
+  <meta property="og:url" content="https://aahvaaan.vercel.app">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+  <h2>Aahvaaan by Vow & Vision</h2>
+  <a href="https://aahvaaan.vercel.app">Visit Website</a>
+</body>
+</html>`);
+    }
+
+    const content = inv.content || inv.published_content || inv.draft_content || {};
+    const bride = content.brideName || content.bride || 'Bride';
+    const groom = content.groomName || content.groom || 'Groom';
     const weddingDate = content.weddingDate
       ? new Date(content.weddingDate).toLocaleDateString('en-IN', {
           day: 'numeric',
@@ -32,16 +82,25 @@ export default async function handler(req, res) {
         })
       : '';
     const venue = content.venue || content.location || 'Jaipur, Rajasthan';
-    const previewImage = content.gallery?.[0] || inv.template?.preview_image || 'https://aahvaaan.com/og-default.jpg';
-    const title = `${bride} & ${groom}'s Wedding Invitation | Aahvaaan`;
-    const description = `We cordially invite you to celebrate our wedding on ${weddingDate} at ${venue}. Open your interactive invitation here.`;
-    const canonicalUrl = `https://${req.headers.host}/invite/${inv.slug}`;
+    const previewImage = content.gallery?.[0] || 'https://aahvaaan.vercel.app/templates/mor-pankh.svg';
+
+    const title = guestName
+      ? `Namaste ${guestName}! You are cordially invited to ${bride} & ${groom}'s Wedding`
+      : `${bride} & ${groom}'s Royal Wedding Invitation | Aahvaaan`;
+
+    const description = guestName
+      ? `With the divine blessings of our families, we invite you, ${guestName}, to bless us on our auspicious wedding day (${weddingDate}) at ${venue}.`
+      : `Together with our families, we joyfully invite you to celebrate our wedding on ${weddingDate} at ${venue}. Open your interactive royal invitation.`;
+
+    const targetUrl = isPersonalGuest
+      ? `https://${req.headers.host}/invite/r/${cleanSlug}`
+      : `https://${req.headers.host}/invite/${inv.slug || cleanSlug}`;
 
     const userAgent = req.headers['user-agent'] || '';
     const isCrawler = /whatsapp|facebookexternalhit|facebot|twitterbot|telegrambot|linkedinbot|slackbot|applebot|googlebot/i.test(userAgent);
 
     if (!isCrawler) {
-      return res.redirect(302, `/invite/${inv.slug}`);
+      return res.redirect(302, targetUrl);
     }
 
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
@@ -53,20 +112,24 @@ export default async function handler(req, res) {
   <title>${title}</title>
   <meta name="description" content="${description}">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="${canonicalUrl}">
+  <meta property="og:url" content="${targetUrl}">
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${description}">
   <meta property="og:image" content="${previewImage}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="Aahvaaan by Vow & Vision">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${title}">
   <meta name="twitter:description" content="${description}">
   <meta name="twitter:image" content="${previewImage}">
 </head>
-<body style="font-family: system-ui, sans-serif; text-align: center; padding: 40px; background: #FAF7F2; color: #512D38;">
-  <h2>${title}</h2>
-  <p>${description}</p>
-  <a href="${canonicalUrl}">Open Wedding Invitation</a>
+<body style="font-family: system-ui, -apple-system, sans-serif; text-align: center; padding: 48px 24px; background: #FAF7F2; color: #512D38;">
+  <h1 style="font-size: 26px; margin-bottom: 12px;">${title}</h1>
+  <p style="font-size: 15px; color: #65575A; max-width: 600px; margin: 0 auto 24px;">${description}</p>
+  <a href="${targetUrl}" style="display: inline-block; padding: 12px 28px; background: #512D38; color: #fff; text-decoration: none; border-radius: 9999px; font-weight: 600;">
+    Open Interactive Invitation
+  </a>
 </body>
 </html>`);
   } catch (err) {

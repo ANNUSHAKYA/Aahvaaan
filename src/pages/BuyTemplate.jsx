@@ -6,6 +6,7 @@ import {
 import templates from '../data/templates';
 import { initiatePayment } from '../utils/razorpay';
 import { useAuth } from '../context/AuthContext';
+import PaymentModal from '../components/payment/PaymentModal';
 
 export default function BuyTemplate() {
   const { id } = useParams();
@@ -29,6 +30,7 @@ export default function BuyTemplate() {
   const [couponApplied, setCouponApplied] = useState(false);
   const [couponError, setCouponError] = useState('');
   const [payingOnline, setPayingOnline] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // Pricing calculations matching Balcony reference
   const originalPrice = 3499;
@@ -48,27 +50,8 @@ export default function BuyTemplate() {
     }
   };
 
-  const handleBuyAndEdit = async () => {
-    setPayingOnline(true);
-    try {
-      await initiatePayment({
-        packageId: guestAddon === '500' ? 'luxury' : guestAddon === '50' ? 'signature' : 'starter',
-        userEmail: user?.email || 'annushakya94526@gmail.com',
-        userName: user?.user_metadata?.full_name || 'Annu Shakya',
-        userPhone: '9876543210',
-        onSuccess: () => {
-          navigate('/dashboard?payment=success');
-        },
-        onError: () => {
-          // If offline/demo, navigate to dashboard with created invitation
-          navigate('/dashboard?payment=success');
-        },
-      });
-    } catch {
-      navigate('/dashboard?payment=success');
-    } finally {
-      setPayingOnline(false);
-    }
+  const handleBuyAndEdit = () => {
+    setShowPaymentModal(true);
   };
 
   return (
@@ -357,12 +340,22 @@ export default function BuyTemplate() {
               {/* Razorpay Trust Badge */}
               <div className="flex items-center justify-center gap-1.5 text-[11px] text-gray-400 pt-1">
                 <Lock size={12} />
-                <span>Secure checkout - payments handled by Razorpay</span>
+                <span>Secure checkout - payments handled by PhonePe & Razorpay</span>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modern Payment Options Modal (Matches Screenshot 1 & 2) */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        amount={finalTotal}
+        packageId={guestAddon === '500' ? 'luxury' : guestAddon === '50' ? 'signature' : 'starter'}
+        templateName={templateDisplayName}
+        onPaymentSuccess={() => navigate('/dashboard?payment=success')}
+      />
     </div>
   );
 }

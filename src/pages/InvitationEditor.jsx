@@ -16,6 +16,7 @@ import config from '../data/config';
 import TemplateRenderer from '../components/invitation/TemplateRenderer';
 import { compressImageToWebP } from '../utils/imageCompressor';
 import { initiatePayment } from '../utils/razorpay';
+import PaymentModal from '../components/payment/PaymentModal';
 
 // ─── Shloka Presets ───
 const SHLOKA_PRESETS = [
@@ -66,6 +67,7 @@ export default function InvitationEditor() {
 
   // Publishing Gate Modal
   const [showPublishModal, setShowPublishModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [selectedPkgId, setSelectedPkgId] = useState('signature');
   const [publishFeedback, setPublishFeedback] = useState(null);
@@ -408,40 +410,10 @@ export default function InvitationEditor() {
     }));
   };
 
-  // Razorpay Pay & Publish Flow
-  const handleRazorpayPublish = async () => {
-    setPublishing(true);
-    setPublishFeedback(null);
-
-    try {
-      await initiatePayment({
-        invitationId: invitation.id,
-        packageId: selectedPkgId,
-        type: 'package',
-        userEmail: user?.email || '',
-        userName: content?.brideName ? `${content.brideName} & ${content.groomName}` : '',
-        onSuccess: async () => {
-          await executePublishInDb(selectedPkgId);
-          setPublishing(false);
-          setShowPublishModal(false);
-          setPublishFeedback({
-            type: 'success',
-            text: '🎉 Payment confirmed! Your wedding website is now live and ready to share.',
-          });
-        },
-        onError: (err) => {
-          setPublishing(false);
-          setPublishFeedback({
-            type: 'error',
-            text: err.message || 'Payment was not completed. You can try again or order via WhatsApp.',
-          });
-        },
-      });
-    } catch (err) {
-      console.error('Publish checkout error:', err);
-      setPublishing(false);
-      setPublishFeedback({ type: 'error', text: err.message || 'Could not launch payment.' });
-    }
+  // Payment & Publish Flow (Opens Modern Payment Options Modal with PhonePe & Razorpay)
+  const handleRazorpayPublish = () => {
+    setShowPublishModal(false);
+    setShowPaymentModal(true);
   };
 
   // Push Live Update (for already published invitations, enforces <= 3 updates and 6 months)
@@ -2041,6 +2013,24 @@ export default function InvitationEditor() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Modern Payment Options Modal (PhonePe QR & Razorpay) */}
+      <PaymentModal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        amount={packages.find((p) => p.id === selectedPkgId)?.price || 1499}
+        invitationId={invitation?.id}
+        packageId={selectedPkgId}
+        templateName={template?.name || 'Mor Pankh'}
+        onPaymentSuccess={async () => {
+          await executePublishInDb(selectedPkgId);
+          setShowPaymentModal(false);
+          setPublishFeedback({
+            type: 'success',
+            text: '🎉 Payment confirmed! Your wedding website is now live and ready to share.',
+          });
+        }}
+      />
     </div>
   );
 }
