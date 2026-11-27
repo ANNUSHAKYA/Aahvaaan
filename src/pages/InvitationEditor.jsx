@@ -1714,7 +1714,7 @@ export default function InvitationEditor() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                       {[
                         { id: 'peacock', name: 'Royal Peacock & Gold', primary: '#0E4D4F', accent: '#C9A24B', bg: '#FAF6F0' },
-                        { id: 'ivory', name: 'Classic Ivory & Blush', primary: '#7C3AED', accent: '#D9777F', bg: '#FFFDF9' },
+                        { id: 'ivory', name: 'Classic Ivory & Dusty Rose', primary: '#512D38', accent: '#C99191', bg: '#FAF7F2' },
                         { id: 'teal', name: 'Dark Emerald & Antique Gold', primary: '#082D2E', accent: '#D4AF37', bg: '#F5EBE1' },
                         { id: 'ruby', name: 'Royal Ruby & Gold', primary: '#761F32', accent: '#C9A24B', bg: '#FDFBF7' },
                       ].map((pal) => {

@@ -135,12 +135,12 @@ export default function Profile() {
     .toUpperCase() || 'AS';
 
   return (
-    <div className="pt-24 pb-24 min-h-screen bg-[#F8F7FC] font-body text-charcoal">
+    <div className="pt-24 pb-24 min-h-screen bg-[#FAF7F2] font-body text-charcoal">
       <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
         {/* ─── 1. TOP VERIFIED PROFILE CARD ─── */}
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] flex items-center gap-5 sm:gap-6">
           {/* Avatar Initials Circle */}
-          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#EDE9FE] text-[#7C3AED] font-heading font-bold text-xl sm:text-2xl flex items-center justify-center shrink-0">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-[#E9D8CC] text-[#512D38] border border-[#B69A70]/40 font-heading font-bold text-xl sm:text-2xl flex items-center justify-center shrink-0">
             {initials}
           </div>
 
@@ -266,7 +266,7 @@ export default function Profile() {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-[#512D38]/20 focus:border-[#512D38] transition-all"
                   />
                 </div>
 
@@ -274,7 +274,7 @@ export default function Profile() {
                   <button
                     type="submit"
                     disabled={savingName}
-                    className="px-8 py-3 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] hover:from-[#6D28D9] hover:to-[#5B21B6] text-white font-medium text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50"
+                    className="px-8 py-3 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white font-medium text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50 border border-[#B69A70]/30"
                   >
                     {savingName ? 'Saving...' : 'Save changes'}
                   </button>
@@ -325,7 +325,7 @@ export default function Profile() {
                       placeholder="New password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-[#512D38]/20 focus:border-[#512D38] transition-all"
                     />
                   </div>
 
@@ -338,7 +338,7 @@ export default function Profile() {
                       placeholder="Confirm password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/20 focus:border-[#7C3AED] transition-all"
+                      className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-xs sm:text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-[#512D38]/20 focus:border-[#512D38] transition-all"
                     />
                   </div>
                 </div>
@@ -347,7 +347,7 @@ export default function Profile() {
                   <button
                     type="submit"
                     disabled={savingPassword}
-                    className="px-8 py-3 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] hover:from-[#6D28D9] hover:to-[#5B21B6] text-white font-medium text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50"
+                    className="px-8 py-3 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white font-medium text-xs sm:text-sm shadow-md hover:shadow-lg transition-all disabled:opacity-50 border border-[#B69A70]/30"
                   >
                     {savingPassword ? 'Updating...' : 'Set password'}
                   </button>

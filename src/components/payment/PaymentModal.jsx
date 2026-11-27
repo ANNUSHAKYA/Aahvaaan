@@ -227,8 +227,7 @@ export default function PaymentModal({
                 className="p-4 rounded-2xl border border-gray-200 hover:border-wine/40 hover:bg-[#FAF7F2]/60 cursor-pointer transition-all flex items-center justify-between group shadow-2xs"
               >
                 <div className="flex items-center gap-3">
-                  {/* PhonePe official purple badge */}
-                  <div className="w-10 h-10 rounded-xl bg-[#5f259f] text-white flex items-center justify-center font-bold text-base shadow-xs shrink-0">
+                  <div className="w-10 h-10 rounded-xl bg-[#512D38] text-[#B69A70] flex items-center justify-center font-bold text-base shadow-xs shrink-0 border border-[#B69A70]/30">
                     पे
                   </div>
                   <div>
@@ -321,17 +320,17 @@ export default function PaymentModal({
                 </button>
               </div>
 
-              {/* PhonePe Brand Header Banner (Matches Screenshot 2) */}
+              {/* PhonePe Brand Header Banner */}
               <div className="bg-black text-white p-4 rounded-2xl text-center space-y-3 relative overflow-hidden shadow-lg border border-gray-900">
                 <div className="flex items-center justify-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-[#5f259f] flex items-center justify-center text-white font-bold text-sm">
+                  <div className="w-8 h-8 rounded-full bg-[#512D38] flex items-center justify-center text-[#B69A70] font-bold text-sm border border-[#B69A70]/30">
                     पे
                   </div>
                   <span className="font-bold text-lg tracking-tight">PhonePe</span>
                 </div>
 
                 <div className="space-y-0.5">
-                  <span className="text-[10px] uppercase tracking-widest text-purple-400 font-bold block">
+                  <span className="text-[10px] uppercase tracking-widest text-[#B69A70] font-bold block">
                     ACCEPTED HERE
                   </span>
                   <p className="text-xs text-gray-300">
@@ -400,7 +399,7 @@ export default function PaymentModal({
               {/* Mobile Direct Pay Deep Link */}
               <a
                 href={upiIntentUrl}
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#5f259f] to-[#7c3aed] hover:from-[#4b1d7d] hover:to-[#6d28d9] text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-md transition-all sm:hidden"
+                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-md transition-all sm:hidden border border-[#B69A70]/30"
               >
                 <span>⚡ Open PhonePe / UPI App</span>
               </a>

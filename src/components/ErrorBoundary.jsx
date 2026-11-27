@@ -34,7 +34,7 @@ export default class ErrorBoundary extends React.Component {
                 this.setState({ hasError: false, error: null });
                 window.location.reload();
               }}
-              className="px-5 py-2.5 rounded-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-xs font-semibold shadow-md transition-all"
+              className="px-5 py-2.5 rounded-full bg-wine hover:bg-wine-light text-white text-xs font-semibold shadow-md transition-all"
             >
               Reload Page
             </button>

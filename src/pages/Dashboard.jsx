@@ -258,7 +258,7 @@ export default function Dashboard() {
             {invitations.length > 0 && (
               <button
                 onClick={() => setShowCreateModal(true)}
-                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] hover:from-[#6D28D9] hover:to-[#5B21B6] text-white font-body text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all"
+                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white font-body text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all border border-[#B69A70]/30"
               >
                 <Plus size={15} />
                 <span>Create invitation</span>
@@ -270,11 +270,11 @@ export default function Dashboard() {
         {/* Content State: Loading, Empty, or Populated Grid */}
         {loading ? (
           <div className="py-20 text-center bg-white rounded-3xl border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] max-w-4xl mx-auto">
-            <div className="w-9 h-9 rounded-full border-2 border-[#7C3AED] border-t-transparent animate-spin mx-auto mb-3" />
+            <div className="w-9 h-9 rounded-full border-2 border-[#B69A70] border-t-transparent animate-spin mx-auto mb-3" />
             <p className="font-body text-xs text-charcoal/60">Loading your invitations...</p>
           </div>
         ) : invitations.length === 0 ? (
-          /* Empty State (Exact Balcony Reference Layout from Screenshot 2) */
+          /* Empty State */
           <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] p-12 sm:p-16 text-center max-w-4xl mx-auto my-4">
             <div className="text-4xl mb-4 select-none">💌</div>
             <h3 className="font-heading text-xl sm:text-2xl font-bold text-charcoal mb-2">
@@ -286,7 +286,7 @@ export default function Dashboard() {
             <div className="flex items-center justify-center gap-3">
               <Link
                 to="/templates"
-                className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-gradient-to-r from-[#7C3AED] to-[#6D28D9] hover:from-[#6D28D9] hover:to-[#5B21B6] text-white font-body text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg transition-all hover:scale-105"
+                className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-gradient-to-r from-[#512D38] via-[#6B3D4A] to-[#8C3A50] hover:from-[#3E212A] hover:to-[#732F42] text-white font-body text-xs sm:text-sm font-semibold shadow-md hover:shadow-lg transition-all hover:scale-105 border border-[#B69A70]/30"
               >
                 Browse templates
               </Link>

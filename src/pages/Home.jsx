@@ -604,11 +604,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ════════════════ 4. 3D FEATURES SECTION (Exact Screenshot 6 Match) ════════════════ */}
-      <section id="features" className="bg-[#2D0A38] text-white py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        {/* Ambient atmospheric purple glows */}
-        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#8B2BE2]/15 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-[#6B1D4F]/20 rounded-full blur-[140px] pointer-events-none" />
+      {/* ════════════════ 4. 3D FEATURES SECTION ════════════════ */}
+      <section id="features" className="bg-[#512D38] text-white py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+        {/* Ambient atmospheric warm gold & rose glows */}
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#B69A70]/15 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-[#C99191]/20 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="max-w-5xl mx-auto relative z-10">
           {/* Header Badge */}
@@ -622,14 +622,14 @@ export default function Home() {
           {/* Row 1: 3 Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Card 1: Instant Directions */}
-            <div className="bg-white rounded-[28px] p-8 text-charcoal shadow-2xl border border-gray-100 text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
-              {/* 3D Neon Glow Pin Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#C026D3]/10 flex items-center justify-center mb-5 relative group">
-                <div className="w-11 h-11 rounded-xl border-2 border-[#7C3AED] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.35)] bg-white">
-                  <MapPin size={22} className="text-[#7C3AED] stroke-[2.2]" />
+            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
+              {/* 3D Antique Gold Glow Pin Icon */}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5 relative group">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
+                  <MapPin size={22} className="text-[#512D38] stroke-[2.2]" />
                 </div>
               </div>
-              <h4 className="font-heading text-base sm:text-lg font-bold text-charcoal mb-2">
+              <h4 className="font-heading text-base sm:text-lg font-bold text-wine mb-2">
                 Instant Directions
               </h4>
               <p className="font-body text-xs text-charcoal/70 leading-relaxed">
@@ -638,14 +638,14 @@ export default function Home() {
             </div>
 
             {/* Card 2: RSVP Tracking */}
-            <div className="bg-white rounded-[28px] p-8 text-charcoal shadow-2xl border border-gray-100 text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
-              {/* 3D Neon Glow Users Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#C026D3]/10 flex items-center justify-center mb-5 relative">
-                <div className="w-11 h-11 rounded-xl border-2 border-[#7C3AED] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.35)] bg-white">
-                  <Users size={22} className="text-[#7C3AED] stroke-[2.2]" />
+            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
+              {/* 3D Antique Gold Glow Users Icon */}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5 relative">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
+                  <Users size={22} className="text-[#512D38] stroke-[2.2]" />
                 </div>
               </div>
-              <h4 className="font-heading text-base sm:text-lg font-bold text-charcoal mb-2">
+              <h4 className="font-heading text-base sm:text-lg font-bold text-wine mb-2">
                 RSVP Tracking
               </h4>
               <p className="font-body text-xs text-charcoal/70 leading-relaxed">
@@ -654,14 +654,14 @@ export default function Home() {
             </div>
 
             {/* Card 3: Add to Calendar */}
-            <div className="bg-white rounded-[28px] p-8 text-charcoal shadow-2xl border border-gray-100 text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
-              {/* 3D Neon Glow Calendar Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#C026D3]/10 flex items-center justify-center mb-5 relative">
-                <div className="w-11 h-11 rounded-xl border-2 border-[#7C3AED] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.35)] bg-white">
-                  <Calendar size={22} className="text-[#7C3AED] stroke-[2.2]" />
+            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
+              {/* 3D Antique Gold Glow Calendar Icon */}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5 relative">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
+                  <Calendar size={22} className="text-[#512D38] stroke-[2.2]" />
                 </div>
               </div>
-              <h4 className="font-heading text-base sm:text-lg font-bold text-charcoal mb-2">
+              <h4 className="font-heading text-base sm:text-lg font-bold text-wine mb-2">
                 Add to Calendar
               </h4>
               <p className="font-body text-xs text-charcoal/70 leading-relaxed">
@@ -670,17 +670,17 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Row 2: 2 Centered Cards (Matches Screenshot 6) */}
+          {/* Row 2: 2 Centered Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto mt-6">
             {/* Card 4: Live Updates */}
-            <div className="bg-white rounded-[28px] p-8 text-charcoal shadow-2xl border border-gray-100 text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
-              {/* 3D Neon Glow Edit Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#C026D3]/10 flex items-center justify-center mb-5 relative">
-                <div className="w-11 h-11 rounded-xl border-2 border-[#7C3AED] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.35)] bg-white">
-                  <Edit3 size={22} className="text-[#7C3AED] stroke-[2.2]" />
+            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
+              {/* 3D Antique Gold Glow Edit Icon */}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5 relative">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
+                  <Edit3 size={22} className="text-[#512D38] stroke-[2.2]" />
                 </div>
               </div>
-              <h4 className="font-heading text-base sm:text-lg font-bold text-charcoal mb-2">
+              <h4 className="font-heading text-base sm:text-lg font-bold text-wine mb-2">
                 Live Updates
               </h4>
               <p className="font-body text-xs text-charcoal/70 leading-relaxed">
@@ -689,14 +689,14 @@ export default function Home() {
             </div>
 
             {/* Card 5: Interactive Experience */}
-            <div className="bg-white rounded-[28px] p-8 text-charcoal shadow-2xl border border-gray-100 text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
-              {/* 3D Neon Glow Sparkle Icon */}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#7C3AED]/10 to-[#C026D3]/10 flex items-center justify-center mb-5 relative">
-                <div className="w-11 h-11 rounded-xl border-2 border-[#7C3AED] flex items-center justify-center shadow-[0_0_15px_rgba(124,58,237,0.35)] bg-white">
-                  <Sparkles size={22} className="text-[#7C3AED] stroke-[2.2]" />
+            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
+              {/* 3D Antique Gold Glow Sparkle Icon */}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5 relative">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
+                  <Sparkles size={22} className="text-[#512D38] stroke-[2.2]" />
                 </div>
               </div>
-              <h4 className="font-heading text-base sm:text-lg font-bold text-charcoal mb-2">
+              <h4 className="font-heading text-base sm:text-lg font-bold text-wine mb-2">
                 Interactive Experience
               </h4>
               <p className="font-body text-xs text-charcoal/70 leading-relaxed">
