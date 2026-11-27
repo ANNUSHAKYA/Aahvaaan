@@ -479,8 +479,8 @@ export default function Home() {
                 </div>
 
                 {/* Center Content Inside Arch */}
-                <div className="relative z-20 my-auto px-2 max-w-[190px]">
-                  <p className="font-heading text-sm sm:text-base font-bold text-white drop-shadow-md leading-tight">
+                <div className="relative z-20 my-auto px-2 max-w-[200px]">
+                  <p className="font-petit text-xl sm:text-2xl text-white drop-shadow-md leading-tight">
                     Kabir &amp; Ananya
                   </p>
                   <div className="w-6 h-0.5 bg-gold/70 rounded-full mx-auto my-1.5" />
@@ -545,11 +545,11 @@ export default function Home() {
                 </div>
 
                 {/* Center Content Inside Arch */}
-                <div className="relative z-20 my-auto px-2 max-w-[190px]">
+                <div className="relative z-20 my-auto px-2 max-w-[200px]">
                   <span className="text-[8px] uppercase tracking-widest text-gold-light font-bold block mb-0.5">
                     Namaste
                   </span>
-                  <p className="font-heading text-sm sm:text-base font-bold text-white drop-shadow-md leading-tight">
+                  <p className="font-petit text-lg sm:text-xl text-white drop-shadow-md leading-tight">
                     Mr. Sharma &amp; Family
                   </p>
                   <div className="w-6 h-0.5 bg-gold/70 rounded-full mx-auto my-1.5" />

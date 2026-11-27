@@ -1238,8 +1238,8 @@ export default function MorPankhInvitation({
                         <p className="text-[11px] uppercase tracking-[0.2em] text-gold-light drop-shadow-sm font-semibold">
                           {t.togetherForever}
                         </p>
-                        <h1 className="mt-3 font-serif text-4xl sm:text-5xl text-white drop-shadow-lg font-bold">
-                          {groomName} <span className="font-serif italic text-gold-light">&amp;</span> {brideName}
+                        <h1 className="mt-3 font-petit text-4xl sm:text-5xl text-white drop-shadow-lg">
+                          {groomName} <span className="text-gold-light">&amp;</span> {brideName}
                         </h1>
                         <p className="mt-3 text-xs uppercase tracking-[0.2em] text-[#E9D8CC] font-semibold drop-shadow-xs">
                           {content.weddingDate || '27 February 2027'} · {content.location || 'Jaipur'}
