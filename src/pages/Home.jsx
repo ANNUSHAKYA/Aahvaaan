@@ -122,26 +122,16 @@ export default function Home() {
         title="Aahvaaan | Luxury Digital Wedding Invitations by Vow & Vision"
         description="Four signature Indian wedding collections with personalized envelope reveals, live RSVP tracking, and Google Maps directions."
       />
-      {/* ════════════════ 1. 3D HERO SECTION ════════════════ */}
-      <section className="bg-gradient-to-br from-[#1A030A] via-[#3D0A17] to-[#6B1D2F] text-white pt-28 sm:pt-36 pb-20 sm:pb-28 relative overflow-hidden">
-        {/* Subtle royal couple ambient background texture */}
-        <div className="absolute inset-0 opacity-15 mix-blend-luminosity pointer-events-none overflow-hidden">
-          <img
-            src="/hero-couple.jpg"
-            alt=""
-            className="w-full h-full object-cover object-center filter blur-xs scale-105"
-            aria-hidden="true"
-          />
-        </div>
+      {/* ════════════════ 1. 3D HERO SECTION (BALCONY PALACE ARCH STYLE) ════════════════ */}
+      <section className="bg-gradient-to-b from-[#220710] via-[#380E1B] to-[#512D38] text-white pt-28 sm:pt-36 pb-14 sm:pb-20 relative overflow-hidden">
         {/* Soft 3D ambient glows */}
-        <div className="absolute top-1/4 left-10 w-96 h-96 bg-wine/40 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-gold/20 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-wine/20 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute top-1/4 left-10 w-96 h-96 bg-[#8C3A50]/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#B69A70]/15 rounded-full blur-[140px] pointer-events-none" />
 
         <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            {/* Left Content (7 Cols) */}
-            <div className="lg:col-span-7 text-center lg:text-left space-y-5">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+            {/* Left Content (Balcony typography & layout) */}
+            <div className="lg:col-span-6 text-center lg:text-left space-y-6">
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -149,14 +139,14 @@ export default function Home() {
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-gold/40 text-gold-light text-xs font-semibold tracking-wider uppercase"
               >
                 <Sparkles size={13} className="text-gold" />
-                <span>Bespoke Digital Wedding Invitations</span>
+                <span>Bespoke Digital Invitations</span>
               </motion.div>
 
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="font-heading text-4xl sm:text-5xl lg:text-[4rem] font-bold text-white leading-[1.12] tracking-tight"
+                className="font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.12] tracking-tight"
               >
                 Make your first impression unforgettable.
               </motion.h1>
@@ -165,51 +155,51 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="font-heading text-xl sm:text-2xl text-gold-light/95 pt-1 font-light"
+                className="font-heading text-2xl sm:text-3xl text-gold-light/90 font-normal tracking-wide"
               >
-                Four signature collections crafted for Indian royalty.
+                Wedding Invitations
               </motion.p>
 
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
-                className="font-body text-xs sm:text-sm text-white/80 leading-relaxed max-w-xl mx-auto lg:mx-0"
+                className="font-body text-xs sm:text-sm text-white/80 leading-relaxed max-w-lg mx-auto lg:mx-0"
               >
                 Ditch static PDFs and video files. Give your guests an interactive celebration website with personalized envelope reveals, live countdown, Google Maps navigation, background wedding music, and instant WhatsApp RSVPs.
               </motion.p>
 
-              {/* ─── INTERACTIVE HERO HOOK: TAP THE DIYAS (MOBILE-FIRST) ─── */}
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.28 }}
-                className="pt-2 pb-1"
-              >
-                <InteractiveDiyaHook />
-              </motion.div>
-
-              {/* Action Buttons */}
+              {/* Action Buttons: Pill styled like Balcony reference */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-4"
+                className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4"
               >
                 <Link
-                  to="/invitations"
-                  className="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-wine to-[#9E2A47] hover:from-[#9E2A47] hover:to-wine text-white font-body font-semibold text-xs sm:text-sm shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+                  to="/templates"
+                  className="inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-wine via-[#6B3D4A] to-[#8C3A50] hover:scale-105 text-white font-body font-semibold text-sm shadow-xl border border-[#B69A70]/50 transition-all duration-300"
                 >
-                  <span>Explore 4 Collections</span>
-                  <ArrowRight size={16} />
+                  <span>View templates</span>
+                  <ArrowRight size={16} className="text-gold-light" />
                 </Link>
 
-                <a
-                  href="#templates"
+                <Link
+                  to="/invitations"
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full border border-gold/40 text-gold-light hover:bg-white/10 text-xs sm:text-sm font-semibold transition-all backdrop-blur-xs"
                 >
-                  <span>View designs</span>
-                </a>
+                  <span>Explore Collections</span>
+                </Link>
+              </motion.div>
+
+              {/* ─── INTERACTIVE HERO HOOK: TAP THE DIYAS (COMPACT) ─── */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.35 }}
+                className="pt-1"
+              >
+                <InteractiveDiyaHook />
               </motion.div>
 
               {/* Trust Metrics Pill */}
@@ -217,7 +207,7 @@ export default function Home() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="pt-4 flex flex-wrap items-center justify-center lg:justify-start gap-5 text-xs text-white/70"
+                className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-5 text-xs text-white/70"
               >
                 <div className="flex items-center gap-1.5">
                   <span className="text-gold font-bold">★★★★★</span>
@@ -236,155 +226,91 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* Right Column: 3D Perspective Device & Royal Couple Showcase (5 Cols) */}
-            <div className="lg:col-span-5 flex justify-center perspective-1000">
-              <div className="relative w-full max-w-[340px] sm:max-w-[380px] preserve-3d">
-                {/* ─── Layer 1: Royal Couple Portrait Arch Card ─── */}
-                <motion.div
-                  initial={{ opacity: 0, rotateY: 10, rotateX: 10 }}
-                  animate={{ opacity: 1, rotateY: -8, rotateX: 6, z: -30 }}
-                  transition={{ duration: 0.8 }}
-                  className="absolute -top-10 -right-8 w-full h-[540px] rounded-[38px] overflow-hidden border-2 border-gold/60 shadow-2xl hidden sm:block pointer-events-none opacity-90 bg-gradient-to-br from-[#FAF7F2] to-[#E9D8CC]"
-                  style={{
-                    transform: 'rotateY(-12deg) rotateX(8deg) rotateZ(3deg) translateZ(-40px)',
-                  }}
-                >
-                  <img
-                    src="/hero-couple.jpg"
-                    alt="Royal Indian Wedding Couple"
-                    className="w-full h-full object-cover object-top filter brightness-95"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#512D38]/90 via-transparent to-black/35" />
-                  <div className="absolute top-4 left-4 right-4 text-center">
-                    <span className="text-[10px] tracking-widest uppercase font-semibold text-gold-light bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-gold/30">
-                      Bespoke Royal Invitations
+            {/* Right Column: Architectural Palace Arch Window (Matching Balcony reference) */}
+            <div className="lg:col-span-6 flex justify-center lg:justify-end items-end relative">
+              {/* Outer architectural arch container */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: 'easeOut' }}
+                className="relative w-full max-w-[420px] sm:max-w-[460px]"
+              >
+                {/* Backing palace wall shadow depth */}
+                <div className="absolute -inset-2 rounded-t-[230px] rounded-b-2xl bg-gradient-to-b from-[#B69A70]/40 via-[#512D38]/50 to-transparent blur-md -z-10" />
+
+                {/* 3D Palace Architectural Arch Bezel */}
+                <div className="relative rounded-t-[220px] rounded-b-2xl overflow-hidden border-[6px] border-[#B69A70] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)] bg-[#FAF7F2]">
+                  {/* Subtle inner depth shadow for 3D alcove feel */}
+                  <div className="absolute inset-0 shadow-[inset_0_15px_30px_rgba(0,0,0,0.45)] pointer-events-none z-20 rounded-t-[214px]" />
+
+                  {/* Top arch decorative keystone filigree */}
+                  <div className="absolute top-3 inset-x-0 flex justify-center z-30 pointer-events-none">
+                    <span className="bg-[#512D38]/90 text-gold-light border border-gold/60 text-[10px] tracking-[0.25em] uppercase font-heading px-4 py-1 rounded-full shadow-md backdrop-blur-xs">
+                      The Royal Heritage
                     </span>
                   </div>
-                  <div className="absolute bottom-4 left-4 right-4 text-center text-white">
-                    <p className="font-heading text-xl font-bold tracking-wide drop-shadow-md">
-                      Ananya &amp; Kabir
-                    </p>
-                    <p className="text-[10px] text-gold-light tracking-widest uppercase mt-0.5">
-                      The Royal Heritage Collection
-                    </p>
-                  </div>
-                </motion.div>
 
-                {/* ─── Layer 2: Main 3D Tilted Smartphone Mockup ─── */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  transition={{ duration: 0.7, delay: 0.2 }}
-                  className="relative w-full aspect-[9/18.5] bg-[#0E0306] rounded-[44px] p-3 shadow-3d-phone border-[3px] border-gold/60 overflow-hidden"
-                  style={{
-                    transform: 'perspective(1200px) rotateY(-10deg) rotateX(6deg) rotateZ(-1deg)',
-                  }}
-                >
-                  {/* Dynamic Island Notch */}
-                  <div className="w-24 h-5 bg-black rounded-full mx-auto mb-2 z-30 relative shadow-inner" />
+                  {/* Main Couple Portrait inside the Arch */}
+                  <div className="relative aspect-[3/4.5] w-full overflow-hidden bg-wine">
+                    <img
+                      src="/hero-couple.jpg"
+                      alt="Aahvaaan Royal Wedding Couple"
+                      className="w-full h-full object-cover object-top filter brightness-[0.98] transition-transform duration-700 hover:scale-105"
+                      loading="eager"
+                    />
 
-                  {/* Smartphone Screen Content */}
-                  <div className="h-[calc(100%-28px)] rounded-[34px] overflow-hidden bg-gradient-to-b from-[#FAF7F2] via-[#FFFDF9] to-[#E9D8CC] p-3.5 flex flex-col justify-between text-center relative border border-champagne/80 shadow-inner">
-                    {/* Top Gold Corner Filigree */}
-                    <div className="absolute top-2 left-2 text-[10px] text-gold opacity-60">✦</div>
-                    <div className="absolute top-2 right-2 text-[10px] text-gold opacity-60">✦</div>
+                    {/* Rich gradient at the base for luxury text overlay */}
+                    <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-[#220710] via-[#512D38]/70 to-transparent z-10 pointer-events-none" />
 
-                    {/* Header */}
-                    <div className="pt-0.5">
-                      <span className="text-[9px] font-heading tracking-[0.25em] text-gold uppercase block font-bold mb-0.5">
-                        THE ROYAL COLLECTION
-                      </span>
-                      <span className="text-[10px] text-charcoal/70 font-serif italic block">
+                    {/* Bottom Royal Names & Tagline */}
+                    <div className="absolute bottom-4 inset-x-0 text-center z-20 text-white px-4">
+                      <p className="text-gold-light text-[11px] font-heading tracking-[0.2em] uppercase font-medium">
                         || श्री गणेशाय नमः ||
-                      </span>
-                    </div>
-
-                    {/* Couple Portrait Card inside Smartphone Screen */}
-                    <div className="my-auto py-1">
-                      <div className="relative mx-auto w-full aspect-[4/3] rounded-2xl overflow-hidden border border-gold/60 shadow-md mb-2">
-                        <img
-                          src="/hero-couple.jpg"
-                          alt="Ananya & Kabir"
-                          className="w-full h-full object-cover object-top"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                        <div className="absolute bottom-1.5 inset-x-0 text-center text-white">
-                          <h3 className="font-heading text-base sm:text-lg font-bold drop-shadow-md leading-tight">
-                            Ananya &amp; Kabir
-                          </h3>
-                        </div>
-                      </div>
-
-                      {/* Wedding Date & Venue */}
-                      <p className="font-heading text-xs font-semibold text-charcoal">
-                        Sunday, 22 February 2027
                       </p>
-                      <p className="font-body text-[10px] text-charcoal/60 mt-0.5">
-                        The Oberoi Udaivilas, Udaipur
+                      <h3 className="font-heading text-2xl sm:text-3xl font-bold tracking-wide text-white drop-shadow-lg">
+                        Ananya &amp; Kabir
+                      </h3>
+                      <p className="text-xs text-champagne/90 font-light mt-0.5">
+                        Interactive Celebration Experience
                       </p>
-
-                      {/* Live Countdown Pills */}
-                      <div className="flex items-center justify-center gap-1.5 mt-2">
-                        <div className="bg-white/80 border border-champagne px-2 py-0.5 rounded-md shadow-2xs">
-                          <span className="text-[10px] font-bold text-wine block leading-none">248</span>
-                          <span className="text-[7px] text-charcoal/50 uppercase block">Days</span>
-                        </div>
-                        <div className="bg-white/80 border border-champagne px-2 py-0.5 rounded-md shadow-2xs">
-                          <span className="text-[10px] font-bold text-wine block leading-none">14</span>
-                          <span className="text-[7px] text-charcoal/50 uppercase block">Hours</span>
-                        </div>
-                        <div className="bg-white/80 border border-champagne px-2 py-0.5 rounded-md shadow-2xs">
-                          <span className="text-[10px] font-bold text-wine block leading-none">32</span>
-                          <span className="text-[7px] text-charcoal/50 uppercase block">Mins</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Bottom CTA Mockup */}
-                    <div className="pt-1">
-                      <div className="w-full py-2 rounded-full bg-wine text-white text-[11px] font-semibold tracking-wide shadow-xs flex items-center justify-center gap-1">
-                        <span>RSVP & View Schedule</span>
-                        <ChevronRight size={13} />
-                      </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
 
-                {/* ─── Layer 3: Floating 3D Micro-Widgets ─── */}
-                {/* Floating Top-Left Pill: Live RSVP Notification */}
+                {/* Floating Live Badge (Left side) */}
                 <motion.div
-                  animate={{ y: [0, -8, 0] }}
+                  animate={{ y: [0, -6, 0] }}
                   transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -top-3 -left-4 sm:-left-8 bg-white/95 backdrop-blur-md rounded-2xl p-2.5 px-3.5 shadow-xl border border-gold/40 flex items-center gap-2.5 z-40 text-charcoal"
+                  className="absolute -top-3 -left-3 sm:-left-6 bg-white/95 backdrop-blur-md rounded-2xl p-2.5 px-3.5 shadow-xl border border-gold/50 flex items-center gap-2.5 z-40 text-charcoal"
                 >
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping shrink-0" />
                   <div>
                     <span className="text-[10px] font-bold text-wine block leading-none">
-                      Live RSVP Received
+                      Live RSVP Active
                     </span>
-                    <span className="text-[9px] text-charcoal/60">
+                    <span className="text-[9px] text-charcoal/70">
                       Sharma Family • Attending (3)
                     </span>
                   </div>
                 </motion.div>
 
-                {/* Floating Bottom-Right Pill: Personalized Envelope View */}
+                {/* Floating Personal Link Badge (Right side) */}
                 <motion.div
-                  animate={{ y: [0, 8, 0] }}
+                  animate={{ y: [0, 6, 0] }}
                   transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -bottom-4 -right-2 sm:-right-6 bg-gradient-to-r from-wine to-[#8B223B] text-white rounded-2xl p-2.5 px-4 shadow-xl border border-gold/40 flex items-center gap-2.5 z-40"
+                  className="absolute -bottom-3 -right-3 sm:-right-6 bg-gradient-to-r from-wine to-[#8C3A50] text-white rounded-2xl p-2.5 px-4 shadow-xl border border-gold/50 flex items-center gap-2.5 z-40"
                 >
                   <span className="text-base select-none">💌</span>
                   <div>
                     <span className="text-[10px] font-bold block leading-none text-gold-light">
-                      Personal Link Opened
+                      Personal Link
                     </span>
                     <span className="text-[9px] text-white/80">
-                      Personalized Guest Greeting Active
+                      aahvaaan.com/invite/kabir-ananya
                     </span>
                   </div>
                 </motion.div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
