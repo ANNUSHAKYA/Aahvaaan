@@ -85,8 +85,8 @@ export const siteConfig: SiteConfig = {
     calendar: true,
     maps: true,
     music: true,
-    rsvpInbox: false, // Default false -> "Coming soon" badge
-    dashboard: false, // Default false -> "Coming soon"
+    rsvpInbox: false, // Coming soon
+    dashboard: true,  // Phase 5B: live
     rsvpInboxLive: false, // Labelled "Coming soon"
   },
 
