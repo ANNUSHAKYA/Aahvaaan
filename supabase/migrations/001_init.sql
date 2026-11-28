@@ -1,10 +1,12 @@
 -- ==============================================================================
 -- Aahvaaan by Vow & Vision - Phase 5A Migration: Supabase Database & Auth
 -- File: supabase/migrations/001_init.sql
+-- Idempotent: Safe to run on fresh or existing databases
 -- ==============================================================================
 
 -- 0. Extensions & Utilities
 create extension if not exists "pgcrypto";
+create extension if not exists "uuid-ossp";
 
 -- Helper function to generate safe, non-guessable random alphanumeric slugs
 create or replace function public.generate_random_slug(length int)
@@ -27,7 +29,7 @@ end;
 $$;
 
 -- ==============================================================================
--- 1. TABLES
+-- 1. TABLES & SCHEMA ALIGNMENT
 -- ==============================================================================
 
 -- 1.1 Profiles (linked 1:1 to auth.users)
@@ -37,6 +39,10 @@ create table if not exists public.profiles (
   phone text,
   created_at timestamptz not null default now()
 );
+
+alter table public.profiles add column if not exists full_name text;
+alter table public.profiles add column if not exists phone text;
+alter table public.profiles add column if not exists created_at timestamptz not null default now();
 
 -- 1.2 Templates Catalog
 create table if not exists public.templates (
@@ -48,6 +54,12 @@ create table if not exists public.templates (
   created_at timestamptz not null default now()
 );
 
+alter table public.templates add column if not exists slug text;
+alter table public.templates add column if not exists name text;
+alter table public.templates add column if not exists price_inr integer;
+alter table public.templates add column if not exists is_active boolean default true;
+alter table public.templates add column if not exists created_at timestamptz not null default now();
+
 -- 1.3 Invitations
 create table if not exists public.invitations (
   id uuid primary key default gen_random_uuid(),
@@ -57,11 +69,11 @@ create table if not exists public.invitations (
   status text not null default 'draft' check (status in ('draft', 'published', 'archived')),
   couple_names jsonb not null default '{"bride": "", "groom": ""}'::jsonb,
   wedding_date date,
-  events jsonb not null default '[]'::jsonb, -- array of {name, date, time, venue, maps_url}
+  events jsonb not null default '[]'::jsonb,
   venue_name text,
   venue_address text,
   maps_url text,
-  photos jsonb not null default '[]'::jsonb, -- array of storage paths
+  photos jsonb not null default '[]'::jsonb,
   music_choice text,
   family_note text,
   published_at timestamptz,
@@ -71,14 +83,66 @@ create table if not exists public.invitations (
   updated_at timestamptz not null default now()
 );
 
--- 1.4 Invitation Drafts (draft changes live here; publishing copies draft -> invitations)
+-- Ensure all columns exist on invitations in case table was created previously
+do $$
+begin
+  -- If host_id exists and owner_id does not, rename or sync
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'invitations' and column_name = 'host_id')
+     and not exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'invitations' and column_name = 'owner_id') then
+    alter table public.invitations rename column host_id to owner_id;
+  end if;
+end $$;
+
+alter table public.invitations add column if not exists owner_id uuid references public.profiles(id) on delete cascade;
+alter table public.invitations add column if not exists template_id uuid references public.templates(id) on delete set null;
+alter table public.invitations add column if not exists slug text default public.generate_random_slug(10);
+alter table public.invitations add column if not exists status text default 'draft';
+alter table public.invitations add column if not exists couple_names jsonb default '{"bride": "", "groom": ""}'::jsonb;
+alter table public.invitations add column if not exists wedding_date date;
+alter table public.invitations add column if not exists events jsonb default '[]'::jsonb;
+alter table public.invitations add column if not exists venue_name text;
+alter table public.invitations add column if not exists venue_address text;
+alter table public.invitations add column if not exists maps_url text;
+alter table public.invitations add column if not exists photos jsonb default '[]'::jsonb;
+alter table public.invitations add column if not exists music_choice text;
+alter table public.invitations add column if not exists family_note text;
+alter table public.invitations add column if not exists published_at timestamptz;
+alter table public.invitations add column if not exists edit_window_ends_at timestamptz;
+alter table public.invitations add column if not exists live_updates_used integer default 0;
+alter table public.invitations add column if not exists created_at timestamptz not null default now();
+alter table public.invitations add column if not exists updated_at timestamptz not null default now();
+
+-- Relax legacy NOT NULL columns if table was created in an older schema
+do $$
+begin
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'invitations' and column_name = 'bride_name') then
+    alter table public.invitations alter column bride_name drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'invitations' and column_name = 'groom_name') then
+    alter table public.invitations alter column groom_name drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'invitations' and column_name = 'location') then
+    alter table public.invitations alter column location drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'invitations' and column_name = 'venue') then
+    alter table public.invitations alter column venue drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'invitations' and column_name = 'wedding_date') then
+    alter table public.invitations alter column wedding_date drop not null;
+  end if;
+end $$;
+
+-- 1.4 Invitation Drafts
 create table if not exists public.invitation_drafts (
   invitation_id uuid primary key references public.invitations(id) on delete cascade,
   data jsonb not null default '{}'::jsonb,
   updated_at timestamptz not null default now()
 );
 
--- 1.5 Guests (named links)
+alter table public.invitation_drafts add column if not exists data jsonb not null default '{}'::jsonb;
+alter table public.invitation_drafts add column if not exists updated_at timestamptz not null default now();
+
+-- 1.5 Guests (Named Links)
 create table if not exists public.guests (
   id uuid primary key default gen_random_uuid(),
   invitation_id uuid not null references public.invitations(id) on delete cascade,
@@ -87,6 +151,12 @@ create table if not exists public.guests (
   max_party_size integer not null default 1,
   created_at timestamptz not null default now()
 );
+
+alter table public.guests add column if not exists invitation_id uuid references public.invitations(id) on delete cascade;
+alter table public.guests add column if not exists display_name text;
+alter table public.guests add column if not exists slug text default public.generate_random_slug(12);
+alter table public.guests add column if not exists max_party_size integer default 1;
+alter table public.guests add column if not exists created_at timestamptz not null default now();
 
 -- 1.6 RSVPs
 create table if not exists public.rsvps (
@@ -100,6 +170,14 @@ create table if not exists public.rsvps (
   created_at timestamptz not null default now()
 );
 
+alter table public.rsvps add column if not exists invitation_id uuid references public.invitations(id) on delete cascade;
+alter table public.rsvps add column if not exists guest_id uuid references public.guests(id) on delete set null;
+alter table public.rsvps add column if not exists name text;
+alter table public.rsvps add column if not exists attending boolean;
+alter table public.rsvps add column if not exists party_size integer default 1;
+alter table public.rsvps add column if not exists message text;
+alter table public.rsvps add column if not exists created_at timestamptz not null default now();
+
 -- 1.7 Views (analytics tracking)
 create table if not exists public.views (
   id uuid primary key default gen_random_uuid(),
@@ -108,6 +186,11 @@ create table if not exists public.views (
   device text,
   created_at timestamptz not null default now()
 );
+
+alter table public.views add column if not exists invitation_id uuid references public.invitations(id) on delete cascade;
+alter table public.views add column if not exists guest_id uuid references public.guests(id) on delete set null;
+alter table public.views add column if not exists device text;
+alter table public.views add column if not exists created_at timestamptz not null default now();
 
 -- 1.8 Orders
 create table if not exists public.orders (
@@ -120,6 +203,14 @@ create table if not exists public.orders (
   razorpay_payment_id text,
   created_at timestamptz not null default now()
 );
+
+alter table public.orders add column if not exists owner_id uuid references public.profiles(id) on delete cascade;
+alter table public.orders add column if not exists invitation_id uuid references public.invitations(id) on delete set null;
+alter table public.orders add column if not exists amount_inr integer;
+alter table public.orders add column if not exists status text default 'created';
+alter table public.orders add column if not exists razorpay_order_id text;
+alter table public.orders add column if not exists razorpay_payment_id text;
+alter table public.orders add column if not exists created_at timestamptz not null default now();
 
 -- Triggers for updated_at
 drop trigger if exists set_invitations_updated_at on public.invitations;
@@ -159,7 +250,7 @@ create trigger on_auth_user_created
   for each row execute function public.handle_new_user();
 
 -- ==============================================================================
--- 2. ROW LEVEL SECURITY (RLS)
+-- 2. ROW LEVEL SECURITY (RLS) - IDEMPOTENT WITH DROP POLICY IF EXISTS
 -- ==============================================================================
 
 -- Enable RLS on all tables
@@ -181,49 +272,63 @@ revoke all on public.views from anon;
 revoke all on public.orders from anon;
 
 -- 2.1 Profiles Policies
+drop policy if exists "Users can view own profile" on public.profiles;
 create policy "Users can view own profile"
   on public.profiles for select
   to authenticated
   using (auth.uid() = id);
 
+drop policy if exists "Users can update own profile" on public.profiles;
 create policy "Users can update own profile"
   on public.profiles for update
   to authenticated
   using (auth.uid() = id);
 
+drop policy if exists "Users can insert own profile" on public.profiles;
 create policy "Users can insert own profile"
   on public.profiles for insert
   to authenticated
   with check (auth.uid() = id);
 
 -- 2.2 Templates Policies (Public catalog view)
+drop policy if exists "Anyone can view active templates" on public.templates;
+drop policy if exists "Templates are viewable by everyone" on public.templates;
 create policy "Anyone can view active templates"
   on public.templates for select
   to public
   using (is_active = true);
 
 -- 2.3 Invitations Policies (Owners only - anon uses get_public_invitation)
+drop policy if exists "Owners can view own invitations" on public.invitations;
+drop policy if exists "Hosts can view own invitations" on public.invitations;
 create policy "Owners can view own invitations"
   on public.invitations for select
   to authenticated
   using (owner_id = auth.uid());
 
+drop policy if exists "Owners can insert own invitations" on public.invitations;
+drop policy if exists "Hosts can insert own invitations" on public.invitations;
 create policy "Owners can insert own invitations"
   on public.invitations for insert
   to authenticated
   with check (owner_id = auth.uid());
 
+drop policy if exists "Owners can update own invitations" on public.invitations;
+drop policy if exists "Hosts can update own invitations" on public.invitations;
 create policy "Owners can update own invitations"
   on public.invitations for update
   to authenticated
   using (owner_id = auth.uid());
 
+drop policy if exists "Owners can delete own invitations" on public.invitations;
+drop policy if exists "Hosts can delete own invitations" on public.invitations;
 create policy "Owners can delete own invitations"
   on public.invitations for delete
   to authenticated
   using (owner_id = auth.uid());
 
 -- 2.4 Invitation Drafts Policies
+drop policy if exists "Owners can view own invitation drafts" on public.invitation_drafts;
 create policy "Owners can view own invitation drafts"
   on public.invitation_drafts for select
   to authenticated
@@ -235,6 +340,7 @@ create policy "Owners can view own invitation drafts"
     )
   );
 
+drop policy if exists "Owners can insert own invitation drafts" on public.invitation_drafts;
 create policy "Owners can insert own invitation drafts"
   on public.invitation_drafts for insert
   to authenticated
@@ -246,6 +352,7 @@ create policy "Owners can insert own invitation drafts"
     )
   );
 
+drop policy if exists "Owners can update own invitation drafts" on public.invitation_drafts;
 create policy "Owners can update own invitation drafts"
   on public.invitation_drafts for update
   to authenticated
@@ -257,6 +364,7 @@ create policy "Owners can update own invitation drafts"
     )
   );
 
+drop policy if exists "Owners can delete own invitation drafts" on public.invitation_drafts;
 create policy "Owners can delete own invitation drafts"
   on public.invitation_drafts for delete
   to authenticated
@@ -269,6 +377,7 @@ create policy "Owners can delete own invitation drafts"
   );
 
 -- 2.5 Guests Policies (Owners only)
+drop policy if exists "Owners can view own guests" on public.guests;
 create policy "Owners can view own guests"
   on public.guests for select
   to authenticated
@@ -280,6 +389,7 @@ create policy "Owners can view own guests"
     )
   );
 
+drop policy if exists "Owners can insert own guests" on public.guests;
 create policy "Owners can insert own guests"
   on public.guests for insert
   to authenticated
@@ -291,6 +401,7 @@ create policy "Owners can insert own guests"
     )
   );
 
+drop policy if exists "Owners can update own guests" on public.guests;
 create policy "Owners can update own guests"
   on public.guests for update
   to authenticated
@@ -302,6 +413,7 @@ create policy "Owners can update own guests"
     )
   );
 
+drop policy if exists "Owners can delete own guests" on public.guests;
 create policy "Owners can delete own guests"
   on public.guests for delete
   to authenticated
@@ -314,6 +426,7 @@ create policy "Owners can delete own guests"
   );
 
 -- 2.6 RSVPs Policies (Owners can view; anon inserts through submit_rsvp RPC only)
+drop policy if exists "Owners can view RSVPs for their invitations" on public.rsvps;
 create policy "Owners can view RSVPs for their invitations"
   on public.rsvps for select
   to authenticated
@@ -325,6 +438,7 @@ create policy "Owners can view RSVPs for their invitations"
     )
   );
 
+drop policy if exists "Owners can update RSVPs for their invitations" on public.rsvps;
 create policy "Owners can update RSVPs for their invitations"
   on public.rsvps for update
   to authenticated
@@ -336,6 +450,7 @@ create policy "Owners can update RSVPs for their invitations"
     )
   );
 
+drop policy if exists "Owners can delete RSVPs for their invitations" on public.rsvps;
 create policy "Owners can delete RSVPs for their invitations"
   on public.rsvps for delete
   to authenticated
@@ -348,6 +463,7 @@ create policy "Owners can delete RSVPs for their invitations"
   );
 
 -- 2.7 Views Policies (Owners can view analytics; anon inserts through track_view RPC only)
+drop policy if exists "Owners can view analytics views for their invitations" on public.views;
 create policy "Owners can view analytics views for their invitations"
   on public.views for select
   to authenticated
@@ -360,16 +476,19 @@ create policy "Owners can view analytics views for their invitations"
   );
 
 -- 2.8 Orders Policies (Owners view & create own orders)
+drop policy if exists "Owners can view own orders" on public.orders;
 create policy "Owners can view own orders"
   on public.orders for select
   to authenticated
   using (owner_id = auth.uid());
 
+drop policy if exists "Owners can insert own orders" on public.orders;
 create policy "Owners can insert own orders"
   on public.orders for insert
   to authenticated
   with check (owner_id = auth.uid());
 
+drop policy if exists "Owners can update own orders" on public.orders;
 create policy "Owners can update own orders"
   on public.orders for update
   to authenticated
@@ -589,7 +708,7 @@ begin
     family_note = coalesce(v_draft->>'family_note', family_note),
     published_at = coalesce(published_at, now()),
     edit_window_ends_at = coalesce(edit_window_ends_at, now() + interval '9 months'),
-    live_updates_used = case when published_at is not null then v_live_updates + 1 else v_live_updates end,
+    live_updates_used = case when published_at is not null then coalesce(v_live_updates, 0) + 1 else coalesce(v_live_updates, 0) end,
     updated_at = now()
   where id = p_invitation_id;
 
