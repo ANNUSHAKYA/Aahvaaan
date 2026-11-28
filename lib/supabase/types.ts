@@ -255,6 +255,13 @@ export interface Database {
       get_public_invitation: {
         Args: {
           p_slug: string;
+          p_guest_slug?: string | null;
+        };
+        Returns: Json;
+      };
+      get_public_guest: {
+        Args: {
+          p_guest_slug: string;
         };
         Returns: Json;
       };

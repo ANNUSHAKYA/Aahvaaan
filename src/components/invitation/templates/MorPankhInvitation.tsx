@@ -1,6 +1,6 @@
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
 import {
   Calendar, Phone, User, Mail, Minus, Plus, Heart, MapPin, Check,
   Sparkles, ChevronRight, Navigation, Hotel, Utensils, MessageCircle,
@@ -26,6 +26,48 @@ const DEFAULT_EVENTS = [
 
 const mapLink = 'https://www.google.com/maps/search/?api=1&query=The+Leela+Palace+Jaipur';
 const button = 'inline-flex min-h-11 items-center justify-center gap-2.5 border border-[#B69A70] px-6 py-2.5 text-xs font-medium tracking-[0.13em] uppercase transition hover:bg-[#B69A70] hover:text-[#0E4D4F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B69A70] focus-visible:ring-offset-4';
+
+function buildMapsUrl(explicitUrl?: string, venueFallback?: string) {
+  if (explicitUrl && explicitUrl.trim()) return explicitUrl.trim();
+  if (venueFallback && venueFallback.trim()) {
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venueFallback.trim())}`;
+  }
+  return mapLink;
+}
+
+function buildGoogleCalendarUrl(event: any, coupleTitle: string, fallbackDate?: string) {
+  const dateStr = String(event?.date || fallbackDate || '2027-02-27');
+  const mDate = dateStr.match(/(\d{4})-(\d{2})-(\d{2})/);
+  const y = mDate ? parseInt(mDate[1], 10) : 2027;
+  const mo = mDate ? parseInt(mDate[2], 10) : 2;
+  const d = mDate ? parseInt(mDate[3], 10) : 27;
+
+  let h = 16;
+  let mi = 30;
+  const mTime = String(event?.time || '').trim().match(/^(\d{1,2}):(\d{2})(?:\s*(AM|PM))?$/i);
+  if (mTime) {
+    h = parseInt(mTime[1], 10);
+    mi = parseInt(mTime[2], 10);
+    const ampm = mTime[3]?.toUpperCase();
+    if (ampm === 'PM' && h < 12) h += 12;
+    if (ampm === 'AM' && h === 12) h = 0;
+  }
+
+  const start = new Date(Date.UTC(y, mo - 1, d, h, mi, 0));
+  const end = new Date(Date.UTC(y, mo - 1, d, h + 3, mi, 0));
+  const fmt = (dt: Date) =>
+    `${dt.getUTCFullYear()}${String(dt.getUTCMonth() + 1).padStart(2, '0')}${String(dt.getUTCDate()).padStart(2, '0')}T${String(dt.getUTCHours()).padStart(2, '0')}${String(dt.getUTCMinutes()).padStart(2, '0')}00`;
+
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: `${event?.name || 'Wedding'} — ${coupleTitle}`,
+    dates: `${fmt(start)}/${fmt(end)}`,
+    ctz: 'Asia/Kolkata',
+    location: event?.venue || '',
+    details: event?.note || `Wedding celebration of ${coupleTitle}`,
+  });
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+}
 
 function ActionIcon({ kind }: { kind: 'pin' | 'calendar' }) {
   return (
@@ -327,7 +369,23 @@ function PetalDateReveal({
 }
 
 // ─── 2. CEREMONIES STACKED DECK WITH CUSTOM EVENT SUPPORT ───
-function CeremoniesStackedDeck({ ceremoniesList = DEFAULT_EVENTS, t }: { ceremoniesList?: any[]; t: any }) {
+function CeremoniesStackedDeck({
+  ceremoniesList = DEFAULT_EVENTS,
+  invitationSlug,
+  coupleTitle = 'Wedding',
+  fallbackDate,
+  fallbackVenue,
+  fallbackMapsUrl,
+  t,
+}: {
+  ceremoniesList?: any[];
+  invitationSlug?: string;
+  coupleTitle?: string;
+  fallbackDate?: string;
+  fallbackVenue?: string;
+  fallbackMapsUrl?: string;
+  t: any;
+}) {
   const [topIndex, setTopIndex] = useState(0);
   const activeEvents = ceremoniesList.length > 0 ? ceremoniesList : DEFAULT_EVENTS;
 
@@ -337,6 +395,12 @@ function CeremoniesStackedDeck({ ceremoniesList = DEFAULT_EVENTS, t }: { ceremon
 
   const activeCeremony = activeEvents[topIndex];
   const nextCeremony1 = activeEvents[(topIndex + 1) % activeEvents.length];
+  const directionsUrl = buildMapsUrl(
+    activeCeremony.maps_url || activeCeremony.mapUrl || fallbackMapsUrl,
+    activeCeremony.venue || fallbackVenue
+  );
+  const gcalUrl = buildGoogleCalendarUrl(activeCeremony, coupleTitle, fallbackDate);
+  const icsUrl = invitationSlug ? `/api/ics/${encodeURIComponent(invitationSlug)}?event=${topIndex}` : null;
 
   return (
     <section id="celebrations" className="my-8 scroll-mt-16 bg-ivory py-14 px-4">
@@ -403,20 +467,43 @@ function CeremoniesStackedDeck({ ceremoniesList = DEFAULT_EVENTS, t }: { ceremon
             )}
           </div>
 
-          <div className="relative pt-3 border-t border-gold/30 flex items-center justify-between text-left">
+          <div className="relative pt-3 border-t border-gold/30 flex flex-wrap items-center justify-between gap-2 text-left">
             <div>
-              <span className="text-[10px] uppercase tracking-wider text-[#96752d] block">{t.dressCode}</span>
-              <span className="text-xs font-medium text-teal truncate max-w-[170px] block">{activeCeremony.attire || 'Festive Indian'}</span>
+              <span className="text-[11px] uppercase tracking-wider text-[#96752d] block">{t.dressCode}</span>
+              <span className="text-xs font-medium text-teal truncate max-w-[140px] block">{activeCeremony.attire || 'Festive Indian'}</span>
             </div>
-            <a
-              href={activeCeremony.mapUrl || mapLink}
-              target="_blank"
-              rel="noreferrer"
-              onClick={e => e.stopPropagation()}
-              className="text-xs font-semibold text-teal underline flex items-center gap-1"
-            >
-              {t.getDirections}
-            </a>
+            <div className="flex items-center gap-3">
+              {icsUrl && (
+                <a
+                  href={icsUrl}
+                  download
+                  onClick={e => e.stopPropagation()}
+                  className="text-xs font-semibold text-teal underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B69A70] rounded"
+                  title="Download .ics calendar file"
+                >
+                  .ics
+                </a>
+              )}
+              <a
+                href={gcalUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={e => e.stopPropagation()}
+                className="text-xs font-semibold text-teal underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B69A70] rounded"
+                title="Add to Google Calendar"
+              >
+                + Calendar
+              </a>
+              <a
+                href={directionsUrl}
+                target="_blank"
+                rel="noreferrer"
+                onClick={e => e.stopPropagation()}
+                className="text-xs font-semibold text-teal underline flex items-center gap-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B69A70] rounded"
+              >
+                {t.getDirections}
+              </a>
+            </div>
           </div>
         </motion.div>
       </div>
@@ -775,7 +862,7 @@ function HangingPolaroidGallery({ gallery = [], t }: { gallery?: string[]; t: an
             ) : typeof item === 'string' ? (
               <div className="w-full bg-white rounded-xl p-3 pb-4 shadow-xl border border-stone-200 flex flex-col items-center min-h-[290px]">
                 <div className="w-full aspect-[4/5] bg-stone-100 rounded-lg overflow-hidden mb-3 relative">
-                  <Image src={item} alt="Couple memory polaroid photo" width={280} height={350} className="w-full h-full object-cover" />
+                  <Image src={item} alt="Couple memory polaroid photo" width={280} height={350} loading="lazy" className="w-full h-full object-cover" />
                 </div>
                 <span className="font-serif text-xs font-bold text-[#96752d] italic">
                   #foreverA&M
@@ -1108,9 +1195,15 @@ export default function MorPankhInvitation({
       }
       audioRef.current.play().then(() => setMusicPlaying(true)).catch(() => {});
     }
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     setTimeout(() => {
-      welcome.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 400);
+      welcome.current?.scrollIntoView({
+        behavior: prefersReduced ? 'auto' : 'smooth',
+        block: 'start',
+      });
+    }, prefersReduced ? 50 : 400);
   }
 
   function toggleAudio() {
@@ -1127,7 +1220,28 @@ export default function MorPankhInvitation({
   }
 
   function addCalendar() {
-    const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Aahvaaan//Luxury Wedding//EN\nBEGIN:VEVENT\nSUMMARY:${content.brideName || 'Meera'} & ${content.groomName || 'Aarav'} Wedding\nDTSTART:20270227T110000Z\nDTEND:20270227T180000Z\nLOCATION:${content.venue || 'The Leela Palace, Jaipur'}\nDESCRIPTION:Seven Sacred Promises. One Eternal Bond.\nEND:VEVENT\nEND:VCALENDAR`;
+    if (content.slug) {
+      const a = document.createElement('a');
+      a.href = `/api/ics/${encodeURIComponent(content.slug)}?event=0`;
+      a.download = `${content.slug}.ics`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      return;
+    }
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Aahvaaan//Luxury Wedding//EN',
+      'BEGIN:VEVENT',
+      `SUMMARY:${content.brideName || 'Meera'} & ${content.groomName || 'Aarav'} Wedding`,
+      'DTSTART;TZID=Asia/Kolkata:20270227T163000',
+      'DTEND;TZID=Asia/Kolkata:20270227T193000',
+      `LOCATION:${content.venue || 'The Leela Palace, Jaipur'}`,
+      'DESCRIPTION:Seven Sacred Promises. One Eternal Bond.',
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n');
     const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -1141,16 +1255,22 @@ export default function MorPankhInvitation({
 
   const brideName = content.brideName || 'Meera';
   const groomName = content.groomName || 'Aarav';
-  const audioTrack = content.audioTrack || '/templates/mor-pankh/media/music.mp3';
+  const rawTrack = content.audioTrack || content.musicChoice || '';
+  const audioTrack = rawTrack.startsWith('/') || rawTrack.startsWith('http')
+    ? rawTrack
+    : '/templates/mor-pankh/media/music.mp3';
 
   return (
+    <MotionConfig reducedMotion="user">
     <div style={themes[themeKey] as CSSProperties} className="relative min-h-screen bg-[var(--canvas)] font-body text-charcoal transition-colors duration-500 overflow-x-hidden">
       
       {/* ─── FLOATING AUDIO CONTROLLER ─── */}
       <div className="fixed bottom-6 left-6 z-50">
         <button
+          type="button"
           onClick={toggleAudio}
-          className="w-11 h-11 rounded-full bg-teal/90 text-gold border border-gold/60 shadow-xl flex items-center justify-center backdrop-blur-sm hover:scale-105 active:scale-95 transition-all"
+          aria-label={musicPlaying ? 'Mute wedding music' : 'Play wedding music'}
+          className="w-11 h-11 rounded-full bg-teal/90 text-gold border border-gold/60 shadow-xl flex items-center justify-center backdrop-blur-sm hover:scale-105 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B69A70] focus-visible:ring-offset-2"
           title={musicPlaying ? 'Mute Wedding Shehnai' : 'Play Wedding Music'}
         >
           {musicPlaying ? <Volume2 size={18} /> : <VolumeX size={18} />}
@@ -1235,6 +1355,7 @@ export default function MorPankhInvitation({
                       src="/invitation-frame.webp"
                       alt="Auspicious Royal Lotus Palace Arch Frame"
                       fill
+                      priority
                       sizes="450px"
                       className="object-cover object-top"
                     />
@@ -1306,7 +1427,7 @@ export default function MorPankhInvitation({
                   <h2 className="font-serif text-2xl sm:text-3xl italic text-teal">
                     {t.dearGuest} {guest || t.ourLovedOnes},
                   </h2>
-                  <p className="mx-auto max-w-sm text-xs sm:text-sm leading-relaxed text-stone-600">
+                  <p className="mx-auto max-w-sm text-[15px] leading-relaxed text-stone-600">
                     {t.royalWelcomeBody}
                   </p>
                   <div className="pt-2">
@@ -1348,8 +1469,8 @@ export default function MorPankhInvitation({
                 {t.dearGuest} {guest || t.ourLovedOnes},
               </h2>
               
-              <p className="mx-auto mt-4 max-w-xs text-xs sm:text-sm leading-relaxed text-stone-600">
-                Join us as we begin our forever, surrounded by the warmth and blessings of our beloved family and friends.
+              <p className="mx-auto mt-4 max-w-xs text-[15px] leading-relaxed text-stone-600">
+                {content.familyNote || 'Join us as we begin our forever, surrounded by the warmth and blessings of our beloved family and friends.'}
               </p>
               
               <div className="my-5"><Ornament /></div>
@@ -1386,7 +1507,15 @@ export default function MorPankhInvitation({
             <DonoParivaarSection content={content} t={t} />
 
             {/* ─── SECTION 4: MULTI-EVENT CEREMONIES STACKED DECK ─── */}
-            <CeremoniesStackedDeck ceremoniesList={content.events || DEFAULT_EVENTS} t={t} />
+            <CeremoniesStackedDeck
+              ceremoniesList={content.events || DEFAULT_EVENTS}
+              invitationSlug={content.slug}
+              coupleTitle={`${brideName} & ${groomName}`}
+              fallbackDate={content.weddingDate}
+              fallbackVenue={content.venue || content.address}
+              fallbackMapsUrl={content.maps_url || content.mapUrl}
+              t={t}
+            />
 
             {/* ─── SECTION 5: WEDDING-DAY LIVE LOCATION MODULE ─── */}
             <LiveLocationModule content={content} t={t} />
@@ -1398,17 +1527,17 @@ export default function MorPankhInvitation({
                 {content.venue || 'The Leela Palace, Jaipur'}
               </h2>
               <p className="mt-1 text-xs uppercase tracking-widest text-[#96752d]">The Royal Destination</p>
-              <p className="mx-auto mt-3 max-w-sm text-xs text-stone-600 leading-relaxed">
+              <p className="mx-auto mt-3 max-w-sm text-[15px] text-stone-600 leading-relaxed">
                 {content.address || 'Delhi Highway, NH 11, Kukas, Jaipur, Rajasthan 302028'}
               </p>
               <div className="mt-5">
                 <a
-                  href={content.mapUrl || mapLink}
+                  href={buildMapsUrl(content.maps_url || content.mapUrl, content.address || content.venue)}
                   target="_blank"
                   rel="noreferrer"
                   className={`${button} rounded-full bg-teal text-ivory text-xs px-8 py-2.5`}
                 >
-                  <ActionIcon kind="pin" /> Open in Google Maps ↗
+                  <ActionIcon kind="pin" /> Get directions ↗
                 </a>
               </div>
             </section>
@@ -1450,5 +1579,6 @@ export default function MorPankhInvitation({
         </main>
       </div>
     </div>
+    </MotionConfig>
   );
 }

@@ -1,23 +1,55 @@
 import { notFound } from 'next/navigation';
-import OpenInvitationClient from './client';
+import LiveInvitationClient from '@/src/components/invitation/LiveInvitationClient';
+import { fetchPublicInvitation } from '@/lib/invitations/public';
+
+export const revalidate = 60;
+
+function formatCityAndDate(weddingDate, venueName, venueAddress) {
+  let dateLabel = 'upcoming celebrations';
+  if (weddingDate) {
+    const d = new Date(weddingDate);
+    if (!Number.isNaN(d.getTime())) {
+      dateLabel = d.toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+    }
+  }
+  const citySource = venueAddress || venueName || '';
+  const cityPart = citySource ? ` in ${citySource.split(',').slice(-1)[0].trim()}` : '';
+  return { dateLabel, cityPart };
+}
 
 export async function generateMetadata({ params }) {
   const slug = params?.slug;
-  if (slug !== 'sample' && slug !== 'ananya-kabir') {
+  const invitation = await fetchPublicInvitation(slug);
+
+  if (!invitation) {
     return {
       title: 'Invitation Not Found | Aahvaaan',
+      robots: { index: false, follow: false },
     };
   }
 
-  const coupleName = 'Ananya & Kabir';
+  const coupleName = `${invitation.bride_name} & ${invitation.groom_name}`;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://aahvaaan.vercel.app';
+  const { dateLabel, cityPart } = formatCityAndDate(
+    invitation.wedding_date,
+    invitation.venue_name,
+    invitation.venue_address
+  );
+
   const title = `${coupleName} are getting married`;
-  const description =
-    `You are cordially invited to celebrate the holy wedding ceremonies of ${coupleName}. Open the auspicious interactive invitation with diya reveal, wedding music, venue maps and schedule.`;
+  const description = `You are cordially invited to celebrate the wedding of ${coupleName} on ${dateLabel}${cityPart}. Open your interactive invitation for ceremony timings, venue directions, and music.`;
 
   return {
     title,
     description,
+    robots: {
+      index: false,
+      follow: false,
+    },
     alternates: {
       canonical: `/i/${slug}`,
     },
@@ -36,10 +68,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function OpenInviteSlugPage({ params }) {
-  const slug = params?.slug;
-  if (slug !== 'sample' && slug !== 'ananya-kabir') {
+export default async function OpenInviteSlugPage({ params }) {
+  const invitation = await fetchPublicInvitation(params?.slug);
+  if (!invitation) {
     notFound();
   }
-  return <OpenInvitationClient />;
+  return <LiveInvitationClient invitation={invitation} />;
 }

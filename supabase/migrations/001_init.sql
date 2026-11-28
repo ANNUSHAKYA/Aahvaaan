@@ -629,7 +629,7 @@ begin
   )
   into result
   from public.invitations i
-  left join public.templates t on t.id = i.template_id
+  left join public.templates t on t.id::text = i.template_id::text
   where i.slug = p_slug
     and i.status = 'published';
 
@@ -638,6 +638,66 @@ end;
 $$;
 
 grant execute on function public.get_public_invitation(text, text) to anon, authenticated;
+
+-- 3.1b get_public_guest: Safe read-only lookup by guest.slug for /n/[slug]
+drop function if exists public.get_public_guest(text);
+
+create or replace function public.get_public_guest(
+  p_guest_slug text
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  result jsonb;
+begin
+  if p_guest_slug is null or trim(p_guest_slug) = '' then
+    return null;
+  end if;
+
+  select jsonb_build_object(
+    'id', i.id,
+    'slug', i.slug,
+    'status', i.status,
+    'couple_names', i.couple_names,
+    'wedding_date', i.wedding_date,
+    'events', i.events,
+    'venue_name', i.venue_name,
+    'venue_address', i.venue_address,
+    'maps_url', i.maps_url,
+    'photos', i.photos,
+    'music_choice', i.music_choice,
+    'family_note', i.family_note,
+    'published_at', i.published_at,
+    'guest', jsonb_build_object(
+      'id', g.id,
+      'display_name', g.display_name,
+      'slug', g.slug,
+      'max_party_size', g.max_party_size
+    ),
+    'template', case
+      when t.id is not null then jsonb_build_object(
+        'slug', t.slug,
+        'name', t.name
+      )
+      else null
+    end
+  )
+  into result
+  from public.guests g
+  join public.invitations i on i.id = g.invitation_id
+  left join public.templates t on t.id::text = i.template_id::text
+  where g.slug = trim(p_guest_slug)
+    and i.status = 'published'
+  limit 1;
+
+  return result;
+end;
+$$;
+
+grant execute on function public.get_public_guest(text) to anon, authenticated;
 
 -- 3.2 submit_rsvp: Anonymous/Guest RSVP submission validating invitation slug
 create or replace function public.submit_rsvp(

@@ -1,33 +1,56 @@
 import { notFound } from 'next/navigation';
-import NamedInvitationClient from './client';
+import LiveInvitationClient from '@/src/components/invitation/LiveInvitationClient';
+import { fetchPublicGuestInvitation } from '@/lib/invitations/public';
 
-const VALID_SLUGS = ['sharma-family-sample', 'sharma-family', 'sample', 'guest'];
+export const revalidate = 60;
+
+function formatCityAndDate(weddingDate, venueName, venueAddress) {
+  let dateLabel = 'upcoming celebrations';
+  if (weddingDate) {
+    const d = new Date(weddingDate);
+    if (!Number.isNaN(d.getTime())) {
+      dateLabel = d.toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+    }
+  }
+  const citySource = venueAddress || venueName || '';
+  const cityPart = citySource ? ` in ${citySource.split(',').slice(-1)[0].trim()}` : '';
+  return { dateLabel, cityPart };
+}
 
 export async function generateMetadata({ params }) {
   const slug = params?.slug;
-  if (!VALID_SLUGS.includes(slug)) {
+  const invitation = await fetchPublicGuestInvitation(slug);
+
+  if (!invitation) {
     return {
       title: 'Invitation Not Found | Aahvaaan',
+      robots: { index: false, follow: false },
     };
   }
 
-  const guestName =
-    slug === 'sharma-family-sample' || slug === 'sharma-family'
-      ? 'Sharma Family'
-      : slug
-          .replace(/-sample$/, '')
-          .split('-')
-          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-          .join(' ');
-
+  const coupleName = `${invitation.bride_name} & ${invitation.groom_name}`;
+  const guestName = invitation.guest?.display_name || 'Guest';
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://aahvaaan.vercel.app';
-  const title = `A Personal Wedding Invitation for ${guestName} | Aahvaaan`;
-  const description =
-    `${guestName}, you are warmly invited to grace our family celebration. Open your personal envelope for ceremony details, venue maps, and wedding music.`;
+  const { dateLabel, cityPart } = formatCityAndDate(
+    invitation.wedding_date,
+    invitation.venue_name,
+    invitation.venue_address
+  );
+
+  const title = `${coupleName} are getting married`;
+  const description = `Dear ${guestName}, you are warmly invited to the wedding of ${coupleName} on ${dateLabel}${cityPart}. Open your personal envelope for ceremony details, venue maps, and wedding music.`;
 
   return {
     title,
     description,
+    robots: {
+      index: false,
+      follow: false,
+    },
     alternates: {
       canonical: `/n/${slug}`,
     },
@@ -46,10 +69,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function NamedInviteSlugPage({ params }) {
-  const slug = params?.slug;
-  if (!VALID_SLUGS.includes(slug)) {
+export default async function NamedInviteSlugPage({ params }) {
+  const invitation = await fetchPublicGuestInvitation(params?.slug);
+  if (!invitation) {
     notFound();
   }
-  return <NamedInvitationClient />;
+  return <LiveInvitationClient invitation={invitation} />;
 }
