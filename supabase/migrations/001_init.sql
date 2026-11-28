@@ -572,8 +572,15 @@ create policy "Owners can update own orders"
 -- 3. SECURE RPC FUNCTIONS FOR PUBLIC ACCESS
 -- ==============================================================================
 
+-- Drop any previous overloaded versions to avoid PostgREST PGRST203 ambiguity
+drop function if exists public.get_public_invitation(text, text);
+drop function if exists public.get_public_invitation(text);
+
 -- 3.1 get_public_invitation: Safe read-only access for published invitations
-create or replace function public.get_public_invitation(p_slug text)
+create or replace function public.get_public_invitation(
+  p_slug text,
+  p_guest_slug text default null
+)
 returns jsonb
 language plpgsql
 security definer
@@ -581,7 +588,22 @@ set search_path = public
 as $$
 declare
   result jsonb;
+  v_guest jsonb := null;
 begin
+  -- If guest slug is provided, look up guest details
+  if p_guest_slug is not null and trim(p_guest_slug) <> '' then
+    select jsonb_build_object(
+      'id', g.id,
+      'display_name', g.display_name,
+      'slug', g.slug,
+      'max_party_size', g.max_party_size
+    )
+    into v_guest
+    from public.guests g
+    join public.invitations i on i.id = g.invitation_id
+    where i.slug = p_slug and g.slug = trim(p_guest_slug);
+  end if;
+
   select jsonb_build_object(
     'id', i.id,
     'slug', i.slug,
@@ -596,6 +618,7 @@ begin
     'music_choice', i.music_choice,
     'family_note', i.family_note,
     'published_at', i.published_at,
+    'guest', v_guest,
     'template', case
       when t.id is not null then jsonb_build_object(
         'slug', t.slug,
@@ -614,7 +637,7 @@ begin
 end;
 $$;
 
-grant execute on function public.get_public_invitation(text) to anon, authenticated;
+grant execute on function public.get_public_invitation(text, text) to anon, authenticated;
 
 -- 3.2 submit_rsvp: Anonymous/Guest RSVP submission validating invitation slug
 create or replace function public.submit_rsvp(
