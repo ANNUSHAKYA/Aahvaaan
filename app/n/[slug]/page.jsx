@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import LiveInvitationClient from '@/src/components/invitation/LiveInvitationClient';
+import ArchivedInvitationNotice from '@/src/components/invitation/ArchivedInvitationNotice';
 import { fetchPublicGuestInvitation } from '@/lib/invitations/public';
 
 export const revalidate = 60;
@@ -73,6 +74,9 @@ export default async function NamedInviteSlugPage({ params }) {
   const invitation = await fetchPublicGuestInvitation(params?.slug);
   if (!invitation) {
     notFound();
+  }
+  if (invitation.status === 'archived') {
+    return <ArchivedInvitationNotice />;
   }
   return <LiveInvitationClient invitation={invitation} />;
 }

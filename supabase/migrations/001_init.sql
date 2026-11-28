@@ -183,6 +183,10 @@ alter table public.invitations add column if not exists family_note text;
 alter table public.invitations add column if not exists published_at timestamptz;
 alter table public.invitations add column if not exists edit_window_ends_at timestamptz;
 alter table public.invitations add column if not exists live_updates_used integer default 0;
+alter table public.invitations add column if not exists extra_named_links integer not null default 0;
+alter table public.invitations add column if not exists extra_live_updates integer not null default 0;
+alter table public.invitations add column if not exists editing_locked boolean not null default false;
+alter table public.invitations add column if not exists expiry_reminder_sent_at timestamptz;
 alter table public.invitations add column if not exists rsvp_digest_enabled boolean not null default false;
 alter table public.invitations add column if not exists created_at timestamptz not null default now();
 alter table public.invitations add column if not exists updated_at timestamptz not null default now();
@@ -303,9 +307,24 @@ alter table public.orders add column if not exists owner_id uuid references publ
 alter table public.orders add column if not exists invitation_id uuid references public.invitations(id) on delete set null;
 alter table public.orders add column if not exists amount_inr integer;
 alter table public.orders add column if not exists status text default 'created';
+alter table public.orders add column if not exists order_type text not null default 'publish';
+alter table public.orders add column if not exists addon_quantity integer not null default 0;
+alter table public.orders add column if not exists admin_note text;
 alter table public.orders add column if not exists razorpay_order_id text;
 alter table public.orders add column if not exists razorpay_payment_id text;
 alter table public.orders add column if not exists created_at timestamptz not null default now();
+
+-- 1.9 Admin Audit Logs (server-only access)
+create table if not exists public.admin_audit_logs (
+  id uuid primary key default gen_random_uuid(),
+  admin_user_id uuid not null,
+  order_id uuid references public.orders(id) on delete set null,
+  action text not null,
+  note text,
+  created_at timestamptz not null default now()
+);
+
+alter table public.admin_audit_logs enable row level security;
 
 -- Triggers for updated_at
 drop trigger if exists set_invitations_updated_at on public.invitations;
@@ -652,7 +671,7 @@ begin
   from public.invitations i
   left join public.templates t on t.id::text = i.template_id::text
   where i.slug = p_slug
-    and i.status = 'published';
+    and i.status in ('published', 'archived');
 
   return result;
 end;
@@ -711,7 +730,7 @@ begin
   join public.invitations i on i.id = g.invitation_id
   left join public.templates t on t.id::text = i.template_id::text
   where g.slug = trim(p_guest_slug)
-    and i.status = 'published'
+    and i.status in ('published', 'archived')
   limit 1;
 
   return result;
@@ -972,6 +991,119 @@ end;
 $$;
 
 grant execute on function public.track_view(text, text, text) to anon, authenticated;
+
+-- 3.4 get_invitation_analytics: Owner-only analytics summary, daily views, device split & guest activity
+drop function if exists public.get_invitation_analytics(uuid);
+
+create or replace function public.get_invitation_analytics(
+  p_invitation_id uuid
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_owner_id uuid;
+  v_total_views integer;
+  v_unique_visitors integer;
+  v_named_opened integer;
+  v_named_total integer;
+  v_replied_count integer;
+  v_views_by_day jsonb;
+  v_device_split jsonb;
+  v_guest_activity jsonb;
+begin
+  select owner_id into v_owner_id
+  from public.invitations
+  where id = p_invitation_id;
+
+  if v_owner_id is null or v_owner_id <> auth.uid() then
+    return null;
+  end if;
+
+  select count(*) into v_total_views
+  from public.views
+  where invitation_id = p_invitation_id;
+
+  select count(distinct coalesce(guest_id::text, 'open_' || date_trunc('hour', created_at)::text || '_' || coalesce(device, 'unknown')))
+  into v_unique_visitors
+  from public.views
+  where invitation_id = p_invitation_id;
+
+  select count(*) into v_named_total
+  from public.guests
+  where invitation_id = p_invitation_id;
+
+  select count(distinct guest_id) into v_named_opened
+  from public.views
+  where invitation_id = p_invitation_id
+    and guest_id is not null;
+
+  select count(*) into v_replied_count
+  from public.rsvps
+  where invitation_id = p_invitation_id;
+
+  select coalesce(jsonb_agg(row_to_json(d) order by d.day), '[]'::jsonb)
+  into v_views_by_day
+  from (
+    select to_char(date_trunc('day', created_at), 'YYYY-MM-DD') as day,
+           count(*) as views
+    from public.views
+    where invitation_id = p_invitation_id
+      and created_at >= now() - interval '30 days'
+    group by 1
+  ) d;
+
+  select coalesce(jsonb_agg(row_to_json(s)), '[]'::jsonb)
+  into v_device_split
+  from (
+    select coalesce(nullif(device, ''), 'unknown') as device,
+           count(*) as count
+    from public.views
+    where invitation_id = p_invitation_id
+    group by 1
+  ) s;
+
+  select coalesce(jsonb_agg(row_to_json(ga) order by ga.created_at), '[]'::jsonb)
+  into v_guest_activity
+  from (
+    select g.id,
+           g.display_name,
+           g.slug,
+           g.created_at,
+           coalesce(v.view_count, 0) as view_count,
+           v.last_opened_at,
+           case
+             when r.id is null then 'pending'
+             when r.attending then 'attending'
+             else 'declined'
+           end as rsvp_status
+    from public.guests g
+    left join (
+      select guest_id, count(*) as view_count, max(created_at) as last_opened_at
+      from public.views
+      where invitation_id = p_invitation_id and guest_id is not null
+      group by guest_id
+    ) v on v.guest_id = g.id
+    left join public.rsvps r on r.guest_id = g.id and r.invitation_id = p_invitation_id
+    where g.invitation_id = p_invitation_id
+  ) ga;
+
+  return jsonb_build_object(
+    'total_views', v_total_views,
+    'unique_visitors', v_unique_visitors,
+    'named_opened', v_named_opened,
+    'named_total', v_named_total,
+    'replied_count', v_replied_count,
+    'views_by_day', v_views_by_day,
+    'device_split', v_device_split,
+    'guest_activity', v_guest_activity
+  );
+end;
+$$;
+
+grant execute on function public.get_invitation_analytics(uuid) to authenticated;
 
 -- 3.4 publish_invitation: Publishing copies draft -> invitations
 create or replace function public.publish_invitation(p_invitation_id uuid)

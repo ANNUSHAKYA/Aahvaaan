@@ -41,6 +41,14 @@ export interface PricingPlans {
   luxury: PricingPlan;
 }
 
+export interface AddonPack {
+  id: string;
+  orderType: 'addon_links' | 'addon_updates';
+  quantity: number;
+  priceInr: number;
+  label: string;
+}
+
 export interface SiteConfig extends PlanRules {
   brandName: string;
   websiteName: string;
@@ -58,6 +66,10 @@ export interface SiteConfig extends PlanRules {
   walletBalance: number;
   features: FeatureFlags;
   pricing: PricingPlans;
+  addons: {
+    linksPacks: AddonPack[];
+    updatesPacks: AddonPack[];
+  };
 }
 
 const getEnv = (key: string, nextKey?: string): string => {
@@ -88,6 +100,16 @@ export const siteConfig: SiteConfig = {
     rsvpInbox: true,  // Phase 5D: live
     dashboard: true,  // Phase 5B: live
     rsvpInboxLive: true, // Phase 5D: live
+  },
+
+  addons: {
+    linksPacks: [
+      { id: 'links-20', orderType: 'addon_links', quantity: 20, priceInr: 499, label: '+20 Named Links' },
+      { id: 'links-50', orderType: 'addon_links', quantity: 50, priceInr: 999, label: '+50 Named Links' },
+    ],
+    updatesPacks: [
+      { id: 'updates-5', orderType: 'addon_updates', quantity: 5, priceInr: 399, label: '+5 Live Updates' },
+    ],
   },
 
   // Pricing Plans (Easy to Edit from siteConfig)

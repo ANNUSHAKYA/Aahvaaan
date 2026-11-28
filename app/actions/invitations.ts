@@ -106,16 +106,22 @@ export async function createInvitation(templateSlug: string) {
 export async function saveDraft(invitationId: string, rawData: unknown) {
   const { supabase, user } = await requireAuth();
 
-  // Verify ownership
+  // Verify ownership & edit lock
   const { data: inv, error: fetchErr } = await supabase
     .from('invitations')
-    .select('id, owner_id')
+    .select('id, owner_id, editing_locked, edit_window_ends_at, status')
     .eq('id', invitationId)
     .eq('owner_id', user.id)
     .single();
 
   if (fetchErr || !inv) {
     return { error: 'Invitation not found or access denied' };
+  }
+  if (inv.editing_locked || (inv.edit_window_ends_at && new Date(inv.edit_window_ends_at) < new Date())) {
+    return { error: 'Editing window has closed for this invitation.' };
+  }
+  if (inv.status === 'archived') {
+    return { error: 'Archived invitations cannot be edited.' };
   }
 
   const parsed = DraftDataSchema.safeParse(rawData);
@@ -231,7 +237,7 @@ export async function updateLive(invitationId: string) {
 
   const { data: inv, error: fetchErr } = await supabase
     .from('invitations')
-    .select('id, owner_id, status, live_updates_used, edit_window_ends_at')
+    .select('id, owner_id, status, live_updates_used, extra_live_updates, editing_locked, edit_window_ends_at')
     .eq('id', invitationId)
     .eq('owner_id', user.id)
     .single();
@@ -239,11 +245,12 @@ export async function updateLive(invitationId: string) {
   if (fetchErr || !inv) return { error: 'Invitation not found or access denied' };
   if (inv.status !== 'published') return { error: 'Invitation is not published' };
 
-  if (inv.live_updates_used >= siteConfig.liveUpdatesIncluded) {
-    return { error: `Live update limit reached (${siteConfig.liveUpdatesIncluded} updates included)` };
+  const totalUpdatesAllowed = siteConfig.liveUpdatesIncluded + (inv.extra_live_updates || 0);
+  if (inv.live_updates_used >= totalUpdatesAllowed) {
+    return { error: `Live update limit reached (${totalUpdatesAllowed} updates included)` };
   }
 
-  if (inv.edit_window_ends_at && new Date(inv.edit_window_ends_at) < new Date()) {
+  if (inv.editing_locked || (inv.edit_window_ends_at && new Date(inv.edit_window_ends_at) < new Date())) {
     return { error: 'Edit window has closed' };
   }
 
@@ -277,7 +284,26 @@ export async function updateLive(invitationId: string) {
   if (upErr) return { error: upErr.message };
 
   revalidatePath(`/dashboard/invitations/${invitationId}/edit`);
-  return { ok: true, updatesRemaining: siteConfig.liveUpdatesIncluded - (inv.live_updates_used + 1) };
+  return { ok: true, updatesRemaining: totalUpdatesAllowed - (inv.live_updates_used + 1) };
+}
+
+/**
+ * Archive an invitation (shows polite inactive notice on public URL).
+ */
+export async function archiveInvitation(invitationId: string) {
+  const { supabase, user } = await requireAuth();
+
+  const { error } = await supabase
+    .from('invitations')
+    .update({ status: 'archived', updated_at: new Date().toISOString() })
+    .eq('id', invitationId)
+    .eq('owner_id', user.id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath('/dashboard');
+  revalidatePath(`/dashboard/invitations/${invitationId}/edit`);
+  return { ok: true };
 }
 
 /**
@@ -286,24 +312,26 @@ export async function updateLive(invitationId: string) {
 export async function createGuest(invitationId: string, displayName: string, maxPartySize: number) {
   const { supabase, user } = await requireAuth();
 
-  // Verify ownership
+  // Verify ownership & limits
   const { data: inv, error: fetchErr } = await supabase
     .from('invitations')
-    .select('id, owner_id')
+    .select('id, owner_id, extra_named_links, editing_locked')
     .eq('id', invitationId)
     .eq('owner_id', user.id)
     .single();
 
   if (fetchErr || !inv) return { error: 'Invitation not found or access denied' };
+  if (inv.editing_locked) return { error: 'Editing window has closed for this invitation.' };
 
-  // Count existing guests to enforce limit
+  // Count existing guests to enforce limit (base + paid add-ons)
   const { count } = await supabase
     .from('guests')
     .select('*', { count: 'exact', head: true })
     .eq('invitation_id', invitationId);
 
-  if ((count || 0) >= siteConfig.namedLinksIncluded) {
-    return { error: `Named link limit reached (${siteConfig.namedLinksIncluded} included)` };
+  const totalLinksAllowed = siteConfig.namedLinksIncluded + (inv.extra_named_links || 0);
+  if ((count || 0) >= totalLinksAllowed) {
+    return { error: `Named link limit reached (${totalLinksAllowed} included). Buy an add-on pack to add more.` };
   }
 
   const validated = GuestSchema.safeParse({ display_name: sanitize(displayName), max_party_size: maxPartySize });

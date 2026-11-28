@@ -234,3 +234,11 @@ Follow this checklist to verify the complete end-to-end user and guest journey:
 ## 📄 License
 
 Proprietary © 2026 **Aahvaaan by Vow & Vision**. All rights reserved.
+
+
+---
+
+## WhatsApp Sharing & Rate Limiting Notes
+
+- **WhatsApp Sharing & Reminders**: Currently uses `wa.me` deep links with prefilled, editable message templates in the dashboard. Fully automated background WhatsApp sending requires integrating the **WhatsApp Business API** (Meta Cloud API or BSP) in a future release.
+- **RSVP Rate Limiting**: `/api/rsvp` hashes client IP addresses with SHA-256 + salt and enforces a maximum of 5 submissions per hour per invitation via `check_rsvp_rate_limit` in `public.rsvp_rate_limits`. Raw IP addresses are never stored.

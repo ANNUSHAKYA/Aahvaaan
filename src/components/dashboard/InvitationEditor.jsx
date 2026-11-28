@@ -8,8 +8,69 @@ import {
   Eye, X, Upload, Play, Pause, Loader2, Globe
 } from 'lucide-react';
 import {
-  saveDraft, publishInvitation, updateLive, createGuest, deleteGuest
+  saveDraft, publishInvitation, updateLive, createGuest, deleteGuest, archiveInvitation
 } from '@/app/actions/invitations';
+
+async function purchaseAddonPack(invitationId, packId, onSuccess, onError) {
+  try {
+    const res = await fetch('/api/payments/create-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ invitationId, packId }),
+    });
+    const json = await res.json();
+    if (!res.ok || json.error) {
+      onError(json.error || 'Could not start add-on checkout.');
+      return;
+    }
+
+    if (json.testMode) {
+      onSuccess(json.order?.addon_quantity || 0);
+      return;
+    }
+
+    // Load Razorpay Checkout script
+    if (!window.Razorpay) {
+      await new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        s.onload = resolve;
+        s.onerror = reject;
+        document.body.appendChild(s);
+      });
+    }
+
+    const rzp = new window.Razorpay({
+      key: json.keyId,
+      amount: json.order.amount_inr * 100,
+      currency: 'INR',
+      name: 'Aahvaaan',
+      description: `Add-on pack (${json.order.addon_quantity})`,
+      order_id: json.order.razorpay_order_id,
+      handler: async (resp) => {
+        const verifyRes = await fetch('/api/payments/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            orderId: json.order.id,
+            razorpay_order_id: resp.razorpay_order_id,
+            razorpay_payment_id: resp.razorpay_payment_id,
+            razorpay_signature: resp.razorpay_signature,
+          }),
+        });
+        const vJson = await verifyRes.json();
+        if (!verifyRes.ok || vJson.error) {
+          onError(vJson.error || 'Payment verification failed.');
+          return;
+        }
+        onSuccess(json.order.addon_quantity || 0);
+      },
+    });
+    rzp.open();
+  } catch {
+    onError('Checkout error. Please try again.');
+  }
+}
 
 // Lazy-load the preview component
 const MorPankhInvitation = dynamic(
@@ -315,18 +376,20 @@ function StepMusic({ data, onChange }) {
   );
 }
 
-function StepGuests({ invitationId, initialGuests, config }) {
+function StepGuests({ invitationId, initialGuests, config, extraLinks, onAddonBought }) {
   const [guests, setGuests] = useState(initialGuests || []);
   const [name, setName] = useState('');
   const [partySize, setPartySize] = useState(2);
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState('');
+  const [buyingPack, setBuyingPack] = useState(false);
   const [deleting, setDeleting] = useState(null);
   const csvRef = useRef(null);
   const [csvError, setCsvError] = useState('');
 
   const domain = config.domain || 'https://aahvaaan.vercel.app';
-  const remaining = config.namedLinksIncluded - guests.length;
+  const totalAllowed = config.namedLinksIncluded + (extraLinks || 0);
+  const remaining = totalAllowed - guests.length;
 
   async function handleAdd(e) {
     e.preventDefault();
@@ -414,8 +477,36 @@ function StepGuests({ invitationId, initialGuests, config }) {
           <input ref={csvRef} type="file" accept=".csv" className="hidden" onChange={handleCsvUpload} />
         </form>
       ) : (
-        <div className="rounded-sm border border-amber-200 bg-amber-50 p-3 text-sm text-amber-700">
-          Named link limit reached ({config.namedLinksIncluded} included). Contact us on WhatsApp to upgrade.
+        <div className="rounded-sm border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800 space-y-2.5">
+          <p>Named link limit reached ({totalAllowed} included).</p>
+          <div className="flex flex-wrap gap-2">
+            {(config.linksPacks || []).map((pack) => (
+              <button
+                key={pack.id}
+                type="button"
+                disabled={buyingPack}
+                onClick={() => {
+                  setBuyingPack(true);
+                  setAddError('');
+                  purchaseAddonPack(
+                    invitationId,
+                    pack.id,
+                    (qty) => {
+                      setBuyingPack(false);
+                      onAddonBought?.(qty);
+                    },
+                    (err) => {
+                      setBuyingPack(false);
+                      setAddError(err);
+                    }
+                  );
+                }}
+                className="inline-flex items-center gap-1.5 rounded-sm bg-[#0E4D4F] px-3 py-1.5 text-xs font-medium text-white hover:opacity-90 disabled:opacity-50"
+              >
+                Buy {pack.label} (₹{pack.priceInr})
+              </button>
+            ))}
+          </div>
         </div>
       )}
 
@@ -485,6 +576,9 @@ export default function InvitationEditor({ invitation, initialDraft, initialGues
     live_updates_used: invitation.live_updates_used || 0,
     edit_window_ends_at: invitation.edit_window_ends_at,
   });
+  const [extraLinks, setExtraLinks] = useState(0);
+  const [extraUpdates, setExtraUpdates] = useState(0);
+  const [archiving, setArchiving] = useState(false);
   const [publishError, setPublishError] = useState('');
   const [publishing, setPublishing] = useState(false);
   const [updating, setUpdating] = useState(false);
@@ -539,9 +633,10 @@ export default function InvitationEditor({ invitation, initialDraft, initialGues
   }
 
   const updatesUsed = publishState.live_updates_used || 0;
-  const updatesLeft = Math.max(0, config.liveUpdatesIncluded - updatesUsed);
+  const totalUpdatesAllowed = config.liveUpdatesIncluded + extraUpdates;
+  const updatesLeft = Math.max(0, totalUpdatesAllowed - updatesUsed);
   const windowOpen = !publishState.edit_window_ends_at || new Date(publishState.edit_window_ends_at) > new Date();
-  const canUpdateLive = publishState.status === 'published' && updatesLeft > 0 && windowOpen;
+  const canUpdateLive = publishState.status === 'published' && updatesLeft > 0 && windowOpen && !invitation.editing_locked;
 
   const isPublished = publishState.status === 'published';
 
@@ -582,6 +677,12 @@ export default function InvitationEditor({ invitation, initialDraft, initialGues
             )}>
               {saveStatus === 'saved' ? '✓ Saved' : saveStatus === 'saving' ? 'Saving…' : '⚠ Save failed'}
             </span>
+            <a
+              href={`/dashboard/invitations/${invitation.id}/analytics`}
+              className="inline-flex items-center gap-1.5 border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-600 hover:bg-stone-50 transition"
+            >
+              Analytics
+            </a>
             <a
               href={`/dashboard/invitations/${invitation.id}/rsvps`}
               className="inline-flex items-center gap-1.5 border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-600 hover:bg-stone-50 transition"
@@ -638,6 +739,8 @@ export default function InvitationEditor({ invitation, initialDraft, initialGues
                 invitationId={invitation.id}
                 initialGuests={initialGuests}
                 config={config}
+                extraLinks={extraLinks}
+                onAddonBought={(qty) => setExtraLinks((prev) => prev + qty)}
               />
             )}
           </div>
@@ -697,14 +800,44 @@ export default function InvitationEditor({ invitation, initialDraft, initialGues
                   </button>
                 )}
                 {isPublished && (
-                  <button
-                    type="button" onClick={handleUpdateLive}
-                    disabled={updating || !canUpdateLive}
-                    className="inline-flex items-center gap-2 border border-[#0E4D4F] px-4 py-2 text-sm font-medium text-[#0E4D4F] disabled:opacity-40 transition hover:bg-[#0E4D4F]/5"
-                  >
-                    {updating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                    Update live
-                  </button>
+                  <>
+                    <button
+                      type="button" onClick={handleUpdateLive}
+                      disabled={updating || !canUpdateLive}
+                      className="inline-flex items-center gap-2 border border-[#0E4D4F] px-4 py-2 text-sm font-medium text-[#0E4D4F] disabled:opacity-40 transition hover:bg-[#0E4D4F]/5"
+                    >
+                      {updating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                      Update live
+                    </button>
+                    {updatesLeft === 0 && (config.updatesPacks || []).map((pack) => (
+                      <button
+                        key={pack.id}
+                        type="button"
+                        onClick={() => purchaseAddonPack(
+                          invitation.id,
+                          pack.id,
+                          (qty) => setExtraUpdates((prev) => prev + qty),
+                          (err) => setPublishError(err)
+                        )}
+                        className="inline-flex items-center gap-1.5 bg-[#0E4D4F] px-3.5 py-2 text-xs font-medium text-white hover:opacity-90"
+                      >
+                        Buy {pack.label} (₹{pack.priceInr})
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      disabled={archiving}
+                      onClick={async () => {
+                        setArchiving(true);
+                        const res = await archiveInvitation(invitation.id);
+                        if (res?.ok) setPublishState((prev) => ({ ...prev, status: 'archived' }));
+                        setArchiving(false);
+                      }}
+                      className="inline-flex items-center gap-1.5 border border-stone-300 px-3 py-2 text-xs font-medium text-stone-600 hover:bg-stone-50 disabled:opacity-40"
+                    >
+                      {archiving ? 'Archiving…' : 'Archive'}
+                    </button>
+                  </>
                 )}
               </div>
             </div>

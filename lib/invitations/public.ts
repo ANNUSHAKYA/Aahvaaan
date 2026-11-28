@@ -25,7 +25,7 @@ export interface PublicGuest {
 export interface PublicInvitation {
   id: string;
   slug: string;
-  status: 'published';
+  status: 'published' | 'archived';
   bride_name: string;
   groom_name: string;
   wedding_date: string | null;
@@ -173,7 +173,7 @@ function normalizeRpcPayload(raw: Record<string, any>): Omit<PublicInvitation, '
   return {
     id: String(raw.id),
     slug: String(raw.slug),
-    status: 'published',
+    status: raw.status === 'archived' ? 'archived' : 'published',
     bride_name: bride,
     groom_name: groom,
     wedding_date: raw.wedding_date ? String(raw.wedding_date) : null,

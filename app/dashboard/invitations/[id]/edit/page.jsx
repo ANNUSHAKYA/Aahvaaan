@@ -48,11 +48,13 @@ export default async function EditInvitationPage({ params }) {
       initialDraft={draftData}
       initialGuests={guests || []}
       config={{
-        namedLinksIncluded: siteConfig.namedLinksIncluded,
-        liveUpdatesIncluded: siteConfig.liveUpdatesIncluded,
+        namedLinksIncluded: siteConfig.namedLinksIncluded + (inv.extra_named_links || 0),
+        liveUpdatesIncluded: siteConfig.liveUpdatesIncluded + (inv.extra_live_updates || 0),
         domain: siteConfig.domain,
         whatsappNumber: siteConfig.whatsappNumber,
         paymentsEnabled: process.env.PAYMENTS_ENABLED === 'true',
+        linksPacks: siteConfig.addons.linksPacks,
+        updatesPacks: siteConfig.addons.updatesPacks,
       }}
     />
   );

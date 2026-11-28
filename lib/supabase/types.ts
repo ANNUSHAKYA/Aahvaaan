@@ -74,6 +74,10 @@ export interface Database {
           published_at: string | null;
           edit_window_ends_at: string | null;
           live_updates_used: number;
+          extra_named_links: number;
+          extra_live_updates: number;
+          editing_locked: boolean;
+          expiry_reminder_sent_at: string | null;
           rsvp_digest_enabled: boolean;
           created_at: string;
           updated_at: string;
@@ -235,6 +239,9 @@ export interface Database {
           invitation_id: string | null;
           amount_inr: number;
           status: 'created' | 'paid' | 'failed';
+          order_type: string;
+          addon_quantity: number;
+          admin_note: string | null;
           razorpay_order_id: string | null;
           razorpay_payment_id: string | null;
           created_at: string;
