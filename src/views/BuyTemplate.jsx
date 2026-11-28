@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useParams, useSearchParams, Link, useNavigate } from '../lib/router-compat';
 import {
   ArrowLeft, Clock, Edit3, ShieldCheck, Check, Lock
@@ -106,14 +107,16 @@ export default function BuyTemplate() {
           <div className="lg:col-span-7 space-y-6">
             {/* Template Large Image Preview */}
             <div className="bg-white rounded-3xl border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden aspect-[16/10] relative">
-              <img
-                src={selectedTemplate.image}
-                alt={templateDisplayName}
+              <Image
+                src={selectedTemplate.image || '/templates/mor-pankh.webp'}
+                alt={`${templateDisplayName} wedding invitation preview`}
+                width={800}
+                height={500}
                 className="w-full h-full object-cover"
               />
             </div>
 
-            {/* INCLUDED WITH YOUR INVITATION Card (Matches Screenshot 2) */}
+            {/* INCLUDED WITH YOUR INVITATION Card */}
             <div className="bg-white rounded-3xl border border-gray-100 p-6 sm:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
               <h3 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-5">
                 INCLUDED WITH YOUR INVITATION
@@ -122,29 +125,29 @@ export default function BuyTemplate() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs sm:text-sm text-gray-700">
                 <div className="flex items-start gap-2.5">
                   <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
-                  <span>One common invitation link to share with everyone</span>
+                  <span>1 open link for your entire guest list</span>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
-                  <span>The complete, interactive invitation experience</span>
+                  <span>Diya reveal, wedding music, maps and calendar</span>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
-                  <span>5 guests greeted by name, each with their own link</span>
+                  <span>{siteConfig.namedLinksIncluded} named links for your closest families</span>
                 </div>
                 <div className="flex items-start gap-2.5">
                   <span className="text-[#B69A70] font-bold text-base leading-none">✓</span>
-                  <span>RSVP replies and guest tracking</span>
+                  <span>{siteConfig.liveUpdatesIncluded} live updates included</span>
                 </div>
               </div>
 
               <p className="text-xs text-gray-400 mt-6 pt-5 border-t border-gray-100 leading-relaxed">
-                Valid for 6 months from purchase - edit and push changes live anytime, and collect RSVPs the whole way through.
+                Live updates valid for {siteConfig.updateWindowMonths} months from publishing — edit and push changes live anytime without resending.
               </p>
             </div>
           </div>
 
-          {/* Right Column: ORDER SUMMARY Card (Matches Screenshot 2 & 3) */}
+          {/* Right Column: ORDER SUMMARY Card */}
           <div className="lg:col-span-5">
             <div className="bg-white rounded-3xl border border-gray-100 p-6 sm:p-7 shadow-[0_4px_20px_rgba(0,0,0,0.04)] space-y-5">
               {/* Card Header */}
@@ -153,10 +156,12 @@ export default function BuyTemplate() {
                   ORDER SUMMARY
                 </h3>
                 <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
-                  <div className="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
-                    <img
-                      src={selectedTemplate.image}
-                      alt={templateDisplayName}
+                  <div className="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden shrink-0 border border-gray-200 relative">
+                    <Image
+                      src={selectedTemplate.image || '/templates/mor-pankh.webp'}
+                      alt={`${templateDisplayName} thumbnail`}
+                      width={48}
+                      height={48}
                       className="w-full h-full object-cover"
                     />
                   </div>

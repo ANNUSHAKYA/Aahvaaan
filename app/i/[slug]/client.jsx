@@ -1,0 +1,7 @@
+'use client';
+
+import PublicInvitation from '../../../src/views/PublicInvitation';
+
+export default function OpenInvitationClient() {
+  return <PublicInvitation />;
+}

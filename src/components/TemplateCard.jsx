@@ -1,4 +1,5 @@
 import { Link } from '../lib/router-compat';
+import Image from 'next/image';
 import { Eye, ShoppingBag, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -18,15 +19,12 @@ export default function TemplateCard({ template, index = 0 }) {
           className="block w-full h-full relative"
           aria-label={`Preview ${template.name}`}
         >
-          <img
-            src={template.image}
-            alt={`${template.name} – ${template.collection}`}
+          <Image
+            src={template.image || '/templates/mor-pankh.webp'}
+            alt={`${template.name} – ${template.collection} digital wedding invitation`}
+            width={600}
+            height={375}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-            loading="lazy"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = '/templates/mor-pankh.webp';
-            }}
           />
 
           {/* Soft hover glow */}

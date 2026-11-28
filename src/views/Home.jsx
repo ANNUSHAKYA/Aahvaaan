@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import { Link } from '../lib/router-compat';
 import SEO from '../components/SEO';
 import {
@@ -241,11 +242,13 @@ export default function Home() {
 
                     {/* Main Couple Portrait inside the Arch */}
                     <div className="relative aspect-[3/4.4] w-full overflow-hidden bg-wine group">
-                      <img
-                        src="/hero-couple.jpg"
-                        alt="Ananya & Kabir Wedding Invitation Sample"
+                      <Image
+                        src="/hero-couple.webp"
+                        alt="Royal wedding invitation couple portrait inside architectural palace arch"
+                        width={736}
+                        height={981}
+                        priority
                         className="w-full h-full object-cover object-top filter brightness-[0.98] transition-transform duration-700 ease-out group-hover:scale-105"
-                        loading="eager"
                       />
 
                       <div className="absolute inset-x-0 bottom-0 h-32 sm:h-40 bg-gradient-to-t from-[#18030B] via-[#512D38]/80 to-transparent z-10 pointer-events-none" />
@@ -329,11 +332,12 @@ export default function Home() {
               className="bg-white rounded-3xl overflow-hidden border border-champagne/70 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col group relative"
             >
               <div className="aspect-[16/10] overflow-hidden bg-ivory relative border-b border-champagne/40">
-                <img
+                <Image
                   src={tmpl.image}
-                  alt={tmpl.name}
+                  alt={`${tmpl.name} luxury Indian wedding invitation preview`}
+                  width={800}
+                  height={500}
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-                  loading="lazy"
                 />
 
                 <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full shadow-xs border border-champagne/60">
@@ -438,10 +442,12 @@ export default function Home() {
             <div className="w-60 sm:w-64 aspect-[9/17] bg-slate-900 rounded-[40px] p-2.5 shadow-2xl border-2 border-slate-700 relative flex flex-col overflow-hidden">
               <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mb-1 z-30" />
               <div className="flex-1 rounded-[32px] overflow-hidden relative flex flex-col items-center justify-between p-4 text-center border border-gold/40 shadow-inner">
-                <img
-                  src="/invitation-frame.jpg"
-                  alt="Royal Wedding Frame"
-                  className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+                <Image
+                  src="/invitation-frame.webp"
+                  alt="Royal Indian wedding invitation with gold jali and lotus floral border"
+                  fill
+                  sizes="(max-width: 640px) 240px, 256px"
+                  className="object-cover object-center pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-[#3D0A17]/25 pointer-events-none" />
 
@@ -494,10 +500,12 @@ export default function Home() {
             <div className="w-60 sm:w-64 aspect-[9/17] bg-slate-900 rounded-[40px] p-2.5 shadow-2xl border-2 border-slate-700 relative flex flex-col overflow-hidden">
               <div className="w-20 h-4 bg-slate-900 rounded-full mx-auto mb-1 z-30" />
               <div className="flex-1 rounded-[32px] overflow-hidden relative flex flex-col items-center justify-between p-4 text-center border border-gold/40 shadow-inner">
-                <img
-                  src="/invitation-frame.jpg"
-                  alt="Personalized Royal Frame"
-                  className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+                <Image
+                  src="/invitation-frame.webp"
+                  alt="Personalized royal wedding invitation envelope background with lotus blossoms"
+                  fill
+                  sizes="(max-width: 640px) 240px, 256px"
+                  className="object-cover object-center pointer-events-none"
                 />
                 <div className="absolute inset-0 bg-[#3D0A17]/25 pointer-events-none" />
 

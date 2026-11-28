@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { Link } from '../lib/router-compat';
 import { Heart, Award, Users, Sparkles, ArrowRight } from 'lucide-react';
 import SectionHeading from '../components/SectionHeading';
@@ -66,10 +67,12 @@ export default function About() {
               transition={{ duration: 0.6 }}
             >
               <div className="relative">
-                <div className="bg-champagne rounded-lg overflow-hidden aspect-[4/5]">
-                  <img
+                <div className="bg-champagne rounded-lg overflow-hidden aspect-[4/5] relative">
+                  <Image
                     src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&h=750&fit=crop&q=80"
-                    alt="Beautiful Indian wedding celebration"
+                    alt="Indian wedding celebration with traditional flower garlands and decor"
+                    width={600}
+                    height={750}
                     className="w-full h-full object-cover"
                   />
                 </div>

@@ -3,6 +3,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -28,13 +29,13 @@ export default {
         teal: '#0E4D4F',
       },
       fontFamily: {
-        sans: ['"DM Sans"', 'sans-serif'],
-        serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
-        body: ['"DM Sans"', 'system-ui', 'sans-serif'],
-        script: ['"Petit Formal Script"', '"Great Vibes"', 'cursive'],
-        petit: ['"Petit Formal Script"', 'cursive'],
-        formal: ['"Petit Formal Script"', 'cursive'],
+        sans: ['var(--font-dm-sans)', 'sans-serif'],
+        serif: ['var(--font-cormorant)', 'Georgia', 'serif'],
+        heading: ['var(--font-cormorant)', 'Georgia', 'serif'],
+        body: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
+        script: ['var(--font-petit)', '"Great Vibes"', 'cursive'],
+        petit: ['var(--font-petit)', 'cursive'],
+        formal: ['var(--font-petit)', 'cursive'],
         hindi: ['"Noto Serif Devanagari"', 'serif'],
         punjabi: ['"Noto Serif Gurmukhi"', 'serif'],
       },
