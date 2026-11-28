@@ -40,7 +40,6 @@ export default function Navbar() {
   const isAppPage = [
     '/dashboard',
     '/host',
-    '/invitations',
     '/templates',
     '/gallery',
     '/profile',
@@ -49,7 +48,7 @@ export default function Navbar() {
 
   if (isAppPage) {
     const isDashboard = location.pathname === '/dashboard' || location.pathname === '/host';
-    const isTemplates = location.pathname === '/invitations' || location.pathname === '/templates' || location.pathname === '/gallery';
+    const isTemplates = location.pathname === '/templates' || location.pathname === '/gallery';
 
     return (
       <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">

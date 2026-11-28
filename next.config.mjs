@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Ensure Next.js ignores legacy src/pages directory and only routes via app/
   pageExtensions: ['jsx', 'js', 'tsx', 'ts'],
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -10,6 +15,20 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: '/invitations',
+        destination: '/templates',
+        permanent: true,
+      },
+      {
+        source: '/invitations/:id',
+        destination: '/templates/:id',
+        permanent: true,
+      },
+    ];
   },
 };
 

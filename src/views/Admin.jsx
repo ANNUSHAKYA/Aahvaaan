@@ -451,7 +451,7 @@ export default function Admin() {
 
                     <div className="flex items-center gap-2 mt-3 pt-2 border-t border-champagne/40">
                       <Link
-                        to={`/invitations/${t.id}`}
+                        to={`/templates/${t.id}`}
                         className="text-[11px] font-semibold text-wine hover:text-gold flex items-center gap-1"
                       >
                         <Eye size={12} />

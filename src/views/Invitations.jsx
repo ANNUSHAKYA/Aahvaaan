@@ -44,7 +44,7 @@ export default function Invitations() {
               transition={{ duration: 0.3, delay: index * 0.05 }}
             >
               <Link
-                to={`/invitations/${template.id}`}
+                to={`/templates/${template.id}`}
                 className="bg-white rounded-3xl border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col justify-between h-full group cursor-pointer"
               >
                 <div>

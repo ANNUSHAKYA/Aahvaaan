@@ -361,7 +361,7 @@ export default function Home() {
           {templates.map((tmpl) => (
             <Link
               key={tmpl.id}
-              to={`/invitations/${tmpl.id}`}
+              to={`/templates/${tmpl.id}`}
               className="bg-white rounded-3xl overflow-hidden border border-champagne/70 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 flex flex-col group relative"
             >
               <div className="aspect-[16/10] overflow-hidden bg-ivory relative border-b border-champagne/40">

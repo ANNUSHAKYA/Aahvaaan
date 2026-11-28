@@ -61,7 +61,7 @@ export default function BuyTemplate() {
         {/* Top Breadcrumb Link */}
         <div className="mb-4">
           <Link
-            to={`/invitations/${selectedTemplate.id}`}
+            to={`/templates/${selectedTemplate.id}`}
             className="px-3.5 py-1.5 rounded-full border border-gray-200 text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50 inline-flex items-center gap-1.5 shadow-2xs transition-all"
           >
             <ArrowLeft size={13} />

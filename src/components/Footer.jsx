@@ -1,9 +1,11 @@
 import { Link } from '../lib/router-compat';
-import { Instagram, ArrowUp } from 'lucide-react';
-import config from '../data/config';
+import { Instagram, Mail, ArrowUp } from 'lucide-react';
+import siteConfig from '../../lib/siteConfig';
+import { useAuth } from '../context/AuthContext';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { user } = useAuth();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -22,19 +24,29 @@ export default function Footer() {
             </Link>
 
             <p className="text-xs sm:text-sm text-white/70 leading-relaxed max-w-sm">
-              Interactive wedding invitations, shared in one link.
+              {siteConfig.tagline}
             </p>
+
+            <div className="pt-1">
+              <a
+                href={`mailto:${siteConfig.email}`}
+                className="inline-flex items-center gap-2 text-xs text-white/70 hover:text-gold transition-colors"
+              >
+                <Mail size={14} className="text-gold-light" />
+                <span>{siteConfig.email}</span>
+              </a>
+            </div>
 
             <div className="flex items-center gap-3 pt-2">
               <Link
-                to="/invitations"
+                to="/templates"
                 className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#6B1D2F] via-[#851C34] to-[#A02845] hover:opacity-95 text-white font-semibold text-xs transition-all shadow-md hover:shadow-lg"
               >
                 View templates
               </Link>
 
               <a
-                href={config.instagram || 'https://instagram.com'}
+                href={siteConfig.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors border border-white/15"
@@ -52,7 +64,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs text-white/70">
               <li>
-                <Link to="/invitations" className="hover:text-gold transition-colors">
+                <Link to="/templates" className="hover:text-gold transition-colors">
                   Templates
                 </Link>
               </li>
@@ -62,8 +74,8 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/#sharing" className="hover:text-gold transition-colors">
-                  Sharing
+                <a href="/#send" className="hover:text-gold transition-colors">
+                  Sending
                 </a>
               </li>
               <li>
@@ -72,7 +84,7 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <Link to="/invitations" className="hover:text-gold transition-colors">
+                <Link to="/templates" className="hover:text-gold transition-colors">
                   All templates
                 </Link>
               </li>
@@ -96,49 +108,56 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <a href="/#faqs" className="hover:text-gold transition-colors">
-                  FAQs
-                </a>
-              </li>
-              <li>
-                <a href="/#about" className="hover:text-gold transition-colors">
+                <Link to="/terms" className="hover:text-gold transition-colors">
                   Terms of Service
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="/#about" className="hover:text-gold transition-colors">
+                <Link to="/privacy" className="hover:text-gold transition-colors">
                   Privacy Policy
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link to="/refund" className="hover:text-gold transition-colors">
+                  Refund Policy
+                </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: Account */}
+          {/* Column 3: Account (Hide "My invitations" & "Profile & settings" unless logged in) */}
           <div>
             <h4 className="text-xs uppercase tracking-widest font-bold text-gold-light mb-4">
               ACCOUNT
             </h4>
             <ul className="space-y-2.5 text-xs text-white/70">
-              <li>
-                <Link to="/login" className="hover:text-gold transition-colors">
-                  Log in
-                </Link>
-              </li>
-              <li>
-                <Link to="/signup" className="hover:text-gold transition-colors">
-                  Create an account
-                </Link>
-              </li>
-              <li>
-                <Link to="/dashboard" className="hover:text-gold transition-colors">
-                  My invitations
-                </Link>
-              </li>
-              <li>
-                <Link to="/profile" className="hover:text-gold transition-colors">
-                  Profile & settings
-                </Link>
-              </li>
+              {user ? (
+                <>
+                  <li>
+                    <Link to="/dashboard" className="hover:text-gold transition-colors">
+                      My invitations
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/profile" className="hover:text-gold transition-colors">
+                      Profile & settings
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <Link to="/login" className="hover:text-gold transition-colors">
+                      Log in
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/signup" className="hover:text-gold transition-colors">
+                      Create an account
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

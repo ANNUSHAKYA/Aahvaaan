@@ -41,7 +41,7 @@ export default function NotFound() {
             <span>Back to Home</span>
           </Link>
           <Link
-            to="/invitations"
+            to="/templates"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full border border-champagne hover:border-wine text-charcoal text-xs font-semibold transition-all"
           >
             <span>Explore Templates</span>

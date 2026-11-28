@@ -170,7 +170,7 @@ export default function HowItWorks() {
               Let's create a wedding invitation that your guests will remember.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/invitations" className="btn-gold">
+              <Link to="/templates" className="btn-gold">
                 Browse Designs
                 <ArrowRight size={16} className="ml-2" />
               </Link>

@@ -23,6 +23,9 @@ const Profile = lazy(() => import('./pages/Profile'));
 const InvitationEditor = lazy(() => import('./pages/InvitationEditor'));
 const Admin = lazy(() => import('./pages/Admin'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const Terms = lazy(() => import('./views/Terms'));
+const Privacy = lazy(() => import('./views/Privacy'));
+const Refund = lazy(() => import('./views/Refund'));
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -63,9 +66,12 @@ export default function App() {
             {/* Templates / Gallery Routes */}
             <Route path="templates" element={<Invitations />} />
             <Route path="templates/:id" element={<InvitationPreview />} />
-            <Route path="invitations" element={<Invitations />} />
-            <Route path="gallery" element={<Invitations />} />
-            <Route path="invitations/:id" element={<InvitationPreview />} />
+            <Route path="invitations" element={<Navigate to="/templates" replace />} />
+            <Route path="invitations/:id" element={<Navigate to="/templates" replace />} />
+            <Route path="gallery" element={<Navigate to="/templates" replace />} />
+            <Route path="terms" element={<Terms />} />
+            <Route path="privacy" element={<Privacy />} />
+            <Route path="refund" element={<Refund />} />
             <Route path="try/:id" element={<InvitationPreview />} />
             <Route path="buy" element={<BuyTemplate />} />
             <Route path="buy/:id" element={<BuyTemplate />} />

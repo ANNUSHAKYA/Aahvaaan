@@ -7,7 +7,7 @@ const SITE_ORIGIN = 'https://aahvaaan.vercel.app';
  */
 export default function SEO({
   title = 'Aahvaaan | Luxury Digital Wedding Invitations by Vow & Vision',
-  description = 'Bespoke digital wedding invitations crafted with authentic Indian heritage, RSVP inbox, Google Maps directions, and named guest links.',
+  description = 'Interactive Indian wedding invitations with a diya reveal, named guest links, maps and music, shared in one WhatsApp-ready link.',
   image = '/og-preview.png',
   url,
   type = 'website',

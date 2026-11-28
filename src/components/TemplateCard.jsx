@@ -14,7 +14,7 @@ export default function TemplateCard({ template, index = 0 }) {
       {/* Landscape Mockup Preview (Matching Loom Video 16:10 aspect ratio) */}
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-champagne/30">
         <Link
-          to={`/invitations/${template.id}`}
+          to={`/templates/${template.id}`}
           className="block w-full h-full relative"
           aria-label={`Preview ${template.name}`}
         >
@@ -58,13 +58,13 @@ export default function TemplateCard({ template, index = 0 }) {
                 {template.category}
               </span>
               <h3 className="font-heading text-2xl font-bold text-wine group-hover:text-gold transition-colors">
-                <Link to={`/invitations/${template.id}`}>
+                <Link to={`/templates/${template.id}`}>
                   {template.name}
                 </Link>
               </h3>
             </div>
             <Link
-              to={`/invitations/${template.id}`}
+              to={`/templates/${template.id}`}
               className="w-8 h-8 rounded-full bg-ivory border border-champagne/80 flex items-center justify-center text-charcoal/60 hover:text-wine hover:border-wine transition-colors flex-shrink-0 mt-1"
               title="View Design"
             >
@@ -107,7 +107,7 @@ export default function TemplateCard({ template, index = 0 }) {
         {/* Action Buttons: View Design + Buy This Template */}
         <div className="grid grid-cols-2 gap-2.5 pt-2 border-t border-champagne/40">
           <Link
-            to={`/invitations/${template.id}`}
+            to={`/templates/${template.id}`}
             className="inline-flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border border-wine/30 text-wine hover:bg-wine hover:text-white font-body text-xs font-semibold tracking-wide transition-all duration-200"
           >
             <Eye size={14} />

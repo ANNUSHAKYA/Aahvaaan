@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Allow: /invitations
+Allow: /templates
 Allow: /pricing
 Allow: /how-it-works
 Allow: /about

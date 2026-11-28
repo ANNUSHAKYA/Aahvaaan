@@ -178,7 +178,7 @@ export default function About() {
               Your love story deserves an invitation that does it justice. Let us help you make a stunning first impression.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/invitations" className="btn-primary">
+              <Link to="/templates" className="btn-primary">
                 Explore Designs
                 <ArrowRight size={16} className="ml-2" />
               </Link>

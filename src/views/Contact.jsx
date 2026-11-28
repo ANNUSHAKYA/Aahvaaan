@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Phone, Mail, Instagram, MessageCircle, CheckCircle } from 'lucide-react';
 import config from '../data/config';
+import siteConfig from '../../lib/siteConfig';
 import packages from '../data/pricing';
 import templates from '../data/templates';
 import SectionHeading from '../components/SectionHeading';
@@ -344,7 +345,7 @@ export default function Contact() {
                   </li>
                   <li>
                     <a
-                      href={`mailto:${config.email}`}
+                      href={`mailto:${siteConfig.email}`}
                       className="flex items-center gap-3 font-body text-sm text-charcoal hover:text-wine transition-colors"
                     >
                       <div className="w-10 h-10 rounded-lg bg-champagne/50 flex items-center justify-center text-wine">
@@ -352,13 +353,13 @@ export default function Contact() {
                       </div>
                       <div>
                         <span className="block font-semibold">Email Us</span>
-                        <span className="text-xs text-charcoal/50">{config.email}</span>
+                        <span className="text-xs text-charcoal/50">{siteConfig.email}</span>
                       </div>
                     </a>
                   </li>
                   <li>
                     <a
-                      href={config.instagram}
+                      href={siteConfig.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center gap-3 font-body text-sm text-charcoal hover:text-wine transition-colors"
@@ -368,7 +369,7 @@ export default function Contact() {
                       </div>
                       <div>
                         <span className="block font-semibold">Instagram</span>
-                        <span className="text-xs text-charcoal/50">{config.instagramHandle}</span>
+                        <span className="text-xs text-charcoal/50">{siteConfig.instagramHandle}</span>
                       </div>
                     </a>
                   </li>

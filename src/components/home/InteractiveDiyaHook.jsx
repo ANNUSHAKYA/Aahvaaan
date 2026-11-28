@@ -242,7 +242,7 @@ export default function InteractiveDiyaHook() {
                   </button>
 
                   <Link
-                    to="/invitations/royal-maroon-and-gold"
+                    to="/templates/royal-maroon-and-gold"
                     className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-wine hover:bg-[#8A243A] text-white text-[11px] font-semibold shadow-md transition-all active:scale-95"
                   >
                     <span>View Live Invite</span>

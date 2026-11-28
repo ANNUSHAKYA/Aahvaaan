@@ -92,7 +92,7 @@ export default function Pricing() {
 
           <div className="mt-8 text-center">
             <p className="font-body text-xs text-charcoal/60">
-              💡 Looking for a specific design? You can also <Link to="/invitations" className="text-wine font-semibold underline">explore the 4 Signature Templates</Link> and click "Buy This Template" to have your design pre-selected!
+              💡 Looking for a specific design? You can also <Link to="/templates" className="text-wine font-semibold underline">explore the 4 Signature Templates</Link> and click "Buy This Template" to have your design pre-selected!
             </p>
           </div>
         </div>
