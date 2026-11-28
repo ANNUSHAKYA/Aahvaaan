@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router-compat';
 import { Instagram, ArrowUp } from 'lucide-react';
 import config from '../data/config';
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Heart, RotateCcw, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link } from '../../lib/router-compat';
 
 /**
  * Traditional Brass Diya SVG Icon with dynamic flame animation

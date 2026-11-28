@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from '../lib/router-compat';
 import { Eye, ShoppingBag, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 

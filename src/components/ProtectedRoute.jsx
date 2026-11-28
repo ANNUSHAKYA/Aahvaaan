@@ -1,4 +1,4 @@
-import { Navigate, useLocation, Outlet } from 'react-router-dom';
+import { Navigate, useLocation, Outlet } from '../lib/router-compat';
 import { useAuth } from '../context/AuthContext';
 
 export default function ProtectedRoute({ children }) {

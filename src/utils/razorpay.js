@@ -79,7 +79,9 @@ export async function initiatePayment({
         amount_inr: amount,
         amount_paise: amount * 100,
         currency: 'INR',
-        key_id: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_simulated',
+        key_id: (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_RAZORPAY_KEY_ID) || 
+                (typeof import.meta !== 'undefined' && import.meta.env?.VITE_RAZORPAY_KEY_ID) || 
+                'rzp_test_simulated',
         is_simulated: true,
       };
     }

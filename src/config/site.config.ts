@@ -51,15 +51,29 @@ export function getWhatsAppUrl(message?: string, customPhone?: string): string {
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
 
+// Helper to support both Vite (import.meta.env) and Next.js (process.env)
+const getEnv = (key: string, nextKey?: string): string => {
+  if (typeof process !== 'undefined' && process.env) {
+    if (nextKey && process.env[nextKey]) return process.env[nextKey] as string;
+    if (process.env[key]) return process.env[key] as string;
+  }
+  try {
+    if (typeof import.meta !== 'undefined' && (import.meta as any).env) {
+      if ((import.meta as any).env[key]) return (import.meta as any).env[key];
+    }
+  } catch {}
+  return '';
+};
+
 export const siteConfig: SiteConfig = {
   brandName: 'Aahvaaan by Vow & Vision',
   websiteName: 'Aahvaaan',
   tagline: 'Every celebration deserves a beautiful beginning.',
   domain: 'https://aahvaaan.vercel.app',
 
-  // Configured contact points (replace with real business credentials)
-  whatsappNumber: (import.meta.env.VITE_WHATSAPP_NUMBER as string) || '919876543210',
-  email: (import.meta.env.VITE_CONTACT_EMAIL as string) || 'hello@aahvaaan.com',
+  // Configured contact points
+  whatsappNumber: getEnv('VITE_WHATSAPP_NUMBER', 'NEXT_PUBLIC_WHATSAPP_NUMBER') || '919876543210',
+  email: getEnv('VITE_CONTACT_EMAIL', 'NEXT_PUBLIC_CONTACT_EMAIL') || 'hello@aahvaaan.com',
 
   instagram: 'https://instagram.com/aahvaaan.invites',
   instagramHandle: '@aahvaaan.invites',
@@ -67,8 +81,8 @@ export const siteConfig: SiteConfig = {
   currency: '₹',
 
   // Payment & UPI Configuration
-  upiId: (import.meta.env.VITE_UPI_ID as string) || 'annushakya94526@ybl',
-  payeeName: (import.meta.env.VITE_PAYEE_NAME as string) || 'ANNU SHAKYA DO RAJVEER SINGH',
+  upiId: getEnv('VITE_UPI_ID', 'NEXT_PUBLIC_UPI_ID') || 'annushakya94526@ybl',
+  payeeName: getEnv('VITE_PAYEE_NAME', 'NEXT_PUBLIC_PAYEE_NAME') || 'ANNU SHAKYA DO RAJVEER SINGH',
   phonePeQrImage: '/payment/phonepe-qr.jpg',
   walletBalance: 0,
 };

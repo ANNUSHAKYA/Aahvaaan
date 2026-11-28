@@ -4,10 +4,11 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "start": "sirv dist --single --host 0.0.0.0 --port ${PORT:-10000}"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "vite:dev": "vite",
+    "vite:build": "vite build"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -18,6 +19,7 @@
     "framer-motion": "^11.15.0",
     "lucide-react": "^0.460.0",
     "motion": "^14.14.0",
+    "next": "^14.2.18",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.7.0",
