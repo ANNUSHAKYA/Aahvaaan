@@ -736,10 +736,8 @@ on conflict (id) do update set
   file_size_limit = 3145728,
   allowed_mime_types = array['image/jpeg', 'image/png', 'image/webp'];
 
--- Enable RLS on storage.objects
-alter table storage.objects enable row level security;
-
 -- Storage Policies: Owners upload to {owner_id}/{invitation_id}/*
+-- Note: storage.objects has RLS enabled by default in Supabase system catalog
 drop policy if exists "Owners can upload invitation photos" on storage.objects;
 create policy "Owners can upload invitation photos"
 on storage.objects for insert
