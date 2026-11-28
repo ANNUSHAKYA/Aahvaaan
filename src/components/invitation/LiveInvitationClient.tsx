@@ -69,6 +69,9 @@ export default function LiveInvitationClient({
       events: invitation.events?.length > 0 ? invitation.events : undefined,
       gallery: invitation.photos?.length > 0 ? invitation.photos : undefined,
       musicChoice: invitation.music_choice || undefined,
+      audioTrack: invitation.music_meta?.audio_url || undefined,
+      musicTitle: invitation.music_meta?.title || undefined,
+      musicMeta: invitation.music_meta || undefined,
       guestName: invitation.guest?.display_name || undefined,
     };
   }, [invitation]);

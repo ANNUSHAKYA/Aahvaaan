@@ -10,6 +10,7 @@ import {
 import {
   saveDraft, publishInvitation, updateLive, createGuest, deleteGuest, archiveInvitation
 } from '@/app/actions/invitations';
+import MusicLibraryStep from '@/src/components/dashboard/MusicLibraryStep';
 
 async function purchaseAddonPack(invitationId, packId, onSuccess, onError) {
   try {
@@ -565,6 +566,7 @@ export default function InvitationEditor({ invitation, initialDraft, initialGues
     events: [],
     photos: [],
     music_choice: '',
+    music_meta: null,
     venue_name: '',
     venue_address: '',
     maps_url: '',
@@ -649,9 +651,9 @@ export default function InvitationEditor({ invitation, initialDraft, initialGues
       ? new Date(data.wedding_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
       : '27 February 2027',
     events: data.events?.length > 0 ? data.events : undefined,
-    musicSrc: data.music_choice
-      ? (MUSIC_TRACKS.find(t => t.id === data.music_choice)?.src || undefined)
-      : undefined,
+    audioTrack: data.music_meta?.audio_url || undefined,
+    musicChoice: data.music_choice || undefined,
+    musicMeta: data.music_meta || undefined,
   };
 
   return (
@@ -733,7 +735,13 @@ export default function InvitationEditor({ invitation, initialDraft, initialGues
             {step === 0 && <StepCouple data={data} onChange={handleDataChange} />}
             {step === 1 && <StepEvents data={data} onChange={handleDataChange} />}
             {step === 2 && <StepPhotos data={data} onChange={handleDataChange} invitationId={invitation.id} />}
-            {step === 3 && <StepMusic data={data} onChange={handleDataChange} />}
+            {step === 3 && (
+              <MusicLibraryStep
+                data={data}
+                onChange={handleDataChange}
+                invitationId={invitation.id}
+              />
+            )}
             {step === 4 && (
               <StepGuests
                 invitationId={invitation.id}

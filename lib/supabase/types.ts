@@ -9,6 +9,56 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      music_tracks: {
+        Row: {
+          id: string;
+          title: string;
+          artist: string | null;
+          movie_or_album: string | null;
+          category: string;
+          duration_seconds: number;
+          audio_url: string;
+          cover_url: string | null;
+          license_type: 'original' | 'licensed' | 'royalty_free';
+          license_confirmed: boolean;
+          is_published: boolean;
+          is_featured: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          artist?: string | null;
+          movie_or_album?: string | null;
+          category: string;
+          duration_seconds?: number;
+          audio_url: string;
+          cover_url?: string | null;
+          license_type?: 'original' | 'licensed' | 'royalty_free';
+          license_confirmed?: boolean;
+          is_published?: boolean;
+          is_featured?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          artist?: string | null;
+          movie_or_album?: string | null;
+          category?: string;
+          duration_seconds?: number;
+          audio_url?: string;
+          cover_url?: string | null;
+          license_type?: 'original' | 'licensed' | 'royalty_free';
+          license_confirmed?: boolean;
+          is_published?: boolean;
+          is_featured?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       profiles: {
         Row: {
           id: string;
@@ -70,6 +120,7 @@ export interface Database {
           maps_url: string | null;
           photos: Json;
           music_choice: string | null;
+          music_meta: Json | null;
           family_note: string | null;
           published_at: string | null;
           edit_window_ends_at: string | null;

@@ -4,7 +4,7 @@ import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
 import {
   Calendar, Phone, User, Mail, Minus, Plus, Heart, MapPin, Check,
   Sparkles, ChevronRight, Navigation, Hotel, Utensils, MessageCircle,
-  Share2, Compass, Volume2, VolumeX, Eye
+  Share2, Compass, Volume2, VolumeX, Eye, Play, Pause, Music
 } from 'lucide-react';
 import { getTranslation } from '../../../utils/translations';
 import supabase, { isSupabaseConfigured } from '../../../lib/supabase';
@@ -1179,6 +1179,7 @@ export default function MorPankhInvitation({
   const [guest, setGuest] = useState(propGuestName || content?.guestName || 'Mr. Joshi and Family');
   const [themeKey, setThemeKey] = useState<keyof typeof themes>(content.themeColor || 'Ivory');
   const [musicPlaying, setMusicPlaying] = useState(false);
+  const [audioError, setAudioError] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const welcome = useRef<HTMLElement | null>(null);
   const greeting = useRef<HTMLElement | null>(null);
@@ -1187,13 +1188,25 @@ export default function MorPankhInvitation({
     if (propGuestName) setGuest(propGuestName);
   }, [propGuestName]);
 
+  const brideName = content.brideName || 'Meera';
+  const groomName = content.groomName || 'Aarav';
+  const rawTrack = content.audioTrack || content.musicMeta?.audio_url || content.musicChoice || '';
+  const hasNoMusic = rawTrack === 'none';
+  const audioTrack = rawTrack.startsWith('/') || rawTrack.startsWith('http')
+    ? rawTrack
+    : (hasNoMusic ? '' : '/templates/mor-pankh/media/music.mp3');
+  const songTitle = content.musicMeta?.title || content.musicTitle || (hasNoMusic ? '' : 'Royal Shehnai');
+  const songArtist = content.musicMeta?.artist || '';
+
   function openInvitation() {
     setOpened(true);
-    if (audioRef.current) {
+    if (audioRef.current && !audioError && !hasNoMusic && audioTrack) {
       if (!audioRef.current.src) {
         audioRef.current.src = audioTrack;
       }
-      audioRef.current.play().then(() => setMusicPlaying(true)).catch(() => {});
+      audioRef.current.play().then(() => setMusicPlaying(true)).catch((e) => {
+        console.warn('Audio play deferred or blocked by browser gesture policy:', e);
+      });
     }
     const prefersReduced =
       typeof window !== 'undefined' &&
@@ -1207,7 +1220,7 @@ export default function MorPankhInvitation({
   }
 
   function toggleAudio() {
-    if (!audioRef.current) return;
+    if (!audioRef.current || audioError || hasNoMusic || !audioTrack) return;
     if (!audioRef.current.src) {
       audioRef.current.src = audioTrack;
     }
@@ -1215,7 +1228,9 @@ export default function MorPankhInvitation({
       audioRef.current.pause();
       setMusicPlaying(false);
     } else {
-      audioRef.current.play().then(() => setMusicPlaying(true)).catch(() => {});
+      audioRef.current.play().then(() => setMusicPlaying(true)).catch((e) => {
+        console.warn('Audio play error:', e);
+      });
     }
   }
 
@@ -1253,32 +1268,72 @@ export default function MorPankhInvitation({
     URL.revokeObjectURL(url);
   }
 
-  const brideName = content.brideName || 'Meera';
-  const groomName = content.groomName || 'Aarav';
-  const rawTrack = content.audioTrack || content.musicChoice || '';
-  const audioTrack = rawTrack.startsWith('/') || rawTrack.startsWith('http')
-    ? rawTrack
-    : '/templates/mor-pankh/media/music.mp3';
-
   return (
     <MotionConfig reducedMotion="user">
     <div style={themes[themeKey] as CSSProperties} className="relative min-h-screen bg-[var(--canvas)] font-body text-charcoal transition-colors duration-500 overflow-x-hidden">
       
       {/* ─── FLOATING AUDIO CONTROLLER ─── */}
-      <div className="fixed bottom-6 left-6 z-50">
-        <button
-          type="button"
-          onClick={toggleAudio}
-          aria-label={musicPlaying ? 'Mute wedding music' : 'Play wedding music'}
-          className="w-11 h-11 rounded-full bg-teal/90 text-gold border border-gold/60 shadow-xl flex items-center justify-center backdrop-blur-sm hover:scale-105 active:scale-95 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B69A70] focus-visible:ring-offset-2"
-          title={musicPlaying ? 'Mute Wedding Shehnai' : 'Play Wedding Music'}
-        >
-          {musicPlaying ? <Volume2 size={18} /> : <VolumeX size={18} />}
-        </button>
-      </div>
+      {!hasNoMusic && !audioError && audioTrack && (
+        <div className="fixed bottom-6 left-4 sm:left-6 z-50 max-w-[calc(100vw-2rem)]">
+          <div className="flex items-center gap-2.5 rounded-full bg-[#0E4D4F]/95 text-[#FAF7F2] border border-[#B69A70]/60 shadow-[0_8px_24px_rgba(0,0,0,0.35)] backdrop-blur-md px-3 py-1.5 transition-all">
+            <button
+              type="button"
+              onClick={toggleAudio}
+              aria-label={musicPlaying ? `Pause ${songTitle}` : `Play ${songTitle}`}
+              className="w-8 h-8 rounded-full bg-[#B69A70] text-[#0E4D4F] flex items-center justify-center shrink-0 hover:bg-[#cbb58f] active:scale-95 transition-all shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#B69A70]"
+              title={musicPlaying ? `Pause: ${songTitle}` : `Play: ${songTitle}`}
+            >
+              {musicPlaying ? <Pause size={14} className="fill-current" /> : <Play size={14} className="fill-current ml-0.5" />}
+            </button>
+
+            <div className="flex flex-col min-w-0 pr-1 max-w-[130px] sm:max-w-[190px]">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[11px] font-medium text-[#FAF7F2] truncate tracking-wide">
+                  {songTitle}
+                </span>
+                {musicPlaying && (
+                  <div className="flex items-end gap-0.5 h-2.5 shrink-0" aria-hidden="true">
+                    <span className="w-0.5 h-2 bg-[#B69A70] rounded-full animate-pulse" />
+                    <span className="w-0.5 h-3 bg-[#B69A70] rounded-full animate-bounce" style={{ animationDuration: '0.6s' }} />
+                    <span className="w-0.5 h-1.5 bg-[#B69A70] rounded-full animate-pulse" style={{ animationDuration: '0.9s' }} />
+                  </div>
+                )}
+              </div>
+              {songArtist ? (
+                <span className="text-[9px] text-[#B69A70]/90 truncate">
+                  {songArtist}
+                </span>
+              ) : (
+                <span className="text-[9px] text-[#B69A70]/80">
+                  {musicPlaying ? 'Playing' : 'Tap to play'}
+                </span>
+              )}
+            </div>
+
+            <button
+              type="button"
+              onClick={toggleAudio}
+              aria-label={musicPlaying ? 'Mute music' : 'Unmute music'}
+              className="text-[#B69A70]/70 hover:text-[#B69A70] p-1 transition shrink-0"
+              title={musicPlaying ? 'Mute' : 'Play'}
+            >
+              {musicPlaying ? <Volume2 size={15} /> : <VolumeX size={15} />}
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="relative isolate mx-auto max-w-[450px] overflow-hidden bg-[var(--canvas)] shadow-[0_30px_100px_#001c1c80] transition-colors duration-500 md:rounded-[44px] md:border-[9px] md:border-[#142f2e] md:ring-1 md:ring-[#b7a16a]">
-        <audio ref={audioRef} loop preload="none" />
+        <audio
+          ref={audioRef}
+          loop
+          preload="none"
+          onError={() => {
+            setAudioError(true);
+            setMusicPlaying(false);
+          }}
+          onEnded={() => setMusicPlaying(false)}
+        />
         <PaperTexture />
 
         {/* ─── PREVIEW / TRIAL WATERMARK BANNER ─── */}

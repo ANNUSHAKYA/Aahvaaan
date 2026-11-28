@@ -38,11 +38,13 @@ export default async function AdminPage() {
     { data: invitations },
     { data: orders },
     { data: auditLogs },
+    { data: musicTracks },
   ] = await Promise.all([
     admin.from('profiles').select('id, full_name, phone, created_at').order('created_at', { ascending: false }).limit(100),
     admin.from('invitations').select('id, owner_id, slug, status, couple_names, wedding_date, created_at').order('created_at', { ascending: false }).limit(100),
     admin.from('orders').select('id, owner_id, invitation_id, amount_inr, status, order_type, addon_quantity, admin_note, razorpay_order_id, razorpay_payment_id, created_at').order('created_at', { ascending: false }).limit(100),
     admin.from('admin_audit_logs').select('id, admin_user_id, order_id, action, note, created_at').order('created_at', { ascending: false }).limit(100),
+    admin.from('music_tracks').select('*').order('created_at', { ascending: false }).limit(200),
   ]);
 
   return (
@@ -51,6 +53,7 @@ export default async function AdminPage() {
       initialInvitations={invitations || []}
       initialOrders={orders || []}
       initialAuditLogs={auditLogs || []}
+      initialMusicTracks={musicTracks || []}
     />
   );
 }

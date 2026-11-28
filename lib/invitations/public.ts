@@ -35,6 +35,15 @@ export interface PublicInvitation {
   maps_url: string;
   photos: string[];
   music_choice: string;
+  music_meta: {
+    source?: string;
+    track_id?: string;
+    title?: string;
+    artist?: string | null;
+    audio_url?: string;
+    storage_path?: string | null;
+    cover_url?: string | null;
+  } | null;
   family_note: string;
   published_at: string | null;
   guest: PublicGuest | null;
@@ -114,6 +123,13 @@ function buildSampleInvitation(slug: string, guestName?: string | null): PublicI
     maps_url: 'https://www.google.com/maps/search/?api=1&query=The+Leela+Palace+Jaipur',
     photos: [],
     music_choice: 'shehnai-royal',
+    music_meta: {
+      source: 'library',
+      track_id: 'shehnai-royal',
+      title: 'Royal Shehnai & Sitar',
+      artist: 'Aahvaaan Ensemble',
+      audio_url: '/templates/mor-pankh/media/music.mp3',
+    },
     family_note:
       'With the blessings of our families, we joyfully invite you to celebrate our union.',
     published_at: null,
@@ -183,11 +199,33 @@ function normalizeRpcPayload(raw: Record<string, any>): Omit<PublicInvitation, '
     maps_url: raw.maps_url || events[0]?.maps_url || '',
     rawPhotos: raw.photos,
     music_choice: raw.music_choice || 'shehnai-royal',
+    music_meta: (raw.music_meta && typeof raw.music_meta === 'object') ? raw.music_meta : null,
     family_note: raw.family_note || '',
     published_at: raw.published_at || null,
     guest: raw.guest || null,
     template_slug: raw.template?.slug || 'mor-pankh',
   };
+}
+
+async function signPrivateMusic(meta: PublicInvitation['music_meta']): Promise<PublicInvitation['music_meta']> {
+  if (!meta) return null;
+  const path = meta.storage_path || (meta.audio_url && !meta.audio_url.startsWith('http') && !meta.audio_url.startsWith('/') ? meta.audio_url : null);
+  if (!path) return meta;
+
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseUrl || !serviceKey) return meta;
+
+  const admin = createSupabaseAdmin(supabaseUrl, serviceKey, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+  const { data } = await admin.storage
+    .from('invitation-music')
+    .createSignedUrl(path, 60 * 60);
+  if (data?.signedUrl) {
+    return { ...meta, audio_url: data.signedUrl };
+  }
+  return meta;
 }
 
 export async function fetchPublicInvitation(slug: string): Promise<PublicInvitation | null> {
@@ -200,8 +238,11 @@ export async function fetchPublicInvitation(slug: string): Promise<PublicInvitat
 
   if (!error && data && typeof data === 'object') {
     const normalized = normalizeRpcPayload(data as Record<string, any>);
-    const photos = await signPrivatePhotos(normalized.rawPhotos);
-    return { ...normalized, photos };
+    const [photos, music_meta] = await Promise.all([
+      signPrivatePhotos(normalized.rawPhotos),
+      signPrivateMusic(normalized.music_meta),
+    ]);
+    return { ...normalized, photos, music_meta };
   }
 
   // Fallback for built-in sample slugs
@@ -222,8 +263,11 @@ export async function fetchPublicGuestInvitation(guestSlug: string): Promise<Pub
 
   if (!error && data && typeof data === 'object') {
     const normalized = normalizeRpcPayload(data as Record<string, any>);
-    const photos = await signPrivatePhotos(normalized.rawPhotos);
-    return { ...normalized, photos };
+    const [photos, music_meta] = await Promise.all([
+      signPrivatePhotos(normalized.rawPhotos),
+      signPrivateMusic(normalized.music_meta),
+    ]);
+    return { ...normalized, photos, music_meta };
   }
 
   // Fallback for built-in sample named slugs

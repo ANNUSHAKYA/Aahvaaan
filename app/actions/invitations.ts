@@ -24,6 +24,20 @@ const EventSchema = z.object({
   maps_url: z.string().url().optional().or(z.literal('')).default(''),
 });
 
+const MusicMetaSchema = z.object({
+  source: z.enum(['library', 'custom']).optional().default('library'),
+  track_id: z.string().max(100).optional().default(''),
+  title: z.string().max(120).optional().default(''),
+  artist: z.string().max(120).optional().nullable().default(''),
+  movie_or_album: z.string().max(120).optional().nullable().default(''),
+  category: z.string().max(80).optional().default(''),
+  audio_url: z.string().max(1000).optional().default(''),
+  storage_path: z.string().max(500).optional().nullable().default(null),
+  cover_url: z.string().max(1000).optional().nullable().default(null),
+  duration_seconds: z.number().int().min(0).max(3600).optional().default(0),
+  rights_confirmed: z.boolean().optional().default(false),
+}).nullable().optional();
+
 const DraftDataSchema = z.object({
   bride_name: z.string().max(50).optional().default(''),
   groom_name: z.string().max(50).optional().default(''),
@@ -32,6 +46,7 @@ const DraftDataSchema = z.object({
   events: z.array(EventSchema).optional().default([]),
   photos: z.array(z.string()).optional().default([]),
   music_choice: z.string().optional().default(''),
+  music_meta: MusicMetaSchema,
   venue_name: z.string().max(150).optional().default(''),
   venue_address: z.string().max(300).optional().default(''),
   maps_url: z.string().optional().default(''),
@@ -211,6 +226,7 @@ export async function publishInvitation(invitationId: string) {
       events: (draftData.events as unknown[]) || [],
       photos: (draftData.photos as string[]) || [],
       music_choice: (draftData.music_choice as string) || null,
+      music_meta: draftData.music_meta || null,
       family_note: (draftData.family_note as string) || null,
       venue_name: (draftData.venue_name as string) || null,
       venue_address: (draftData.venue_address as string) || null,
@@ -271,6 +287,7 @@ export async function updateLive(invitationId: string) {
       events: (draftData.events as unknown[]) || [],
       photos: (draftData.photos as string[]) || [],
       music_choice: (draftData.music_choice as string) || null,
+      music_meta: draftData.music_meta || null,
       family_note: (draftData.family_note as string) || null,
       venue_name: (draftData.venue_name as string) || null,
       venue_address: (draftData.venue_address as string) || null,

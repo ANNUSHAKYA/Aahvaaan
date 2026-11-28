@@ -179,6 +179,7 @@ alter table public.invitations add column if not exists venue_address text;
 alter table public.invitations add column if not exists maps_url text;
 alter table public.invitations add column if not exists photos jsonb default '[]'::jsonb;
 alter table public.invitations add column if not exists music_choice text;
+alter table public.invitations add column if not exists music_meta jsonb;
 alter table public.invitations add column if not exists family_note text;
 alter table public.invitations add column if not exists published_at timestamptz;
 alter table public.invitations add column if not exists edit_window_ends_at timestamptz;
@@ -323,6 +324,78 @@ create table if not exists public.admin_audit_logs (
   note text,
   created_at timestamptz not null default now()
 );
+
+-- 1.10 Music Library Tracks (commercial distribution requires license_confirmed = true)
+create table if not exists public.music_tracks (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  artist text,
+  movie_or_album text,
+  category text not null,
+  duration_seconds integer not null default 0,
+  audio_url text not null,
+  cover_url text,
+  license_type text not null default 'original' check (license_type in ('original', 'licensed', 'royalty_free')),
+  license_confirmed boolean not null default false,
+  is_published boolean not null default false,
+  is_featured boolean not null default false,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+alter table public.music_tracks enable row level security;
+
+drop policy if exists "Public can view published licensed music tracks" on public.music_tracks;
+create policy "Public can view published licensed music tracks"
+  on public.music_tracks for select
+  to public
+  using (is_published = true and license_confirmed = true);
+
+-- Seed 3 royalty-free starter tracks if empty
+insert into public.music_tracks (id, title, artist, movie_or_album, category, duration_seconds, audio_url, license_type, license_confirmed, is_published, is_featured)
+select gen_random_uuid(), v.title, v.artist, v.movie_or_album, v.category, v.duration_seconds, v.audio_url, 'royalty_free', true, true, v.is_featured
+from (values
+  ('Royal Shehnai & Sitar', 'Aahvaaan Ensemble', 'Traditional Heritage', 'Traditional Indian Music', 120, '/templates/mor-pankh/media/music.mp3', true),
+  ('Auspicious Flute Raag', 'Aahvaaan Ensemble', 'Classical Instrumentals', 'Bollywood Instrumentals', 135, '/templates/mor-pankh/media/music.mp3', true),
+  ('Palace Courtyard Melody', 'Aahvaaan Ensemble', 'Wedding Melodies', 'Wedding Classics', 110, '/templates/mor-pankh/media/music.mp3', false)
+) as v(title, artist, movie_or_album, category, duration_seconds, audio_url, is_featured)
+where not exists (select 1 from public.music_tracks);
+
+-- Private bucket for customer-uploaded wedding music & public bucket for admin library
+insert into storage.buckets (id, name, public)
+values ('invitation-music', 'invitation-music', false)
+on conflict (id) do nothing;
+
+insert into storage.buckets (id, name, public)
+values ('music-library', 'music-library', true)
+on conflict (id) do nothing;
+
+drop policy if exists "Owners can upload own invitation music" on storage.objects;
+create policy "Owners can upload own invitation music"
+  on storage.objects for insert
+  to authenticated
+  with check (
+    bucket_id = 'invitation-music'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+drop policy if exists "Owners can view own invitation music" on storage.objects;
+create policy "Owners can view own invitation music"
+  on storage.objects for select
+  to authenticated
+  using (
+    bucket_id = 'invitation-music'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+drop policy if exists "Owners can delete own invitation music" on storage.objects;
+create policy "Owners can delete own invitation music"
+  on storage.objects for delete
+  to authenticated
+  using (
+    bucket_id = 'invitation-music'
+    and (storage.foldername(name))[1] = auth.uid()::text
+  );
 
 alter table public.admin_audit_logs enable row level security;
 
@@ -656,6 +729,7 @@ begin
     'maps_url', i.maps_url,
     'photos', i.photos,
     'music_choice', i.music_choice,
+    'music_meta', i.music_meta,
     'family_note', i.family_note,
     'published_at', i.published_at,
     'guest', v_guest,
@@ -709,6 +783,7 @@ begin
     'maps_url', i.maps_url,
     'photos', i.photos,
     'music_choice', i.music_choice,
+    'music_meta', i.music_meta,
     'family_note', i.family_note,
     'published_at', i.published_at,
     'guest', jsonb_build_object(
