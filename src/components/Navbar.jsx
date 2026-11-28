@@ -136,11 +136,11 @@ export default function Navbar() {
               Features
             </a>
             <a
-              href="#sharing"
-              onClick={handleScrollTo('sharing')}
+              href="#send"
+              onClick={handleScrollTo('send')}
               className="hover:text-wine transition-colors cursor-pointer"
             >
-              Sharing
+              Sending
             </a>
             <a
               href="#faqs"
@@ -222,11 +222,11 @@ export default function Navbar() {
                   Features
                 </a>
                 <a
-                  href="#sharing"
-                  onClick={handleScrollTo('sharing')}
+                  href="#send"
+                  onClick={handleScrollTo('send')}
                   className="block py-2 px-3 rounded-xl hover:bg-ivory hover:text-wine transition-colors"
                 >
-                  Sharing
+                  Sending
                 </a>
                 <a
                   href="#faqs"

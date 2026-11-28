@@ -7,6 +7,7 @@ import templates from '../data/templates';
 import { initiatePayment } from '../utils/razorpay';
 import { useAuth } from '../context/AuthContext';
 import PaymentModal from '../components/payment/PaymentModal';
+import siteConfig from '../../lib/siteConfig';
 
 export default function BuyTemplate() {
   const { id } = useParams();
@@ -180,7 +181,7 @@ export default function BuyTemplate() {
                   </div>
                 </div>
                 <div className="flex items-center justify-between text-gray-700">
-                  <span>5 personalized guests</span>
+                  <span>{siteConfig.namedLinksIncluded} named links</span>
                   <span className="font-semibold text-emerald-600">Included</span>
                 </div>
                 <div className="flex items-center justify-between text-gray-700">

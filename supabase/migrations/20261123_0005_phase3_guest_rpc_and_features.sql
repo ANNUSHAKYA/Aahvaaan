@@ -243,7 +243,7 @@ BEGIN
     RETURN jsonb_build_object(
       'success', false,
       'error', 'limit_reached',
-      'message', format('Your %s package is limited to %s personalized links. Please upgrade your package to invite more guests individually.', v_inv.package, v_inv.personalized_limit)
+      'message', format('Your %s package is limited to %s named links. Please upgrade your package to invite more guests individually.', v_inv.package, v_inv.personalized_limit)
     );
   END IF;
 

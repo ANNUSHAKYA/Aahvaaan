@@ -28,7 +28,7 @@ const templates = [
     startingPrice: 3499,
     priceDisplay: '₹3,499',
     shortDescription: 'Deep peacock teal, metallic gold accents, and authentic Mor Pankh feathers woven into an unforgettable royal invitation.',
-    description: 'Mor Pankh · № 01 is Aahvaaan’s signature royal digital wedding invitation. Inspired by the grace of peacocks and royal Rajasthani courtyards, it features 3D perspective opening arch gates, authentic multi-stop vector feather crests, interactive petal date reveal, a six-chapter wedding diary, keepsake notes, hanging love-story polaroids, and seamless guest RSVP tracking.',
+    description: 'Mor Pankh · № 01 is Aahvaaan’s signature royal digital wedding invitation. Inspired by the grace of peacocks and royal Rajasthani courtyards, it features 3D perspective opening arch gates, authentic multi-stop vector feather crests, interactive petal date reveal, a six-chapter wedding diary, keepsake notes, hanging love-story polaroids, and seamless guest RSVP inbox.',
     designDirection: 'Deep peacock teal, antique gold trim, ivory parchment grain, 3D arch gate opening, traditional royal typography with authentic Hindi blessings.',
     image: '/templates/mor-pankh.svg',
     featured: true,

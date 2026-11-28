@@ -1,5 +1,5 @@
 # 🪷 Aahvaaan (आह्वान) — Luxury Digital Wedding Invitations
-> **By Vow & Vision** • Handcrafted with authentic Indian heritage, live RSVP tracking, and personal guest greetings.
+> **By Vow & Vision** • Handcrafted with authentic Indian heritage, RSVP inbox, and personal guest greetings.
 
 [![Vite](https://img.shields.io/badge/Vite-6.4-646CFF?style=flat&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=flat&logo=react&logoColor=black)](https://reactjs.org/)
@@ -16,8 +16,8 @@ Aahvaaan replaces static wedding PDFs and video files with an interactive digita
 ### ✨ Key Features
 - **4 Signature Collections**: Dedicated colour palettes, typography, and traditional layouts (Champagne & Rose, Sage & Ivory, Royal Maroon & Gold, and Blush & Lavender).
 - **Dual Sharing Links**:
-  - **Common Link (`/invite/:code`)**: Broadcast link for family groups and bulk sharing.
-  - **Personalized Link (`/invite/r/:personalSlug`)**: Warm, individual greetings with 24-character cryptographically secure unguessable slugs.
+  - **Open Link (`/invite/:code`)**: Broadcast link for family groups and bulk sharing.
+  - **Named Link (`/invite/r/:personalSlug`)**: Warm, individual greetings with 24-character cryptographically secure unguessable slugs.
 - **WYSIWYG Live Studio Editor**: Real-time split-screen editor for event ceremonies, Sanskrit shlokas, family compliments, and photo galleries.
 - **Monetization & Publishing Lifecycle**:
   - Razorpay INR integration handled securely in Supabase Edge Functions.
@@ -180,7 +180,7 @@ Follow this checklist to verify the complete end-to-end user and guest journey:
 
 ### 6. Sharing & Guest Links
 - [ ] In host dashboard, click **Share**.
-  - [ ] Verify common link (`/invite/:code`) copies to clipboard.
+  - [ ] Verify open link (`/invite/:code`) copies to clipboard.
   - [ ] Test the WhatsApp share button (`api.whatsapp.com/send?text=...`).
 - [ ] Open **Guests & RSVPs**:
   - [ ] Add a guest manually (*Rajesh Sharma*, phone number).
@@ -189,11 +189,11 @@ Follow this checklist to verify the complete end-to-end user and guest journey:
   - [ ] Verify the package limit (e.g., 20 guests for Signature) is strictly enforced.
 
 ### 7. Guest Experience & RSVP Submission
-- [ ] Open common link `/invite/:code` in an incognito window:
+- [ ] Open open link `/invite/:code` in an incognito window:
   - [ ] Confirm envelope animation, background wedding music, countdown timer, and venue map directions.
   - [ ] Submit RSVP (*Attending*, 2 guests, *Pure Vegetarian*, warm blessing message).
   - [ ] Test rate limiting by rapidly submitting multiple times. Verify flood protection prevents spam.
-- [ ] Open personalized link `/invite/r/:personalSlug`:
+- [ ] Open named link `/invite/r/:personalSlug`:
   - [ ] Verify guest is greeted warmly by name (*"Dear Rajesh Sharma"*).
   - [ ] Verify phone and name are pre-populated in the RSVP form.
 

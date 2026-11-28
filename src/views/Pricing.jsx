@@ -49,7 +49,7 @@ const PRICING_FAQS = [
   },
   {
     q: 'Do our wedding guests need to download an app or create an account?',
-    a: 'No app or login is needed! Guests simply tap your link on WhatsApp, SMS, or Instagram, and the interactive experience opens smoothly on iOS, Android, and desktop browsers.',
+    a: 'No app or login is needed! Guests simply tap your link on WhatsApp, SMS, or Instagram, and the invitation opens smoothly on iOS, Android, and desktop browsers.',
   },
   {
     q: 'How does greeting guests by name work?',
@@ -71,7 +71,7 @@ export default function Pricing() {
     <div className="pt-20">
       <SEO
         title="Pricing & Packages | Aahvaaan by Vow & Vision"
-        description="Transparent wedding invitation packages starting from ₹1,749. Includes personalized guest links, live RSVP tracking, and Google Maps integration."
+        description="Transparent wedding invitation packages starting from ₹1,749. Includes named guest links, RSVP inbox, and Google Maps integration."
         url="https://aahvaaan.vercel.app/pricing"
       />
       {/* Header */}

@@ -8,7 +8,7 @@ export const metadata = {
     template: '%s | Aahvaaan',
   },
   description:
-    'Bespoke interactive digital wedding invitations crafted for Indian royalty. Personalized guest envelope reveals, live RSVP tracking, Google Maps directions, and background wedding music.',
+    'Bespoke interactive digital wedding invitations crafted for Indian royalty. Named guest envelope reveals, RSVP inbox, Google Maps directions, and background wedding music.',
   keywords: [
     'digital wedding invitation',
     'indian wedding invitation website',
@@ -32,7 +32,7 @@ export const metadata = {
     siteName: 'Aahvaaan by Vow & Vision',
     title: 'Aahvaaan by Vow & Vision – Luxury Digital Wedding Invitations',
     description:
-      'Bespoke interactive digital wedding invitations crafted for Indian royalty. Personalized guest envelope reveals, live RSVP tracking, Google Maps directions, and background wedding music.',
+      'Bespoke interactive digital wedding invitations crafted for Indian royalty. Named guest envelope reveals, RSVP inbox, Google Maps directions, and background wedding music.',
     images: [
       {
         url: '/og-preview.png',
@@ -46,7 +46,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Aahvaaan by Vow & Vision – Luxury Digital Wedding Invitations',
     description:
-      'Bespoke interactive digital wedding invitations crafted for Indian royalty. Personalized guest envelope reveals, live RSVP tracking, and Google Maps navigation.',
+      'Bespoke interactive digital wedding invitations crafted for Indian royalty. Named guest envelope reveals, RSVP inbox, and Google Maps navigation.',
     images: ['/og-preview.png'],
   },
 };

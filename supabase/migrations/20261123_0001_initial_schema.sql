@@ -323,7 +323,7 @@ CREATE POLICY "Hosts can view invitation view logs"
 -- 13. SECURITY DEFINER RPC FUNCTIONS (Public Guest Access Without Table Access)
 -- ==============================================================================
 
--- 13.1 Fetch Public Invitation by Slug (Supports common & personalized links)
+-- 13.1 Fetch Public Invitation by Slug (Supports open & named links)
 CREATE OR REPLACE FUNCTION public.get_public_invitation(
   p_slug TEXT,
   p_guest_code TEXT DEFAULT NULL

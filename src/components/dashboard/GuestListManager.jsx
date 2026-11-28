@@ -229,7 +229,7 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
 
   // 3. Delete Guest
   const handleDeleteGuest = async (guestId) => {
-    if (!window.confirm('Delete this guest personal link? The personalized link will no longer be valid.')) return;
+    if (!window.confirm('Delete this guest named link? The guest link will no longer be valid.')) return;
 
     try {
       if (isSupabaseConfigured) {
@@ -393,7 +393,7 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
     XLSX.writeFile(workbook, `Aahvaaan-RSVP-${brideName}-${groomName}.xlsx`);
   };
 
-  // 7. Export Guests List with Personalized Links (.xlsx)
+  // 7. Export Guests List with Named Links (.xlsx)
   const handleExportGuestsExcel = () => {
     if (guests.length === 0) {
       alert('No guests in list to export.');
@@ -787,7 +787,7 @@ export default function GuestListManager({ invitation, onClose, onRefreshMetrics
                           </div>
                         </div>
 
-                        {/* Personalized Link */}
+                        {/* Named Link */}
                         <div className="mt-3 bg-ivory/60 p-2 rounded-xl border border-champagne/60 flex items-center justify-between text-xs font-mono text-charcoal/70">
                           <span className="truncate pr-2 text-[11px]">
                             /invite/r/{guest.personal_slug}

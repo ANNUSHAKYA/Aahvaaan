@@ -46,14 +46,14 @@ export default function HowItWorks() {
       icon: Share2,
       number: '05',
       title: 'Share With Your Guests',
-      description: 'Receive your unique invitation link that you can share instantly with family and friends via WhatsApp, email, or any messaging platform. Your guests enjoy a beautiful, interactive experience.',
+      description: 'Receive your unique invitation link that you can share instantly with family and friends via WhatsApp, email, or any messaging platform. Your guests enjoy a beautiful, living celebration.',
       tip: 'One link works beautifully on all devices – phones, tablets, and desktops.',
       color: 'bg-rose/10',
     },
   ];
 
   const features = [
-    { icon: MousePointer, title: 'Interactive Experience', desc: 'Tap-to-open envelopes, animated reveals, and smooth transitions.' },
+    { icon: MousePointer, title: 'Diya Reveal & Music', desc: 'Tap-to-light diya, animated reveals, and celebratory music.' },
     { icon: FileText, title: 'Complete Details', desc: 'Names, dates, venue, map directions, event schedule – all in one link.' },
     { icon: Sparkles, title: 'Premium Design', desc: 'Professional aesthetics that reflect the beauty of your celebration.' },
     { icon: MessageCircle, title: 'Instant Sharing', desc: 'Share via WhatsApp in one tap. No downloads or apps needed.' },

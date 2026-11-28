@@ -22,7 +22,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-xs sm:text-sm text-white/70 leading-relaxed max-w-sm">
-              Beautiful, interactive, useful digital invitations - shared in a tap, with every RSVP tracked in one place.
+              Interactive wedding invitations, shared in one link.
             </p>
 
             <div className="flex items-center gap-3 pt-2">

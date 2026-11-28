@@ -12,6 +12,7 @@ import packages from '../data/pricing';
 import GuestListManager from '../components/dashboard/GuestListManager';
 import AnalyticsModal from '../components/dashboard/AnalyticsModal';
 import PaymentModal from '../components/payment/PaymentModal';
+import siteConfig from '../../lib/siteConfig';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -281,7 +282,7 @@ export default function Dashboard() {
               No invitations yet
             </h3>
             <p className="font-body text-xs sm:text-sm text-charcoal/60 leading-relaxed max-w-lg mx-auto mb-7">
-              Pick a template and start editing your invitation right inside the design. Every invitation comes with a link to share with everyone, and 5 personalized guest invitations.
+              Pick a template and start editing your invitation right inside the design. Every invitation comes with an open link to share with everyone, and {siteConfig.namedLinksIncluded} named links for your closest guests.
             </p>
             <div className="flex items-center justify-center gap-3">
               <Link
