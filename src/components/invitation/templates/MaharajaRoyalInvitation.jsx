@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Heart, Calendar, MapPin, Clock, ChevronRight, ChevronLeft,
@@ -444,9 +445,11 @@ export default function MaharajaRoyalInvitation({
         >
           {/* Floral Top Slot */}
           <div className="w-48 sm:w-64 mx-auto mb-3 opacity-90">
-            <img
+            <Image
               src="/templates/royal-maroon-and-gold/media/floral_top.webp"
               alt="Decorative Garland"
+              width={256}
+              height={60}
               className="w-full h-auto object-contain"
             />
           </div>
@@ -635,9 +638,11 @@ export default function MaharajaRoyalInvitation({
         <div className="text-center mb-12">
           {/* Top Divider */}
           <div className="w-40 sm:w-56 mx-auto mb-3">
-            <img
+            <Image
               src="/templates/royal-maroon-and-gold/media/divider.webp"
               alt="Ornamental Divider"
+              width={224}
+              height={30}
               className="w-full h-auto object-contain"
             />
           </div>
@@ -662,9 +667,11 @@ export default function MaharajaRoyalInvitation({
           >
             {/* Left Scroll Knob SVG */}
             <div className="w-8 sm:w-10 shrink-0 select-none">
-              <img
+              <Image
                 src="/templates/royal-maroon-and-gold/media/scroll_knob.svg"
                 alt="Scroll finial"
+                width={40}
+                height={40}
                 className="w-full h-auto"
               />
             </div>
@@ -693,9 +700,11 @@ export default function MaharajaRoyalInvitation({
 
             {/* Right Scroll Knob SVG */}
             <div className="w-8 sm:w-10 shrink-0 select-none rotate-180">
-              <img
+              <Image
                 src="/templates/royal-maroon-and-gold/media/scroll_knob.svg"
                 alt="Scroll finial"
+                width={40}
+                height={40}
                 className="w-full h-auto"
               />
             </div>
@@ -711,9 +720,11 @@ export default function MaharajaRoyalInvitation({
           >
             {/* Left Scroll Knob SVG */}
             <div className="w-8 sm:w-10 shrink-0 select-none">
-              <img
+              <Image
                 src="/templates/royal-maroon-and-gold/media/scroll_knob.svg"
                 alt="Scroll finial"
+                width={40}
+                height={40}
                 className="w-full h-auto"
               />
             </div>
@@ -742,9 +753,11 @@ export default function MaharajaRoyalInvitation({
 
             {/* Right Scroll Knob SVG */}
             <div className="w-8 sm:w-10 shrink-0 select-none rotate-180">
-              <img
+              <Image
                 src="/templates/royal-maroon-and-gold/media/scroll_knob.svg"
                 alt="Scroll finial"
+                width={40}
+                height={40}
                 className="w-full h-auto"
               />
             </div>
@@ -762,9 +775,11 @@ export default function MaharajaRoyalInvitation({
         <div className="max-w-2xl mx-auto relative z-10">
           {/* Date Ornament Slot */}
           <div className="w-36 sm:w-48 mx-auto mb-2 opacity-90">
-            <img
+            <Image
               src="/templates/royal-maroon-and-gold/media/date_ornament.png"
               alt="Auspicious Kalash"
+              width={192}
+              height={50}
               className="w-full h-auto object-contain mx-auto"
             />
           </div>
@@ -934,18 +949,15 @@ export default function MaharajaRoyalInvitation({
             >
               {/* Photo Slot */}
               <div className="aspect-[16/10] sm:aspect-[16/9] w-full overflow-hidden bg-[#2D0D14] relative">
-                <img
-                  src={loveStory[activeStoryIdx].image}
+                <Image
+                  src={loveStory[activeStoryIdx].image || '/templates/royal-maroon-and-gold/media/hero_scene.webp'}
                   alt={loveStory[activeStoryIdx].title}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  onError={(e) => {
-                    // Fallback to placeholder if custom upload fails
-                    e.target.src = '/templates/royal-maroon-and-gold/media/hero_scene.webp';
-                  }}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 600px"
+                  className="object-cover"
                 />
                 {/* Hashtag Badge */}
-                <div className="absolute top-4 left-4 px-3.5 py-1 rounded-full bg-[#761F32]/90 backdrop-blur-md border border-[#C5A15E] text-[#FAF1E5] font-mono text-xs font-semibold shadow-md">
+                <div className="absolute top-4 left-4 px-3.5 py-1 rounded-full bg-[#761F32]/90 backdrop-blur-md border border-[#C5A15E] text-[#FAF1E5] font-mono text-xs font-semibold shadow-md z-10">
                   {loveStory[activeStoryIdx].hashtag || '#ourjourney'}
                 </div>
               </div>
@@ -1032,9 +1044,11 @@ export default function MaharajaRoyalInvitation({
       <section className="py-20 px-4 sm:px-8 max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <div className="w-40 sm:w-56 mx-auto mb-3">
-            <img
+            <Image
               src="/templates/royal-maroon-and-gold/media/divider.webp"
               alt="Divider"
+              width={224}
+              height={30}
               className="w-full h-auto object-contain"
             />
           </div>
@@ -1095,9 +1109,11 @@ export default function MaharajaRoyalInvitation({
       <section className="py-24 px-4 sm:px-8 max-w-3xl mx-auto text-center">
         {/* Floral Bottom Garland Slot */}
         <div className="w-56 sm:w-72 mx-auto mb-6 opacity-90">
-          <img
+          <Image
             src="/templates/royal-maroon-and-gold/media/floral_bottom.webp"
             alt="Floral Garland"
+            width={288}
+            height={60}
             className="w-full h-auto object-contain mx-auto"
           />
         </div>

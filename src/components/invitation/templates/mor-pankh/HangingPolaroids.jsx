@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Camera, Heart, Sparkles } from 'lucide-react';
 
@@ -89,11 +90,12 @@ export default function HangingPolaroids({
                 >
                   {/* Photo Slot */}
                   <div className="aspect-[4/5] bg-[#FAF6F0] rounded-xs overflow-hidden relative border border-black/5 shadow-inner mb-3 group">
-                    <img
+                    <Image
                       src={frame.image}
                       alt={frame.title}
+                      width={260}
+                      height={325}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>

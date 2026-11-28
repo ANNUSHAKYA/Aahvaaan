@@ -1,4 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="4" fill="#512D38"/>
-  <text x="16" y="22" text-anchor="middle" font-family="Georgia, serif" font-size="18" font-weight="700" fill="#B69A70">V</text>
-</svg>
+
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+    <defs>
+      <radialGradient id="wineGrad" cx="50%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#6B3D4A"/>
+        <stop offset="50%" stop-color="#512D38"/>
+        <stop offset="100%" stop-color="#2D0B16"/>
+      </radialGradient>
+      <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#FCE6B3"/>
+        <stop offset="40%" stop-color="#B69A70"/>
+        <stop offset="80%" stop-color="#E3D3AE"/>
+        <stop offset="100%" stop-color="#9C7729"/>
+      </linearGradient>
+    </defs>
+    <rect width="512" height="512" rx="104" fill="url(#wineGrad)"/>
+    <rect x="24" y="24" width="464" height="464" rx="84" fill="none" stroke="url(#goldGrad)" stroke-width="8"/>
+    <circle cx="256" cy="256" r="170" fill="none" stroke="url(#goldGrad)" stroke-width="3" stroke-dasharray="8 6" opacity="0.6"/>
+    <!-- Authentic Devanagari Aa (आ) royal monogram -->
+    <text x="256" y="325" text-anchor="middle" font-family="Georgia, serif" font-size="210" font-weight="700" fill="url(#goldGrad)">आ</text>
+  </svg>
+  

@@ -30,6 +30,11 @@
   a, button {
     font-weight: 600;
   }
+
+  :focus-visible {
+    outline: 2px solid #B69A70 !important;
+    outline-offset: 2px !important;
+  }
 }
 
 @keyframes unseal {

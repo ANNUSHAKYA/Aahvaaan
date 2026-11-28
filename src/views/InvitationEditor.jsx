@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import NextImage from 'next/image';
 import { useParams, Link, useNavigate } from '../lib/router-compat';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -1557,10 +1558,12 @@ export default function InvitationEditor() {
                         key={i}
                         className="group relative aspect-square rounded-xl overflow-hidden border border-champagne shadow-2xs bg-champagne/20"
                       >
-                        <img
+                        <NextImage
                           src={imgUrl}
-                          alt={`Gallery photo ${i + 1}`}
-                          className="w-full h-full object-cover"
+                          alt={`Wedding gallery photo ${i + 1}`}
+                          fill
+                          sizes="(max-width: 640px) 50vw, 33vw"
+                          className="object-cover"
                         />
                         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                           <button

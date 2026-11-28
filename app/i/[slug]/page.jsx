@@ -1,18 +1,17 @@
+import { notFound } from 'next/navigation';
 import OpenInvitationClient from './client';
 
 export async function generateMetadata({ params }) {
-  const slug = params?.slug || 'sample';
-  const baseUrl = 'https://aahvaaan.com';
+  const slug = params?.slug;
+  if (slug !== 'sample' && slug !== 'ananya-kabir') {
+    return {
+      title: 'Invitation Not Found | Aahvaaan',
+    };
+  }
 
-  const coupleName =
-    slug === 'sample'
-      ? 'Ananya & Kabir'
-      : slug
-          .split('-')
-          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-          .join(' ');
-
-  const title = `${coupleName} – Wedding Celebration Invitation | Aahvaaan`;
+  const coupleName = 'Ananya & Kabir';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://aahvaaan.vercel.app';
+  const title = `${coupleName} are getting married`;
   const description =
     `You are cordially invited to celebrate the holy wedding ceremonies of ${coupleName}. Open the auspicious interactive invitation with diya reveal, wedding music, venue maps and schedule.`;
 
@@ -25,7 +24,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title,
       description,
-      url: `${baseUrl}/i/${slug}`,
+      url: `${siteUrl}/i/${slug}`,
       siteName: 'Aahvaaan by Vow & Vision',
       type: 'website',
     },
@@ -37,6 +36,10 @@ export async function generateMetadata({ params }) {
   };
 }
 
-export default function OpenInviteSlugPage() {
+export default function OpenInviteSlugPage({ params }) {
+  const slug = params?.slug;
+  if (slug !== 'sample' && slug !== 'ananya-kabir') {
+    notFound();
+  }
   return <OpenInvitationClient />;
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import { Navigate, useLocation, Outlet } from '../lib/router-compat';
 import { useAuth } from '../context/AuthContext';
 

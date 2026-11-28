@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, type CSSProperties } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar, Phone, User, Mail, Minus, Plus, Heart, MapPin, Check,
@@ -773,8 +774,8 @@ function HangingPolaroidGallery({ gallery = [], t }: { gallery?: string[]; t: an
               </div>
             ) : typeof item === 'string' ? (
               <div className="w-full bg-white rounded-xl p-3 pb-4 shadow-xl border border-stone-200 flex flex-col items-center min-h-[290px]">
-                <div className="w-full aspect-[4/5] bg-stone-100 rounded-lg overflow-hidden mb-3">
-                  <img src={item} alt="Memory" loading="lazy" className="w-full h-full object-cover" />
+                <div className="w-full aspect-[4/5] bg-stone-100 rounded-lg overflow-hidden mb-3 relative">
+                  <Image src={item} alt="Couple memory polaroid photo" width={280} height={350} className="w-full h-full object-cover" />
                 </div>
                 <span className="font-serif text-xs font-bold text-[#96752d] italic">
                   #foreverA&M
@@ -1102,6 +1103,9 @@ export default function MorPankhInvitation({
   function openInvitation() {
     setOpened(true);
     if (audioRef.current) {
+      if (!audioRef.current.src) {
+        audioRef.current.src = audioTrack;
+      }
       audioRef.current.play().then(() => setMusicPlaying(true)).catch(() => {});
     }
     setTimeout(() => {
@@ -1111,6 +1115,9 @@ export default function MorPankhInvitation({
 
   function toggleAudio() {
     if (!audioRef.current) return;
+    if (!audioRef.current.src) {
+      audioRef.current.src = audioTrack;
+    }
     if (musicPlaying) {
       audioRef.current.pause();
       setMusicPlaying(false);
@@ -1151,7 +1158,7 @@ export default function MorPankhInvitation({
       </div>
 
       <div className="relative isolate mx-auto max-w-[450px] overflow-hidden bg-[var(--canvas)] shadow-[0_30px_100px_#001c1c80] transition-colors duration-500 md:rounded-[44px] md:border-[9px] md:border-[#142f2e] md:ring-1 md:ring-[#b7a16a]">
-        <audio ref={audioRef} src={audioTrack} loop preload="auto" />
+        <audio ref={audioRef} loop preload="none" />
         <PaperTexture />
 
         {/* ─── PREVIEW / TRIAL WATERMARK BANNER ─── */}
@@ -1224,10 +1231,12 @@ export default function MorPankhInvitation({
                 >
                   <div className={`absolute inset-y-0 w-[200%] ${side ? 'right-0' : 'left-0'}`}>
                     {/* Authentic Royal Lotus Palace Arch Background Image */}
-                    <img
-                      src="/invitation-frame.jpg"
-                      alt="Auspicious Wedding Arch Frame"
-                      className="absolute inset-0 w-full h-full object-cover object-top"
+                    <Image
+                      src="/invitation-frame.webp"
+                      alt="Auspicious Royal Lotus Palace Arch Frame"
+                      fill
+                      sizes="450px"
+                      className="object-cover object-top"
                     />
                     {/* Subtle ambient overlay */}
                     <div className="absolute inset-0 bg-[#3D0A17]/20 pointer-events-none" />
@@ -1284,10 +1293,11 @@ export default function MorPankhInvitation({
                 <p className="mt-2 text-xs uppercase tracking-[0.2em] text-teal">{t.royalWelcomeTitle}</p>
                 
                 <div className="relative mx-auto mt-4 max-w-[300px]">
-                  <img
+                  <Image
                     src={content.couplePhoto || '/images/mor-pankh-couple.png'}
-                    alt="Couple Namaste Welcome"
-                    loading="lazy"
+                    alt="Couple Namaste Welcome Portrait"
+                    width={300}
+                    height={400}
                     className="relative h-auto w-full object-contain drop-shadow-md"
                   />
                 </div>

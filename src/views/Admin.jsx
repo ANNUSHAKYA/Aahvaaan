@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Link } from '../lib/router-compat';
 import {
   ShieldCheck, ShoppingBag, Users, Layers, TrendingUp,
@@ -428,8 +429,8 @@ export default function Admin() {
                   key={t.id}
                   className="rounded-2xl border border-champagne/70 p-5 flex items-start gap-4 bg-ivory/30"
                 >
-                  <div className="w-20 aspect-[16/10] rounded-xl overflow-hidden bg-champagne/40 shrink-0">
-                    <img src={t.image} alt={t.name} className="w-full h-full object-cover" />
+                  <div className="w-20 aspect-[16/10] rounded-xl overflow-hidden bg-champagne/40 shrink-0 relative">
+                    <Image src={t.image} alt={`${t.name} invitation preview`} width={80} height={50} className="w-full h-full object-cover" />
                   </div>
 
                   <div className="flex-1">

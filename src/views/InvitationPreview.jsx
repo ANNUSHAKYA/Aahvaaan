@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from '../lib/router-compat';
 import { motion, AnimatePresence } from 'framer-motion';

@@ -1,4 +1,7 @@
+'use client';
+
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { Link } from '../lib/router-compat';
@@ -17,7 +20,17 @@ import {
   Flame,
   Link2,
 } from 'lucide-react';
-import InteractiveDiyaHook from '../components/home/InteractiveDiyaHook';
+const InteractiveDiyaHook = dynamic(
+  () => import('../components/home/InteractiveDiyaHook'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="py-4 flex items-center justify-center">
+        <div className="w-7 h-7 rounded-full border-2 border-gold/30 border-t-gold animate-spin" />
+      </div>
+    ),
+  }
+);
 import templates from '../data/templates';
 import { checkRateLimit, recordRateLimitAction } from '../utils/rateLimiter';
 import siteConfig from '../../lib/siteConfig';

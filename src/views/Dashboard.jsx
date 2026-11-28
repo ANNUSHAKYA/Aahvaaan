@@ -1,4 +1,7 @@
+'use client';
+
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Link, useNavigate } from '../lib/router-compat';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -311,10 +314,12 @@ export default function Dashboard() {
                   <div>
                     {/* Thumbnail Preview */}
                     <div className="relative aspect-[16/10] bg-champagne/20 overflow-hidden">
-                      <img
+                      <Image
                         src={tmpl.image}
-                        alt={tmpl.name}
-                        className="w-full h-full object-cover"
+                        alt={`${tmpl.name} wedding invitation`}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover"
                       />
                       <div className="absolute top-3 left-3 bg-white/95 px-2.5 py-0.5 rounded-full text-[10px] uppercase font-bold tracking-wider text-wine shadow-xs">
                         {tmpl.name}

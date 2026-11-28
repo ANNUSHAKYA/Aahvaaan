@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, useContext, useState, useEffect } from 'react';
 import supabase, { isSupabaseConfigured } from '../lib/supabase';
 

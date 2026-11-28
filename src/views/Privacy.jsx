@@ -1,3 +1,5 @@
+'use client';
+
 import { Link } from '../lib/router-compat';
 import SEO from '../components/SEO';
 import siteConfig from '../../lib/siteConfig';

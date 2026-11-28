@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://aahvaaan.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://aahvaaan.vercel.app';
   const routes = [
     '',
     '/templates',
@@ -9,7 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/how-it-works',
     '/pricing',
     '/contact',
-    '/about',
     '/terms',
     '/privacy',
     '/refund',

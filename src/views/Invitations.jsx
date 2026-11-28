@@ -1,3 +1,5 @@
+'use client';
+
 import { Link } from '../lib/router-compat';
 import Image from 'next/image';
 import { ArrowLeft, ChevronRight, Sparkles, Clock } from 'lucide-react';

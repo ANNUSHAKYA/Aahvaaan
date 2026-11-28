@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X, Wallet, ChevronRight, AlertCircle, Plus, Copy,
@@ -340,9 +341,11 @@ export default function PaymentModal({
 
                 {/* The QR Code Image */}
                 <div className="bg-white p-3 rounded-2xl inline-block shadow-md mx-auto max-w-[220px]">
-                  <img
+                  <Image
                     src={siteConfig.phonePeQrImage || '/payment/phonepe-qr.jpg'}
-                    alt="PhonePe QR Code"
+                    alt="PhonePe QR Code for payment"
+                    width={200}
+                    height={200}
                     className="w-full h-auto object-contain rounded-lg"
                   />
                 </div>
