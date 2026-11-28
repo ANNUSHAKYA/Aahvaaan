@@ -30,11 +30,11 @@ function FAQAccordionItem({ question, answer, isOpen, onToggle, index }) {
           onClick={onToggle}
           aria-expanded={isOpen}
           aria-controls={`faq-answer-${index}`}
-          className="w-full text-left py-4 sm:py-5 px-5 sm:px-6 flex items-center justify-between gap-4 font-heading text-lg sm:text-xl font-bold text-wine hover:text-gold transition-colors cursor-pointer"
+          className="w-full text-left py-4 sm:py-5 px-5 sm:px-6 min-h-[48px] flex items-center justify-between gap-4 font-heading text-lg sm:text-xl font-bold text-wine hover:text-gold transition-colors cursor-pointer"
         >
           <span>{question}</span>
-          <span className="w-7 h-7 rounded-full bg-ivory border border-champagne flex items-center justify-center shrink-0 text-wine">
-            {isOpen ? <Minus size={14} /> : <Plus size={14} />}
+          <span className="w-8 h-8 rounded-full bg-ivory border border-champagne flex items-center justify-center shrink-0 text-wine">
+            {isOpen ? <Minus size={15} /> : <Plus size={15} />}
           </span>
         </button>
       </h3>
@@ -46,7 +46,7 @@ function FAQAccordionItem({ question, answer, isOpen, onToggle, index }) {
           isOpen ? 'max-h-96 pb-5 opacity-100' : 'max-h-0 pb-0 opacity-0 pointer-events-none'
         }`}
       >
-        <p className="font-body text-xs sm:text-sm text-charcoal/80 leading-relaxed pt-1 border-t border-champagne/40">
+        <p className="font-body text-[15px] sm:text-base text-charcoal/80 leading-relaxed pt-2 border-t border-champagne/40">
           {answer}
         </p>
       </div>
@@ -169,45 +169,25 @@ export default function Home() {
         <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
             {/* Left Content */}
-            <div className="lg:col-span-6 text-center lg:text-left space-y-5 sm:space-y-6">
-              <motion.div
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-gold/40 text-gold-light text-xs font-semibold tracking-wider uppercase shadow-xs"
-              >
+            <div className="lg:col-span-6 text-center lg:text-left space-y-5 sm:space-y-6 animate-hero-fade">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-gold/40 text-gold-light text-xs font-semibold tracking-wider uppercase shadow-xs">
                 <Sparkles size={13} className="text-gold animate-pulse" />
                 <span>Digital invitations, made for Indian weddings</span>
-              </motion.div>
+              </div>
 
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="font-heading text-3xl xs:text-4xl sm:text-5xl lg:text-[3.65rem] font-bold text-white leading-[1.14] tracking-tight"
-              >
+              <h1 className="font-heading text-3xl xs:text-4xl sm:text-5xl lg:text-[3.65rem] font-bold text-white leading-[1.14] tracking-tight">
                 Let the celebration begin the moment they open the link.
-              </motion.h1>
+              </h1>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="font-body text-xs sm:text-sm text-white/85 leading-relaxed max-w-lg mx-auto lg:mx-0"
-              >
+              <p className="font-body text-[15px] sm:text-base text-white/90 leading-relaxed max-w-lg mx-auto lg:mx-0">
                 Aahvaaan turns your wedding card into a living invitation: a diya to light, a greeting by name for every family, music, maps and RSVPs, all in one link made for WhatsApp.
-              </motion.p>
+              </p>
 
               {/* Action Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="pt-2 flex flex-col xs:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-4"
-              >
+              <div className="pt-2 flex flex-col xs:flex-row items-center justify-center lg:justify-start gap-3.5 sm:gap-4">
                 <Link
                   to="/templates"
-                  className="w-full xs:w-auto inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-full bg-gradient-to-r from-wine via-[#6B3D4A] to-[#8C3A50] hover:brightness-110 active:scale-95 hover:scale-105 text-white font-body font-semibold text-sm shadow-[0_10px_25px_-5px_rgba(81,45,56,0.6)] border border-[#B69A70]/60 transition-all duration-300"
+                  className="w-full xs:w-auto inline-flex items-center justify-center gap-3 px-8 py-3.5 min-h-[44px] rounded-full bg-gradient-to-r from-wine via-[#6B3D4A] to-[#8C3A50] hover:brightness-110 active:scale-95 text-white font-body font-semibold text-sm shadow-[0_10px_25px_-5px_rgba(81,45,56,0.6)] border border-[#B69A70]/60 transition-all duration-300"
                 >
                   <span>Browse designs</span>
                   <ChevronRight size={16} className="text-gold-light" />
@@ -216,50 +196,34 @@ export default function Home() {
                 <a
                   href="#diya-reveal"
                   onClick={handleScrollToSection('diya-reveal')}
-                  className="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full border border-gold/40 text-gold-light hover:bg-white/10 active:scale-95 text-xs sm:text-sm font-semibold transition-all backdrop-blur-xs cursor-pointer"
+                  className="w-full xs:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 min-h-[44px] rounded-full border border-gold/40 text-gold-light hover:bg-white/10 active:scale-95 text-sm font-semibold transition-all backdrop-blur-xs cursor-pointer"
                 >
                   <span>Try the diya reveal</span>
                 </a>
-              </motion.div>
+              </div>
 
               {/* ─── INTERACTIVE HERO HOOK: TAP THE DIYAS ─── */}
-              <motion.div
-                id="diya-reveal"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.35 }}
-                className="pt-1 scroll-mt-24"
-              >
+              <div id="diya-reveal" className="pt-1 scroll-mt-24">
                 <InteractiveDiyaHook />
-              </motion.div>
+              </div>
 
               {/* Honest Chips (Zero fake stats) */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3 text-xs text-white/85"
-              >
-                <div className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs border border-white/15">
+              <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-2.5 sm:gap-3 text-xs sm:text-sm text-white/90">
+                <div className="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-xs border border-white/15">
                   No app needed for guests
                 </div>
-                <div className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs border border-white/15">
+                <div className="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-xs border border-white/15">
                   Built for WhatsApp sharing
                 </div>
-                <div className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-xs border border-white/15">
+                <div className="px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-xs border border-white/15">
                   Edit after you share
                 </div>
-              </motion.div>
+              </div>
             </div>
 
             {/* Right Column: Architectural Palace Arch Window */}
             <div className="lg:col-span-6 flex justify-center lg:justify-end items-end relative pt-4 lg:pt-0">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 30 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                className="relative w-full max-w-[340px] xs:max-w-[380px] sm:max-w-[440px] lg:max-w-[460px] mx-auto"
-              >
+              <div className="relative w-full max-w-[340px] xs:max-w-[380px] sm:max-w-[440px] lg:max-w-[460px] mx-auto animate-hero-fade">
                 {/* Backing palace wall shadow depth */}
                 <div className="absolute -inset-2.5 rounded-t-[200px] sm:rounded-t-[240px] rounded-b-3xl bg-gradient-to-b from-[#B69A70]/40 via-[#8C3A50]/30 to-transparent blur-xl -z-10" />
 
@@ -270,7 +234,7 @@ export default function Home() {
 
                     {/* Top arch keystone */}
                     <div className="absolute top-2.5 sm:top-3.5 inset-x-0 flex justify-center z-30 pointer-events-none">
-                      <span className="bg-[#512D38]/95 text-gold-light border border-gold/60 text-[9px] sm:text-[10px] tracking-[0.25em] uppercase font-heading px-3.5 sm:px-4 py-1 rounded-full shadow-lg backdrop-blur-md">
+                      <span className="bg-[#512D38]/95 text-gold-light border border-gold/60 text-[10px] sm:text-[11px] tracking-[0.25em] uppercase font-heading px-3.5 sm:px-4 py-1 rounded-full shadow-lg backdrop-blur-md">
                         Mor Pankh · Sample Design
                       </span>
                     </div>
@@ -288,13 +252,13 @@ export default function Home() {
 
                       {/* Bottom Royal Names & Fictional Venue */}
                       <div className="absolute bottom-3.5 sm:bottom-5 inset-x-0 text-center z-20 text-white px-3 sm:px-4">
-                        <p className="text-gold-light text-[10px] sm:text-[11px] font-heading tracking-[0.2em] uppercase font-medium">
+                        <p className="text-gold-light text-xs font-heading tracking-[0.2em] uppercase font-medium">
                           || श्री गणेशाय नमः ||
                         </p>
                         <h3 className="font-heading text-xl sm:text-2xl lg:text-3xl font-bold tracking-wide text-white drop-shadow-lg leading-tight mt-0.5">
                           Ananya &amp; Kabir
                         </h3>
-                        <p className="text-[11px] sm:text-xs text-champagne/90 font-light mt-0.5 sm:mt-1">
+                        <p className="text-xs sm:text-sm text-champagne/90 font-light mt-0.5 sm:mt-1">
                           Rajmahal Gardens, Jaipur (sample)
                         </p>
                       </div>
@@ -302,40 +266,40 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Floating Card Left: Sample RSVP */}
+                {/* Floating Card Left: Sample RSVP (Hidden on screens < 640px) */}
                 <motion.div
                   animate={{ y: [0, -6, 0] }}
                   transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -top-2 -left-2 sm:-top-3 sm:-left-6 bg-white/95 backdrop-blur-md rounded-xl sm:rounded-2xl p-2 sm:p-2.5 px-2.5 sm:px-3.5 shadow-xl border border-gold/50 flex items-center gap-2 sm:gap-2.5 z-40 text-charcoal"
+                  className="absolute -top-3 -left-6 bg-white/95 backdrop-blur-md rounded-2xl p-2.5 px-3.5 shadow-xl border border-gold/50 hidden sm:flex items-center gap-2.5 z-40 text-charcoal"
                 >
-                  <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-500 animate-ping shrink-0" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping shrink-0" />
                   <div>
-                    <span className="text-[9px] sm:text-[10px] font-bold text-wine block leading-none">
+                    <span className="text-xs font-bold text-wine block leading-none">
                       Sample RSVP
                     </span>
-                    <span className="text-[8px] sm:text-[9px] text-charcoal/70">
+                    <span className="text-[11px] text-charcoal/70">
                       Sharma Family • Attending (3)
                     </span>
                   </div>
                 </motion.div>
 
-                {/* Floating Card Right: Sample Link */}
+                {/* Floating Card Right: Sample Link (Hidden on screens < 640px) */}
                 <motion.div
                   animate={{ y: [0, 6, 0] }}
                   transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-6 bg-gradient-to-r from-wine to-[#8C3A50] text-white rounded-xl sm:rounded-2xl p-2 sm:p-2.5 px-3 sm:px-4 shadow-xl border border-gold/50 flex items-center gap-2 sm:gap-2.5 z-40"
+                  className="absolute -bottom-3 -right-6 bg-gradient-to-r from-wine to-[#8C3A50] text-white rounded-2xl p-2.5 px-4 shadow-xl border border-gold/50 hidden sm:flex items-center gap-2.5 z-40"
                 >
-                  <span className="text-sm sm:text-base select-none">💌</span>
+                  <span className="text-base select-none">💌</span>
                   <div>
-                    <span className="text-[9px] sm:text-[10px] font-bold block leading-none text-gold-light">
+                    <span className="text-xs font-bold block leading-none text-gold-light">
                       Sample link
                     </span>
-                    <span className="text-[8px] sm:text-[9px] text-white/85">
+                    <span className="text-[11px] text-white/85">
                       aahvaaan.com/n/sharma-family-sample
                     </span>
                   </div>
                 </motion.div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
@@ -351,7 +315,7 @@ export default function Home() {
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-charcoal tracking-tight mb-3">
             Mor Pankh · № 01
           </h2>
-          <p className="font-body text-xs sm:text-sm text-charcoal/65 max-w-xl mx-auto">
+          <p className="font-body text-[15px] sm:text-base text-charcoal/75 max-w-xl mx-auto">
             Our signature interactive wedding invitation featuring 3D arch gates, ceremony schedule, wedding music, and personal family envelopes.
           </p>
         </div>
@@ -373,7 +337,7 @@ export default function Home() {
                 />
 
                 <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full shadow-xs border border-champagne/60">
-                  <span className="font-heading text-[11px] font-semibold text-wine tracking-wide">
+                  <span className="font-heading text-xs font-semibold text-wine tracking-wide">
                     {tmpl.collection}
                   </span>
                 </div>
@@ -385,23 +349,23 @@ export default function Home() {
 
               <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
                 <div>
-                  <span className="text-[10px] uppercase font-bold tracking-widest text-gold block mb-1">
+                  <span className="text-[11px] uppercase font-bold tracking-widest text-gold block mb-1">
                     {tmpl.category}
                   </span>
                   <h3 className="font-heading text-2xl font-bold text-wine group-hover:text-gold transition-colors mb-2">
                     {tmpl.name}
                   </h3>
-                  <p className="font-body text-xs sm:text-sm text-charcoal/70 leading-relaxed mb-5">
+                  <p className="font-body text-[15px] text-charcoal/75 leading-relaxed mb-5">
                     {tmpl.shortDescription}
                   </p>
                 </div>
 
                 <div className="pt-4 border-t border-champagne/40">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-[10px] font-semibold text-charcoal/50 uppercase tracking-wider">
+                    <span className="text-xs font-semibold text-charcoal/60 uppercase tracking-wider">
                       Palette Options
                     </span>
-                    <span className="text-[10px] text-charcoal/40 font-mono">
+                    <span className="text-xs text-charcoal/50 font-mono">
                       {tmpl.colors?.length || 4} Shades
                     </span>
                   </div>
@@ -409,7 +373,7 @@ export default function Home() {
                     {tmpl.colors?.map((c, i) => (
                       <div
                         key={i}
-                        className="w-5 h-5 rounded-full border border-champagne shadow-2xs hover:scale-125 transition-transform cursor-pointer"
+                        className="w-6 h-6 rounded-full border border-champagne shadow-2xs hover:scale-125 transition-transform cursor-pointer"
                         style={{ backgroundColor: c.hex }}
                         title={`${c.name} (${c.hex})`}
                       />
@@ -417,11 +381,11 @@ export default function Home() {
                   </div>
 
                   <div className="mt-5 pt-4 border-t border-champagne/30 flex items-center justify-between">
-                    <span className="text-xs font-semibold text-wine group-hover:text-gold transition-colors">
+                    <span className="text-sm font-semibold text-wine group-hover:text-gold transition-colors">
                       Customize this design
                     </span>
-                    <span className="w-8 h-8 rounded-full bg-ivory text-wine group-hover:bg-wine group-hover:text-white flex items-center justify-center transition-all shadow-2xs">
-                      <ChevronRight size={16} />
+                    <span className="w-9 h-9 rounded-full bg-ivory text-wine group-hover:bg-wine group-hover:text-white flex items-center justify-center transition-all shadow-2xs">
+                      <ChevronRight size={17} />
                     </span>
                   </div>
                 </div>
@@ -433,10 +397,10 @@ export default function Home() {
         <div className="text-center mt-12">
           <Link
             to="/templates"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-gradient-to-r from-[#0E4D4F] via-[#235B54] to-[#082D2E] hover:opacity-95 text-white font-body font-semibold text-xs sm:text-sm shadow-md hover:shadow-xl transition-all hover:scale-105"
+            className="inline-flex items-center gap-2 px-8 py-3.5 min-h-[44px] rounded-full bg-gradient-to-r from-wine via-[#6B3D4A] to-[#8C3A50] hover:brightness-110 active:scale-95 text-white font-body font-semibold text-sm shadow-md hover:shadow-xl transition-all border border-[#B69A70]/50"
           >
             <span>Browse all designs</span>
-            <ChevronRight size={16} />
+            <ChevronRight size={16} className="text-gold-light" />
           </Link>
         </div>
       </section>
@@ -450,7 +414,7 @@ export default function Home() {
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-charcoal tracking-tight mb-2">
             One invitation, two ways to send it
           </h2>
-          <p className="font-body text-xs sm:text-sm text-charcoal/65 max-w-md mx-auto">
+          <p className="font-body text-[15px] sm:text-base text-charcoal/75 max-w-md mx-auto">
             Reach the whole family at once, or greet each household by name.
           </p>
         </div>
@@ -461,12 +425,12 @@ export default function Home() {
             <h3 className="font-heading text-2xl font-bold text-wine mb-1">
               Open link
             </h3>
-            <p className="font-body text-xs text-charcoal/70 mb-5 max-w-xs">
+            <p className="font-body text-[15px] sm:text-base text-charcoal/75 mb-5 max-w-xs">
               One link for your entire guest list. Drop it into family groups and let everyone in.
             </p>
 
             {/* URL Box */}
-            <div className="w-full max-w-xs py-2 px-4 rounded-full bg-white border border-champagne text-[11px] font-mono text-charcoal/70 mb-6 truncate shadow-2xs">
+            <div className="w-full max-w-xs py-2 px-4 rounded-full bg-white border border-champagne text-xs font-mono text-charcoal/70 mb-6 truncate shadow-2xs">
               aahvaaan.com/i/sample
             </div>
 
@@ -482,29 +446,29 @@ export default function Home() {
                 <div className="absolute inset-0 bg-[#3D0A17]/25 pointer-events-none" />
 
                 <div className="relative z-20 pt-8 sm:pt-10">
-                  <span className="text-[10px] text-gold-light font-serif italic block drop-shadow-sm">
+                  <span className="text-xs text-gold-light font-serif italic block drop-shadow-sm">
                     ॥ श्री गणेशाय नमः ॥
                   </span>
-                  <span className="font-heading text-[8px] sm:text-[9px] text-[#E9D8CC] uppercase tracking-[0.25em] font-semibold block mt-0.5">
+                  <span className="font-heading text-xs text-[#E9D8CC] uppercase tracking-[0.25em] font-semibold block mt-0.5">
                     Wedding Invitation
                   </span>
                 </div>
 
                 <div className="relative z-20 my-auto px-2 max-w-[200px]">
-                  <p className="font-petit text-xl sm:text-2xl text-white drop-shadow-md leading-tight">
+                  <p className="font-petit text-2xl sm:text-3xl text-white drop-shadow-md leading-tight">
                     Kabir &amp; Ananya
                   </p>
                   <div className="w-6 h-0.5 bg-gold/70 rounded-full mx-auto my-1.5" />
-                  <p className="font-body text-[10px] text-[#FAF7F2]/90 leading-tight drop-shadow-xs">
+                  <p className="font-body text-xs sm:text-[13px] text-[#FAF7F2]/95 leading-tight drop-shadow-xs">
                     Cordially invite you &amp; family to celebrate our holy union
                   </p>
-                  <p className="font-heading text-[9px] text-gold-light mt-1.5 tracking-wider font-semibold">
+                  <p className="font-heading text-xs text-gold-light mt-1.5 tracking-wider font-semibold">
                     Rajmahal Gardens, Jaipur (sample)
                   </p>
                 </div>
 
                 <div className="relative z-20 pb-3 w-full">
-                  <div className="py-1 px-3 rounded-full bg-wine/85 backdrop-blur-xs border border-gold/50 text-gold-light text-[9px] font-semibold uppercase tracking-wider shadow-sm">
+                  <div className="py-1.5 px-3 rounded-full bg-wine/90 backdrop-blur-xs border border-gold/50 text-gold-light text-xs font-semibold uppercase tracking-wider shadow-sm min-h-[36px] flex items-center justify-center">
                     Open Invitation ✦
                   </div>
                 </div>
@@ -517,12 +481,12 @@ export default function Home() {
             <h3 className="font-heading text-2xl font-bold text-wine mb-1">
               Named link
             </h3>
-            <p className="font-body text-xs text-charcoal/70 mb-5 max-w-xs">
+            <p className="font-body text-[15px] sm:text-base text-charcoal/75 mb-5 max-w-xs">
               A link made for one household. When it opens, the envelope greets them by name.
             </p>
 
             {/* URL Box */}
-            <div className="w-full max-w-xs py-2 px-4 rounded-full bg-white border border-champagne text-[11px] font-mono text-charcoal/70 mb-6 truncate shadow-2xs">
+            <div className="w-full max-w-xs py-2 px-4 rounded-full bg-white border border-champagne text-xs font-mono text-charcoal/70 mb-6 truncate shadow-2xs">
               aahvaaan.com/n/sharma-family-sample
             </div>
 
@@ -538,32 +502,32 @@ export default function Home() {
                 <div className="absolute inset-0 bg-[#3D0A17]/25 pointer-events-none" />
 
                 <div className="relative z-20 pt-8 sm:pt-10">
-                  <span className="text-[10px] text-gold-light font-serif italic block drop-shadow-sm">
+                  <span className="text-xs text-gold-light font-serif italic block drop-shadow-sm">
                     ॥ श्री गणेशाय नमः ॥
                   </span>
-                  <span className="font-heading text-[8px] sm:text-[9px] text-[#E9D8CC] uppercase tracking-[0.25em] font-semibold block mt-0.5">
+                  <span className="font-heading text-xs text-[#E9D8CC] uppercase tracking-[0.25em] font-semibold block mt-0.5">
                     Personalized Envelope
                   </span>
                 </div>
 
                 <div className="relative z-20 my-auto px-2 max-w-[200px]">
-                  <span className="text-[8px] uppercase tracking-widest text-gold-light font-bold block mb-0.5">
+                  <span className="text-xs uppercase tracking-widest text-gold-light font-bold block mb-0.5">
                     Namaste
                   </span>
-                  <p className="font-petit text-lg sm:text-xl text-white drop-shadow-md leading-tight">
+                  <p className="font-petit text-xl sm:text-2xl text-white drop-shadow-md leading-tight">
                     Sharma Family
                   </p>
                   <div className="w-6 h-0.5 bg-gold/70 rounded-full mx-auto my-1.5" />
-                  <p className="font-body text-[10px] text-[#FAF7F2]/90 leading-tight drop-shadow-xs">
+                  <p className="font-body text-xs sm:text-[13px] text-[#FAF7F2]/95 leading-tight drop-shadow-xs">
                     With joyous hearts, we invite you to grace our wedding celebration
                   </p>
-                  <p className="font-heading text-[9px] text-gold-light mt-1.5 tracking-wider font-semibold">
+                  <p className="font-heading text-xs text-gold-light mt-1.5 tracking-wider font-semibold">
                     Rajmahal Gardens, Jaipur (sample)
                   </p>
                 </div>
 
                 <div className="relative z-20 pb-3 w-full">
-                  <div className="py-1 px-3 rounded-full bg-gradient-to-r from-wine to-[#8C3A50] border border-gold/50 text-gold-light text-[9px] font-semibold uppercase tracking-wider shadow-sm">
+                  <div className="py-1.5 px-3 rounded-full bg-gradient-to-r from-wine to-[#8C3A50] border border-gold/50 text-gold-light text-xs font-semibold uppercase tracking-wider shadow-sm min-h-[36px] flex items-center justify-center">
                     Open Your Envelope 💌
                   </div>
                 </div>
@@ -584,7 +548,7 @@ export default function Home() {
               <span className="text-gold font-bold text-xl">+</span>
               <span className="font-bold text-wine">{siteConfig.namedLinksIncluded} named links</span>
             </div>
-            <p className="text-xs text-charcoal/70 mt-2 font-medium">
+            <p className="text-xs sm:text-sm text-charcoal/75 mt-2 font-medium">
               Need more named links? Add them any time from your dashboard.
             </p>
           </div>
@@ -597,10 +561,10 @@ export default function Home() {
             <h4 className="font-heading text-2xl sm:text-3xl font-bold mb-3 tracking-tight relative z-10 text-white">
               Venue changed? Fix it once, everyone sees it.
             </h4>
-            <p className="font-body text-xs sm:text-sm text-white/85 max-w-xl mx-auto leading-relaxed mb-6 relative z-10">
+            <p className="font-body text-[15px] sm:text-base text-white/90 max-w-xl mx-auto leading-relaxed mb-6 relative z-10">
               Edit your invitation and every link you've already shared shows the new details. No second round of forwarding.
             </p>
-            <p className="font-body text-sm sm:text-base text-white/95 relative z-10">
+            <p className="font-body text-[15px] sm:text-base text-white/95 relative z-10">
               <span className="text-[#B69A70] font-bold text-2xl sm:text-3xl mx-1 font-heading">
                 {siteConfig.liveUpdatesIncluded}
               </span>{' '}
@@ -635,10 +599,10 @@ export default function Home() {
                   <MapPin size={22} className="text-[#512D38] stroke-[2.2]" />
                 </div>
               </div>
-              <h4 className="font-heading text-base sm:text-lg font-bold text-wine mb-2">
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
                 One-tap Maps
               </h4>
-              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
                 The venue opens straight in the guest's maps app.
               </p>
             </div>
@@ -646,7 +610,7 @@ export default function Home() {
             {/* 2. RSVP inbox */}
             <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300 relative">
               {!siteConfig.features.rsvpInboxLive && (
-                <div className="absolute top-4 right-4 bg-gold/20 text-[#512D38] border border-gold/40 text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
+                <div className="absolute top-4 right-4 bg-gold/20 text-[#512D38] border border-gold/40 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
                   Coming soon
                 </div>
               )}
@@ -655,10 +619,10 @@ export default function Home() {
                   <Users size={22} className="text-[#512D38] stroke-[2.2]" />
                 </div>
               </div>
-              <h4 className="font-heading text-base sm:text-lg font-bold text-wine mb-2">
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
                 RSVP inbox
               </h4>
-              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
                 Replies land in one dashboard.
               </p>
             </div>
@@ -670,10 +634,10 @@ export default function Home() {
                   <Calendar size={22} className="text-[#512D38] stroke-[2.2]" />
                 </div>
               </div>
-              <h4 className="font-heading text-base sm:text-lg font-bold text-wine mb-2">
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
                 Save the date
               </h4>
-              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
                 Adds the wedding to Google, Apple or Outlook calendars.
               </p>
             </div>
@@ -685,10 +649,10 @@ export default function Home() {
                   <Edit3 size={22} className="text-[#512D38] stroke-[2.2]" />
                 </div>
               </div>
-              <h4 className="font-heading text-base sm:text-lg font-bold text-wine mb-2">
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
                 Edit after sharing
               </h4>
-              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
                 Update details without resending the link.
               </p>
             </div>
@@ -700,10 +664,10 @@ export default function Home() {
                   <Flame size={22} className="text-[#512D38] stroke-[2.2]" />
                 </div>
               </div>
-              <h4 className="font-heading text-base sm:text-lg font-bold text-wine mb-2">
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
                 Diya reveal &amp; music
               </h4>
-              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
                 A tap-to-light diya reveals the date, with wedding music.
               </p>
             </div>
@@ -715,10 +679,10 @@ export default function Home() {
                   <Mail size={22} className="text-[#512D38] stroke-[2.2]" />
                 </div>
               </div>
-              <h4 className="font-heading text-base sm:text-lg font-bold text-wine mb-2">
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
                 Named envelopes
               </h4>
-              <p className="font-body text-xs text-charcoal/70 leading-relaxed">
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
                 Each family opens an envelope with their own name on it.
               </p>
             </div>
@@ -748,7 +712,7 @@ export default function Home() {
                 <span className="font-heading text-xl font-bold tracking-wider text-white">
                   Aahvaaan
                 </span>
-                <span className="text-[11px] text-gold-light uppercase tracking-widest mt-1 font-semibold">
+                <span className="text-xs text-gold-light uppercase tracking-widest mt-1 font-semibold">
                   By Vow &amp; Vision
                 </span>
               </div>
@@ -765,11 +729,11 @@ export default function Home() {
                 Why we built Aahvaaan
               </h3>
 
-              <p className="font-body text-xs sm:text-sm text-white/85 leading-relaxed">
+              <p className="font-body text-[15px] sm:text-base text-white/90 leading-relaxed">
                 Wedding cards are a beautiful tradition, but sending them to hundreds of people is not. Aahvaaan keeps the warmth of a hand-delivered card and removes the chaos: one link, a personal touch for the people who matter most, and one place to see who is coming.
               </p>
 
-              <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-gold-light">
+              <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs sm:text-sm text-gold-light">
                 <div className="flex items-center gap-1.5">
                   <Sparkles size={14} className="text-gold" />
                   <span>Made for Indian Weddings</span>
@@ -808,12 +772,12 @@ export default function Home() {
       </section>
 
       {/* ════════════════ 7. CONTACT SECTION ════════════════ */}
-      <section id="contact" className="py-16 pb-24 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto scroll-mt-20">
+      <section id="contact" className="py-16 pb-28 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto scroll-mt-20">
         <div className="text-center mb-10">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-wine tracking-tight mb-2">
             Planning a wedding? Tell us about it.
           </h2>
-          <p className="font-body text-xs sm:text-sm text-charcoal/70 max-w-md mx-auto mt-2">
+          <p className="font-body text-[15px] sm:text-base text-charcoal/75 max-w-md mx-auto mt-2">
             Share your date and city and we'll reply within a day.
           </p>
         </div>
@@ -823,7 +787,7 @@ export default function Home() {
             <div className="py-8 text-center text-emerald-800">
               <CheckCircle2 size={36} className="text-emerald-600 mx-auto mb-2" />
               <h4 className="font-heading text-lg font-bold">Message Received</h4>
-              <p className="text-xs text-charcoal/70 mt-1">
+              <p className="text-sm text-charcoal/70 mt-1">
                 Thank you for sharing your details. We will reply within a day.
               </p>
             </div>
@@ -836,7 +800,7 @@ export default function Home() {
               )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase font-bold tracking-wider text-wine mb-1.5">
+                  <label className="block text-xs uppercase font-bold tracking-wider text-wine mb-1.5">
                     YOUR NAME
                   </label>
                   <input
@@ -845,12 +809,12 @@ export default function Home() {
                     placeholder="Your name"
                     value={contactForm.name}
                     onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-champagne bg-white text-xs text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                    className="w-full px-4 py-3 min-h-[44px] rounded-xl border border-champagne bg-white text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase font-bold tracking-wider text-wine mb-1.5">
+                  <label className="block text-xs uppercase font-bold tracking-wider text-wine mb-1.5">
                     EMAIL
                   </label>
                   <input
@@ -859,14 +823,14 @@ export default function Home() {
                     placeholder="you@example.com"
                     value={contactForm.email}
                     onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-champagne bg-white text-xs text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                    className="w-full px-4 py-3 min-h-[44px] rounded-xl border border-champagne bg-white text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] uppercase font-bold tracking-wider text-wine mb-1.5">
+                  <label className="block text-xs uppercase font-bold tracking-wider text-wine mb-1.5">
                     CITY
                   </label>
                   <input
@@ -875,12 +839,12 @@ export default function Home() {
                     placeholder="e.g. Jaipur, Delhi, Mumbai"
                     value={contactForm.city}
                     onChange={(e) => setContactForm({ ...contactForm, city: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-champagne bg-white text-xs text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                    className="w-full px-4 py-3 min-h-[44px] rounded-xl border border-champagne bg-white text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] uppercase font-bold tracking-wider text-wine mb-1.5">
+                  <label className="block text-xs uppercase font-bold tracking-wider text-wine mb-1.5">
                     WEDDING DATE (OR MONTH)
                   </label>
                   <input
@@ -889,13 +853,13 @@ export default function Home() {
                     placeholder="e.g. November 2027"
                     value={contactForm.weddingDate}
                     onChange={(e) => setContactForm({ ...contactForm, weddingDate: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-xl border border-champagne bg-white text-xs text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                    className="w-full px-4 py-3 min-h-[44px] rounded-xl border border-champagne bg-white text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] uppercase font-bold tracking-wider text-wine mb-1.5">
+                <label className="block text-xs uppercase font-bold tracking-wider text-wine mb-1.5">
                   MESSAGE (OPTIONAL)
                 </label>
                 <textarea
@@ -903,14 +867,14 @@ export default function Home() {
                   placeholder="Tell us about your wedding plans or any questions..."
                   value={contactForm.message}
                   onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-champagne bg-white text-xs text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                  className="w-full px-4 py-3 rounded-xl border border-champagne bg-white text-sm text-charcoal focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
                 />
               </div>
 
               <div className="pt-2">
                 <button
                   type="submit"
-                  className="px-8 py-3 rounded-full bg-gradient-to-r from-wine to-[#9E2A47] hover:from-[#9E2A47] hover:to-wine text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all"
+                  className="px-8 py-3.5 min-h-[44px] rounded-full bg-gradient-to-r from-wine to-[#9E2A47] hover:from-[#9E2A47] hover:to-wine text-white text-xs font-bold uppercase tracking-wider shadow-md hover:shadow-lg transition-all inline-flex items-center justify-center cursor-pointer"
                 >
                   Send details
                 </button>
@@ -919,6 +883,21 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      {/* ─── Sticky Bottom Mobile CTA (Phase 3 Requirement 7) ─── */}
+      <div className="fixed bottom-0 inset-x-0 z-40 p-3 bg-white/95 backdrop-blur-md border-t border-champagne/80 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] flex items-center justify-between gap-3 md:hidden">
+        <div className="flex flex-col pl-1">
+          <span className="font-heading text-xs font-bold text-wine leading-tight">Mor Pankh · № 01</span>
+          <span className="text-[11px] text-charcoal/60 leading-none">Royal interactive invitation</span>
+        </div>
+        <Link
+          to="/templates/mor-pankh"
+          className="min-h-[44px] px-5 py-2.5 rounded-full bg-gradient-to-r from-wine to-[#8C3A50] hover:brightness-110 active:scale-95 text-white font-body font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md border border-[#B69A70]/50"
+        >
+          <span>Preview Mor Pankh</span>
+          <ChevronRight size={14} className="text-gold-light" />
+        </Link>
+      </div>
     </div>
   );
 }

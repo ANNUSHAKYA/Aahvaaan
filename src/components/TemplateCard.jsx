@@ -25,9 +25,7 @@ export default function TemplateCard({ template, index = 0 }) {
             loading="lazy"
             onError={(e) => {
               e.target.onerror = null;
-              e.target.src = `data:image/svg+xml,${encodeURIComponent(
-                `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" fill="${template.palette.warmIvory || '#FAF6F0'}"><rect width="800" height="500"/><text x="400" y="230" text-anchor="middle" font-family="Georgia" font-size="36" fill="${template.themeStyles.textPrimary || '#512D38'}">${template.name}</text><text x="400" y="275" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#65575A">${template.collection}</text></svg>`
-              )}`;
+              e.target.src = '/templates/mor-pankh.webp';
             }}
           />
 

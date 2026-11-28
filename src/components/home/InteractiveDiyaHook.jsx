@@ -14,7 +14,7 @@ function DiyaLamp({ isLit, onToggle, label, index }) {
         onClick={onToggle}
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.94 }}
-        className="relative focus:outline-none group p-2 cursor-pointer touch-manipulation"
+        className="relative focus:outline-none group p-2.5 min-w-[48px] min-h-[48px] flex items-center justify-center cursor-pointer touch-manipulation"
         aria-label={`Light diya ${index + 1}: ${label}`}
       >
         {/* Animated Flame when Lit */}
@@ -190,7 +190,7 @@ export default function InteractiveDiyaHook() {
           <button
             type="button"
             onClick={lightAll}
-            className="text-[11px] text-amber-300/80 hover:text-amber-200 underline font-medium mt-1 mb-2 transition-colors cursor-pointer"
+            className="text-xs text-amber-300 hover:text-amber-200 underline font-medium mt-1 mb-2 transition-colors cursor-pointer py-1.5 min-h-[44px] inline-flex items-center"
           >
             Or tap here to light all three at once
           </button>
@@ -222,10 +222,10 @@ export default function InteractiveDiyaHook() {
                   <p className="font-heading text-xl sm:text-2xl font-bold text-gray-900 mt-1">
                     Ananya <span className="text-gold font-light">&amp;</span> Kabir
                   </p>
-                  <p className="font-body text-xs sm:text-sm font-semibold text-wine mt-1">
+                  <p className="font-body text-sm font-semibold text-wine mt-1">
                     Monday, 22 February 2027
                   </p>
-                  <p className="font-body text-[11px] text-gray-600">
+                  <p className="font-body text-xs text-gray-700">
                     The Oberoi Udaivilas • Udaipur, Rajasthan
                   </p>
                 </div>
@@ -235,18 +235,18 @@ export default function InteractiveDiyaHook() {
                   <button
                     type="button"
                     onClick={resetAll}
-                    className="inline-flex items-center gap-1 text-[11px] text-gray-500 hover:text-gray-800 transition-colors font-medium px-2 py-1 rounded"
+                    className="min-h-[44px] inline-flex items-center gap-1 text-xs text-gray-600 hover:text-gray-900 transition-colors font-medium px-3 py-2 rounded-xl"
                   >
-                    <RotateCcw size={12} />
+                    <RotateCcw size={13} />
                     <span>Reset</span>
                   </button>
 
                   <Link
-                    to="/templates/royal-maroon-and-gold"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-wine hover:bg-[#8A243A] text-white text-[11px] font-semibold shadow-md transition-all active:scale-95"
+                    to="/templates/mor-pankh"
+                    className="min-h-[44px] inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-gradient-to-r from-wine to-[#8C3A50] hover:brightness-110 text-white text-xs font-semibold shadow-md border border-[#B69A70]/50 transition-all active:scale-95"
                   >
-                    <span>View Live Invite</span>
-                    <ArrowRight size={12} />
+                    <span>Experience Mor Pankh Live</span>
+                    <ArrowRight size={13} />
                   </Link>
                 </div>
               </div>
