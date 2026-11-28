@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Plus, Edit3, Eye, Calendar, Clock, Sparkles,
-  FileText, CheckCircle2, Archive
+  FileText, CheckCircle2, Archive, Users
 } from 'lucide-react';
 import { createInvitation } from '@/app/actions/invitations';
 
@@ -153,13 +153,20 @@ export default function DashboardView({ invitations, user }) {
                 </div>
 
                 {/* Actions */}
-                <div className="mt-5 flex gap-2 border-t border-stone-100 pt-4">
+                <div className="mt-5 flex flex-wrap gap-2 border-t border-stone-100 pt-4">
                   <a
                     href={`/dashboard/invitations/${inv.id}/edit`}
                     className="inline-flex items-center gap-1.5 rounded-sm border border-[#0E4D4F] px-3.5 py-1.5 text-xs font-medium text-[#0E4D4F] transition hover:bg-[#0E4D4F] hover:text-white"
                   >
                     <Edit3 className="h-3 w-3" />
                     Edit
+                  </a>
+                  <a
+                    href={`/dashboard/invitations/${inv.id}/rsvps`}
+                    className="inline-flex items-center gap-1.5 rounded-sm border border-stone-300 px-3.5 py-1.5 text-xs font-medium text-stone-700 transition hover:bg-stone-100"
+                  >
+                    <Users className="h-3 w-3" />
+                    RSVPs
                   </a>
                   {isPublished && (
                     <a

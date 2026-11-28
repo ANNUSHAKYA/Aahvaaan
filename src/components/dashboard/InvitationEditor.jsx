@@ -582,6 +582,12 @@ export default function InvitationEditor({ invitation, initialDraft, initialGues
             )}>
               {saveStatus === 'saved' ? '✓ Saved' : saveStatus === 'saving' ? 'Saving…' : '⚠ Save failed'}
             </span>
+            <a
+              href={`/dashboard/invitations/${invitation.id}/rsvps`}
+              className="inline-flex items-center gap-1.5 border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-600 hover:bg-stone-50 transition"
+            >
+              <Users className="h-3.5 w-3.5" /> RSVPs
+            </a>
             <button
               type="button" onClick={() => setShowPreview(v => !v)}
               className="hidden md:inline-flex items-center gap-1.5 border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-600 hover:bg-stone-50 transition"

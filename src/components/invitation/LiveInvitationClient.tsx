@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo } from 'react';
 import MorPankhInvitation from '@/src/components/invitation/templates/MorPankhInvitation';
+import GuestRsvpForm from '@/src/components/invitation/GuestRsvpForm';
 import supabase, { isSupabaseConfigured } from '@/src/lib/supabase';
 import type { PublicInvitation } from '@/lib/invitations/public';
 
@@ -76,6 +77,7 @@ export default function LiveInvitationClient({
     <MorPankhInvitation
       content={content}
       guestName={invitation.guest?.display_name}
+      rsvpComponent={<GuestRsvpForm invitation={invitation} />}
       isPreview={Boolean(invitation.is_sample)}
     />
   );

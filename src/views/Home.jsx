@@ -130,7 +130,7 @@ export default function Home() {
     {
       q: 'How do guests reply?',
       a: siteConfig.features.rsvpInboxLive
-        ? 'Guests open their invitation link on WhatsApp, select their attendance status and dietary preferences, and submit their response instantly.'
+        ? 'Guests open your invitation link, choose Yes or No, select their party size and optional event or meal preferences, and add a short note. Replies appear immediately in your Aahvaaan RSVP dashboard, and named-link guests can update their reply anytime.'
         : 'RSVP replies will land directly in your dashboard (Coming soon). In the meantime, guests can tap your WhatsApp button on the invitation to confirm their presence.',
     },
     {

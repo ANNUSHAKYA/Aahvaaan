@@ -74,6 +74,7 @@ export interface Database {
           published_at: string | null;
           edit_window_ends_at: string | null;
           live_updates_used: number;
+          rsvp_digest_enabled: boolean;
           created_at: string;
           updated_at: string;
         };
@@ -171,8 +172,11 @@ export interface Database {
           name: string;
           attending: boolean;
           party_size: number;
+          events_attending: Json;
+          meal_preference: string | null;
           message: string | null;
           created_at: string;
+          updated_at: string;
         };
         Insert: {
           id?: string;
@@ -181,8 +185,11 @@ export interface Database {
           name: string;
           attending: boolean;
           party_size?: number;
+          events_attending?: Json;
+          meal_preference?: string | null;
           message?: string | null;
           created_at?: string;
+          updated_at?: string;
         };
         Update: {
           id?: string;
@@ -191,8 +198,11 @@ export interface Database {
           name?: string;
           attending?: boolean;
           party_size?: number;
+          events_attending?: Json;
+          meal_preference?: string | null;
           message?: string | null;
           created_at?: string;
+          updated_at?: string;
         };
       };
       views: {
@@ -273,8 +283,17 @@ export interface Database {
           p_party_size?: number;
           p_message?: string | null;
           p_guest_slug?: string | null;
+          p_events_attending?: Json;
+          p_meal_preference?: string | null;
         };
         Returns: Json;
+      };
+      check_rsvp_rate_limit: {
+        Args: {
+          p_invitation_slug: string;
+          p_ip_hash: string;
+        };
+        Returns: boolean;
       };
       track_view: {
         Args: {

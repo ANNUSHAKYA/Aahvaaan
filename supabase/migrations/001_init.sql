@@ -183,6 +183,7 @@ alter table public.invitations add column if not exists family_note text;
 alter table public.invitations add column if not exists published_at timestamptz;
 alter table public.invitations add column if not exists edit_window_ends_at timestamptz;
 alter table public.invitations add column if not exists live_updates_used integer default 0;
+alter table public.invitations add column if not exists rsvp_digest_enabled boolean not null default false;
 alter table public.invitations add column if not exists created_at timestamptz not null default now();
 alter table public.invitations add column if not exists updated_at timestamptz not null default now();
 
@@ -249,8 +250,28 @@ alter table public.rsvps add column if not exists guest_id uuid references publi
 alter table public.rsvps add column if not exists name text;
 alter table public.rsvps add column if not exists attending boolean;
 alter table public.rsvps add column if not exists party_size integer default 1;
+alter table public.rsvps add column if not exists events_attending jsonb default '[]'::jsonb;
+alter table public.rsvps add column if not exists meal_preference text;
 alter table public.rsvps add column if not exists message text;
 alter table public.rsvps add column if not exists created_at timestamptz not null default now();
+alter table public.rsvps add column if not exists updated_at timestamptz not null default now();
+
+create unique index if not exists idx_rsvps_invitation_guest_unique
+  on public.rsvps(invitation_id, guest_id)
+  where guest_id is not null;
+
+-- 1.6b RSVP Rate Limits (hashed IP + timestamp, no raw IPs stored)
+create table if not exists public.rsvp_rate_limits (
+  id uuid primary key default gen_random_uuid(),
+  invitation_id uuid not null references public.invitations(id) on delete cascade,
+  ip_hash text not null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists idx_rsvp_rate_limits_lookup
+  on public.rsvp_rate_limits(invitation_id, ip_hash, created_at);
+
+alter table public.rsvp_rate_limits enable row level security;
 
 -- 1.7 Views (analytics tracking)
 create table if not exists public.views (
@@ -699,14 +720,19 @@ $$;
 
 grant execute on function public.get_public_guest(text) to anon, authenticated;
 
--- 3.2 submit_rsvp: Anonymous/Guest RSVP submission validating invitation slug
+-- 3.2 submit_rsvp: Anonymous/Guest RSVP submission validating invitation slug, status & party size
+drop function if exists public.submit_rsvp(text, text, boolean, integer, text, text);
+drop function if exists public.submit_rsvp(text, text, boolean, integer, text, text, jsonb, text);
+
 create or replace function public.submit_rsvp(
   p_invitation_slug text,
   p_name text,
   p_attending boolean,
   p_party_size integer default 1,
   p_message text default null,
-  p_guest_slug text default null
+  p_guest_slug text default null,
+  p_events_attending jsonb default '[]'::jsonb,
+  p_meal_preference text default null
 )
 returns jsonb
 language plpgsql
@@ -715,11 +741,16 @@ set search_path = public
 as $$
 declare
   v_invitation_id uuid;
+  v_edit_window_ends_at timestamptz;
   v_guest_id uuid := null;
+  v_guest_name text := null;
+  v_max_party integer := 10;
   v_rsvp_id uuid;
+  v_is_update boolean := false;
 begin
   -- Validate published invitation
-  select id into v_invitation_id
+  select id, edit_window_ends_at
+  into v_invitation_id, v_edit_window_ends_at
   from public.invitations
   where slug = p_invitation_slug
     and status = 'published';
@@ -731,40 +762,159 @@ begin
     );
   end if;
 
-  -- Validate guest slug if passed
+  if v_edit_window_ends_at is not null and v_edit_window_ends_at < now() then
+    return jsonb_build_object(
+      'success', false,
+      'error', 'RSVP window has closed for this invitation.'
+    );
+  end if;
+
+  -- Validate guest slug if passed (named link)
   if p_guest_slug is not null and trim(p_guest_slug) <> '' then
-    select id into v_guest_id
+    select id, display_name, max_party_size
+    into v_guest_id, v_guest_name, v_max_party
     from public.guests
     where slug = trim(p_guest_slug)
       and invitation_id = v_invitation_id;
+
+    if v_guest_id is null then
+      return jsonb_build_object(
+        'success', false,
+        'error', 'Guest link is invalid for this invitation.'
+      );
+    end if;
   end if;
 
-  -- Insert RSVP
-  insert into public.rsvps (
-    invitation_id,
-    guest_id,
-    name,
-    attending,
-    party_size,
-    message
-  ) values (
-    v_invitation_id,
-    v_guest_id,
-    trim(p_name),
-    p_attending,
-    greatest(1, coalesce(p_party_size, 1)),
-    p_message
-  )
-  returning id into v_rsvp_id;
+  -- Validate party size
+  if p_party_size is null or p_party_size < 1 or p_party_size > coalesce(v_max_party, 10) then
+    return jsonb_build_object(
+      'success', false,
+      'error', format('Party size must be between 1 and %s.', coalesce(v_max_party, 10))
+    );
+  end if;
+
+  if v_guest_id is not null then
+    -- Named link: upsert one row per guest (locked to guest.display_name)
+    insert into public.rsvps (
+      invitation_id,
+      guest_id,
+      name,
+      attending,
+      party_size,
+      events_attending,
+      meal_preference,
+      message,
+      updated_at
+    ) values (
+      v_invitation_id,
+      v_guest_id,
+      v_guest_name,
+      p_attending,
+      p_party_size,
+      coalesce(p_events_attending, '[]'::jsonb),
+      nullif(trim(coalesce(p_meal_preference, '')), ''),
+      left(nullif(trim(coalesce(p_message, '')), ''), 300),
+      now()
+    )
+    on conflict (invitation_id, guest_id) where guest_id is not null
+    do update set
+      attending = excluded.attending,
+      party_size = excluded.party_size,
+      events_attending = excluded.events_attending,
+      meal_preference = excluded.meal_preference,
+      message = excluded.message,
+      updated_at = now()
+    returning id, (xmax <> 0) into v_rsvp_id, v_is_update;
+  else
+    -- Open link: always create a new row
+    insert into public.rsvps (
+      invitation_id,
+      guest_id,
+      name,
+      attending,
+      party_size,
+      events_attending,
+      meal_preference,
+      message
+    ) values (
+      v_invitation_id,
+      null,
+      left(trim(p_name), 80),
+      p_attending,
+      p_party_size,
+      coalesce(p_events_attending, '[]'::jsonb),
+      nullif(trim(coalesce(p_meal_preference, '')), ''),
+      left(nullif(trim(coalesce(p_message, '')), ''), 300)
+    )
+    returning id into v_rsvp_id;
+  end if;
 
   return jsonb_build_object(
     'success', true,
-    'rsvp_id', v_rsvp_id
+    'rsvp_id', v_rsvp_id,
+    'is_update', v_is_update
   );
 end;
 $$;
 
-grant execute on function public.submit_rsvp(text, text, boolean, integer, text, text) to anon, authenticated;
+grant execute on function public.submit_rsvp(text, text, boolean, integer, text, text, jsonb, text) to anon, authenticated;
+
+-- 3.2b check_rsvp_rate_limit: Max 5 submissions per hour per hashed IP per invitation
+create or replace function public.check_rsvp_rate_limit(
+  p_invitation_slug text,
+  p_ip_hash text
+)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_invitation_id uuid;
+  v_recent_count integer;
+begin
+  select id into v_invitation_id
+  from public.invitations
+  where slug = p_invitation_slug
+    and status = 'published';
+
+  if v_invitation_id is null then
+    return false;
+  end if;
+
+  select count(*) into v_recent_count
+  from public.rsvp_rate_limits
+  where invitation_id = v_invitation_id
+    and ip_hash = p_ip_hash
+    and created_at > now() - interval '1 hour';
+
+  if v_recent_count >= 5 then
+    return false;
+  end if;
+
+  insert into public.rsvp_rate_limits (invitation_id, ip_hash)
+  values (v_invitation_id, p_ip_hash);
+
+  return true;
+end;
+$$;
+
+grant execute on function public.check_rsvp_rate_limit(text, text) to anon, authenticated;
+
+-- Enable Supabase Realtime for rsvps
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime'
+      and schemaname = 'public'
+      and tablename = 'rsvps'
+  ) then
+    alter publication supabase_realtime add table public.rsvps;
+  end if;
+exception when others then
+  null;
+end $$;
 
 -- 3.3 track_view: Anonymous page view tracking validating invitation slug
 create or replace function public.track_view(

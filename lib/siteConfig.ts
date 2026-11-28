@@ -85,9 +85,9 @@ export const siteConfig: SiteConfig = {
     calendar: true,
     maps: true,
     music: true,
-    rsvpInbox: false, // Coming soon
+    rsvpInbox: true,  // Phase 5D: live
     dashboard: true,  // Phase 5B: live
-    rsvpInboxLive: false, // Labelled "Coming soon"
+    rsvpInboxLive: true, // Phase 5D: live
   },
 
   // Pricing Plans (Easy to Edit from siteConfig)
@@ -127,7 +127,7 @@ export const siteConfig: SiteConfig = {
         '5 live updates for 9 months after publish',
         'Google Maps navigation & calendar files',
         'Ceremony schedule & event details',
-        'RSVP replies (dashboard coming soon)',
+        'RSVP replies in your dashboard',
       ],
     },
     luxury: {
