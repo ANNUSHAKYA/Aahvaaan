@@ -12,12 +12,24 @@ begin
       is_active = true
     where slug = 'mor-pankh' or id::text = 'mor-pankh';
   else
-    insert into public.templates (slug, name, price_inr, is_active)
-    values (
-      'mor-pankh',
-      'Mor Pankh',
-      1749,
-      true
-    );
+    begin
+      insert into public.templates (id, slug, name, price_inr, is_active)
+      values (
+        'mor-pankh',
+        'mor-pankh',
+        'Mor Pankh',
+        1749,
+        true
+      );
+    exception when others then
+      insert into public.templates (id, slug, name, price_inr, is_active)
+      values (
+        'a0000000-0000-0000-0000-000000000001',
+        'mor-pankh',
+        'Mor Pankh',
+        1749,
+        true
+      );
+    end;
   end if;
 end $$;

@@ -121,6 +121,17 @@ begin
       null;
     end;
   end if;
+
+  -- Ensure templates.id has a default generator if legacy table had no default
+  begin
+    alter table public.templates alter column id set default gen_random_uuid()::text;
+  exception when others then
+    begin
+      alter table public.templates alter column id set default gen_random_uuid();
+    exception when others then
+      null;
+    end;
+  end;
 end $$;
 
 -- 1.3 Invitations
@@ -852,12 +863,24 @@ begin
       is_active = true
     where slug = 'mor-pankh' or id::text = 'mor-pankh';
   else
-    insert into public.templates (slug, name, price_inr, is_active)
-    values (
-      'mor-pankh',
-      'Mor Pankh',
-      1749, -- Signature Plan price from siteConfig
-      true
-    );
+    begin
+      insert into public.templates (id, slug, name, price_inr, is_active)
+      values (
+        'mor-pankh',
+        'mor-pankh',
+        'Mor Pankh',
+        1749,
+        true
+      );
+    exception when others then
+      insert into public.templates (id, slug, name, price_inr, is_active)
+      values (
+        'a0000000-0000-0000-0000-000000000001',
+        'mor-pankh',
+        'Mor Pankh',
+        1749,
+        true
+      );
+    end;
   end if;
 end $$;
