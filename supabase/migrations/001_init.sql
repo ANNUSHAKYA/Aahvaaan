@@ -60,6 +60,69 @@ alter table public.templates add column if not exists price_inr integer;
 alter table public.templates add column if not exists is_active boolean default true;
 alter table public.templates add column if not exists created_at timestamptz not null default now();
 
+-- Ensure existing templates have slug and relax legacy NOT NULL columns
+do $$
+begin
+  -- Backfill slug with id if null
+  update public.templates
+  set slug = id::text
+  where slug is null or slug = '';
+
+  -- Relax legacy NOT NULL columns if table was created in an older schema
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'templates' and column_name = 'collection') then
+    alter table public.templates alter column collection drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'templates' and column_name = 'category') then
+    alter table public.templates alter column category drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'templates' and column_name = 'short_description') then
+    alter table public.templates alter column short_description drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'templates' and column_name = 'description') then
+    alter table public.templates alter column description drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'templates' and column_name = 'design_direction') then
+    alter table public.templates alter column design_direction drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'templates' and column_name = 'image_url') then
+    alter table public.templates alter column image_url drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'templates' and column_name = 'palette') then
+    alter table public.templates alter column palette drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'templates' and column_name = 'colors') then
+    alter table public.templates alter column colors drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'templates' and column_name = 'theme_styles') then
+    alter table public.templates alter column theme_styles drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'templates' and column_name = 'starting_price') then
+    alter table public.templates alter column starting_price drop not null;
+  end if;
+  if exists (select 1 from information_schema.columns where table_schema = 'public' and table_name = 'templates' and column_name = 'price_display') then
+    alter table public.templates alter column price_display drop not null;
+  end if;
+
+  -- Ensure unique constraint on templates.slug
+  if not exists (
+    select 1 from pg_constraint
+    where conrelid = 'public.templates'::regclass
+      and contype = 'u'
+      and conname like '%slug%'
+  ) and not exists (
+    select 1 from pg_indexes
+    where schemaname = 'public'
+      and tablename = 'templates'
+      and indexdef like '%UNIQUE%slug%'
+  ) then
+    begin
+      alter table public.templates add constraint templates_slug_unique unique (slug);
+    exception when others then
+      null;
+    end;
+  end if;
+end $$;
+
 -- 1.3 Invitations
 create table if not exists public.invitations (
   id uuid primary key default gen_random_uuid(),
@@ -778,15 +841,23 @@ using (
 -- 5. SEED INITIAL TEMPLATE (Mor Pankh)
 -- ==============================================================================
 
-insert into public.templates (id, slug, name, price_inr, is_active)
-values (
-  'a0000000-0000-0000-0000-000000000001',
-  'mor-pankh',
-  'Mor Pankh',
-  1749, -- Signature Plan price from siteConfig
-  true
-)
-on conflict (slug) do update set
-  name = excluded.name,
-  price_inr = excluded.price_inr,
-  is_active = excluded.is_active;
+do $$
+begin
+  if exists (select 1 from public.templates where slug = 'mor-pankh' or id::text = 'mor-pankh') then
+    update public.templates
+    set
+      slug = 'mor-pankh',
+      name = 'Mor Pankh',
+      price_inr = 1749, -- Signature Plan price from siteConfig
+      is_active = true
+    where slug = 'mor-pankh' or id::text = 'mor-pankh';
+  else
+    insert into public.templates (slug, name, price_inr, is_active)
+    values (
+      'mor-pankh',
+      'Mor Pankh',
+      1749, -- Signature Plan price from siteConfig
+      true
+    );
+  end if;
+end $$;
