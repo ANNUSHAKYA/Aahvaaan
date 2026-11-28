@@ -146,8 +146,14 @@ export const siteConfig: SiteConfig = {
   domain: 'https://aahvaaan.vercel.app',
 
   // Contact points
-  whatsappNumber: getEnv('VITE_WHATSAPP_NUMBER', 'NEXT_PUBLIC_WHATSAPP_NUMBER') || '919876543210',
-  email: getEnv('VITE_CONTACT_EMAIL', 'NEXT_PUBLIC_CONTACT_EMAIL') || 'hello@aahvaaan.com',
+  whatsappNumber:
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ||
+    process.env.VITE_WHATSAPP_NUMBER ||
+    '918796715590',
+  email:
+    process.env.NEXT_PUBLIC_CONTACT_EMAIL ||
+    process.env.VITE_CONTACT_EMAIL ||
+    'hello@aahvaaan.com',
 
   instagram: 'https://instagram.com/aahvaaan.invites',
   instagramHandle: '@aahvaaan.invites',
@@ -155,8 +161,14 @@ export const siteConfig: SiteConfig = {
   currency: '₹',
 
   // Payment configuration
-  upiId: getEnv('VITE_UPI_ID', 'NEXT_PUBLIC_UPI_ID') || 'annushakya94526@ybl',
-  payeeName: getEnv('VITE_PAYEE_NAME', 'NEXT_PUBLIC_PAYEE_NAME') || 'ANNU SHAKYA DO RAJVEER SINGH',
+  upiId:
+    process.env.NEXT_PUBLIC_UPI_ID ||
+    process.env.VITE_UPI_ID ||
+    'annushakya94526@ybl',
+  payeeName:
+    process.env.NEXT_PUBLIC_PAYEE_NAME ||
+    process.env.VITE_PAYEE_NAME ||
+    'ANNU SHAKYA DO RAJVEER SINGH',
   phonePeQrImage: '/payment/phonepe-qr.jpg',
   walletBalance: 0,
 };

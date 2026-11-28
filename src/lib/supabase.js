@@ -1,21 +1,15 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Helper to support both Vite (import.meta.env) and Next.js (process.env)
-const getEnv = (key, nextKey) => {
-  if (typeof process !== 'undefined' && process.env) {
-    if (nextKey && process.env[nextKey]) return process.env[nextKey];
-    if (process.env[key]) return process.env[key];
-  }
-  try {
-    if (typeof import.meta !== 'undefined' && import.meta.env) {
-      if (import.meta.env[key]) return import.meta.env[key];
-    }
-  } catch {}
-  return '';
-};
+// Static string access so Next.js / Webpack DefinePlugin inlines these into client bundles
+const supabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL ||
+  process.env.VITE_SUPABASE_URL ||
+  'https://nvoynqxwkbtzdlgbjvfl.supabase.co';
 
-const supabaseUrl = getEnv('VITE_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_URL');
-const supabaseAnonKey = getEnv('VITE_SUPABASE_ANON_KEY', 'NEXT_PUBLIC_SUPABASE_ANON_KEY');
+const supabaseAnonKey =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  process.env.VITE_SUPABASE_ANON_KEY ||
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52b3lucXh3a2J0emRsZ2JqdmZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU0MzAzMzIsImV4cCI6MjExMTAwNjMzMn0.Y0zB8XKG8fC2_Pb1pdTNXi9-sbOxfcjVuZrmbw6T6VM';
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl &&
