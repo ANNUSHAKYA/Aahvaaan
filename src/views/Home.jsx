@@ -15,6 +15,7 @@ import {
   Minus,
   Mail,
   Flame,
+  Link2,
 } from 'lucide-react';
 import InteractiveDiyaHook from '../components/home/InteractiveDiyaHook';
 import templates from '../data/templates';
@@ -121,7 +122,7 @@ export default function Home() {
     },
     {
       q: 'Can I add more named links later?',
-      a: 'Yes, from the dashboard.',
+      a: 'Yes. Message us on WhatsApp and we will add more named links to your invitation.',
     },
     {
       q: `What happens after ${siteConfig.updateWindowMonths} months?`,
@@ -130,6 +131,22 @@ export default function Home() {
     {
       q: 'How is this different from a PDF or video invite?',
       a: 'A static file cannot play background shehnai, guide your guests with Google Maps navigation, or let you update venue changes after sending. Aahvaaan gives your guests an interactive celebration web page that you can update whenever plans shift.',
+    },
+    {
+      q: 'How do I pay and when is the invitation ready?',
+      a: 'You can pay securely via UPI, QR code or card. Once you submit your wedding details, your preview draft is ready within 24 to 48 hours for review.',
+    },
+    {
+      q: 'Can I change the music or photos?',
+      a: 'Yes. You can select from traditional shehnai or melodies, or provide your own audio. Photos can also be updated whenever you like.',
+    },
+    {
+      q: 'Can the invitation show Hindi text?',
+      a: 'Yes. We support authentic Hindi and Devanagari script for shlokas, ceremony titles, family names, and personal blessings.',
+    },
+    {
+      q: 'How do I reach you if I need help?',
+      a: `You can reach us anytime directly on WhatsApp at ${siteConfig.whatsappNumber} or email ${siteConfig.email}. We typically reply within a few hours.`,
     },
   ];
 
@@ -181,7 +198,7 @@ export default function Home() {
               </h1>
 
               <p className="font-body text-[15px] sm:text-base text-white/90 leading-relaxed max-w-lg mx-auto lg:mx-0">
-                Aahvaaan turns your wedding card into a living invitation: a diya to light, a greeting by name for every family, music, maps and RSVPs, all in one link made for WhatsApp.
+                Aahvaaan turns your wedding card into a living invitation: a diya to light, a greeting by name for every family, music, maps and RSVPs on WhatsApp, all in one link made for WhatsApp.
               </p>
 
               {/* Action Buttons */}
@@ -270,11 +287,7 @@ export default function Home() {
                 </div>
 
                 {/* Floating Card Left: Sample RSVP (Hidden on screens < 640px) */}
-                <motion.div
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -top-3 -left-6 bg-white/95 backdrop-blur-md rounded-2xl p-2.5 px-3.5 shadow-xl border border-gold/50 hidden sm:flex items-center gap-2.5 z-40 text-charcoal"
-                >
+                <div className="absolute -top-3 -left-6 bg-white/95 backdrop-blur-md rounded-2xl p-2.5 px-3.5 shadow-xl border border-gold/50 hidden sm:flex items-center gap-2.5 z-40 text-charcoal animate-float-card-1">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping shrink-0" />
                   <div>
                     <span className="text-xs font-bold text-wine block leading-none">
@@ -284,14 +297,10 @@ export default function Home() {
                       Sharma Family • Attending (3)
                     </span>
                   </div>
-                </motion.div>
+                </div>
 
                 {/* Floating Card Right: Sample Link (Hidden on screens < 640px) */}
-                <motion.div
-                  animate={{ y: [0, 6, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-                  className="absolute -bottom-3 -right-6 bg-gradient-to-r from-wine to-[#8C3A50] text-white rounded-2xl p-2.5 px-4 shadow-xl border border-gold/50 hidden sm:flex items-center gap-2.5 z-40"
-                >
+                <div className="absolute -bottom-3 -right-6 bg-gradient-to-r from-wine to-[#8C3A50] text-white rounded-2xl p-2.5 px-4 shadow-xl border border-gold/50 hidden sm:flex items-center gap-2.5 z-40 animate-float-card-2">
                   <span className="text-base select-none">💌</span>
                   <div>
                     <span className="text-xs font-bold block leading-none text-gold-light">
@@ -301,7 +310,7 @@ export default function Home() {
                       aahvaaan.com/n/sharma-family-sample
                     </span>
                   </div>
-                </motion.div>
+                </div>
               </div>
             </div>
           </div>
@@ -455,19 +464,151 @@ export default function Home() {
 
         <div className="text-center mt-12">
           <Link
-            to="/templates"
+            to="/templates/mor-pankh"
             className="inline-flex items-center gap-2 px-8 py-3.5 min-h-[44px] rounded-full bg-gradient-to-r from-wine via-[#6B3D4A] to-[#8C3A50] hover:brightness-110 active:scale-95 text-white font-body font-semibold text-sm shadow-md hover:shadow-xl transition-all border border-[#B69A70]/50"
           >
-            <span>Browse all designs</span>
+            <span>View Mor Pankh</span>
             <ChevronRight size={16} className="text-gold-light" />
           </Link>
         </div>
       </section>
 
-      {/* ════════════════ 3. SHARING SECTION (#send) ════════════════ */}
+      {/* ════════════════ 3. FEATURES SECTION (6 Cards, 3x2 Grid) ════════════════ */}
+      <section id="features" className="bg-[#512D38] text-white py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden scroll-mt-20">
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#B69A70]/15 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-[#C99191]/20 rounded-full blur-[140px] pointer-events-none" />
+
+        <div className="max-w-5xl mx-auto relative z-10">
+          <div className="text-center mb-16 relative">
+            <h2 className="inline-block px-10 py-3 rounded-2xl bg-white/10 backdrop-blur-md text-white font-heading text-3xl sm:text-4xl font-bold tracking-tight shadow-inner border border-white/15">
+              Features
+            </h2>
+          </div>
+
+          {/* 3x2 Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* 1. One-tap Maps */}
+            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300 relative">
+              {!siteConfig.features.maps && (
+                <div className="absolute top-4 right-4 bg-gold/20 text-[#512D38] border border-gold/40 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                  Coming soon
+                </div>
+              )}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
+                  <MapPin size={22} className="text-[#512D38] stroke-[2.2]" />
+                </div>
+              </div>
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
+                One-tap Maps
+              </h4>
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
+                The venue opens straight in the guest's maps app.
+              </p>
+            </div>
+
+            {/* 2. RSVP inbox */}
+            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300 relative">
+              {!siteConfig.features.rsvpInbox && (
+                <div className="absolute top-4 right-4 bg-gold/20 text-[#512D38] border border-gold/40 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                  Coming soon
+                </div>
+              )}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
+                  <Users size={22} className="text-[#512D38] stroke-[2.2]" />
+                </div>
+              </div>
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
+                RSVP inbox
+              </h4>
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
+                Replies land in one dashboard.
+              </p>
+            </div>
+
+            {/* 3. Save the date */}
+            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300 relative">
+              {!siteConfig.features.calendar && (
+                <div className="absolute top-4 right-4 bg-gold/20 text-[#512D38] border border-gold/40 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                  Coming soon
+                </div>
+              )}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
+                  <Calendar size={22} className="text-[#512D38] stroke-[2.2]" />
+                </div>
+              </div>
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
+                Save the date
+              </h4>
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
+                One tap puts the wedding on any phone calendar.
+              </p>
+            </div>
+
+            {/* 4. Edit after sharing */}
+            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300 relative">
+              {!siteConfig.features.liveUpdates && (
+                <div className="absolute top-4 right-4 bg-gold/20 text-[#512D38] border border-gold/40 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                  Coming soon
+                </div>
+              )}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
+                  <Edit3 size={22} className="text-[#512D38] stroke-[2.2]" />
+                </div>
+              </div>
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
+                Edit after sharing
+              </h4>
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
+                Update details without resending the link.
+              </p>
+            </div>
+
+            {/* 5. Diya reveal & music */}
+            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300 relative">
+              {!siteConfig.features.music && (
+                <div className="absolute top-4 right-4 bg-gold/20 text-[#512D38] border border-gold/40 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
+                  Coming soon
+                </div>
+              )}
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
+                  <Flame size={22} className="text-[#512D38] stroke-[2.2]" />
+                </div>
+              </div>
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
+                Diya reveal &amp; music
+              </h4>
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
+                A tap-to-light diya reveals the date, with wedding music.
+              </p>
+            </div>
+
+            {/* 6. Named envelopes */}
+            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
+                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
+                  <Mail size={22} className="text-[#512D38] stroke-[2.2]" />
+                </div>
+              </div>
+              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
+                Named envelopes
+              </h4>
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
+                Each family opens an envelope with their own name on it.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════ 4. SHARING SECTION (#send) ════════════════ */}
       <section id="send" className="py-16 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto scroll-mt-20">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-wine/10 text-wine text-xs font-semibold tracking-wider uppercase mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-wine/10 text-wine text-[13px] font-semibold tracking-wider uppercase mb-2">
             <span>WhatsApp Sharing</span>
           </div>
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-charcoal tracking-tight mb-2">
@@ -478,6 +619,7 @@ export default function Home() {
           </p>
         </div>
 
+        {/* Mockup Preview Cards: Open link & Named link */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {/* Card 1: Open link */}
           <div className="bg-[#FAF7F2] rounded-[36px] p-6 sm:p-8 border border-champagne/60 text-center shadow-xs flex flex-col items-center hover:shadow-md transition-shadow">
@@ -599,52 +741,126 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ─── "Every order comes with" & Updates Block ─── */}
-        <div className="max-w-5xl mx-auto space-y-6 mt-12">
-          {/* Top Inclusions Card */}
-          <div className="bg-[#FAF7F2] rounded-[28px] p-8 sm:p-10 border border-champagne text-center shadow-xs">
-            <h4 className="font-heading text-2xl sm:text-3xl font-bold text-wine mb-4">
-              Every order comes with
-            </h4>
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-base sm:text-lg font-semibold text-charcoal">
-              <span className="font-bold text-wine">1 open link</span>
-              <span className="text-gold font-bold text-xl">+</span>
-              <span className="font-bold text-wine">{siteConfig.namedLinksIncluded} named links</span>
+        {/* ─── 2-Column Card Strip & Horizontal 3-Step Timeline (Phase 3 + Cleanup) ─── */}
+        <div className="max-w-5xl mx-auto space-y-8 mt-14">
+          {/* 2-Column Card Strip: Open Link & Named Links */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Left Card: Open link with link icon */}
+            <div className="bg-[#FAF7F2] rounded-3xl p-6 sm:p-7 border border-champagne/80 shadow-xs flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-wine/10 border border-wine/20 text-wine flex items-center justify-center shrink-0">
+                <Link2 size={22} className="text-wine" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <h4 className="font-heading text-xl font-bold text-wine">
+                    Open link
+                  </h4>
+                  <span className="px-3 py-0.5 rounded-full bg-wine/10 text-wine text-[13px] font-bold">
+                    1 open link
+                  </span>
+                </div>
+                <p className="font-body text-[15px] text-charcoal/75 leading-relaxed">
+                  One link for your entire guest list. Drop it into family groups and let everyone in.
+                </p>
+              </div>
             </div>
-            <p className="text-xs sm:text-sm text-charcoal/75 mt-2 font-medium">
-              Need more named links? Add them any time from your dashboard.
+
+            {/* Right Card: Named links with count badge */}
+            <div className="bg-[#FAF7F2] rounded-3xl p-6 sm:p-7 border border-champagne/80 shadow-xs flex items-start gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-gold/20 border border-gold/40 text-wine flex items-center justify-center shrink-0">
+                <Users size={22} className="text-[#8C3A50]" />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <h4 className="font-heading text-xl font-bold text-wine">
+                    Named links
+                  </h4>
+                  <span className="px-3 py-0.5 rounded-full bg-gold/25 text-[#512D38] border border-gold/40 text-[13px] font-bold">
+                    {siteConfig.namedLinksIncluded} named links
+                  </span>
+                </div>
+                <p className="font-body text-[15px] text-charcoal/75 leading-relaxed">
+                  A link made for one household. When it opens, the envelope greets them by name.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <p className="font-body text-[15px] text-charcoal/80 font-medium">
+              Need more named links? Message us on WhatsApp.
             </p>
           </div>
 
-          {/* Bottom Updates Block */}
-          <div className="bg-gradient-to-br from-[#512D38] via-[#6B3D4A] to-[#3D1E28] text-white rounded-[28px] p-8 sm:p-12 text-center shadow-2xl relative overflow-hidden border border-[#B69A70]/30">
-            <div className="absolute -top-16 -right-16 w-48 h-48 bg-[#B69A70]/15 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-[#C99191]/15 rounded-full blur-3xl pointer-events-none" />
+          {/* Horizontal 3-Step Timeline for Updates */}
+          <div className="bg-[#FAF7F2] rounded-[32px] p-6 sm:p-10 border border-champagne/80 shadow-xs">
+            <div className="text-center mb-8">
+              <h3 className="font-heading text-2xl sm:text-3xl font-bold text-wine mb-2">
+                Venue changed? Fix it once, everyone sees it.
+              </h3>
+              <p className="font-body text-[15px] sm:text-base text-charcoal/75 max-w-xl mx-auto leading-relaxed">
+                Edit your invitation and every link you've already shared shows the new details. No second round of forwarding.
+              </p>
+            </div>
 
-            <h4 className="font-heading text-2xl sm:text-3xl font-bold mb-3 tracking-tight relative z-10 text-white">
-              Venue changed? Fix it once, everyone sees it.
-            </h4>
-            <p className="font-body text-[15px] sm:text-base text-white/90 max-w-xl mx-auto leading-relaxed mb-6 relative z-10">
-              Edit your invitation and every link you've already shared shows the new details. No second round of forwarding.
-            </p>
-            <p className="font-body text-[15px] sm:text-base text-white/95 relative z-10">
-              <span className="text-[#B69A70] font-bold text-2xl sm:text-3xl mx-1 font-heading">
-                {siteConfig.liveUpdatesIncluded}
-              </span>{' '}
-              live updates, for{' '}
-              <span className="text-[#B69A70] font-bold text-2xl sm:text-3xl mx-1 font-heading">
-                {siteConfig.updateWindowMonths}
-              </span>{' '}
-              months after you publish.
-            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+              {/* Step 1: Publish */}
+              <div className="bg-white rounded-2xl p-5 border border-champagne/60 text-center flex flex-col items-center shadow-2xs">
+                <div className="w-10 h-10 rounded-full bg-wine text-white flex items-center justify-center font-heading font-bold text-base mb-3 shadow-xs">
+                  1
+                </div>
+                <h4 className="font-heading text-lg font-bold text-wine mb-1">
+                  Publish
+                </h4>
+                <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75">
+                  Your digital card goes live with dates, maps, and music.
+                </p>
+              </div>
+
+              {/* Step 2: Edit anytime */}
+              <div className="bg-white rounded-2xl p-5 border border-champagne/60 text-center flex flex-col items-center shadow-2xs">
+                <div className="w-10 h-10 rounded-full bg-wine text-white flex items-center justify-center font-heading font-bold text-base mb-3 shadow-xs">
+                  2
+                </div>
+                <h4 className="font-heading text-lg font-bold text-wine mb-1">
+                  Edit anytime
+                </h4>
+                <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75">
+                  Change venue locations, timings, or couple notes whenever needed.
+                </p>
+              </div>
+
+              {/* Step 3: Guests see the change */}
+              <div className="bg-white rounded-2xl p-5 border border-champagne/60 text-center flex flex-col items-center shadow-2xs">
+                <div className="w-10 h-10 rounded-full bg-wine text-white flex items-center justify-center font-heading font-bold text-base mb-3 shadow-xs">
+                  3
+                </div>
+                <h4 className="font-heading text-lg font-bold text-wine mb-1">
+                  Guests see the change
+                </h4>
+                <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75">
+                  Every link you already sent displays the updated details instantly.
+                </p>
+              </div>
+            </div>
+
+            {/* Small chips below */}
+            <div className="mt-8 pt-6 border-t border-champagne/60 flex flex-wrap items-center justify-center gap-3">
+              <span className="px-4 py-1.5 rounded-full bg-white border border-champagne/80 text-wine font-body text-[13px] font-bold shadow-2xs">
+                ✦ {siteConfig.liveUpdatesIncluded} live updates
+              </span>
+              <span className="px-4 py-1.5 rounded-full bg-white border border-champagne/80 text-wine font-body text-[13px] font-bold shadow-2xs">
+                ✦ For {siteConfig.updateWindowMonths} months after you publish
+              </span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ════════════════ PRICING SECTION (3 Plans - Phase 5 Requirement 1) ════════════════ */}
+      {/* ════════════════ 5. PRICING SECTION (3 Plans - Phase 5 Requirement 1) ════════════════ */}
       <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto scroll-mt-20">
         <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-wine/10 text-wine text-xs font-semibold tracking-wider uppercase mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-wine/10 text-wine text-[13px] font-semibold tracking-wider uppercase mb-2">
             <Sparkles size={13} className="text-gold" />
             <span>Transparent Pricing</span>
           </div>
@@ -669,15 +885,15 @@ export default function Home() {
                 <span className="font-heading text-3xl sm:text-4xl font-bold text-wine">
                   {siteConfig.pricing.starter.priceDisplay}
                 </span>
-                <span className="text-xs text-charcoal/60 ml-1.5">one-time payment</span>
+                <span className="text-[13px] text-charcoal/60 ml-1.5">one-time payment</span>
               </div>
-              <p className="text-xs sm:text-sm text-charcoal/70 mb-6 leading-relaxed">
+              <p className="text-[14px] sm:text-[15px] text-charcoal/70 mb-6 leading-relaxed">
                 {siteConfig.pricing.starter.tagline}
               </p>
               <div className="w-full h-px bg-champagne/60 mb-6" />
               <ul className="space-y-3 mb-8">
                 {siteConfig.pricing.starter.features.map((feat, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-charcoal/80">
+                  <li key={i} className="flex items-start gap-2.5 text-[14px] sm:text-[15px] text-charcoal/80">
                     <CheckCircle2 size={16} className="text-gold shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </li>
@@ -707,15 +923,15 @@ export default function Home() {
                 <span className="font-heading text-3xl sm:text-4xl font-bold text-wine">
                   {siteConfig.pricing.signature.priceDisplay}
                 </span>
-                <span className="text-xs text-charcoal/60 ml-1.5">one-time payment</span>
+                <span className="text-[13px] text-charcoal/60 ml-1.5">one-time payment</span>
               </div>
-              <p className="text-xs sm:text-sm text-charcoal/70 mb-6 leading-relaxed">
+              <p className="text-[14px] sm:text-[15px] text-charcoal/70 mb-6 leading-relaxed">
                 {siteConfig.pricing.signature.tagline}
               </p>
               <div className="w-full h-px bg-champagne/60 mb-6" />
               <ul className="space-y-3 mb-8">
                 {siteConfig.pricing.signature.features.map((feat, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-charcoal/90">
+                  <li key={i} className="flex items-start gap-2.5 text-[14px] sm:text-[15px] text-charcoal/90">
                     <CheckCircle2 size={16} className="text-wine shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </li>
@@ -742,15 +958,15 @@ export default function Home() {
                 <span className="font-heading text-3xl sm:text-4xl font-bold text-wine">
                   {siteConfig.pricing.luxury.priceDisplay}
                 </span>
-                <span className="text-xs text-charcoal/60 ml-1.5">one-time payment</span>
+                <span className="text-[13px] text-charcoal/60 ml-1.5">one-time payment</span>
               </div>
-              <p className="text-xs sm:text-sm text-charcoal/70 mb-6 leading-relaxed">
+              <p className="text-[14px] sm:text-[15px] text-charcoal/70 mb-6 leading-relaxed">
                 {siteConfig.pricing.luxury.tagline}
               </p>
               <div className="w-full h-px bg-champagne/60 mb-6" />
               <ul className="space-y-3 mb-8">
                 {siteConfig.pricing.luxury.features.map((feat, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-charcoal/80">
+                  <li key={i} className="flex items-start gap-2.5 text-[14px] sm:text-[15px] text-charcoal/80">
                     <CheckCircle2 size={16} className="text-gold shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </li>
@@ -767,128 +983,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ════════════════ 4. FEATURES SECTION (6 Cards, 3x2 Grid) ════════════════ */}
-      <section id="features" className="bg-[#512D38] text-white py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-[#B69A70]/15 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-[#C99191]/20 rounded-full blur-[140px] pointer-events-none" />
+      {/* ════════════════ 6. FAQS SECTION (Always in DOM for SEO) ════════════════ */}
+      <section id="faqs" className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto scroll-mt-20">
+        <div className="text-center mb-12">
+          <h2 className="inline-block px-8 py-2.5 rounded-full bg-wine/10 text-wine font-heading text-2xl sm:text-3xl font-bold">
+            Frequently Asked Questions
+          </h2>
+        </div>
 
-        <div className="max-w-5xl mx-auto relative z-10">
-          <div className="text-center mb-16 relative">
-            <span className="inline-block px-10 py-3 rounded-2xl bg-white/10 backdrop-blur-md text-white font-heading text-3xl sm:text-4xl font-bold tracking-tight shadow-inner border border-white/15">
-              Features
-            </span>
-          </div>
-
-          {/* 3x2 Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* 1. One-tap Maps */}
-            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
-                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
-                  <MapPin size={22} className="text-[#512D38] stroke-[2.2]" />
-                </div>
-              </div>
-              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
-                One-tap Maps
-              </h4>
-              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
-                The venue opens straight in the guest's maps app.
-              </p>
-            </div>
-
-            {/* 2. RSVP inbox */}
-            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300 relative">
-              {!siteConfig.features.rsvpInboxLive && (
-                <div className="absolute top-4 right-4 bg-gold/20 text-[#512D38] border border-gold/40 text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full">
-                  Coming soon
-                </div>
-              )}
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
-                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
-                  <Users size={22} className="text-[#512D38] stroke-[2.2]" />
-                </div>
-              </div>
-              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
-                RSVP inbox
-              </h4>
-              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
-                Replies land in one dashboard.
-              </p>
-            </div>
-
-            {/* 3. Save the date */}
-            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
-                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
-                  <Calendar size={22} className="text-[#512D38] stroke-[2.2]" />
-                </div>
-              </div>
-              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
-                Save the date
-              </h4>
-              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
-                Adds the wedding to Google, Apple or Outlook calendars.
-              </p>
-            </div>
-
-            {/* 4. Edit after sharing */}
-            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
-                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
-                  <Edit3 size={22} className="text-[#512D38] stroke-[2.2]" />
-                </div>
-              </div>
-              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
-                Edit after sharing
-              </h4>
-              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
-                Update details without resending the link.
-              </p>
-            </div>
-
-            {/* 5. Diya reveal & music */}
-            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
-                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
-                  <Flame size={22} className="text-[#512D38] stroke-[2.2]" />
-                </div>
-              </div>
-              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
-                Diya reveal &amp; music
-              </h4>
-              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
-                A tap-to-light diya reveals the date, with wedding music.
-              </p>
-            </div>
-
-            {/* 6. Named envelopes */}
-            <div className="bg-[#FAF7F2] rounded-[28px] p-8 text-charcoal shadow-2xl border border-champagne text-center flex flex-col items-center hover:-translate-y-1.5 transition-all duration-300">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#B69A70]/20 to-[#512D38]/10 flex items-center justify-center mb-5">
-                <div className="w-11 h-11 rounded-xl border-2 border-[#B69A70] flex items-center justify-center shadow-[0_0_15px_rgba(182,154,112,0.3)] bg-white">
-                  <Mail size={22} className="text-[#512D38] stroke-[2.2]" />
-                </div>
-              </div>
-              <h4 className="font-heading text-lg sm:text-xl font-bold text-wine mb-2">
-                Named envelopes
-              </h4>
-              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
-                Each family opens an envelope with their own name on it.
-              </p>
-            </div>
-          </div>
+        <div className="space-y-3">
+          {faqs.map((faq, index) => (
+            <FAQAccordionItem
+              key={index}
+              index={index}
+              question={faq.q}
+              answer={faq.a}
+              isOpen={openFaqIndex === index}
+              onToggle={() => setOpenFaqIndex(openFaqIndex === index ? -1 : index)}
+            />
+          ))}
         </div>
       </section>
 
-      {/* ════════════════ 5. ABOUT SECTION ════════════════ */}
-      <section id="about" className="bg-[#3D0A17] text-white py-20 px-4 sm:px-6 lg:px-8 border-t border-white/10 relative overflow-hidden">
+      {/* ════════════════ 7. ABOUT SECTION ════════════════ */}
+      <section id="about" className="bg-[#3D0A17] text-white py-20 px-4 sm:px-6 lg:px-8 border-t border-white/10 relative overflow-hidden scroll-mt-20">
         <div className="absolute top-1/2 left-0 w-80 h-80 bg-gold/10 rounded-full blur-[100px] pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-80 h-80 bg-wine/30 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="container-custom mx-auto max-w-5xl relative z-10">
           <div className="text-center mb-12">
-            <span className="inline-block px-8 py-2 rounded-full bg-white/10 text-white font-heading text-2xl sm:text-3xl font-bold border border-white/15">
+            <h2 className="inline-block px-8 py-2 rounded-full bg-white/10 text-white font-heading text-2xl sm:text-3xl font-bold border border-white/15">
               Why we built Aahvaaan
-            </span>
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 items-center">
@@ -909,20 +1035,16 @@ export default function Home() {
 
             {/* Right Column: Original Story Copy */}
             <div className="md:col-span-7 text-center md:text-left space-y-4">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold/15 text-gold-light text-xs font-semibold uppercase tracking-wider">
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-gold/15 text-gold-light text-[13px] font-semibold uppercase tracking-wider">
                 <Sparkles size={12} className="text-gold" />
-                <span>Our Heritage &amp; Purpose</span>
+                <span>Our story</span>
               </div>
-
-              <h3 className="font-heading text-2xl sm:text-3xl lg:text-4xl font-bold text-gold-light leading-tight">
-                Why we built Aahvaaan
-              </h3>
 
               <p className="font-body text-[15px] sm:text-base text-white/90 leading-relaxed">
                 Wedding cards are a beautiful tradition, but sending them to hundreds of people is not. Aahvaaan keeps the warmth of a hand-delivered card and removes the chaos: one link, a personal touch for the people who matter most, and one place to see who is coming.
               </p>
 
-              <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs sm:text-sm text-gold-light">
+              <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4 text-[13px] sm:text-sm text-gold-light">
                 <div className="flex items-center gap-1.5">
                   <Sparkles size={14} className="text-gold" />
                   <span>Made for Indian Weddings</span>
@@ -938,29 +1060,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ════════════════ 6. FAQS SECTION (Always in DOM for SEO) ════════════════ */}
-      <section id="faqs" className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto scroll-mt-20">
-        <div className="text-center mb-12">
-          <span className="inline-block px-8 py-2.5 rounded-full bg-wine/10 text-wine font-heading text-2xl sm:text-3xl font-bold">
-            Frequently Asked Questions
-          </span>
-        </div>
-
-        <div className="space-y-3">
-          {faqs.map((faq, index) => (
-            <FAQAccordionItem
-              key={index}
-              index={index}
-              question={faq.q}
-              answer={faq.a}
-              isOpen={openFaqIndex === index}
-              onToggle={() => setOpenFaqIndex(openFaqIndex === index ? -1 : index)}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* ════════════════ 7. CONTACT SECTION ════════════════ */}
+      {/* ════════════════ 8. CONTACT SECTION ════════════════ */}
       <section id="contact" className="py-16 pb-28 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto scroll-mt-20">
         <div className="text-center mb-10">
           <h2 className="font-heading text-3xl sm:text-4xl font-bold text-wine tracking-tight mb-2">
@@ -976,7 +1076,7 @@ export default function Home() {
             <div className="py-8 text-center text-emerald-800">
               <CheckCircle2 size={36} className="text-emerald-600 mx-auto mb-2" />
               <h4 className="font-heading text-lg font-bold">Message Received</h4>
-              <p className="text-sm text-charcoal/70 mt-1">
+              <p className="text-[14px] sm:text-[15px] text-charcoal/70 mt-1">
                 Thank you for sharing your details. We will reply within a day.
               </p>
             </div>
@@ -989,7 +1089,7 @@ export default function Home() {
               )}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs uppercase font-bold tracking-wider text-wine mb-1.5">
+                  <label className="block text-[13px] uppercase font-bold tracking-wider text-wine mb-1.5">
                     YOUR NAME
                   </label>
                   <input
@@ -1003,7 +1103,7 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <label className="block text-xs uppercase font-bold tracking-wider text-wine mb-1.5">
+                  <label className="block text-[13px] uppercase font-bold tracking-wider text-wine mb-1.5">
                     EMAIL
                   </label>
                   <input
@@ -1019,7 +1119,7 @@ export default function Home() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs uppercase font-bold tracking-wider text-wine mb-1.5">
+                  <label className="block text-[13px] uppercase font-bold tracking-wider text-wine mb-1.5">
                     CITY
                   </label>
                   <input
@@ -1033,7 +1133,7 @@ export default function Home() {
                 </div>
 
                 <div>
-                  <label className="block text-xs uppercase font-bold tracking-wider text-wine mb-1.5">
+                  <label className="block text-[13px] uppercase font-bold tracking-wider text-wine mb-1.5">
                     WEDDING DATE (OR MONTH)
                   </label>
                   <input
@@ -1048,7 +1148,7 @@ export default function Home() {
               </div>
 
               <div>
-                <label className="block text-xs uppercase font-bold tracking-wider text-wine mb-1.5">
+                <label className="block text-[13px] uppercase font-bold tracking-wider text-wine mb-1.5">
                   MESSAGE (OPTIONAL)
                 </label>
                 <textarea
@@ -1073,19 +1173,32 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── Sticky Bottom Mobile CTA (Phase 3 Requirement 7) ─── */}
+      {/* ─── Sticky Bottom Mobile CTA (Phase 3 + Cleanup Requirement B.5) ─── */}
       <div className="fixed bottom-0 inset-x-0 z-40 p-3 bg-white/95 backdrop-blur-md border-t border-champagne/80 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] flex items-center justify-between gap-3 md:hidden">
         <div className="flex flex-col pl-1">
           <span className="font-heading text-xs font-bold text-wine leading-tight">Mor Pankh · № 01</span>
           <span className="text-[11px] text-charcoal/60 leading-none">Royal interactive invitation</span>
         </div>
-        <Link
-          to="/templates/mor-pankh"
-          className="min-h-[44px] px-5 py-2.5 rounded-full bg-gradient-to-r from-wine to-[#8C3A50] hover:brightness-110 active:scale-95 text-white font-body font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md border border-[#B69A70]/50"
-        >
-          <span>Preview Mor Pankh</span>
-          <ChevronRight size={14} className="text-gold-light" />
-        </Link>
+        <div className="flex items-center gap-2">
+          <a
+            href={`https://wa.me/${siteConfig.whatsappNumber}?text=${encodeURIComponent("Hi, I'd like to know more about Aahvaaan")}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Chat on WhatsApp"
+            className="min-h-[44px] min-w-[44px] px-3 rounded-full bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white flex items-center justify-center shadow-md transition-all cursor-pointer"
+          >
+            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.698.077-2.072-.489-1.503-.618-2.457-2.148-2.532-2.247-.075-.1-1.008-1.341-1.008-2.557 0-1.216.638-1.815.864-2.062.226-.247.494-.309.658-.309.165 0 .33.002.474.009.153.007.357-.058.558.423.208.498.71 1.733.772 1.859.062.125.103.272.021.436-.083.164-.124.267-.247.411-.124.144-.26.321-.372.431-.124.123-.253.257-.109.504.144.247.64 1.056 1.372 1.708.943.839 1.739 1.098 1.986 1.221.247.124.391.103.535-.062.144-.165.618-.72.783-.967.165-.247.33-.206.556-.124.226.083 1.44.679 1.687.803.247.123.412.185.474.288.062.103.062.6-.082 1.005z"/>
+            </svg>
+          </a>
+          <Link
+            to="/templates/mor-pankh"
+            className="min-h-[44px] px-5 py-2.5 rounded-full bg-gradient-to-r from-wine via-[#6B3D4A] to-[#8C3A50] hover:brightness-110 active:scale-95 text-white font-body font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md border border-[#B69A70]/50"
+          >
+            <span>Preview Mor Pankh</span>
+            <ChevronRight size={14} className="text-gold-light" />
+          </Link>
+        </div>
       </div>
     </div>
   );

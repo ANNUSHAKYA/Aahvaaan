@@ -13,7 +13,13 @@ export interface PlanRules {
 }
 
 export interface FeatureFlags {
-  rsvpInboxLive: boolean; // false = "Coming soon"
+  liveUpdates: boolean;
+  calendar: boolean;
+  maps: boolean;
+  music: boolean;
+  rsvpInbox: boolean;
+  dashboard: boolean;
+  rsvpInboxLive?: boolean;
 }
 
 export interface PricingPlan {
@@ -75,6 +81,12 @@ export const siteConfig: SiteConfig = {
 
   // Feature Flags
   features: {
+    liveUpdates: true,
+    calendar: true,
+    maps: true,
+    music: true,
+    rsvpInbox: false, // Default false -> "Coming soon" badge
+    dashboard: false, // Default false -> "Coming soon"
     rsvpInboxLive: false, // Labelled "Coming soon"
   },
 

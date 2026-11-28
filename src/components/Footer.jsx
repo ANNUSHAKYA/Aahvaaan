@@ -83,11 +83,6 @@ export default function Footer() {
                   FAQs
                 </a>
               </li>
-              <li>
-                <Link to="/templates" className="hover:text-gold transition-colors">
-                  All templates
-                </Link>
-              </li>
             </ul>
           </div>
 

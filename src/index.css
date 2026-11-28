@@ -48,6 +48,27 @@
   50% { transform: translateY(-14px) scale(1.5); }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .animate-float-card-1 {
+    animation: floatCard1 4.5s ease-in-out infinite;
+    animation-fill-mode: both;
+  }
+  .animate-float-card-2 {
+    animation: floatCard2 5s ease-in-out infinite;
+    animation-fill-mode: both;
+  }
+}
+
+@keyframes floatCard1 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes floatCard2 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
 @keyframes note {
   from { transform: perspective(900px) rotateX(-12deg) translateY(12px); }
   to { transform: perspective(900px) rotateX(0) translateY(0); }
