@@ -80,7 +80,7 @@ export default function Pricing() {
           <SectionHeading
             subtitle="Transparent Pricing"
             title="Choose Your Perfect Package"
-            description="Every package includes a fully personalised, mobile-friendly digital wedding invitation based on one of our 4 signature collections. Clear starting prices with no hidden charges."
+            description="Every package includes an interactive, mobile-friendly digital wedding invitation crafted with authentic heritage motifs. Clear one-time prices with no hidden charges."
           />
 
           {/* Pricing Cards */}
@@ -92,7 +92,7 @@ export default function Pricing() {
 
           <div className="mt-8 text-center">
             <p className="font-body text-xs text-charcoal/60">
-              💡 Looking for a specific design? You can also <Link to="/templates" className="text-wine font-semibold underline">explore the 4 Signature Templates</Link> and click "Buy This Template" to have your design pre-selected!
+              💡 Looking for a specific design? You can also <Link to="/templates" className="text-wine font-semibold underline">explore our royal templates</Link> and click "Buy This Template" to have your design pre-selected!
             </p>
           </div>
         </div>

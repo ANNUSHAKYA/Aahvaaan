@@ -308,6 +308,61 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ════════════════ HOW IT WORKS STRIP (3 Steps - Phase 5 Requirement 4) ════════════════ */}
+      <section id="how-it-works" className="py-14 sm:py-16 bg-[#FAF4EE] border-y border-champagne/60 relative scroll-mt-20">
+        <div className="container-custom mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+          <div className="text-center mb-10">
+            <span className="text-[11px] uppercase font-bold tracking-[0.25em] text-gold block mb-1">
+              Simple 3-Step Process
+            </span>
+            <h2 className="font-heading text-2xl sm:text-3xl font-bold text-wine tracking-tight">
+              How it works
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 relative">
+            {/* Step 1: Choose a design */}
+            <div className="bg-white rounded-3xl p-6 sm:p-7 border border-champagne/70 shadow-xs flex flex-col items-center text-center relative group hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 rounded-2xl bg-wine/10 border border-wine/20 text-wine flex items-center justify-center font-heading text-xl font-bold mb-4 group-hover:scale-105 transition-transform">
+                1
+              </div>
+              <h3 className="font-heading text-xl font-bold text-wine mb-2">
+                Choose a design
+              </h3>
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
+                Pick a royal invitation theme crafted with diya reveals, palace arches, and traditional Indian wedding aesthetics.
+              </p>
+            </div>
+
+            {/* Step 2: Add your details */}
+            <div className="bg-white rounded-3xl p-6 sm:p-7 border border-champagne/70 shadow-xs flex flex-col items-center text-center relative group hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 rounded-2xl bg-wine/10 border border-wine/20 text-wine flex items-center justify-center font-heading text-xl font-bold mb-4 group-hover:scale-105 transition-transform">
+                2
+              </div>
+              <h3 className="font-heading text-xl font-bold text-wine mb-2">
+                Add your details
+              </h3>
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
+                Add ceremony dates, Google Maps venue navigation, couple love notes, and family member names in a few minutes.
+              </p>
+            </div>
+
+            {/* Step 3: Share your link */}
+            <div className="bg-white rounded-3xl p-6 sm:p-7 border border-champagne/70 shadow-xs flex flex-col items-center text-center relative group hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 rounded-2xl bg-wine/10 border border-wine/20 text-wine flex items-center justify-center font-heading text-xl font-bold mb-4 group-hover:scale-105 transition-transform">
+                3
+              </div>
+              <h3 className="font-heading text-xl font-bold text-wine mb-2">
+                Share your link
+              </h3>
+              <p className="font-body text-[14px] sm:text-[15px] text-charcoal/75 leading-relaxed">
+                Drop one open link into WhatsApp family groups, or send personalized envelopes that greet each household by name.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ════════════════ 2. FEATURED DESIGN ════════════════ */}
       <section id="templates" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
@@ -582,6 +637,132 @@ export default function Home() {
               </span>{' '}
               months after you publish.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ════════════════ PRICING SECTION (3 Plans - Phase 5 Requirement 1) ════════════════ */}
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto scroll-mt-20">
+        <div className="text-center mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-wine/10 text-wine text-xs font-semibold tracking-wider uppercase mb-2">
+            <Sparkles size={13} className="text-gold" />
+            <span>Transparent Pricing</span>
+          </div>
+          <h2 className="font-heading text-3xl sm:text-4xl font-bold text-charcoal tracking-tight mb-3">
+            Choose your invitation package
+          </h2>
+          <p className="font-body text-[15px] sm:text-base text-charcoal/75 max-w-xl mx-auto">
+            One single payment. No recurring monthly subscriptions or hidden forwarding fees.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto">
+          {/* Plan 1: Starter */}
+          <div className="bg-white rounded-3xl p-7 sm:p-8 border border-champagne/70 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="font-heading text-xl font-bold text-wine">
+                  {siteConfig.pricing.starter.name}
+                </span>
+              </div>
+              <div className="mb-4">
+                <span className="font-heading text-3xl sm:text-4xl font-bold text-wine">
+                  {siteConfig.pricing.starter.priceDisplay}
+                </span>
+                <span className="text-xs text-charcoal/60 ml-1.5">one-time payment</span>
+              </div>
+              <p className="text-xs sm:text-sm text-charcoal/70 mb-6 leading-relaxed">
+                {siteConfig.pricing.starter.tagline}
+              </p>
+              <div className="w-full h-px bg-champagne/60 mb-6" />
+              <ul className="space-y-3 mb-8">
+                {siteConfig.pricing.starter.features.map((feat, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-charcoal/80">
+                    <CheckCircle2 size={16} className="text-gold shrink-0 mt-0.5" />
+                    <span>{feat}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <Link
+              to="/buy/mor-pankh?plan=starter"
+              className="w-full py-3 min-h-[44px] rounded-full border border-wine text-wine hover:bg-wine hover:text-white font-body font-semibold text-xs uppercase tracking-wider text-center transition-all flex items-center justify-center cursor-pointer"
+            >
+              <span>{siteConfig.pricing.starter.ctaText}</span>
+            </Link>
+          </div>
+
+          {/* Plan 2: Signature (Most Popular) */}
+          <div className="bg-gradient-to-b from-[#FAF7F2] to-white rounded-3xl p-7 sm:p-8 border-2 border-[#B69A70] shadow-xl relative flex flex-col justify-between lg:-translate-y-2">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-wine text-gold-light border border-gold/60 text-[11px] font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-md whitespace-nowrap">
+              Most Popular
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-4 pt-1">
+                <span className="font-heading text-2xl font-bold text-wine">
+                  {siteConfig.pricing.signature.name}
+                </span>
+              </div>
+              <div className="mb-4">
+                <span className="font-heading text-3xl sm:text-4xl font-bold text-wine">
+                  {siteConfig.pricing.signature.priceDisplay}
+                </span>
+                <span className="text-xs text-charcoal/60 ml-1.5">one-time payment</span>
+              </div>
+              <p className="text-xs sm:text-sm text-charcoal/70 mb-6 leading-relaxed">
+                {siteConfig.pricing.signature.tagline}
+              </p>
+              <div className="w-full h-px bg-champagne/60 mb-6" />
+              <ul className="space-y-3 mb-8">
+                {siteConfig.pricing.signature.features.map((feat, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-charcoal/90">
+                    <CheckCircle2 size={16} className="text-wine shrink-0 mt-0.5" />
+                    <span>{feat}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <Link
+              to="/buy/mor-pankh?plan=signature"
+              className="w-full py-3.5 min-h-[44px] rounded-full bg-gradient-to-r from-wine to-[#8C3A50] hover:brightness-110 active:scale-95 text-white font-body font-semibold text-xs uppercase tracking-wider text-center shadow-md border border-[#B69A70]/50 transition-all flex items-center justify-center cursor-pointer"
+            >
+              <span>{siteConfig.pricing.signature.ctaText}</span>
+            </Link>
+          </div>
+
+          {/* Plan 3: Luxury */}
+          <div className="bg-white rounded-3xl p-7 sm:p-8 border border-champagne/70 shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="font-heading text-xl font-bold text-wine">
+                  {siteConfig.pricing.luxury.name}
+                </span>
+              </div>
+              <div className="mb-4">
+                <span className="font-heading text-3xl sm:text-4xl font-bold text-wine">
+                  {siteConfig.pricing.luxury.priceDisplay}
+                </span>
+                <span className="text-xs text-charcoal/60 ml-1.5">one-time payment</span>
+              </div>
+              <p className="text-xs sm:text-sm text-charcoal/70 mb-6 leading-relaxed">
+                {siteConfig.pricing.luxury.tagline}
+              </p>
+              <div className="w-full h-px bg-champagne/60 mb-6" />
+              <ul className="space-y-3 mb-8">
+                {siteConfig.pricing.luxury.features.map((feat, i) => (
+                  <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-charcoal/80">
+                    <CheckCircle2 size={16} className="text-gold shrink-0 mt-0.5" />
+                    <span>{feat}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <Link
+              to="/buy/mor-pankh?plan=luxury"
+              className="w-full py-3 min-h-[44px] rounded-full border border-wine text-wine hover:bg-wine hover:text-white font-body font-semibold text-xs uppercase tracking-wider text-center transition-all flex items-center justify-center cursor-pointer"
+            >
+              <span>{siteConfig.pricing.luxury.ctaText}</span>
+            </Link>
           </div>
         </div>
       </section>

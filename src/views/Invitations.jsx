@@ -1,5 +1,6 @@
 import { Link } from '../lib/router-compat';
-import { ArrowLeft, ChevronRight } from 'lucide-react';
+import Image from 'next/image';
+import { ArrowLeft, ChevronRight, Sparkles, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import templates from '../data/templates';
 import SEO from '../components/SEO';
@@ -35,7 +36,8 @@ export default function Invitations() {
         </div>
 
         {/* Template Catalog Grid */}
-        <div className={templates.length === 1 ? 'max-w-md mx-auto' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7'}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+          {/* Active Template: Mor Pankh */}
           {templates.map((template, index) => (
             <motion.div
               key={template.id + index}
@@ -50,17 +52,23 @@ export default function Invitations() {
                 <div>
                   {/* Card Image Preview with Curved Corners */}
                   <div className="relative aspect-[4/3] bg-[#F7F5FA] overflow-hidden">
-                    <img
-                      src={template.image}
-                      alt={template.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-102"
-                      loading="lazy"
+                    <Image
+                      src={template.image || '/templates/mor-pankh.webp'}
+                      alt={`${template.name} digital wedding invitation`}
+                      width={600}
+                      height={450}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
+                    <div className="absolute top-3.5 left-3.5 bg-white/95 backdrop-blur-md px-3 py-1 rounded-full shadow-xs border border-champagne/60">
+                      <span className="font-heading text-xs font-semibold text-wine tracking-wide">
+                        {template.collection}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Card Body */}
                   <div className="p-6">
-                    <h3 className="font-heading text-lg sm:text-xl font-bold text-gray-900 group-hover:text-wine transition-colors mb-2">
+                    <h3 className="font-heading text-xl font-bold text-gray-900 group-hover:text-wine transition-colors mb-2">
                       {template.name}
                     </h3>
                     <p className="font-body text-xs sm:text-sm text-gray-500 line-clamp-2 leading-relaxed">
@@ -72,13 +80,8 @@ export default function Invitations() {
                 {/* Card Footer */}
                 <div className="px-6 pb-6 pt-0 flex items-end justify-between">
                   <div>
-                    {template.isNew && (
-                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#E9D8CC] text-[#512D38] border border-[#B69A70]/30 mb-1">
-                        New
-                      </span>
-                    )}
                     <span className="font-bold text-base sm:text-lg text-wine block">
-                      {template.priceDisplay || '₹3,499'}
+                      {template.priceDisplay || '₹1,749'}
                     </span>
                   </div>
 
@@ -89,6 +92,43 @@ export default function Invitations() {
               </Link>
             </motion.div>
           ))}
+
+          {/* Placeholder Cards Marked "More designs coming" (Phase 5 Requirement 1) */}
+          <div className="bg-white/60 rounded-3xl border border-dashed border-champagne p-6 flex flex-col justify-between items-center text-center min-h-[360px] relative overflow-hidden group">
+            <div className="my-auto space-y-3">
+              <div className="w-14 h-14 rounded-full bg-ivory border border-gold/40 flex items-center justify-center mx-auto text-gold shadow-xs">
+                <Sparkles size={22} className="animate-pulse" />
+              </div>
+              <h3 className="font-heading text-xl font-bold text-charcoal/80">
+                Shahi Rajwada
+              </h3>
+              <p className="font-body text-xs text-charcoal/60 max-w-xs mx-auto">
+                Inspired by Jaipur royal palaces with gilded arches and heritage Shehnai tunes.
+              </p>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold/15 border border-gold/40 text-wine text-[11px] font-semibold uppercase tracking-wider">
+                <Clock size={12} className="text-gold" />
+                <span>More designs coming</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white/60 rounded-3xl border border-dashed border-champagne p-6 flex flex-col justify-between items-center text-center min-h-[360px] relative overflow-hidden group">
+            <div className="my-auto space-y-3">
+              <div className="w-14 h-14 rounded-full bg-ivory border border-gold/40 flex items-center justify-center mx-auto text-gold shadow-xs">
+                <Sparkles size={22} className="animate-pulse" />
+              </div>
+              <h3 className="font-heading text-xl font-bold text-charcoal/80">
+                Gulab Bagh
+              </h3>
+              <p className="font-body text-xs text-charcoal/60 max-w-xs mx-auto">
+                Soft blush floras, pastel watercolors, and intimate daytime garden ceremony aesthetics.
+              </p>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold/15 border border-gold/40 text-wine text-[11px] font-semibold uppercase tracking-wider">
+                <Clock size={12} className="text-gold" />
+                <span>More designs coming</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

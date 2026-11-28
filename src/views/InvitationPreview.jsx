@@ -23,7 +23,11 @@ export default function InvitationPreview() {
 
   const [envelopeOpen, setEnvelopeOpen] = useState(false);
   const [guestName, setGuestName] = useState('Mr. Joshi and Family');
-  const [dynamicContent, setDynamicContent] = useState(template.defaultData || template.sampleData);
+  const [dynamicContent, setDynamicContent] = useState(() => ({
+    ...(template.defaultData || template.sampleData || {}),
+    brideName: template.defaultData?.brideName || template.sampleData?.brideName || 'Meera',
+    groomName: template.defaultData?.groomName || template.sampleData?.groomName || 'Aarav',
+  }));
   const [showBuyModal, setShowBuyModal] = useState(false);
   const [guestAddon, setGuestAddon] = useState('none');
 
@@ -90,6 +94,74 @@ export default function InvitationPreview() {
               <Edit3 size={13} className="text-[#B69A70]" />
               <span>Try editing</span>
             </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* ─── "Preview with your names" Live Form (Phase 5 Requirement 3) ─── */}
+      <div className="bg-[#FAF7F2] border-b border-[#E9D8CC] py-3 px-4 sm:px-6 relative z-30 shadow-xs">
+        <div className="container-custom mx-auto max-w-4xl">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#B69A70] animate-ping" />
+              <span className="font-heading text-sm sm:text-base font-bold text-wine tracking-wide">
+                Preview with your names:
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 flex-1 max-w-2xl">
+              <div>
+                <label className="sr-only">Bride's Name</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={dynamicContent.brideName || ''}
+                    onChange={(e) =>
+                      setDynamicContent((prev) => ({ ...prev, brideName: e.target.value }))
+                    }
+                    placeholder="Bride's Name (e.g. Meera)"
+                    className="w-full px-3.5 py-2 min-h-[44px] rounded-xl border border-champagne bg-white text-xs text-charcoal font-medium focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] uppercase font-bold text-gold pointer-events-none">
+                    Bride
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <label className="sr-only">Groom's Name</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={dynamicContent.groomName || ''}
+                    onChange={(e) =>
+                      setDynamicContent((prev) => ({ ...prev, groomName: e.target.value }))
+                    }
+                    placeholder="Groom's Name (e.g. Aarav)"
+                    className="w-full px-3.5 py-2 min-h-[44px] rounded-xl border border-champagne bg-white text-xs text-charcoal font-medium focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] uppercase font-bold text-gold pointer-events-none">
+                    Groom
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <label className="sr-only">Guest / Family Name</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={guestName}
+                    onChange={(e) => setGuestName(e.target.value)}
+                    placeholder="Guest Name (e.g. Sharma Family)"
+                    className="w-full px-3.5 py-2 min-h-[44px] rounded-xl border border-champagne bg-white text-xs text-charcoal font-medium focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-all"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] uppercase font-bold text-gold pointer-events-none">
+                    Guest
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
