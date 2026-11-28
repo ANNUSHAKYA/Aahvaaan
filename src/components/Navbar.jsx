@@ -165,7 +165,7 @@ export default function Navbar() {
                   to="/dashboard"
                   className="px-4 sm:px-5 py-2 rounded-full bg-wine hover:bg-gold text-white font-body text-xs font-semibold shadow-xs transition-colors shrink-0"
                 >
-                  My invitations
+                  Dashboard
                 </Link>
                 <Link
                   to="/profile"
@@ -251,7 +251,7 @@ export default function Navbar() {
                       onClick={() => setIsOpen(false)}
                       className="w-full py-2.5 text-center rounded-full bg-wine text-white font-body text-xs font-semibold shadow-xs"
                     >
-                      My invitations
+                      Dashboard
                     </Link>
                     <Link
                       to="/profile"
@@ -267,7 +267,7 @@ export default function Navbar() {
                     onClick={() => setIsOpen(false)}
                     className="w-full py-2.5 text-center rounded-full bg-wine text-white font-body text-xs font-semibold shadow-xs"
                   >
-                    Sign in / Register
+                    Sign in
                   </Link>
                 )}
               </div>

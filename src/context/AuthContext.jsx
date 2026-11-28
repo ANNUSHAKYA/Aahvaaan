@@ -106,6 +106,7 @@ export function AuthProvider({ children }) {
       password,
       options: {
         data: {
+          full_name: name || 'Wedding Host',
           name: name || 'Wedding Host',
           phone: phone || '',
         },
@@ -119,9 +120,8 @@ export function AuthProvider({ children }) {
       try {
         await supabase.from('profiles').upsert({
           id: data.user.id,
-          name: name || 'Wedding Host',
+          full_name: name || 'Wedding Host',
           phone: phone || '',
-          role: 'host',
         });
         await fetchProfile(data.user.id);
       } catch (e) {
@@ -151,7 +151,7 @@ export function AuthProvider({ children }) {
   };
 
   // 3. Continue with Google OAuth
-  const signInWithGoogle = async () => {
+  const signInWithGoogle = async (next = '/dashboard') => {
     if (!isSupabaseConfigured) {
       throw new Error('Supabase is not configured yet. Please check your .env.');
     }
@@ -159,7 +159,7 @@ export function AuthProvider({ children }) {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/dashboard`,
+        redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
       },
     });
 
@@ -168,7 +168,7 @@ export function AuthProvider({ children }) {
   };
 
   // 3b. Sign in with Email OTP / Magic Link
-  const signInWithOtp = async (email) => {
+  const signInWithOtp = async (email, next = '/dashboard') => {
     if (!isSupabaseConfigured) {
       throw new Error('Supabase is not configured yet. Please check your .env.');
     }
@@ -176,7 +176,7 @@ export function AuthProvider({ children }) {
     const { data, error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/dashboard`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
       },
     });
 
@@ -184,14 +184,14 @@ export function AuthProvider({ children }) {
     return data;
   };
 
-  // 4. Request Password Reset Link via Email OTP
+  // 4. Request Password Reset Link via Email
   const resetPasswordForEmail = async (email) => {
     if (!isSupabaseConfigured) {
       throw new Error('Supabase is not configured yet. Please check your .env.');
     }
 
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
     });
 
     if (error) throw error;

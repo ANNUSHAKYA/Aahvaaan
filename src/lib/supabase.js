@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createBrowserClient } from '@supabase/ssr';
 
 // Static string access so Next.js / Webpack DefinePlugin inlines these into client bundles
 const supabaseUrl =
@@ -18,15 +18,9 @@ export const isSupabaseConfigured = Boolean(
   !supabaseUrl.includes('your-project-ref')
 );
 
-// Create the client if configured, otherwise provide a safe client fallback
+// Create cookie-backed browser client via @supabase/ssr
 export const supabase = isSupabaseConfigured
-  ? createClient(supabaseUrl, supabaseAnonKey, {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true,
-      },
-    })
+  ? createBrowserClient(supabaseUrl, supabaseAnonKey)
   : {
       from: () => ({
         select: () => Promise.resolve({ data: [], error: null }),
@@ -40,7 +34,11 @@ export const supabase = isSupabaseConfigured
       },
       auth: {
         getSession: () => Promise.resolve({ data: { session: null }, error: null }),
+        getUser: () => Promise.resolve({ data: { user: null }, error: null }),
         onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+        signInWithPassword: () => Promise.resolve({ error: new Error('Supabase not configured') }),
+        signUp: () => Promise.resolve({ error: new Error('Supabase not configured') }),
+        signInWithOAuth: () => Promise.resolve({ error: new Error('Supabase not configured') }),
         signInWithOtp: () => Promise.resolve({ error: new Error('Supabase not configured') }),
         signOut: () => Promise.resolve({ error: null }),
       },
@@ -48,6 +46,7 @@ export const supabase = isSupabaseConfigured
         from: () => ({
           upload: () => Promise.resolve({ error: new Error('Supabase not configured') }),
           getPublicUrl: () => ({ data: { publicUrl: '' } }),
+          createSignedUrl: () => Promise.resolve({ data: { signedUrl: '' }, error: null }),
         }),
       },
     };
